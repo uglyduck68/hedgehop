@@ -37,31 +37,32 @@
 
 #include <stdio.h>
 
- 
+
 
 #define PORT 5150
 
 #define DATA_BUFSIZE 8192
 
- 
 
-typedef struct _SOCKET_INFORMATION {
 
-   CHAR Buffer[DATA_BUFSIZE];
+typedef struct _SOCKET_INFORMATION 
+{
 
-   WSABUF DataBuf;
+	CHAR Buffer[DATA_BUFSIZE];
 
-   SOCKET Socket;
+	WSABUF DataBuf;
 
-   OVERLAPPED Overlapped;
+	SOCKET Socket;
 
-   DWORD BytesSEND;
+	OVERLAPPED Overlapped;	// when this is used??
 
-   DWORD BytesRECV;
+	DWORD BytesSEND;
+
+	DWORD BytesRECV;
 
 } SOCKET_INFORMATION, * LPSOCKET_INFORMATION;
 
- 
+
 
 // Prototypes
 
@@ -69,7 +70,7 @@ BOOL CreateSocketInformation(SOCKET s);
 
 void FreeSocketInformation(DWORD Index);
 
- 
+
 
 // Global var
 
@@ -77,504 +78,427 @@ DWORD TotalSockets = 0;
 
 LPSOCKET_INFORMATION SocketArray[FD_SETSIZE];
 
- 
+
 
 int main(int argc, char **argv)
-
 {
 
-   SOCKET ListenSocket;
+	SOCKET ListenSocket;
 
-   SOCKET AcceptSocket;
+	SOCKET AcceptSocket;
 
-   SOCKADDR_IN InternetAddr;
+	SOCKADDR_IN InternetAddr;
 
-   WSADATA wsaData;
+	WSADATA wsaData;
 
-   INT Ret;
+	INT Ret;
 
-   FD_SET WriteSet;
+	FD_SET WriteSet;
 
-   FD_SET ReadSet;
+	FD_SET ReadSet;
 
-   DWORD i;
+	DWORD i;
 
-   DWORD Total;
+	DWORD Total;
 
-   ULONG NonBlock;
+	ULONG NonBlock;
 
-   DWORD Flags;
+	DWORD Flags;
 
-   DWORD SendBytes;
+	DWORD SendBytes;
 
-   DWORD RecvBytes;
+	DWORD RecvBytes;
 
- 
 
-   if ((Ret = WSAStartup(0x0202,&wsaData)) != 0)
 
-   {
+	if ((Ret = WSAStartup(0x0202,&wsaData)) != 0)
 
-      printf("WSAStartup() failed with error %d\n", Ret);
+	{
 
-      WSACleanup();
+		printf("WSAStartup() failed with error %d\n", Ret);
 
-      return 1;
+		WSACleanup();
 
-   }
+		return 1;
 
-   else
+	}
 
-      printf("WSAStartup() is fine!\n");
+	else
 
- 
+		printf("WSAStartup() is fine!\n");
 
-   // Prepare a socket to listen for connections
 
-   if ((ListenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET) 
 
-   {
+	// Prepare a socket to listen for connections
 
-      printf("WSASocket() failed with error %d\n", WSAGetLastError());
+	if ((ListenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET) 
 
-      return 1;
+	{
 
-   }
+		printf("WSASocket() failed with error %d\n", WSAGetLastError());
 
-   else
+		return 1;
 
-      printf("WSASocket() is OK!\n");
+	}
 
- 
+	else
 
-   InternetAddr.sin_family = AF_INET;
+		printf("WSASocket() is OK!\n");
 
-   InternetAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-   InternetAddr.sin_port = htons(PORT);
 
- 
+	InternetAddr.sin_family = AF_INET;
 
-   if (bind(ListenSocket, (PSOCKADDR) &InternetAddr, sizeof(InternetAddr)) == SOCKET_ERROR)
+	InternetAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-   {
+	InternetAddr.sin_port = htons(PORT);
 
-      printf("bind() failed with error %d\n", WSAGetLastError());
 
-      return 1;
 
-   }
+	if (bind(ListenSocket, (PSOCKADDR) &InternetAddr, sizeof(InternetAddr)) == SOCKET_ERROR)
 
-   else
+	{
 
-               printf("bind() is OK!\n");
+		printf("bind() failed with error %d\n", WSAGetLastError());
 
- 
+		return 1;
 
-   if (listen(ListenSocket, 5))
+	}
 
-   {
+	else
 
-      printf("listen() failed with error %d\n", WSAGetLastError());
+		printf("bind() is OK!\n");
 
-      return 1;
 
-   }
 
-   else
+	if (listen(ListenSocket, SOMAXCONN))
 
-               printf("listen() is OK!\n");
+	{
 
- 
+		printf("listen() failed with error %d\n", WSAGetLastError());
 
-   // Change the socket mode on the listening socket from blocking to
+		return 1;
 
-   // non-block so the application will not block waiting for requests
+	}
 
-   NonBlock = 1;
+	else
 
-   if (ioctlsocket(ListenSocket, FIONBIO, &NonBlock) == SOCKET_ERROR)
+		printf("listen() is OK!\n");
 
-   {
 
-      printf("ioctlsocket() failed with error %d\n", WSAGetLastError());
 
-      return 1;
+	// Change the socket mode on the listening socket from blocking to
+	// non-block so the application will not block waiting for requests
 
-   }
+	NonBlock = 1;
 
-   else
+	if (ioctlsocket(ListenSocket, FIONBIO, &NonBlock) == SOCKET_ERROR)
+	{
 
-      printf("ioctlsocket() is OK!\n");
+		printf("ioctlsocket() failed with error %d\n", WSAGetLastError());
 
- 
+		return 1;
 
-   while(TRUE)
+	}
+	else
+		printf("ioctlsocket() is OK!\n");
 
-   {
 
-      // Prepare the Read and Write socket sets for network I/O notification
 
-      FD_ZERO(&ReadSet);
+	while(TRUE)
+	{
 
-      FD_ZERO(&WriteSet);
+		// Prepare the Read and Write socket sets for network I/O notification
 
- 
+		FD_ZERO(&ReadSet);
+		FD_ZERO(&WriteSet);
 
-      // Always look for connection attempts
 
-      FD_SET(ListenSocket, &ReadSet);
 
- 
+		// Always look for connection attempts
+		FD_SET(ListenSocket, &ReadSet);
 
-      // Set Read and Write notification for each socket based on the
 
-      // current state the buffer.  If there is data remaining in the
 
-      // buffer then set the Write set otherwise the Read set
+		// Set Read and Write notification for each socket based on the
+		// current state the buffer.  If there is data remaining in the
+		// buffer then set the Write set otherwise the Read set
 
-      for (i = 0; i < TotalSockets; i++)
+		for (i = 0; i < TotalSockets; i++)
+		{
+			if (SocketArray[i]->BytesRECV > SocketArray[i]->BytesSEND)
+				FD_SET(SocketArray[i]->Socket, &WriteSet);
+			else
+				FD_SET(SocketArray[i]->Socket, &ReadSet);
+		}
 
-         if (SocketArray[i]->BytesRECV > SocketArray[i]->BytesSEND)
 
-            FD_SET(SocketArray[i]->Socket, &WriteSet);
+		if ((Total = select(0, &ReadSet, &WriteSet, NULL, NULL)) == SOCKET_ERROR)
+		{
 
-         else
+			printf("select() returned with error %d\n", WSAGetLastError());
 
-            FD_SET(SocketArray[i]->Socket, &ReadSet);
+			return 1;
+		}
+		else
+			printf("select() is OK!\n");
 
- 
 
-      if ((Total = select(0, &ReadSet, &WriteSet, NULL, NULL)) == SOCKET_ERROR)
 
-      {
+		// Check for arriving connections on the listening socket.
 
-         printf("select() returned with error %d\n", WSAGetLastError());
+		if (FD_ISSET(ListenSocket, &ReadSet))
+		{
 
-         return 1;
+			Total--;
 
-      }
+			if ((AcceptSocket = accept(ListenSocket, NULL, NULL)) != INVALID_SOCKET)
+			{
 
-      else
+				// Set the accepted socket to non-blocking mode so the server will
+				// not get caught in a blocked condition on WSASends
 
-         printf("select() is OK!\n");
+				NonBlock = 1;
 
- 
+				if (ioctlsocket(AcceptSocket, FIONBIO, &NonBlock) == SOCKET_ERROR)
+				{
 
-      // Check for arriving connections on the listening socket.
+					printf("ioctlsocket(FIONBIO) failed with error %d\n", WSAGetLastError());
 
-      if (FD_ISSET(ListenSocket, &ReadSet))
+					return 1;
 
-      {
+				}
+				else
+					printf("ioctlsocket(FIONBIO) is OK!\n");
 
-         Total--;
 
-         if ((AcceptSocket = accept(ListenSocket, NULL, NULL)) != INVALID_SOCKET)
 
-         {
+				if (CreateSocketInformation(AcceptSocket) == FALSE)
+				{
 
-            // Set the accepted socket to non-blocking mode so the server will
+					printf("CreateSocketInformation(AcceptSocket) failed!\n");
 
-            // not get caught in a blocked condition on WSASends
+					return 1;
+				}
+				else
+					printf("CreateSocketInformation() is OK!\n");
+			}	// end of accept
+			else
+			{
+				if (WSAGetLastError() != WSAEWOULDBLOCK)
+				{
 
-            NonBlock = 1;
+					printf("accept() failed with error %d\n", WSAGetLastError());
 
-            if (ioctlsocket(AcceptSocket, FIONBIO, &NonBlock) == SOCKET_ERROR)
+					return 1;
+				}
+				else
+					printf("accept() is fine!\n");
 
-            {
+			}
+		}
 
-               printf("ioctlsocket(FIONBIO) failed with error %d\n", WSAGetLastError());
 
-               return 1;
 
-            }
+		// Check each socket for Read and Write notification until the number
+		// of sockets in Total is satisfied
 
-            else
+		for (i = 0; Total > 0 && i < TotalSockets; i++)
+		{
+			LPSOCKET_INFORMATION SocketInfo = SocketArray[i];
 
-               printf("ioctlsocket(FIONBIO) is OK!\n");
 
- 
 
-            if (CreateSocketInformation(AcceptSocket) == FALSE)
+			// If the ReadSet is marked for this socket then this means data
 
-            {
+			// is available to be read on the socket
 
-                 printf("CreateSocketInformation(AcceptSocket) failed!\n");
+			if (FD_ISSET(SocketInfo->Socket, &ReadSet))
+			{
+				Total--;
 
-                 return 1;
 
-            }
 
-            else
+				SocketInfo->DataBuf.buf = SocketInfo->Buffer;
+				SocketInfo->DataBuf.len = DATA_BUFSIZE;
 
-                printf("CreateSocketInformation() is OK!\n");
+				Flags = 0;
 
- 
+				if (WSARecv(SocketInfo->Socket, &(SocketInfo->DataBuf), 1, &RecvBytes, &Flags, NULL, NULL) == SOCKET_ERROR)
+				{
 
-         }
+					if (WSAGetLastError() != WSAEWOULDBLOCK)
 
-         else
+					{
 
-         {
+						printf("WSARecv() failed with error %d\n", WSAGetLastError());
 
-            if (WSAGetLastError() != WSAEWOULDBLOCK)
+						FreeSocketInformation(i);
 
-            {
+					}
 
-               printf("accept() failed with error %d\n", WSAGetLastError());
+					else
 
-               return 1;
+						printf("WSARecv() is OK!\n");
 
-            }
+					continue;
 
-            else
+				}
+				else
+				{
+					SocketInfo->BytesRECV = RecvBytes;
 
-               printf("accept() is fine!\n");
 
-         }
 
-      }
+					// If zero bytes are received, this indicates the peer closed the connection.
 
- 
+					if (RecvBytes == 0)
+					{
 
-      // Check each socket for Read and Write notification until the number
+						FreeSocketInformation(i);
 
-      // of sockets in Total is satisfied
+						continue;
+					}
+				}
+			}
 
-      for (i = 0; Total > 0 && i < TotalSockets; i++)
 
-      {
 
-         LPSOCKET_INFORMATION SocketInfo = SocketArray[i];
+			// If the WriteSet is marked on this socket then this means the internal
+			// data buffers are available for more data
 
- 
+			if (FD_ISSET(SocketInfo->Socket, &WriteSet))
+			{
 
-         // If the ReadSet is marked for this socket then this means data
+				Total--;
 
-         // is available to be read on the socket
 
-         if (FD_ISSET(SocketInfo->Socket, &ReadSet))
 
-         {
+				SocketInfo->DataBuf.buf = SocketInfo->Buffer + SocketInfo->BytesSEND;
 
-            Total--;
+				SocketInfo->DataBuf.len = SocketInfo->BytesRECV - SocketInfo->BytesSEND;
 
- 
 
-            SocketInfo->DataBuf.buf = SocketInfo->Buffer;
 
-            SocketInfo->DataBuf.len = DATA_BUFSIZE;
+				if (WSASend(SocketInfo->Socket, &(SocketInfo->DataBuf), 1, &SendBytes, 0, NULL, NULL) == SOCKET_ERROR)
+				{
 
- 
+					if (WSAGetLastError() != WSAEWOULDBLOCK)
 
-            Flags = 0;
+					{
 
-            if (WSARecv(SocketInfo->Socket, &(SocketInfo->DataBuf), 1, &RecvBytes, &Flags, NULL, NULL) == SOCKET_ERROR)
+						printf("WSASend() failed with error %d\n", WSAGetLastError());
 
-            {
+						FreeSocketInformation(i);
 
-               if (WSAGetLastError() != WSAEWOULDBLOCK)
+					}
 
-               {
+					else
 
-                  printf("WSARecv() failed with error %d\n", WSAGetLastError());
+						printf("WSASend() is OK!\n");
 
-                  FreeSocketInformation(i);
 
-               }
 
-               else
+					continue;
 
-                  printf("WSARecv() is OK!\n");
+				}
 
-               continue;
+				else
 
-            }
+				{
 
-            else
+					SocketInfo->BytesSEND += SendBytes;
 
-            {
 
-               SocketInfo->BytesRECV = RecvBytes;
 
- 
+					if (SocketInfo->BytesSEND == SocketInfo->BytesRECV)
+					{
+						SocketInfo->BytesSEND = 0;
 
-               // If zero bytes are received, this indicates the peer closed the connection.
+						SocketInfo->BytesRECV = 0;
+					}
 
-               if (RecvBytes == 0)
+				}
 
-               {
+			}	// FD_ISSET write socket
 
-                  FreeSocketInformation(i);
+		}	// for each sockets is array
 
-                  continue;
-
-               }
-
-            }
-
-         }
-
- 
-
-         // If the WriteSet is marked on this socket then this means the internal
-
-         // data buffers are available for more data
-
-         if (FD_ISSET(SocketInfo->Socket, &WriteSet))
-
-         {
-
-            Total--;
-
- 
-
-            SocketInfo->DataBuf.buf = SocketInfo->Buffer + SocketInfo->BytesSEND;
-
-            SocketInfo->DataBuf.len = SocketInfo->BytesRECV - SocketInfo->BytesSEND;
-
- 
-
-            if (WSASend(SocketInfo->Socket, &(SocketInfo->DataBuf), 1, &SendBytes, 0, NULL, NULL) == SOCKET_ERROR)
-
-            {
-
-               if (WSAGetLastError() != WSAEWOULDBLOCK)
-
-               {
-
-                  printf("WSASend() failed with error %d\n", WSAGetLastError());
-
-                  FreeSocketInformation(i);
-
-               }
-
-               else
-
-                  printf("WSASend() is OK!\n");
-
- 
-
-               continue;
-
-            }
-
-            else
-
-            {
-
-               SocketInfo->BytesSEND += SendBytes;
-
- 
-
-               if (SocketInfo->BytesSEND == SocketInfo->BytesRECV)
-
-               {
-
-                  SocketInfo->BytesSEND = 0;
-
-                  SocketInfo->BytesRECV = 0;
-
-               }
-
-            }
-
-         }
-
-      }
-
-   }
+	}
 
 }
 
- 
+
 
 BOOL CreateSocketInformation(SOCKET s)
-
 {
+	LPSOCKET_INFORMATION SI;
 
-   LPSOCKET_INFORMATION SI;
 
- 
+	printf("Accepted socket number %d\n", s);
 
-   printf("Accepted socket number %d\n", s);
 
- 
+	if ((SI = (LPSOCKET_INFORMATION) GlobalAlloc(GPTR, sizeof(SOCKET_INFORMATION))) == NULL)
+	{
 
-   if ((SI = (LPSOCKET_INFORMATION) GlobalAlloc(GPTR, sizeof(SOCKET_INFORMATION))) == NULL)
+		printf("GlobalAlloc() failed with error %d\n", GetLastError());
 
-   {
+		return FALSE;
+	}
+	else
+		printf("GlobalAlloc() for SOCKET_INFORMATION is OK!\n");
 
-      printf("GlobalAlloc() failed with error %d\n", GetLastError());
 
-      return FALSE;
 
-   }
+	// Prepare SocketInfo structure for use
+	SI->Socket = s;
+	SI->BytesSEND = 0;
+	SI->BytesRECV = 0;
 
-   else
 
-      printf("GlobalAlloc() for SOCKET_INFORMATION is OK!\n");
 
- 
+	SocketArray[TotalSockets] = SI;
 
-   // Prepare SocketInfo structure for use
+	TotalSockets++;
 
-   SI->Socket = s;
-
-   SI->BytesSEND = 0;
-
-   SI->BytesRECV = 0;
-
- 
-
-   SocketArray[TotalSockets] = SI;
-
-   TotalSockets++;
-
-   return(TRUE);
-
+	return(TRUE);
 }
 
- 
+
 
 void FreeSocketInformation(DWORD Index)
-
 {
 
-   LPSOCKET_INFORMATION SI = SocketArray[Index];
+	LPSOCKET_INFORMATION SI = SocketArray[Index];
 
-   DWORD i;
+	DWORD i;
 
- 
 
-   closesocket(SI->Socket);
 
-   printf("Closing socket number %d\n", SI->Socket);
+	closesocket(SI->Socket);
 
-   GlobalFree(SI);
+	printf("Closing socket number %d\n", SI->Socket);
 
- 
+	GlobalFree(SI);
 
-   // Squash the socket array
 
-   for (i = Index; i < TotalSockets; i++)
 
-   {
+	// Squash the socket array
+	for (i = Index; i < TotalSockets; i++)
+	{
 
-      SocketArray[i] = SocketArray[i + 1];
+		SocketArray[i] = SocketArray[i + 1];
+	}
 
-   }
 
- 
 
-   TotalSockets--;
-
+	TotalSockets--;
 }
 
- 
+
 /*
 int _tmain(int argc, _TCHAR* argv[])
 {
-	return 0;
+return 0;
 }
 */
