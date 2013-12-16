@@ -2,6 +2,8 @@
 
 #include	"Types.h"
 
+using namespace	X1;
+
 namespace X1
 {
 	class Reactor;

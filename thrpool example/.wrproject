@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wrxml>
+    <properties platform="VxWorks" platform_name="vxworks-6.8" root="1" type="RealTimeProcessProject"/>
+    <attributes>
+        <mapAttribute>
+            <listAttribute key="BLD::Info|GlobalMacros">
+                <stringAttribute value="PROJECT_TYPE"/>
+                <stringAttribute value="DEFINES"/>
+                <stringAttribute value="DO_STRIP"/>
+                <stringAttribute value="EXPAND_DBG"/>
+            </listAttribute>
+            <stringAttribute key="BLD::Info|GlobalMacro|DEFINES" value=""/>
+            <stringAttribute key="BLD::Info|GlobalMacro|DO_STRIP" value="0"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|EXPAND_DBG" value="0"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|PROJECT_TYPE" value="RTP"/>
+            <listAttribute key="BLD::Info|Incl|PENTIUMgnu_RTP">
+                <stringAttribute value="-I$(WIND_BASE)/target/usr/h"/>
+                <stringAttribute value="-I$(WIND_BASE)/target/usr/h/wrn/coreip"/>
+            </listAttribute>
+            <listAttribute key="BLD::Info|Incl|SIMPENTIUMgnu_RTP">
+                <stringAttribute value="-I$(WIND_BASE)/target/usr/h"/>
+                <stringAttribute value="-I$(WIND_BASE)/target/usr/h/wrn/coreip"/>
+            </listAttribute>
+            <listAttribute key="BLD::Info|Macros">
+                <stringAttribute value="VX_CPU_FAMILY"/>
+                <stringAttribute value="CPU"/>
+                <stringAttribute value="TOOL_FAMILY"/>
+                <stringAttribute value="TOOL"/>
+                <stringAttribute value="TOOL_PATH"/>
+                <stringAttribute value="CC_ARCH_SPEC"/>
+                <stringAttribute value="LIBPATH"/>
+                <stringAttribute value="LIBS"/>
+                <stringAttribute value="VSB_DIR"/>
+            </listAttribute>
+            <stringAttribute key="BLD::Info|Macro|CC_ARCH_SPEC|value|PENTIUMgnu_RTP" value="-mtune=pentium -march=pentium"/>
+            <stringAttribute key="BLD::Info|Macro|CC_ARCH_SPEC|value|SIMPENTIUMgnu_RTP" value="-mtune=i486 -march=i486"/>
+            <stringAttribute key="BLD::Info|Macro|CPU|value|PENTIUMgnu_RTP" value="PENTIUM"/>
+            <stringAttribute key="BLD::Info|Macro|CPU|value|SIMPENTIUMgnu_RTP" value="SIMPENTIUM"/>
+            <stringAttribute key="BLD::Info|Macro|LIBPATH|value|PENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Macro|LIBPATH|value|SIMPENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Macro|LIBS|value|PENTIUMgnu_RTP" value="-lstdc++"/>
+            <stringAttribute key="BLD::Info|Macro|LIBS|value|SIMPENTIUMgnu_RTP" value="-lstdc++"/>
+            <stringAttribute key="BLD::Info|Macro|TOOL_FAMILY|value|PENTIUMgnu_RTP" value="gnu"/>
+            <stringAttribute key="BLD::Info|Macro|TOOL_FAMILY|value|SIMPENTIUMgnu_RTP" value="gnu"/>
+            <stringAttribute key="BLD::Info|Macro|TOOL_PATH|value|PENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Macro|TOOL_PATH|value|SIMPENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Macro|TOOL|value|PENTIUMgnu_RTP" value="gnu"/>
+            <stringAttribute key="BLD::Info|Macro|TOOL|value|SIMPENTIUMgnu_RTP" value="gnu"/>
+            <stringAttribute key="BLD::Info|Macro|VSB_DIR|value|PENTIUMgnu_RTP" value="$(WIND_BASE)/target/lib"/>
+            <stringAttribute key="BLD::Info|Macro|VSB_DIR|value|SIMPENTIUMgnu_RTP" value="$(WIND_BASE)/target/lib"/>
+            <stringAttribute key="BLD::Info|Macro|VX_CPU_FAMILY|value|PENTIUMgnu_RTP" value="pentium"/>
+            <stringAttribute key="BLD::Info|Macro|VX_CPU_FAMILY|value|SIMPENTIUMgnu_RTP" value="simpentium"/>
+            <listAttribute key="BLD::Info|Tools">
+                <stringAttribute value="C-Compiler"/>
+                <stringAttribute value="C++-Compiler"/>
+                <stringAttribute value="Linker"/>
+                <stringAttribute value="Librarian"/>
+                <stringAttribute value="Assembler"/>
+            </listAttribute>
+            <stringAttribute key="BLD::Info|Tool|Assembler|cmd|PENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%assemblerprefix% $(TOOL_PATH)ccpentium %DebugModeFlags% %ToolFlags% $(ADDED_CFLAGS) %Includes% $(ADDED_INCLUDES) -D_VX_CPU=_VX_$(CPU) -D_VX_TOOL_FAMILY=$(TOOL_FAMILY) -D_VX_TOOL=$(TOOL)   $(DEFINES) -o %OutFile% -c %InFile%"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|cmd|SIMPENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%assemblerprefix% $(TOOL_PATH)ccpentium %DebugModeFlags% %ToolFlags% $(ADDED_CFLAGS) %Includes% $(ADDED_INCLUDES) -D_VX_CPU=_VX_$(CPU) -D_VX_TOOL_FAMILY=$(TOOL_FAMILY) -D_VX_TOOL=$(TOOL)   $(DEFINES) -o %OutFile% -c %InFile%"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|dbgFlags|PENTIUMgnu_RTP" value="-g"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|dbgFlags|SIMPENTIUMgnu_RTP" value="-g"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|derivedSigs|PENTIUMgnu_RTP" value="*.o"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|derivedSigs|SIMPENTIUMgnu_RTP" value="*.o"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|flags|PENTIUMgnu_RTP" value="$(CC_ARCH_SPEC) -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -P -xassembler-with-cpp  -MD -MP"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|flags|SIMPENTIUMgnu_RTP" value="$(CC_ARCH_SPEC) -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -P -xassembler-with-cpp  -MD -MP"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|nonDbgFlags|PENTIUMgnu_RTP" value="-O2   "/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|nonDbgFlags|SIMPENTIUMgnu_RTP" value="-O2  -fno-defer-pop"/>
+            <booleanAttribute key="BLD::Info|Tool|Assembler|object" value="true"/>
+            <booleanAttribute key="BLD::Info|Tool|Assembler|passAble" value="false"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|sigs" value="*.s"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|cmd|PENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%cppcompilerprefix% $(TOOL_PATH)c++pentium %DebugModeFlags% %ToolFlags% $(ADDED_C++FLAGS) %Includes% $(ADDED_INCLUDES) -D_VX_CPU=_VX_$(CPU) -D_VX_TOOL_FAMILY=$(TOOL_FAMILY) -D_VX_TOOL=$(TOOL)   $(DEFINES) -o %OutFile% -c %InFile%"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|cmd|SIMPENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%cppcompilerprefix% $(TOOL_PATH)c++pentium %DebugModeFlags% %ToolFlags% $(ADDED_C++FLAGS) %Includes% $(ADDED_INCLUDES) -D_VX_CPU=_VX_$(CPU) -D_VX_TOOL_FAMILY=$(TOOL_FAMILY) -D_VX_TOOL=$(TOOL)   $(DEFINES) -o %OutFile% -c %InFile%"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|dbgFlags|PENTIUMgnu_RTP" value="-g"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|dbgFlags|SIMPENTIUMgnu_RTP" value="-g"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|derivedSigs|PENTIUMgnu_RTP" value="*.o"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|derivedSigs|SIMPENTIUMgnu_RTP" value="*.o"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|flags|PENTIUMgnu_RTP" value="$(CC_ARCH_SPEC) -ansi -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -Wall   -MD -MP"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|flags|SIMPENTIUMgnu_RTP" value="$(CC_ARCH_SPEC) -ansi -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -Wall   -MD -MP"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|nonDbgFlags|PENTIUMgnu_RTP" value="-O2   "/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|nonDbgFlags|SIMPENTIUMgnu_RTP" value="-O2  -fno-defer-pop"/>
+            <booleanAttribute key="BLD::Info|Tool|C++-Compiler|object" value="true"/>
+            <booleanAttribute key="BLD::Info|Tool|C++-Compiler|passAble" value="false"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|sigs" value="*.cpp;*.C;*.cxx;*.cc"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|cmd|PENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%ccompilerprefix% $(TOOL_PATH)ccpentium %DebugModeFlags% %ToolFlags% $(ADDED_CFLAGS) %Includes% $(ADDED_INCLUDES) -D_VX_CPU=_VX_$(CPU) -D_VX_TOOL_FAMILY=$(TOOL_FAMILY) -D_VX_TOOL=$(TOOL)   $(DEFINES) -o %OutFile% -c %InFile%"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|cmd|SIMPENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%ccompilerprefix% $(TOOL_PATH)ccpentium %DebugModeFlags% %ToolFlags% $(ADDED_CFLAGS) %Includes% $(ADDED_INCLUDES) -D_VX_CPU=_VX_$(CPU) -D_VX_TOOL_FAMILY=$(TOOL_FAMILY) -D_VX_TOOL=$(TOOL)   $(DEFINES) -o %OutFile% -c %InFile%"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|dbgFlags|PENTIUMgnu_RTP" value="-g"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|dbgFlags|SIMPENTIUMgnu_RTP" value="-g"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|derivedSigs|PENTIUMgnu_RTP" value="*.o"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|derivedSigs|SIMPENTIUMgnu_RTP" value="*.o"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|flags|PENTIUMgnu_RTP" value="$(CC_ARCH_SPEC) -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -Wall   -MD -MP"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|flags|SIMPENTIUMgnu_RTP" value="$(CC_ARCH_SPEC) -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -Wall   -MD -MP"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|nonDbgFlags|PENTIUMgnu_RTP" value="-O2   "/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|nonDbgFlags|SIMPENTIUMgnu_RTP" value="-O2  -fno-defer-pop"/>
+            <booleanAttribute key="BLD::Info|Tool|C-Compiler|object" value="true"/>
+            <booleanAttribute key="BLD::Info|Tool|C-Compiler|passAble" value="false"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|sigs" value="*.c"/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|cmd|PENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%archiverprefix% $(TOOL_PATH)arpentium %ToolFlags% %OutFile% %Objects% $(ADDED_OBJECTS)"/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|cmd|SIMPENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%archiverprefix% $(TOOL_PATH)arpentium %ToolFlags% %OutFile% %Objects% $(ADDED_OBJECTS)"/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|dbgFlags|PENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|dbgFlags|SIMPENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|derivedSigs|PENTIUMgnu_RTP" value="*.a"/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|derivedSigs|SIMPENTIUMgnu_RTP" value="*.a"/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|flags|PENTIUMgnu_RTP" value="crus"/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|flags|SIMPENTIUMgnu_RTP" value="crus"/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|nonDbgFlags|PENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|nonDbgFlags|SIMPENTIUMgnu_RTP" value=""/>
+            <booleanAttribute key="BLD::Info|Tool|Librarian|object" value="false"/>
+            <booleanAttribute key="BLD::Info|Tool|Librarian|passAble" value="true"/>
+            <stringAttribute key="BLD::Info|Tool|Librarian|sigs" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Linker|cmd|PENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%cpplinkerprefix% $(TOOL_PATH)c++pentium %DebugModeFlags% %ToolFlags% -o %OutFile% %Objects% $(ADDED_OBJECTS) %Libraries% $(LIBPATH) $(LIBS) -L$(VSB_DIR)/usr/lib/pentium/PENTIUM/common $(ADDED_LIBPATH) $(ADDED_LIBS) -Wl,--start-group -Wl,--end-group &amp;&amp; if [ &quot;$(DO_STRIP)&quot; = &quot;1&quot; ]; then mv -f &quot;$@&quot; &quot;$@.unstripped&quot; &amp;&amp; strippentium -g -o &quot;$@&quot; &quot;$@.unstripped&quot;;fi &amp;&amp; if [ &quot;$(EXPAND_DBG)&quot; = &quot;1&quot; ]; then plink &quot;$@&quot;;fi"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|cmd|SIMPENTIUMgnu_RTP" value="echo &quot;building $@&quot;;%cpplinkerprefix% $(TOOL_PATH)c++pentium %DebugModeFlags% %ToolFlags% -o %OutFile% %Objects% $(ADDED_OBJECTS) %Libraries% $(LIBPATH) $(LIBS) -L$(VSB_DIR)/usr/lib/simpentium/SIMPENTIUM/common $(ADDED_LIBPATH) $(ADDED_LIBS) -Wl,--start-group -Wl,--end-group &amp;&amp; if [ &quot;$(DO_STRIP)&quot; = &quot;1&quot; ]; then mv -f &quot;$@&quot; &quot;$@.unstripped&quot; &amp;&amp; strippentium -g -o &quot;$@&quot; &quot;$@.unstripped&quot;;fi &amp;&amp; if [ &quot;$(EXPAND_DBG)&quot; = &quot;1&quot; ]; then plink &quot;$@&quot;;fi"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|dbgFlags|PENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Linker|dbgFlags|SIMPENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Linker|derivedSigs|PENTIUMgnu_RTP" value="*.vxe"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|derivedSigs|SIMPENTIUMgnu_RTP" value="*.vxe"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|flags|PENTIUMgnu_RTP" value="$(CC_ARCH_SPEC) -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -Wall   -MD -MP -mrtp"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|flags|SIMPENTIUMgnu_RTP" value="$(CC_ARCH_SPEC) -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -Wall   -MD -MP -mrtp"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|nonDbgFlags|PENTIUMgnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Linker|nonDbgFlags|SIMPENTIUMgnu_RTP" value=""/>
+            <booleanAttribute key="BLD::Info|Tool|Linker|object" value="false"/>
+            <booleanAttribute key="BLD::Info|Tool|Linker|passAble" value="false"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|sigs" value=""/>
+            <stringAttribute key="BLD::Info|cmd" value="%makeprefix% make --no-print-directory"/>
+            <stringAttribute key="BLD::Info|defaultSpec" value="SIMPENTIUMgnu_RTP"/>
+            <stringAttribute key="BLD::Info|redirDir|PENTIUMgnu_RTP" value="PENTIUMgnu_RTP"/>
+            <stringAttribute key="BLD::Info|redirDir|SIMPENTIUMgnu_RTP" value="SIMPENTIUMgnu_RTP"/>
+            <stringAttribute key="BLD::Info|redirRoot" value=""/>
+            <listAttribute key="BLD::Info|specs">
+                <stringAttribute value="PENTIUMgnu_RTP"/>
+                <stringAttribute value="SIMPENTIUMgnu_RTP"/>
+            </listAttribute>
+            <intAttribute key="BuildSupportEnabled" value="1"/>
+            <booleanAttribute key="BuildTargetCentric" value="true"/>
+        </mapAttribute>
+    </attributes>
+    <buildtargets>
+        <buildtarget buildtool="Linker" name="ThreadPool" passed="false" targetname="ThreadPool">
+            <contents>
+                <folder name="/ThreadPool" recursive="true"/>
+            </contents>
+        </buildtarget>
+    </buildtargets>
+</wrxml>

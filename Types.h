@@ -16,5 +16,7 @@ typedef	int		HANDLE;
 
 #elif	defined(_WINDOWS_)
 
+typedef	int		HANDLE;
+
 #endif
 }
