@@ -1,12 +1,13 @@
-ìš”êµ¬ì‚¬í•­
-1. TCP, UDP, Serial í†µì‹  ë“± OS handlerë¥¼ ì´ìš©í•˜ëŠ” resourceì— ëŒ€í•˜ì—¬ event dispatch ê¸°ëŠ¥ì„ ì œê³µí•´ì•¼ í•œë‹¤.
+¿ä±¸»çÇ× [20131216]
+======================
+1. TCP, UDP, Serial Åë½Å µî OS handler¸¦ ÀÌ¿ëÇÏ´Â resource¿¡ ´ëÇÏ¿© event dispatch ±â´ÉÀ» Á¦°øÇØ¾ß ÇÑ´Ù.
 
-2. windows, linux, vxworksë¥¼ ì§€ì›í•´ì•¼í•œë‹¤.
+2. windows, linux, vxworks¸¦ Áö¿øÇØ¾ßÇÑ´Ù.
 
-3. threadpoolì„ ì œê³µí•˜ì—¬, business logic functionì´ í†µì‹ ê³¼ asynchronousí•˜ê²Œ ìˆ˜í–‰ë˜ì–´ì•¼ í•œë‹¤.
+3. threadpoolÀ» Á¦°øÇÏ¿©, business logic functionÀÌ Åë½Å°ú asynchronousÇÏ°Ô ¼öÇàµÇ¾î¾ß ÇÑ´Ù.
 
-4. timer ë“±ë¡, í•´ì œ ë“±ì˜ ê¸°ëŠ¥ì„ ì œê³µí•´ì•¼í•œë‹¤.
+4. timer µî·Ï, ÇØÁ¦ µîÀÇ ±â´ÉÀ» Á¦°øÇØ¾ßÇÑ´Ù.
 
-5. ìµœëŒ€í•œ ì‹¤ì‹œê°„ ì„±ì„ ê³ ë ¤í•´ì•¼í•œë‹¤.
+5. ÃÖ´ëÇÑ ½Ç½Ã°£ ¼ºÀ» °í·ÁÇØ¾ßÇÑ´Ù.
 
-6. DDS ë˜í•œ ê³ ë ¤ë˜ì–´ì•¼ í•œë‹¤. ë‹¨ì§€ DDS wrapper facadeëŠ” ì œê³µë˜ê¸° ë–„ë¬¸ì— backendì— ë¹„ë™ê¸° threadpool ì œê³µ ê¸°ëŠ¥ì´ ìœ ì—°í•˜ê²Œ ì œê³µë˜ì–´ì•¼í•œë‹¤.
+6. DDS ¶ÇÇÑ °í·ÁµÇ¾î¾ß ÇÑ´Ù. ´ÜÁö DDS wrapper facade´Â Á¦°øµÇ±â ¶§¹®¿¡ backend¿¡ ºñµ¿±â threadpool Á¦°ø ±â´ÉÀÌ À¯¿¬ÇÏ°Ô Á¦°øµÇ¾î¾ßÇÑ´Ù.
