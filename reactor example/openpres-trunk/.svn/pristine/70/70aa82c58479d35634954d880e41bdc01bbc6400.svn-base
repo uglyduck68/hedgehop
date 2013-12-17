@@ -1,0 +1,21 @@
+########################################################
+#	Use this file for making Reactor library
+#	NOTE: When run process if encounter error "cannot
+#	load shared lib to libosip2 or libosipparser2", we
+#	use "ldconfig /usr/local/lib/" to set linker config
+########################################################
+#libReactor.so : Reactor.o ReactorImpl.o
+#	ld -G libs/*.o -o libs/libReactor.so
+#########################################
+libReactor.a : Reactor.o ReactorImpl.o
+	ar rcs libs/libReactor.a libs/*.o
+
+Reactor.o : Reactor.c
+	g++ -ggdb -c Reactor.c -I$(FASTFORMAT_ROOT)/include -I$(STLSOFT)/include
+	mv Reactor.o libs/
+ReactorImpl.o : ReactorImpl.c
+	g++ -ggdb -c ReactorImpl.c -I$(FASTFORMAT_ROOT)/include -I$(STLSOFT)/include
+	mv ReactorImpl.o libs/
+
+clean:
+	rm libs/*.o libs/libReactor.a libs/libReactor.so
