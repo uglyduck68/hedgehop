@@ -15,6 +15,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
+.svn/						# ignore all files in the .svn/ directory
 
 # External tool builders
 .externalToolBuilders/
