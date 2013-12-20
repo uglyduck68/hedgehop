@@ -15,7 +15,9 @@ namespace X1
 
 	Log::~Log(void)
 	{
-		delete this;
+		Close();
+
+		DEL(m_pLog);
 	}
 
 	Log* Log::GetInstance()
@@ -25,7 +27,7 @@ namespace X1
 		 */
 		if (m_pLog == NULL)
 		{
-			Lock		lock;	// scoped locking
+			Lock		lock;	// scoped locking -> change to use Guard
 			if (m_pLog == NULL)
 				m_pLog	= new Log;
 		}
@@ -52,27 +54,73 @@ namespace X1
 #endif
 	}
 
-	int Log::Write(char* cpFormat, ...)
+	int	Log::Open(FILE* pFile /* = stdout */)
+	{
+		if (pFile)
+			m_pFile	= pFile;
+
+		return X1_OK;
+	}
+
+	int	Log::Open(char* cpFileName)
+	{
+		if (cpFileName)
+		{
+			m_pFile	= fopen(cpFileName, "a+");
+
+			if (m_pFile)
+				fseek(m_pFile, 0, SEEK_END);
+			else
+				return X1_EFILEOPEN;
+		}
+
+		return X1_OK;
+	}
+
+	int	Log::Close()
+	{
+		if (m_pFile)
+		{
+			fclose(m_pFile);
+			m_pFile		= NULL;
+		}
+
+		return X1_OK;
+	}
+
+	int Log::Write(char* cpType, char* cpFilename, int nLineno, char* cpFormat, ...)
 	{
 		va_list		marker;
 
-		char	caTimeStamp[64];
+//		char	caTimeStamp[64];
 		char	caLine[1024];
 		int		nRet;
 
-//		if(OpenLogFile(m_caFileName) == 0)
-//			return 0;
+		// FIXME: lock is required to protect file writing in multi threading
 
-		GetTimeStamp(caTimeStamp);
+//		GetTimeStamp(caTimeStamp);
 
 		va_start(marker, cpFormat);
 		vsprintf(caLine, cpFormat, marker);
 		va_end(marker);
 
-		nRet = fprintf(m_pFile, "%s\n", caLine);
+		if (m_pFile)
+		{
+			nRet = fprintf(m_pFile, "[%s %s]:%s:(%s:%d): %s", 
+				__DATE__, __TIME__, cpType, cpFilename, nLineno, caLine);
 
-		fflush(m_pFile);
+			fflush(m_pFile);
+		}
+		else
+		{
+			/// default logging use stdout
+			nRet = fprintf(stdout, "[%s %s]:%s:(%s:%d): %s", 
+				__DATE__, __TIME__, cpType, cpFilename, nLineno, caLine);
 
-		return nRet;		return 0;
+			fflush(stdout);
+		}
+
+
+		return nRet;;
 	}
 }

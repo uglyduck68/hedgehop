@@ -2,9 +2,12 @@
 
 #include "ReactorImpl.h"
 #include "Reactor.h"
+#include "Lock.h"
 
 namespace X1
 {
+	Reactor* volatile Reactor::m_pReactor	= NULL;
+
 	Reactor::Reactor()
 	{
 		m_pImpl	= NULL;
@@ -17,21 +20,37 @@ namespace X1
 
 	int Reactor::RegisterHandler(EventHandler *eh, ET et)
 	{
-		return X1_OK;
+		if (m_pImpl)
+			return m_pImpl->RegisterHandler(eh, et);
+
+		return X1_FAIL;
 	}
 
 	int Reactor::RemoveHandler(EventHandler *eh, ET et)
 	{
-		return X1_OK;
+		if (m_pImpl)
+			return m_pImpl->RemoveHandler(eh, et);
+
+		return X1_FAIL;
 	}
 
 	int Reactor::HandleEvent(TimeValue *timeout /* = 0 */)
 	{
-		return X1_OK;
+		if (m_pImpl)
+			return m_pImpl->HandleEvent(timeout);
+
+		return X1_FAIL;
 	}
 
 	Reactor* Reactor::GetInstance()
 	{
-		return NULL;
+		if (m_pReactor == NULL)
+		{
+			Lock		lock;	// scoped locking -> change to use Guard
+			if (m_pReactor == NULL)
+				m_pReactor	= new Reactor;
+		}
+
+		return m_pReactor;
 	}
 }

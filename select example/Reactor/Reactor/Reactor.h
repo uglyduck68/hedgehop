@@ -22,5 +22,7 @@ namespace X1
 
 	protected:
 		ReactorImpl*	m_pImpl;
+		static Reactor*	volatile m_pReactor;
+
 	};
 }

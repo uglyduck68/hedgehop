@@ -48,7 +48,8 @@ struct timezone
 enum RET_TYPE
 {
 	X1_OK	= 0,
-	X1_FAIL	= 1
+	X1_FAIL	= 1,
+	X1_EFILEOPEN,
 };
 
 enum DEMUX_TYPE

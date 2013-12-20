@@ -10,17 +10,30 @@ namespace X1
 	private:
 		static Log*	volatile m_pLog;
 		FILE*		m_pFile;
-		char		m_caFilePath[_MAX_PATH];
+
 	protected:
 		Log(void);
+		void GetTimeStamp(char *cpTime);
 
 	public:
 		~Log(void);
 
 		static Log* GetInstance();
-		void GetTimeStamp(char *cpTime);
-		int Write(char *cpFormat, ...);
+
+		int	Open(char* cpFileName);
+		int	Open(FILE* pFile = stdout);
+		int	Close();
+		int Write(char* cpType, char* cpFilename, int nLineno, char *cpFormat, ...);
 	};
 
 }
 
+#define LOG_INIT(filename)	do	\
+	{	\
+		if (Log::GetInstance()->Open(filename) != X1_OK)	\
+			printf("Error: fail to open %s. logging use stdout.\n", filename)	\
+	} while (0);
+#define LOG_INFO(format,...)	Log::GetInstance()->Write("Info", __FILE__, __LINE__, format, ##__VA_ARGS__)
+#define LOG_WARN(format,...)	Log::GetInstance()->Write("Warn", __FILE__, __LINE__, format, ##__VA_ARGS__)
+#define LOG_ERR(format,...)	Log::GetInstance()->Write("Error", __FILE__, __LINE__, format, ##__VA_ARGS__)
+#define LOG_FATAL(format,...)	Log::GetInstance()->Write("Fatal", __FILE__, __LINE__, format, ##__VA_ARGS__)
