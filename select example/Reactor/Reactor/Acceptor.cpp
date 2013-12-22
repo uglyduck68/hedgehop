@@ -35,7 +35,10 @@ namespace X1
 	{
 //		X1_HANDLE	ListenSocket;
 
-		if ((m_h = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET) 
+		
+
+		if ((m_h = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP)) == INVALID_SOCKET) 
+//		if ((m_h = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET) 
 		{
 			printf("WSASocket() failed with error %d\n", WSAGetLastError());
 
@@ -45,7 +48,7 @@ namespace X1
 			printf("WSASocket() is OK!\n");
 
 
-		if (bind(m_h, (PSOCKADDR) addr.GetAddr(), addr.GetSize()) == SOCKET_ERROR)
+		if (bind(GetHandle(), (PSOCKADDR) addr.GetAddr(), addr.GetSize()) == SOCKET_ERROR)
 		{
 			printf("bind() failed with error %d\n", WSAGetLastError());
 
@@ -55,7 +58,7 @@ namespace X1
 			printf("bind() is OK!\n");
 
 
-		if (listen(m_h, SOMAXCONN))
+		if (listen(GetHandle(), SOMAXCONN))
 		{
 			printf("listen() failed with error %d\n", WSAGetLastError());
 
@@ -70,19 +73,22 @@ namespace X1
 
 		u_long	NonBlock = 1;
 
-		if (ioctlsocket(m_h, FIONBIO, &NonBlock) == SOCKET_ERROR)
+		if (ioctlsocket(GetHandle(), FIONBIO, &NonBlock) == SOCKET_ERROR)
 		{
-
 			printf("ioctlsocket() failed with error %d\n", WSAGetLastError());
 
 			return X1_FAIL;
-
 		}
 		else
 			printf("ioctlsocket() is OK!\n");
 
 		/// register accept event handler
-		Reactor::GetInstance()->RegisterHandler(this, EventHandler::ACCEPT_MASK);
+		if (Reactor::GetInstance()->RegisterHandler(this, EventHandler::ACCEPT_MASK) != X1_OK)
+		{
+			LOG_FATAL("RegisterHandler fails\n");
+
+			return X1_FAIL;
+		}
 
 		return X1_OK;
 	}
@@ -111,7 +117,7 @@ namespace X1
 
 				printf("ioctlsocket(FIONBIO) failed with error %d\n", WSAGetLastError());
 
-				return 1;
+				return X1_FAIL;
 
 			}
 			else
@@ -129,6 +135,12 @@ namespace X1
 			//else
 			//	printf("CreateSocketInformation() is OK!\n");
 		}	// end of accept
+		else
+		{
+			LOG_FATAL("accept fails\n");
+
+			return X1_FAIL;
+		}
 
 		/// register service event handler
 		Reactor::GetInstance()->RegisterHandler(m_pSvc, EventHandler::ALL_EVENTS_MASK);

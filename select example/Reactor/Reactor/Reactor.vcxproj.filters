@@ -101,5 +101,8 @@
     <ClCompile Include="EchoService.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Acceptor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

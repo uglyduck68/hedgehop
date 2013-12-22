@@ -16,6 +16,7 @@ local.properties
 .settings/
 .loadpath
 .svn/						# ignore all files in the .svn/ directory
+*.tlog
 
 # External tool builders
 .externalToolBuilders/

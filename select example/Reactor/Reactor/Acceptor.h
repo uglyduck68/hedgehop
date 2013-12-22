@@ -70,4 +70,6 @@ namespace X1
 }
 
 /// prevent linking error of template functions
+#ifdef	USE_TEMPLATE
 #include "Acceptor.cpp"
+#endif

@@ -51,7 +51,7 @@ namespace X1
 		//because the number of file descriptors can be demultiplexed by
 		//select() is limited by FD_SETSIZE constant so this table is indexed
 		//up to FD_SETSIZE
-		struct Tuple mTable[FD_SETSIZE];
+		struct Tuple m_Table[FD_SETSIZE];
 	};
 
 	class SelectReactorImpl : public ReactorImpl

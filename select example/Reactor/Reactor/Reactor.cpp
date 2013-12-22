@@ -11,6 +11,10 @@ namespace X1
 	Reactor::Reactor()
 	{
 		m_pImpl	= NULL;
+
+		// FIXME: by default use select implementation
+		// but should support various implementation
+		m_pImpl	= new SelectReactorImpl();
 	}
 
 	Reactor::~Reactor()

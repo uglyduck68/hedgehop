@@ -87,12 +87,17 @@ int main(int argc, char **argv)
 
 	NetAddr				Addr(PORT, INADDR_ANY);
 	Acceptor			acceptor;
+	Reactor				reactor;
 
 	acceptor.SetSvc(new EchoService);
 
 	// FIXME: use ConnectionAcceptor pattern
 	// Prepare a socket to listen for connections
-	acceptor.Open(Addr, Reactor::GetInstance());
+	if (acceptor.Open(Addr, Reactor::GetInstance()) != X1_OK)
+	{
+		LOG_FATAL("acceptor.Open fails\n");
+		return X1_FAIL;
+	}
 
 
 
@@ -102,6 +107,9 @@ int main(int argc, char **argv)
 		Reactor::GetInstance()->HandleEvent();
 	}
 
+	LOG_INFO("end of reactor\n");
+
+	return X1_OK;
 	while(TRUE)
 	{
 
