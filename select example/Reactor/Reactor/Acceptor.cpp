@@ -1,0 +1,184 @@
+#include "Acceptor.h"
+
+namespace X1
+{
+#ifdef	USE_TEMPLATE
+	template<typename T>
+	Acceptor<T>
+#else
+	Acceptor
+#endif
+		::Acceptor(void)
+	{
+		m_pSvc	= NULL;
+	}
+
+
+#ifdef	USE_TEMPLATE
+	template<typename T>
+	Acceptor<T>
+#else
+	Acceptor
+#endif
+		::~Acceptor(void)
+	{
+		this->HandleClose();
+	}
+
+#ifdef	USE_TEMPLATE
+	template<typename T>
+	int Acceptor<T>
+#else
+	int Acceptor
+#endif
+		::Open(NetAddr addr, Reactor* pReactor)
+	{
+//		X1_HANDLE	ListenSocket;
+
+		if ((m_h = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET) 
+		{
+			printf("WSASocket() failed with error %d\n", WSAGetLastError());
+
+			return X1_FAIL;
+		}
+		else
+			printf("WSASocket() is OK!\n");
+
+
+		if (bind(m_h, (PSOCKADDR) addr.GetAddr(), addr.GetSize()) == SOCKET_ERROR)
+		{
+			printf("bind() failed with error %d\n", WSAGetLastError());
+
+			return X1_FAIL;
+		}
+		else
+			printf("bind() is OK!\n");
+
+
+		if (listen(m_h, SOMAXCONN))
+		{
+			printf("listen() failed with error %d\n", WSAGetLastError());
+
+			return X1_FAIL;
+		}
+		else
+			printf("listen() is OK!\n");
+
+
+		// Change the socket mode on the listening socket from blocking to
+		// non-block so the application will not block waiting for requests
+
+		u_long	NonBlock = 1;
+
+		if (ioctlsocket(m_h, FIONBIO, &NonBlock) == SOCKET_ERROR)
+		{
+
+			printf("ioctlsocket() failed with error %d\n", WSAGetLastError());
+
+			return X1_FAIL;
+
+		}
+		else
+			printf("ioctlsocket() is OK!\n");
+
+		/// register accept event handler
+		Reactor::GetInstance()->RegisterHandler(this, EventHandler::ACCEPT_MASK);
+
+		return X1_OK;
+	}
+
+	/// called when input event occur (e.g., connection or data)
+#ifdef	USE_TEMPLATE
+	template<typename T>
+	int Acceptor<T>
+#else
+	int Acceptor
+#endif
+		::HandleRead(X1_HANDLE h)
+	{
+		X1_HANDLE		AcceptSocket;
+
+		if ((AcceptSocket = accept(GetHandle(), NULL, NULL)) != INVALID_SOCKET)
+		{
+
+			// Set the accepted socket to non-blocking mode so the server will
+			// not get caught in a blocked condition on WSASends
+
+			u_long		NonBlock = 1;
+
+			if (ioctlsocket(AcceptSocket, FIONBIO, &NonBlock) == SOCKET_ERROR)
+			{
+
+				printf("ioctlsocket(FIONBIO) failed with error %d\n", WSAGetLastError());
+
+				return 1;
+
+			}
+			else
+				printf("ioctlsocket(FIONBIO) is OK!\n");
+
+			/// create client service object
+
+			//if (CreateSocketInformation(AcceptSocket) == FALSE)
+			//{
+
+			//	printf("CreateSocketInformation(AcceptSocket) failed!\n");
+
+			//	return 1;
+			//}
+			//else
+			//	printf("CreateSocketInformation() is OK!\n");
+		}	// end of accept
+
+		/// register service event handler
+		Reactor::GetInstance()->RegisterHandler(m_pSvc, EventHandler::ALL_EVENTS_MASK);
+
+		return X1_OK;
+	}
+
+	/// called when output events are possible
+#ifdef	USE_TEMPLATE
+	template<typename T>
+	int Acceptor<T>
+#else
+	int Acceptor
+#endif
+		::HandleWrite(X1_HANDLE h)
+	{
+		return X1_OK;
+	}
+
+#ifdef	USE_TEMPLATE
+	template<typename T>
+	int Acceptor<T>
+#else
+	int Acceptor
+#endif
+		::HandleException(X1_HANDLE h)
+	{
+		return X1_OK;
+	}
+
+#ifdef	USE_TEMPLATE
+	template<typename T>
+	int Acceptor<T>
+#else
+	int Acceptor
+#endif
+		::HandleClose(X1_HANDLE h /*= INVALID_HANDLE*/, EVENT_MASK e /*= ALL_EVENTS_MASK*/)
+	{
+		return X1_OK;
+	}
+
+#ifdef	USE_TEMPLATE
+	template<typename T>
+	int Acceptor<T>
+#else
+	int Acceptor
+#endif
+		::HandleTimeout(const TimeValue& tv)
+	{
+		return X1_OK;
+	}
+
+}

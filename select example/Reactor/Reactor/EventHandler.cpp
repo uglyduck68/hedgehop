@@ -19,27 +19,23 @@ namespace X1
 			DEL(m_pReactor);
 		}
 	}
-	HANDLE	EventHandler::GetHandle() const
-	{
-		return m_h;
-	}
 
-	int	EventHandler::HandleRead(HANDLE h)
+	int	EventHandler::HandleRead(X1_HANDLE h)
 	{
 		return X1_OK;
 	}
 
-	int EventHandler::HandleWrite(HANDLE h)
+	int EventHandler::HandleWrite(X1_HANDLE h)
 	{
 		return X1_OK;
 	}
 
-	int	EventHandler::HandleException(HANDLE h)
+	int	EventHandler::HandleException(X1_HANDLE h)
 	{
 		return X1_OK;
 	}
 
-	int EventHandler::HandleClose(HANDLE h /* = INVALID_HANDLE */, EVENT_MASK e /* = ALL_EVENTS_MASK */)
+	int EventHandler::HandleClose(X1_HANDLE h /* = INVALID_HANDLE */, EVENT_MASK e /* = ALL_EVENTS_MASK */)
 	{
 		return X1_OK;
 	}

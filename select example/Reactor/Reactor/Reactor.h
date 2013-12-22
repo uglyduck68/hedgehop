@@ -15,13 +15,17 @@ namespace X1
 		int	RemoveHandler(EventHandler *eh, ET et);
 		int	HandleEvent(TimeValue *timeout = 0);
 
-		Reactor* GetInstance();
+		static Reactor* GetInstance();
 
 		Reactor();
 		virtual ~Reactor();
 
 	protected:
+
+		/// bridge pattern for demultiplexer implementation
 		ReactorImpl*	m_pImpl;
+
+		/// m_pReactor is static for signleton 
 		static Reactor*	volatile m_pReactor;
 
 	};

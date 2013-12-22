@@ -27,17 +27,19 @@ namespace X1
 
 		virtual	~EventHandler();
 
-		virtual	HANDLE 	GetHandle() const;
-
+		virtual	X1_HANDLE 	GetHandle() const
+		{
+			return m_h;
+		}
 		// called when input event occur (e.g., connection or data)
-		virtual int		HandleRead(HANDLE h);
+		virtual int		HandleRead(X1_HANDLE h);
 
 		// called when output events are possible
-		virtual int 	HandleWrite(HANDLE h);
+		virtual int 	HandleWrite(X1_HANDLE h);
 
-		virtual int 	HandleException(HANDLE h);
+		virtual int 	HandleException(X1_HANDLE h);
 
-		virtual int 	HandleClose(HANDLE h = INVALID_HANDLE, EVENT_MASK e = ALL_EVENTS_MASK);
+		virtual int 	HandleClose(X1_HANDLE h = INVALID_HANDLE, EVENT_MASK e = ALL_EVENTS_MASK);
 
 		virtual int 	HandleTimeout(const TimeValue& tv);
 
@@ -48,6 +50,6 @@ namespace X1
 
 		Reactor*	m_pReactor;
 
-		HANDLE		m_h;
+		X1_HANDLE		m_h;
 	};
 }

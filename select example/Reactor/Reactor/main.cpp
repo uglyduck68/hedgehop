@@ -24,6 +24,12 @@
 #include <windows.h>
 #include <stdio.h>
 
+#include "X1.h"
+#include "Acceptor.h"
+
+#include "EchoService.h"
+
+using namespace	X1;
 
 #define PORT 5150
 
@@ -61,8 +67,6 @@ int main(int argc, char **argv)
 	SOCKET ListenSocket;
 	SOCKET AcceptSocket;
 	SOCKADDR_IN InternetAddr;
-	WSADATA wsaData;
-	INT Ret;
 	FD_SET WriteSet;
 	FD_SET ReadSet;
 	DWORD i;
@@ -72,71 +76,24 @@ int main(int argc, char **argv)
 	DWORD SendBytes;
 	DWORD RecvBytes;
 
-
-	if ((Ret = WSAStartup(0x0202,&wsaData)) != 0)
+	if (Lib::Init() != X1_OK)
 	{
-		printf("WSAStartup() failed with error %d\n", Ret);
+		LOG_FATAL("X1::Init()\n");
 
-		WSACleanup();
+		Lib::Fin();
 
 		return 1;
 	}
-	else
-		printf("WSAStartup() is fine!\n");
 
+	NetAddr				Addr(PORT, INADDR_ANY);
+	Acceptor			acceptor;
+
+	acceptor.SetSvc(new EchoService);
 
 	// FIXME: use ConnectionAcceptor pattern
 	// Prepare a socket to listen for connections
+	acceptor.Open(Addr, Reactor::GetInstance());
 
-	if ((ListenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET) 
-	{
-		printf("WSASocket() failed with error %d\n", WSAGetLastError());
-
-		return 1;
-	}
-	else
-		printf("WSASocket() is OK!\n");
-
-
-	InternetAddr.sin_family = AF_INET;
-	InternetAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	InternetAddr.sin_port = htons(PORT);
-
-	if (bind(ListenSocket, (PSOCKADDR) &InternetAddr, sizeof(InternetAddr)) == SOCKET_ERROR)
-	{
-		printf("bind() failed with error %d\n", WSAGetLastError());
-
-		return 1;
-	}
-	else
-		printf("bind() is OK!\n");
-
-
-	if (listen(ListenSocket, SOMAXCONN))
-	{
-		printf("listen() failed with error %d\n", WSAGetLastError());
-
-		return 1;
-	}
-	else
-		printf("listen() is OK!\n");
-
-
-	// Change the socket mode on the listening socket from blocking to
-	// non-block so the application will not block waiting for requests
-
-	NonBlock = 1;
-
-	if (ioctlsocket(ListenSocket, FIONBIO, &NonBlock) == SOCKET_ERROR)
-	{
-
-		printf("ioctlsocket() failed with error %d\n", WSAGetLastError());
-
-		return 1;
-
-	}
-	else
-		printf("ioctlsocket() is OK!\n");
 
 
 

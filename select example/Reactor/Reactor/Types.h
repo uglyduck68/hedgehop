@@ -1,18 +1,22 @@
 #pragma	once
 
+#include <stdio.h>
+
 #if	defined(_X1_WINDOWS_)
 
 #include <winsock2.h>
 #include <windows.h>
-#include <stdio.h>
 
 #elif	defined(_X1_LINUX_)
-
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <poll.h>
 #include <sys/epoll.h>
-
 #elif	defined(_X1_VXWORKS_)
 #endif
+
+typedef	unsigned short	uint16_t;
+typedef	unsigned int	uint32_t;
 
 namespace X1
 {
@@ -22,14 +26,14 @@ namespace X1
 	
 #if	defined(_X1_LINUX_)
 
-typedef	int		HANDLE;
+typedef	int		X1_HANDLE;
 
 #elif	defined(_X1_VXWORKS_)
 
-typedef	int		HANDLE;
+typedef	int		X1_HANDLE;
 
 #elif	defined(_X1_WINDOWS_)
-	typedef	int				HANDLE;
+	typedef	int				X1_HANDLE;
 #endif
 }
 
@@ -50,6 +54,8 @@ enum RET_TYPE
 	X1_OK	= 0,
 	X1_FAIL	= 1,
 	X1_EFILEOPEN,
+	X1_ENETINIT,
+	X1_ENULLOBJECT
 };
 
 enum DEMUX_TYPE

@@ -18,7 +18,7 @@ namespace X1
 	/************************************************************************/
 	/* Constraints                                                          */
 	/************************************************************************/
-	int DemuxTable::ConvertToFdSets(fd_set &readset, fd_set &writeset, fd_set &exceptset, HANDLE &max_handle)
+	int DemuxTable::ConvertToFdSets(fd_set &readset, fd_set &writeset, fd_set &exceptset, X1_HANDLE &max_handle)
 	{
 		int		nMaxHandle	= -1;
 
@@ -64,11 +64,11 @@ namespace X1
 
 	/************************************************************************/
 	/* Constraints                                                          */
-	/* - HANDLE h has integer serial number in Linux                        */
+	/* - X1_HANDLE h has integer serial number in Linux                        */
 	/************************************************************************/
 	int SelectReactorImpl::RegisterHandler(EventHandler *eh, ET et)
 	{
-		HANDLE		h	= eh->GetHandle();
+		X1_HANDLE		h	= eh->GetHandle();
 
 		/* NOTE: following method is needed to check */
 		m_fsTable.mTable[h].m_pEventHandler		= eh;
@@ -92,7 +92,7 @@ namespace X1
 
 	int SelectReactorImpl::RemoveHandler(EventHandler *eh, ET et)
 	{
-		HANDLE		h	= eh->GetHandle();
+		X1_HANDLE		h	= eh->GetHandle();
 
 		/* NOTE: following method is *NOT* good */
 		m_fsTable.mTable[h].m_pEventHandler		= NULL;
@@ -116,7 +116,7 @@ namespace X1
 	int SelectReactorImpl::HandleEvent(TimeValue *timeout /* = 0 */)
 	{
 		int		max_handle;
-		HANDLE	hMaxHandle;
+		X1_HANDLE	hMaxHandle;
 		fd_set	readset, writeset, exceptset;
 
 		FD_ZERO(&readset);
@@ -131,7 +131,7 @@ namespace X1
 
 		for(int h = 0; h <= max_handle; h++)
 		{
-			HANDLE		hh	= m_fsTable.mTable[h].m_pEventHandler->GetHandle();
+			X1_HANDLE		hh	= m_fsTable.mTable[h].m_pEventHandler->GetHandle();
 
 			//We should check for incoming events in each SOCKET
 			if(FD_ISSET(hh, &readset))

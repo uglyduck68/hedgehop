@@ -45,7 +45,7 @@ namespace X1
 	public:
 		DemuxTable();
 		~DemuxTable();
-		int ConvertToFdSets(fd_set &readset, fd_set &writeset, fd_set &exceptset, HANDLE &max_handle);
+		int ConvertToFdSets(fd_set &readset, fd_set &writeset, fd_set &exceptset, X1_HANDLE &max_handle);
 
 	public:
 		//because the number of file descriptors can be demultiplexed by
