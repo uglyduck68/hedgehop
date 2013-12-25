@@ -66,7 +66,7 @@ namespace X1
 	{
 		if (cpFileName)
 		{
-			m_pFile	= fopen(cpFileName, "a+");
+			m_pFile	= fopen(cpFileName, "a");
 
 			if (m_pFile)
 				fseek(m_pFile, 0, SEEK_END);
@@ -106,16 +106,16 @@ namespace X1
 
 		if (m_pFile)
 		{
-			nRet = fprintf(m_pFile, "[%s %s]:%s:(%s:%d): %s", 
-				__DATE__, __TIME__, cpType, cpFilename, nLineno, caLine);
+			nRet = fprintf(m_pFile, "[%s %s]:%s: %s: @(%s:%d)", 
+				__DATE__, __TIME__, cpType, caLine, cpFilename, nLineno);
 
 			fflush(m_pFile);
 		}
 		else
 		{
 			/// default logging use stdout
-			nRet = fprintf(stdout, "[%s %s]:%s:(%s:%d): %s", 
-				__DATE__, __TIME__, cpType, cpFilename, nLineno, caLine);
+			nRet = fprintf(stdout, "[%s %s]:%s: %s: @(%s:%d)", 
+				__DATE__, __TIME__, cpType, caLine, cpFilename, nLineno);
 
 			fflush(stdout);
 		}

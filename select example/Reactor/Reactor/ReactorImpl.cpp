@@ -10,6 +10,8 @@ namespace X1
 	DemuxTable::DemuxTable()
 	{
 		memset(m_Table, 0x00, FD_SETSIZE * sizeof(struct Tuple));
+
+		m_nMaxHandle	= 0;
 	}
 
 	DemuxTable::~DemuxTable()
@@ -19,30 +21,67 @@ namespace X1
 	/************************************************************************/
 	/* Constraints                                                          */
 	/************************************************************************/
-	int DemuxTable::ConvertToFdSets(fd_set &readset, fd_set &writeset, fd_set &exceptset, X1_HANDLE &max_handle)
+	int DemuxTable::ConvertToFdSets(fd_set &readset, fd_set &writeset, fd_set &exceptset, X1_SOCHANDLE &max_handle)
 	{
 		int		nMaxHandle	= -1;
 
-		for(int i = 0; i < FD_SETSIZE; i++)
+		for(int i = 0; i < m_nMaxHandle/*FD_SETSIZE*/; i++)
 		{
 			if(m_Table[i].m_pEventHandler != NULL)
 			{
-				//We are interested in this socket, so
-				//set max_handle to this socket descriptor
-				max_handle	= m_Table[i].m_pEventHandler->GetHandle();
-
-				nMaxHandle	= i;
-
 				if((m_Table[i].m_nEventType & EventHandler::READ_MASK) == EventHandler::READ_MASK)
-					FD_SET(i, &readset);
+					FD_SET(m_Table[i].m_h, &readset);
 				if((m_Table[i].m_nEventType & EventHandler::WRITE_MASK) == EventHandler::WRITE_MASK)
-					FD_SET(i, &writeset);
+					FD_SET(m_Table[i].m_h, &writeset);
 				if((m_Table[i].m_nEventType & EventHandler::EXCEPT_MASK) == EventHandler::EXCEPT_MASK)
-					FD_SET(i, &exceptset);
+					FD_SET(m_Table[i].m_h, &exceptset);
 			}
 		}
 
-		return nMaxHandle;
+		return m_nMaxHandle;
+	}
+
+	int	DemuxTable::Insert(EventHandler* eh, X1_SOCHANDLE h, ET et)
+	{
+		//assert(0 <= m_nMaxHandle && m_nMaxHandle < FD_SETSIZE);
+		assert(h != NULL);
+
+		if (FD_SETSIZE <= m_nMaxHandle)
+			return X1_FAIL;
+
+		m_Table[m_nMaxHandle].m_pEventHandler		= eh;
+		m_Table[m_nMaxHandle].m_h					= h;
+		m_Table[m_nMaxHandle].m_nEventType			= et;
+
+		//set maximum handle value
+		m_nMaxHandle++;
+
+		return X1_OK;
+	}
+
+	int DemuxTable::Remove(EventHandler* eh, X1_SOCHANDLE h, ET et)
+	{
+		RET_TYPE	ret		= X1_FAIL;
+
+		for(int i = 0; i < m_nMaxHandle; i++)
+		{
+			if (m_Table[i].m_h	== h)
+			{
+				m_Table[i].m_pEventHandler	= NULL;
+				m_Table[i].m_h				= NULL;
+				m_Table[i].m_nEventType		= EventHandler::NULL_MASK;
+
+				// move the last item to deleted position
+				if (0 < m_nMaxHandle)
+					m_Table[i]	= m_Table[m_nMaxHandle-1];
+
+				m_nMaxHandle--;
+
+				ret		= X1_OK;
+			}
+		}
+
+		return ret;
 	}
 
 	/************************************************************************/
@@ -54,8 +93,6 @@ namespace X1
 		FD_ZERO(&m_fsRead);
 		FD_ZERO(&m_fsWrite);
 		FD_ZERO(&m_fsEx);
-
-		m_nMaxHandle		= 0;
 	}
 
 	SelectReactorImpl::~SelectReactorImpl()
@@ -65,18 +102,17 @@ namespace X1
 
 	/************************************************************************/
 	/* Constraints                                                          */
-	/* - X1_HANDLE h has integer serial number in Linux                        */
+	/* - X1_SOCHANDLE h has integer serial number in Linux                        */
 	/************************************************************************/
 	int SelectReactorImpl::RegisterHandler(EventHandler *eh, ET et)
 	{
-		X1_HANDLE		h	= eh->GetHandle();
+		X1_SOCHANDLE		h	= eh->GetHandle();
 
-		/* NOTE: following method is needed to check */
-		m_fsTable.m_Table[h].m_pEventHandler		= eh;
-		m_fsTable.m_Table[h].m_nEventType		= et;
+		if (m_fsTable.Insert(eh, h, et) != X1_OK)
+			return X1_FAIL;
 
-		//set maximum handle value
-		m_nMaxHandle++;
+
+		assert(0 <= h && h < FD_SETSIZE);
 
 		//set appropriate bits to FD SETs
 		if((et & EventHandler::ACCEPT_MASK) == EventHandler::ACCEPT_MASK)
@@ -96,15 +132,10 @@ namespace X1
 
 	int SelectReactorImpl::RemoveHandler(EventHandler *eh, ET et)
 	{
-		X1_HANDLE		h	= eh->GetHandle();
+		X1_SOCHANDLE		h	= eh->GetHandle();
 
-		assert(0 < h && h < FD_SETSIZE);
-
-		/* NOTE: following method is *NOT* good */
-		m_fsTable.m_Table[h].m_pEventHandler		= NULL;
-		m_fsTable.m_Table[h].m_nEventType		= EventHandler::NULL_MASK;
-
-		m_nMaxHandle--;
+		if (m_fsTable.Remove(eh, h, et) != X1_OK)
+			return X1_FAIL;
 
 		//set appropriate bits to FD SETs
 		if((et & EventHandler::READ_MASK) == EventHandler::READ_MASK)
@@ -122,7 +153,7 @@ namespace X1
 	int SelectReactorImpl::HandleEvent(TimeValue *timeout /* = 0 */)
 	{
 		int			max_handle;
-		X1_HANDLE	hMaxHandle;
+		X1_SOCHANDLE	hMaxHandle;
 		fd_set		readset, writeset, exceptset;
 
 		FD_ZERO(&readset);
@@ -136,13 +167,16 @@ namespace X1
 			return X1_FAIL;
 		}
 
-		int result = select(max_handle+1, &readset, &writeset, &exceptset, (const timeval *)&timeout);
+		int result = select(max_handle, &readset, &writeset, &exceptset, (const timeval *)&timeout);
 
-		if(result < 0)	throw /*handle error here*/;
-
-		for(int h = 0; h <= max_handle; h++)
+		if(result < 0)
 		{
-			X1_HANDLE		hh	= m_fsTable.m_Table[h].m_pEventHandler->GetHandle();
+			return X1_FAIL;
+		}
+
+		for(int h = 0; h < max_handle; h++)
+		{
+			X1_SOCHANDLE		hh	= m_fsTable.m_Table[h].m_pEventHandler->GetHandle();
 
 			//We should check for incoming events in each SOCKET
 			if(FD_ISSET(hh, &readset))

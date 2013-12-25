@@ -2,6 +2,7 @@
 
 #include "X1.h"
 #include "Reactor.h"
+#include "ReactorImpl.h"
 
 #if	defined(_X1_WINDOWS_)
 
@@ -17,20 +18,9 @@
 
 namespace X1
 {
-	/*
-	 * interface class for reactor demultiplexer
-	 */
-	class ReactorImpl
-	{
-	public:
-		virtual int	RegisterHandler(EventHandler *eh, ET et) = 0;
-		virtual int	RemoveHandler(EventHandler *eh, ET et) = 0;
-		virtual int	HandleEvent(TimeValue *timeout = 0) = 0;
-	};
-
 	class EventHandler;
 
-	struct Tuple 
+	struct Tuple_WIN32 
 	{
 		//pointer to Event_Handler that processes the events arriving
 		//on the handle
@@ -42,11 +32,11 @@ namespace X1
 		ET				m_nEventType;
 	};
 
-	class DemuxTable 
+	class DemuxTable_WIN32 
 	{
 	public:
-		DemuxTable();
-		~DemuxTable();
+		DemuxTable_WIN32();
+		~DemuxTable_WIN32();
 		int ConvertToFdSets(fd_set &readset, fd_set &writeset, fd_set &exceptset, X1_SOCHANDLE &max_handle);
 
 	public:
@@ -55,7 +45,8 @@ namespace X1
 		//because the number of file descriptors can be demultiplexed by
 		//select() is limited by FD_SETSIZE constant so this table is indexed
 		//up to FD_SETSIZE
-		struct Tuple m_Table[FD_SETSIZE];
+		struct Tuple_WIN32	m_Table[WSA_MAXIMUM_WAIT_EVENTS];
+		WSAEVENT			m_aEvent[WSA_MAXIMUM_WAIT_EVENTS];
 
 		int		m_nMaxHandle;
 
@@ -67,33 +58,40 @@ namespace X1
 		int	Insert(EventHandler* eh, X1_SOCHANDLE h, ET et);
 		int	Remove(EventHandler* eh, X1_SOCHANDLE h, ET et);
 
+		WSAEVENT	GetEvent(int i)
+		{
+			return m_aEvent[i];
+		}
+
+		void MakeFree(int nIndex);
 	};
 
-	class SelectReactorImpl : public ReactorImpl
+	class SelectReactorImpl_WIN32 : public ReactorImpl
 	{
 	public:
 		virtual int	RegisterHandler(EventHandler *eh, ET et);
 		virtual int	RemoveHandler(EventHandler *eh, ET et);
 		virtual int	HandleEvent(TimeValue *timeout = 0);
 
-		SelectReactorImpl();
-		virtual ~SelectReactorImpl();
+		SelectReactorImpl_WIN32();
+		virtual ~SelectReactorImpl_WIN32();
 
 	protected:
+
 #if	defined(_X1_WINDOWS_)
 		FD_SET	m_fsRead;	// Windows support only max. 64 fd handles
 		FD_SET	m_fsWrite;
 		FD_SET	m_fsEx;
 
-		// FIXME: delete this
-//		int		m_nMaxHandle;
-
-		DemuxTable		m_fsTable;
+		DemuxTable_WIN32		m_fsTable;
 
 		int	GetMaxHandle()
 		{
 			return m_fsTable.GetMaxHandle();
 		}
+
+		int MakeEventMask(ET et, long& lNetworkEvents);
+
 
 #elif	defined(_X1_LINUX_)
 #elif	defined(_X1_VXWORKS_)

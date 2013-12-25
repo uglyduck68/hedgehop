@@ -26,14 +26,14 @@ namespace X1
 	
 #if	defined(_X1_LINUX_)
 
-typedef	int		X1_HANDLE;
+typedef	int		X1_SOCHANDLE;
 
 #elif	defined(_X1_VXWORKS_)
 
-typedef	int		X1_HANDLE;
+typedef	int		X1_SOCHANDLE;
 
 #elif	defined(_X1_WINDOWS_)
-	typedef	int				X1_HANDLE;
+	typedef	SOCKET				X1_SOCHANDLE;	// SOCKET is defined as UINT_PTR
 #endif
 }
 

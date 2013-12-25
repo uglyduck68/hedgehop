@@ -85,6 +85,8 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	LOG_INIT("echosvr.log");
+
 	NetAddr				Addr(PORT, INADDR_ANY);
 	Acceptor			acceptor;
 	Reactor				reactor;
@@ -104,7 +106,11 @@ int main(int argc, char **argv)
 
 	while(TRUE)
 	{
-		Reactor::GetInstance()->HandleEvent();
+		if (Reactor::GetInstance()->HandleEvent() == X1_FAIL)
+		{
+			LOG_ERROR("HandleEvent() fails. return from main\n");
+			return 1;
+		}
 	}
 
 	LOG_INFO("end of reactor\n");

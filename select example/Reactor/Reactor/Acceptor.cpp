@@ -1,4 +1,5 @@
 #include "Acceptor.h"
+#include "Log.h"
 
 namespace X1
 {
@@ -33,11 +34,8 @@ namespace X1
 #endif
 		::Open(NetAddr addr, Reactor* pReactor)
 	{
-//		X1_HANDLE	ListenSocket;
 
-		
-
-		if ((m_h = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP)) == INVALID_SOCKET) 
+		if ((m_h = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET) 
 //		if ((m_h = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET) 
 		{
 			printf("WSASocket() failed with error %d\n", WSAGetLastError());
@@ -83,7 +81,7 @@ namespace X1
 			printf("ioctlsocket() is OK!\n");
 
 		/// register accept event handler
-		if (Reactor::GetInstance()->RegisterHandler(this, EventHandler::ACCEPT_MASK) != X1_OK)
+		if (Reactor::GetInstance()->RegisterHandler(this, EventHandler::ACCEPT_MASK | EventHandler::CLOSE_MASK) != X1_OK)
 		{
 			LOG_FATAL("RegisterHandler fails\n");
 
@@ -100,12 +98,16 @@ namespace X1
 #else
 	int Acceptor
 #endif
-		::HandleRead(X1_HANDLE h)
+		::HandleRead(X1_SOCHANDLE h)
 	{
-		X1_HANDLE		AcceptSocket;
+		X1_SOCHANDLE		AcceptSocket;
+		NetAddr			SocAddr;
+		int				nAddrLeng = SocAddr.GetSize();
 
-		if ((AcceptSocket = accept(GetHandle(), NULL, NULL)) != INVALID_SOCKET)
+		/// accept the client and get client IP address
+		if ((AcceptSocket = accept(GetHandle(), SocAddr.GetAddr(), &nAddrLeng)) != INVALID_SOCKET)
 		{
+			LOG_INFO("Accpet: Client is IP: %s, Port:%d\n", inet_ntoa(SocAddr), ntohs(SocAddr.GetPort()));
 
 			// Set the accepted socket to non-blocking mode so the server will
 			// not get caught in a blocked condition on WSASends
@@ -123,17 +125,6 @@ namespace X1
 			else
 				printf("ioctlsocket(FIONBIO) is OK!\n");
 
-			/// create client service object
-
-			//if (CreateSocketInformation(AcceptSocket) == FALSE)
-			//{
-
-			//	printf("CreateSocketInformation(AcceptSocket) failed!\n");
-
-			//	return 1;
-			//}
-			//else
-			//	printf("CreateSocketInformation() is OK!\n");
 		}	// end of accept
 		else
 		{
@@ -142,8 +133,16 @@ namespace X1
 			return X1_FAIL;
 		}
 
+		m_pSvc->SetHandle(AcceptSocket);
+
 		/// register service event handler
-		Reactor::GetInstance()->RegisterHandler(m_pSvc, EventHandler::ALL_EVENTS_MASK);
+		if (Reactor::GetInstance()->RegisterHandler(m_pSvc, EventHandler::ALL_EVENTS_MASK) != X1_OK)
+		{
+			LOG_ERROR("RegisterHandler fails\n");
+
+			return X1_FAIL;
+		}
+
 
 		return X1_OK;
 	}
@@ -155,7 +154,7 @@ namespace X1
 #else
 	int Acceptor
 #endif
-		::HandleWrite(X1_HANDLE h)
+		::HandleWrite(X1_SOCHANDLE h)
 	{
 		return X1_OK;
 	}
@@ -166,7 +165,7 @@ namespace X1
 #else
 	int Acceptor
 #endif
-		::HandleException(X1_HANDLE h)
+		::HandleException(X1_SOCHANDLE h)
 	{
 		return X1_OK;
 	}
@@ -177,7 +176,7 @@ namespace X1
 #else
 	int Acceptor
 #endif
-		::HandleClose(X1_HANDLE h /*= INVALID_HANDLE*/, EVENT_MASK e /*= ALL_EVENTS_MASK*/)
+		::HandleClose(X1_SOCHANDLE h /*= INVALID_HANDLE*/, EVENT_MASK e /*= ALL_EVENTS_MASK*/)
 	{
 		return X1_OK;
 	}
