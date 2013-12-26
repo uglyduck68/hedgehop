@@ -6,6 +6,6 @@
 
 #define		DEL(p)	{if(p) {delete p; p = NULL;}}
 
-#define		ET		EventHandler::EVENT_TYPE
+#define		ET		int/*EventHandler::EVENT_TYPE*/
 
 #endif

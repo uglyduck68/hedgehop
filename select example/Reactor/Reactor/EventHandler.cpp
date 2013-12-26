@@ -20,22 +20,22 @@ namespace X1
 		}
 	}
 
-	int	EventHandler::HandleRead(X1_HANDLE h)
+	int	EventHandler::HandleRead(X1_SOCHANDLE h)
 	{
 		return X1_OK;
 	}
 
-	int EventHandler::HandleWrite(X1_HANDLE h)
+	int EventHandler::HandleWrite(X1_SOCHANDLE h)
 	{
 		return X1_OK;
 	}
 
-	int	EventHandler::HandleException(X1_HANDLE h)
+	int	EventHandler::HandleException(X1_SOCHANDLE h)
 	{
 		return X1_OK;
 	}
 
-	int EventHandler::HandleClose(X1_HANDLE h /* = INVALID_HANDLE */, EVENT_MASK e /* = ALL_EVENTS_MASK */)
+	int EventHandler::HandleClose(X1_SOCHANDLE h /* = INVALID_HANDLE */, EVENT_MASK e /* = ALL_EVENTS_MASK */)
 	{
 		return X1_OK;
 	}

@@ -1,6 +1,11 @@
 #pragma once
+#include "X1.h"
 
+#if	defined(_X1_WINDOWS_)
+#include "ReactorImpl_WIN32.h"
+#elif	defined(_LINUX_)
 #include "ReactorImpl.h"
+#endif
 #include "Reactor.h"
 #include "Lock.h"
 
@@ -14,7 +19,7 @@ namespace X1
 
 		// FIXME: by default use select implementation
 		// but should support various implementation
-		m_pImpl	= new SelectReactorImpl();
+		m_pImpl	= new SelectReactorImpl_WIN32();
 	}
 
 	Reactor::~Reactor()

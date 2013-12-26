@@ -91,6 +91,7 @@
     <ClInclude Include="NetAddr.h" />
     <ClInclude Include="Reactor.h" />
     <ClInclude Include="ReactorImpl.h" />
+    <ClInclude Include="ReactorImpl_WIN32.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeValue.h" />
@@ -107,6 +108,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Reactor.cpp" />
     <ClCompile Include="ReactorImpl.cpp" />
+    <ClCompile Include="ReactorImpl_WIN32.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TimeValue.cpp" />
     <ClCompile Include="X1.cpp" />

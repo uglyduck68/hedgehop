@@ -199,6 +199,9 @@ int main(int argc, _TCHAR* argv[])
 				memmove(pSocketInfo->recvBuffer, pSocketInfo->recvBuffer + retValue, pSocketInfo->recvBytes);
 			}
 
+			/**
+			 *
+			 */
 			if(pSocketInfo->sendBytes > 0)
 			{
 				// 보내고자 하는 버퍼에 값을 모두 보낼 때 까지 처리한다.
