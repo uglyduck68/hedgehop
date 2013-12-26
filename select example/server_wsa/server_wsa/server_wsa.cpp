@@ -59,15 +59,6 @@ int main(int argc, _TCHAR* argv[])
 	if(listenSocket == INVALID_SOCKET)
 		err_quit("socket()");
 
-	//소켓정보 추가
-	if(AddSocketInfo(listenSocket) == FALSE)
-		return -1;
-
-	// WSAEventSelect 설정
-	retValue = WSAEventSelect(listenSocket, g_aEventArray[g_nTotalSockets - 1], FD_ACCEPT | FD_CLOSE);
-	if(retValue == SOCKET_ERROR)
-		err_quit("WSAEventSelect()");
-
 	// bind()
 	SOCKADDR_IN serverAddr;
 
@@ -98,6 +89,16 @@ int main(int argc, _TCHAR* argv[])
 	SOCKET clientSocket;
 	SOCKADDR_IN clientAddr;
 	int nAddrLength;
+
+
+	//소켓정보 추가
+	if(AddSocketInfo(listenSocket) == FALSE)
+		return -1;
+
+	// WSAEventSelect 설정
+	retValue = WSAEventSelect(listenSocket, g_aEventArray[g_nTotalSockets - 1], FD_ACCEPT | FD_CLOSE);
+	if(retValue == SOCKET_ERROR)
+		err_quit("WSAEventSelect()");
 
 	while(1)
 	{
