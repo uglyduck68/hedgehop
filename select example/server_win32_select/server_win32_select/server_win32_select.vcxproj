@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{07B01524-DF7B-4778-A43B-2DC7066CD5EF}</ProjectGuid>
+    <ProjectGuid>{4A08411B-0C98-4246-A0FA-707AB3535858}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Reactor</RootNamespace>
+    <RootNamespace>server_win32_select</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -49,14 +49,11 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(UGLIB)\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>pthreadVC2.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(UGLIB)\pthread\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -80,40 +77,12 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Acceptor.h" />
-    <ClInclude Include="Config.h" />
-    <ClInclude Include="Debug.h" />
-    <ClInclude Include="Defines.h" />
-    <ClInclude Include="EchoService.h" />
-    <ClInclude Include="EventHandler.h" />
-    <ClInclude Include="Lock.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="NetAddr.h" />
-    <ClInclude Include="Reactor.h" />
-    <ClInclude Include="ReactorImpl.h" />
-    <ClInclude Include="ReactorImpl_WIN32.h" />
-    <ClInclude Include="ReactorImpl_WIN32_select.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TimeValue.h" />
-    <ClInclude Include="Types.h" />
-    <ClInclude Include="X1.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Acceptor.cpp" />
-    <ClCompile Include="EchoService.cpp" />
-    <ClCompile Include="EventHandler.cpp" />
-    <ClCompile Include="gettimeofday.cpp" />
-    <ClCompile Include="Lock.cpp" />
-    <ClCompile Include="Log.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Reactor.cpp" />
-    <ClCompile Include="ReactorImpl.cpp" />
-    <ClCompile Include="ReactorImpl_WIN32.cpp" />
-    <ClCompile Include="ReactorImpl_WIN32_select.cpp" />
+    <ClCompile Include="server_win32_select.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="TimeValue.cpp" />
-    <ClCompile Include="X1.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

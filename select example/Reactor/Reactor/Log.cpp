@@ -5,11 +5,13 @@
 namespace X1
 {
 	Log* volatile Log::m_pLog	= NULL;
+	long Log::m_lMode			= 0;
 
 	Log::Log(void)
 	{
 		m_pLog	= NULL;
 		m_pFile	= NULL;
+		m_lMode	= LOG_USE_STDOUT;
 	}
 
 
@@ -18,6 +20,15 @@ namespace X1
 		Close();
 
 		DEL(m_pLog);
+	}
+
+	int Log::SetMode(long lMode)
+	{
+		long	lModeOld	= m_lMode;
+
+		m_lMode		= lMode;
+
+		return lModeOld;
 	}
 
 	Log* Log::GetInstance()
@@ -90,6 +101,9 @@ namespace X1
 
 	int Log::Write(char* cpType, char* cpFilename, int nLineno, char* cpFormat, ...)
 	{
+		if (m_lMode & LOG_SILENT)
+			return X1_OK;
+
 		va_list		marker;
 
 //		char	caTimeStamp[64];
@@ -111,7 +125,8 @@ namespace X1
 
 			fflush(m_pFile);
 		}
-		else
+		
+		if (m_lMode & LOG_USE_STDOUT)
 		{
 			/// default logging use stdout
 			nRet = fprintf(stdout, "[%s %s]:%s: %s: @(%s:%d)", 

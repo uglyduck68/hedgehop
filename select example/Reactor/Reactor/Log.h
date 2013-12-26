@@ -7,9 +7,15 @@ namespace X1
 {
 	class Log
 	{
+		enum 
+		{
+			LOG_SILENT		= (1 << 0),
+			LOG_USE_STDOUT	= (1 << 1),
+		};
 	private:
 		static Log*	volatile m_pLog;
 		FILE*		m_pFile;
+		static long		m_lMode;
 
 	protected:
 		Log(void);
@@ -24,6 +30,8 @@ namespace X1
 		int	Open(FILE* pFile = stdout);
 		int	Close();
 		int Write(char* cpType, char* cpFilename, int nLineno, char *cpFormat, ...);
+
+		int SetMode(long lMode);
 	};
 
 }

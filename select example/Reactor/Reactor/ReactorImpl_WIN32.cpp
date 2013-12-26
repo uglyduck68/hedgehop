@@ -23,29 +23,30 @@ namespace X1
 	/************************************************************************/
 	/* Constraints                                                          */
 	/************************************************************************/
-	int DemuxTable_WIN32::ConvertToFdSets(fd_set &readset, fd_set &writeset, fd_set &exceptset, X1_SOCHANDLE &max_handle)
-	{
-		int		nMaxHandle	= -1;
+	//int DemuxTable_WIN32::ConvertToFdSets(fd_set &readset, fd_set &writeset, fd_set &exceptset, X1_SOCHANDLE &max_handle)
+	//{
+	//	int		nMaxHandle	= -1;
 
-		for(int i = 0; i < m_nMaxHandle/*FD_SETSIZE*/; i++)
-		{
-			if(m_Table[i].m_pEventHandler != NULL)
-			{
-				if((m_Table[i].m_nEventType & EventHandler::READ_MASK) == EventHandler::READ_MASK)
-					FD_SET(m_Table[i].m_h, &readset);
-				if((m_Table[i].m_nEventType & EventHandler::WRITE_MASK) == EventHandler::WRITE_MASK)
-					FD_SET(m_Table[i].m_h, &writeset);
-				if((m_Table[i].m_nEventType & EventHandler::EXCEPT_MASK) == EventHandler::EXCEPT_MASK)
-					FD_SET(m_Table[i].m_h, &exceptset);
-			}
-		}
+	//	for(int i = 0; i < m_nMaxHandle/*FD_SETSIZE*/; i++)
+	//	{
+	//		if(m_Table[i].m_pEventHandler != NULL)
+	//		{
+	//			if((m_Table[i].m_nEventType & EventHandler::READ_MASK) == EventHandler::READ_MASK)
+	//				FD_SET(m_Table[i].m_h, &readset);
+	//			if((m_Table[i].m_nEventType & EventHandler::WRITE_MASK) == EventHandler::WRITE_MASK)
+	//				FD_SET(m_Table[i].m_h, &writeset);
+	//			if((m_Table[i].m_nEventType & EventHandler::EXCEPT_MASK) == EventHandler::EXCEPT_MASK)
+	//				FD_SET(m_Table[i].m_h, &exceptset);
+	//		}
+	//	}
 
-		return m_nMaxHandle;
-	}
+	//	return m_nMaxHandle;
+	//}
 
 	int	DemuxTable_WIN32::Insert(EventHandler* eh, X1_SOCHANDLE h, ET et)
 	{
 		assert(0 <= m_nMaxHandle && m_nMaxHandle < WSA_MAXIMUM_WAIT_EVENTS);
+		assert(h != NULL);
 
 		if (WSA_MAXIMUM_WAIT_EVENTS <= m_nMaxHandle)
 			return X1_FAIL;
@@ -113,9 +114,9 @@ namespace X1
 
 	SelectReactorImpl_WIN32::SelectReactorImpl_WIN32()
 	{
-		FD_ZERO(&m_fsRead);
-		FD_ZERO(&m_fsWrite);
-		FD_ZERO(&m_fsEx);
+		//FD_ZERO(&m_fsRead);
+		//FD_ZERO(&m_fsWrite);
+		//FD_ZERO(&m_fsEx);
 	}
 
 	SelectReactorImpl_WIN32::~SelectReactorImpl_WIN32()
