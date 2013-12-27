@@ -39,12 +39,18 @@ int		EchoService::HandleRead(X1_SOCHANDLE h)
 	{
 		// 데이터 받기
 		nRet = recv(GetHandle(), recvBuffer, DATA_BUFSIZE, 0);
+
 		if(nRet == SOCKET_ERROR)
 		{
 			if(WSAGetLastError() != WSAEWOULDBLOCK)
 			{
 				return X1_FAIL;
 			}
+		}
+		else if (nRet == 0)
+		{
+			// connection closed
+			return X1_CLOSED;
 		}
 
 		recvBytes			= nRet;
@@ -68,7 +74,11 @@ int		EchoService::HandleRead(X1_SOCHANDLE h)
 		recvBytes -= sendBytes;
 		memmove(recvBuffer, recvBuffer + nRet, recvBytes);
 
+#ifdef	_REACTORIMPL_WIN32_H_
 		HandleWrite(h);
+#elif defined(_REACTORIMPL_WIN32_SELECT_H_)
+		// select call HandleWrite function if write buffer is available
+#endif
 	}
 
 	return X1_OK;
@@ -87,6 +97,7 @@ int 	EchoService::HandleWrite(X1_SOCHANDLE h)
 		do
 		{
 			nRet = send(GetHandle(), sendBuffer, sendBytes, 0);
+
 			if(nRet == SOCKET_ERROR)
 			{
 				if(WSAGetLastError() != WSAEWOULDBLOCK)
@@ -94,6 +105,11 @@ int 	EchoService::HandleWrite(X1_SOCHANDLE h)
 					return X1_FAIL;
 				}
 				continue;
+			}
+			else if (nRet == 0)
+			{
+				// connection closed
+				return X1_CLOSED;
 			}
 
 			sendBytes -= nRet;
@@ -112,10 +128,15 @@ int 	EchoService::HandleException(X1_SOCHANDLE h)
 
 int 	EchoService::HandleClose(X1_SOCHANDLE h /*= INVALID_HANDLE*/, EVENT_MASK e/* = ALL_EVENTS_MASK*/)
 {
+	printf("connection closed\n");
+
+	closesocket(GetHandle());
+
 	return X1_OK;
 }
 
 int 	EchoService::HandleTimeout(const TimeValue& tv)
 {
+
 	return X1_OK;
 }

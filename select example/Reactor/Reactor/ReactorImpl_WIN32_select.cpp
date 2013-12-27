@@ -30,10 +30,15 @@ namespace X1
 		{
 			if(m_Table[i].m_pEventHandler != NULL)
 			{
+				if((m_Table[i].m_nEventType & EventHandler::ACCEPT_MASK) == EventHandler::ACCEPT_MASK)
+					FD_SET(m_Table[i].m_h, &readset);
+
 				if((m_Table[i].m_nEventType & EventHandler::READ_MASK) == EventHandler::READ_MASK)
 					FD_SET(m_Table[i].m_h, &readset);
+
 				if((m_Table[i].m_nEventType & EventHandler::WRITE_MASK) == EventHandler::WRITE_MASK)
 					FD_SET(m_Table[i].m_h, &writeset);
+
 				if((m_Table[i].m_nEventType & EventHandler::EXCEPT_MASK) == EventHandler::EXCEPT_MASK)
 					FD_SET(m_Table[i].m_h, &exceptset);
 			}
@@ -42,13 +47,17 @@ namespace X1
 		return i;
 	}
 
+	/**
+	 * @return	-1 : error return
+	 *			n  : index of m_Table array
+	 */
 	int	DemuxTable_WIN32_select::Insert(EventHandler* eh, X1_SOCHANDLE h, ET et)
 	{
 		assert(0 <= m_nMaxHandle && m_nMaxHandle < FD_SETSIZE);
 		assert(h != NULL);
 
 		if (FD_SETSIZE <= m_nMaxHandle)
-			return X1_FAIL;
+			return -1;
 
 		m_Table[m_nMaxHandle].m_pEventHandler		= eh;
 		m_Table[m_nMaxHandle].m_h					= h;
@@ -85,7 +94,8 @@ namespace X1
 					MakeFree(m_nMaxHandle-1);
 				}
 
-				m_nMaxHandle--;
+				if (m_nMaxHandle > 0)
+					m_nMaxHandle--;
 			}
 		}
 
@@ -142,8 +152,6 @@ namespace X1
 			return X1_FAIL;
 
 
-		assert(0 <= h && h < FD_SETSIZE);
-
 		//set appropriate bits to FD SETs
 		if((et & EventHandler::ACCEPT_MASK) == EventHandler::ACCEPT_MASK)
 			FD_SET(h, &m_fsRead);
@@ -188,8 +196,6 @@ namespace X1
 		X1_SOCHANDLE	hMaxHandle;
 		fd_set		readset, writeset, exceptset;
 
-		assert(0 < nMaxHandle && nMaxHandle <= FD_SETSIZE);
-
 		/// there is no handle to handle
 		if (nMaxHandle <= 0)
 			return X1_OK;
@@ -198,7 +204,7 @@ namespace X1
 		FD_ZERO(&writeset);
 		FD_ZERO(&exceptset);
 
-		m_fsTable.ConvertToFdSets(readset, writeset, exceptset, hMaxHandle/*max_handle*/);
+		m_fsTable.ConvertToFdSets(readset, writeset, exceptset, hMaxHandle);
 
 
 		int result = select(nMaxHandle, &readset, &writeset, &exceptset, (const timeval *)&timeout);
@@ -213,26 +219,40 @@ namespace X1
 			X1_SOCHANDLE		hh	= m_fsTable.m_Table[h].m_pEventHandler->GetHandle();
 
 			//We should check for incoming events in each SOCKET
-			if(FD_ISSET(hh, &readset))
+			if(m_fsTable.m_Table[h].m_pEventHandler && FD_ISSET(hh, &readset))
 			{
 				if(m_fsTable.m_Table[h].m_pEventHandler)
+				{
 					/**
-					 * NOTE: We should implement HandRead function as a thread of threadpool
+					 * FIXME: We should implement HandRead function as a thread of threadpool
 					 */
-					(m_fsTable.m_Table[h].m_pEventHandler)->HandleRead(hh);
+					if (m_fsTable.m_Table[h].m_pEventHandler->HandleRead(hh) == X1_CLOSED)
+					{
+						m_fsTable.m_Table[h].m_pEventHandler->HandleClose(hh);
+
+						RemoveHandler(m_fsTable.m_Table[h].m_pEventHandler, EventHandler::ALL_EVENTS_MASK);
+					}
+				}
 				else
 					LOG_INTERNAL("Error: at(%s:%d)\n", __FILE__, __LINE__);
 			}
 
-			if(FD_ISSET(hh, &writeset))
+			if(m_fsTable.m_Table[h].m_pEventHandler && FD_ISSET(hh, &writeset))
 			{
 				if(m_fsTable.m_Table[h].m_pEventHandler)
-					(m_fsTable.m_Table[h].m_pEventHandler)->HandleWrite(hh);
+				{
+					if (m_fsTable.m_Table[h].m_pEventHandler->HandleWrite(hh) == X1_CLOSED)
+					{
+						m_fsTable.m_Table[h].m_pEventHandler->HandleClose(hh);
+
+						RemoveHandler(m_fsTable.m_Table[h].m_pEventHandler, EventHandler::ALL_EVENTS_MASK);
+					}
+				}
 				else
 					LOG_INTERNAL("Error: at(%s:%d)\n", __FILE__, __LINE__);
 			}
 
-			if(FD_ISSET(hh, &exceptset))
+			if(m_fsTable.m_Table[h].m_pEventHandler && FD_ISSET(hh, &exceptset))
 			{
 				if(m_fsTable.m_Table[h].m_pEventHandler)
 					(m_fsTable.m_Table[h].m_pEventHandler)->HandleException(hh);

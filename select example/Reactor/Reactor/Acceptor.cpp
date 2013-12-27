@@ -136,7 +136,7 @@ namespace X1
 		m_pSvc->SetHandle(AcceptSocket);
 
 		/// register service event handler
-		if (Reactor::GetInstance()->RegisterHandler(m_pSvc, EventHandler::ALL_EVENTS_MASK) != X1_OK)
+		if (Reactor::GetInstance()->RegisterHandler(m_pSvc, EventHandler::ALL_EVENTS_MASK) < 0)
 		{
 			LOG_ERROR("RegisterHandler fails\n");
 

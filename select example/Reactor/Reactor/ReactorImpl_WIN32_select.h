@@ -1,5 +1,7 @@
 #pragma once
 
+#define	_REACTORIMPL_WIN32_SELECT_H_
+
 #include "X1.h"
 #include "Reactor.h"
 

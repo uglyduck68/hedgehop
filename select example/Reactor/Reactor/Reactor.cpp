@@ -3,6 +3,7 @@
 
 #if	defined(_X1_WINDOWS_)
 #include "ReactorImpl_WIN32.h"
+#include "ReactorImpl_WIN32_select.h"
 #elif	defined(_LINUX_)
 #include "ReactorImpl.h"
 #endif
@@ -19,7 +20,8 @@ namespace X1
 
 		// FIXME: by default use select implementation
 		// but should support various implementation
-		m_pImpl	= new SelectReactorImpl_WIN32();
+//		m_pImpl	= new SelectReactorImpl_WIN32();
+		m_pImpl	= new SelectReactorImpl_WIN32_select();
 	}
 
 	Reactor::~Reactor()

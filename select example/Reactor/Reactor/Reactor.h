@@ -13,6 +13,12 @@ namespace X1
 	public:
 		int	RegisterHandler(EventHandler *eh, ET et);
 		int	RemoveHandler(EventHandler *eh, ET et);
+
+		/**
+		 * @return	X1_OK : successfully return
+		 *			X1_CLOSED : IO closed
+		 *			X1_FAIL : error return
+		 */
 		int	HandleEvent(TimeValue *timeout = 0);
 
 		static Reactor* GetInstance();

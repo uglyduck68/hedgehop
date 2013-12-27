@@ -120,8 +120,8 @@ namespace X1
 
 		if (m_pFile)
 		{
-			nRet = fprintf(m_pFile, "[%s %s]:%s: %s: @(%s:%d)", 
-				__DATE__, __TIME__, cpType, caLine, cpFilename, nLineno);
+			nRet = fprintf(m_pFile, "[%s %s]:%s: @(%s:%d): %s", 
+				__DATE__, __TIME__, cpType, cpFilename, nLineno, caLine);
 
 			fflush(m_pFile);
 		}
@@ -129,8 +129,8 @@ namespace X1
 		if (m_lMode & LOG_USE_STDOUT)
 		{
 			/// default logging use stdout
-			nRet = fprintf(stdout, "[%s %s]:%s: %s: @(%s:%d)", 
-				__DATE__, __TIME__, cpType, caLine, cpFilename, nLineno);
+			nRet = fprintf(stdout, "[%s %s]:%s: @(%s:%d): %s", 
+				__DATE__, __TIME__, cpType, cpFilename, nLineno, caLine);
 
 			fflush(stdout);
 		}
