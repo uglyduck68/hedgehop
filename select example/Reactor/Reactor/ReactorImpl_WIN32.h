@@ -18,8 +18,8 @@
 #elif	defined(_X1_VXWORKS_)
 #endif
 
-namespace X1
-{
+NS_X1_START
+
 	class EventHandler;
 
 	struct Tuple_WIN32 
@@ -72,7 +72,7 @@ namespace X1
 	 * @class	SelectReactorImpl_WIN32
 	 * @brief	implementation reactor using WSAWaitMultipleObjects
 	 */
-	class SelectReactorImpl_WIN32 : public ReactorImpl
+	class DECL_SPEC_DLL SelectReactorImpl_WIN32 : public ReactorImpl
 	{
 	public:
 		virtual int	RegisterHandler(EventHandler *eh, ET et);
@@ -103,4 +103,5 @@ namespace X1
 #elif	defined(_X1_VXWORKS_)
 #endif
 	};
-}
+
+NS_X1_END

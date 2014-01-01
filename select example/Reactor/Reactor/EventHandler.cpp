@@ -3,8 +3,7 @@
 #include "EventHandler.h"
 #include "Reactor.h"
 
-namespace X1
-{
+NS_X1_START
 
 	EventHandler::EventHandler()
 	{
@@ -44,4 +43,5 @@ namespace X1
 	{
 		return X1_OK;
 	}
-}
+
+NS_X1_END

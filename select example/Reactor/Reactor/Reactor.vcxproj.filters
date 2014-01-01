@@ -54,9 +54,6 @@
     <ClInclude Include="Log.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Lock.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="NetAddr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -70,6 +67,33 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="ReactorImpl_WIN32_select.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="os.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="os_linux.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="os_windows.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Mutex.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Cond.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Guard.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TLS.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,9 +122,6 @@
     <ClCompile Include="Log.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Lock.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="X1.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -114,6 +135,18 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ReactorImpl_WIN32_select.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Mutex.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Cond.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TLS.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

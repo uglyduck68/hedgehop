@@ -8,9 +8,9 @@
  * @class	NetAddr
  * @brief	NetAddr class encapsulates Internet address structure
  */
-namespace X1
-{
-	class NetAddr 
+NS_X1_START
+
+	class DECL_SPEC_DLL NetAddr 
 	{
 		private:
 			struct sockaddr_in m_Addr; //IPv4 structure
@@ -81,4 +81,5 @@ namespace X1
 				return sizeof(m_Addr);
 			}
 	};
-}
+
+NS_X1_END

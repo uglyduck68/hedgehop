@@ -6,8 +6,8 @@
 #include <WinSock2.h>
 #include <assert.h>
 
-namespace X1
-{
+NS_X1_START
+
 	DemuxTable_WIN32::DemuxTable_WIN32()
 	{
 		memset(m_Table, 0x00, WSA_MAXIMUM_WAIT_EVENTS * sizeof(struct Tuple));
@@ -306,4 +306,4 @@ namespace X1
 		return X1_OK;
 	}
 
-}
+NS_X1_END

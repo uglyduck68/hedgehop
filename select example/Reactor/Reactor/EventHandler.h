@@ -5,11 +5,11 @@
 
 using namespace	X1;
 
-namespace X1
-{
+NS_X1_START
+
 	class Reactor;
 	
-	class EventHandler
+	class DECL_SPEC_DLL EventHandler
 	{
 	public:
 		enum  
@@ -59,4 +59,5 @@ namespace X1
 
 		X1_SOCHANDLE		m_h;
 	};
-}
+
+NS_X1_END

@@ -7,8 +7,8 @@
 
 using namespace	X1;
 
-namespace X1
-{
+NS_X1_START
+
 	/**
 	 * @class	Acceptor class
 	 * @brief	TCP accept class
@@ -18,7 +18,7 @@ namespace X1
 #ifdef	USE_TEMPLATE
 	template<typename T>
 #endif
-	class Acceptor : public EventHandler
+	class DECL_SPEC_DLL Acceptor : public EventHandler
 	{
 	protected:
 #ifdef	USE_TEMPLATE
@@ -67,7 +67,7 @@ namespace X1
 
 	};
 
-}
+NS_X1_END
 
 /// prevent linking error of template functions
 #ifdef	USE_TEMPLATE

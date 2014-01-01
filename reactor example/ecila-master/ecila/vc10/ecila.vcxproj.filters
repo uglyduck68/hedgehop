@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\os.h">
+      <Filter>core\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\os_freebsd.h">
+      <Filter>core\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\os_linux.h">
+      <Filter>core\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\os_windows.h">
+      <Filter>core\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ipaddrs.h">
+      <Filter>core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\log.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\basetype.h">
+      <Filter>core\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unittest.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\timer.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unittestsuite.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\socket.h">
+      <Filter>core\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\threadmutex.h">
+      <Filter>core\parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\guard.h">
+      <Filter>core\parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\nullmutex.h">
+      <Filter>core\parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\file.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\eventtype.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\idemultiplexer.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\eventhandlerrep.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pool.h">
+      <Filter>core\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tokenizer.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\config.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ecila.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\node.h">
+      <Filter>core\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\syncsession.h">
+      <Filter>framework\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\session.h">
+      <Filter>framework\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\syncacceptor.h">
+      <Filter>framework\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\syncsessionpool.h">
+      <Filter>framework\pool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\buffer.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bufferpool.h">
+      <Filter>framework\pool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\packet.h">
+      <Filter>framework\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\asyncsession.h">
+      <Filter>framework\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\asyncacceptor.h">
+      <Filter>framework\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\asyncresultpool.h">
+      <Filter>framework\pool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\asyncsessionpool.h">
+      <Filter>framework\pool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thread.h">
+      <Filter>core\parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\itask.h">
+      <Filter>core\parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\idbhandle.h">
+      <Filter>core\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mysqlhandle.h">
+      <Filter>core\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\basemacro.h">
+      <Filter>core\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\postgresqlhandle.h">
+      <Filter>core\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ieventhandler.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\eventresult.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\iasyncresult.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\asyncresultimpl.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\iocpproactor.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\selectreactor.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\epollreactor.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\kqueuereactor.h">
+      <Filter>framework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\threadspecdata.h">
+      <Filter>core\parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\threadcondition.h">
+      <Filter>core\parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\server.h">
+      <Filter>framework\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\iservice.h">
+      <Filter>core\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\demultiplexer.h">
+      <Filter>framework\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\acceptor.h">
+      <Filter>framework\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\iacceptor.h">
+      <Filter>framework\session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ipackethandler.h">
+      <Filter>framework\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\msgqueue.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\iniloader.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\danodelist.h">
+      <Filter>core\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ringbuffer.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\serial.h">
+      <Filter>core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\osapi.h">
+      <Filter>core\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\iactsession.h">
+      <Filter>framework\pool</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\ipaddrs.cpp">
+      <Filter>core\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\log.cpp">
+      <Filter>core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\timer.cpp">
+      <Filter>core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\socket.cpp">
+      <Filter>core\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\file.cpp">
+      <Filter>core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\eventhandlerrep.cpp">
+      <Filter>framework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ieventhandler.cpp">
+      <Filter>framework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tokenizer.cpp">
+      <Filter>core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\node.cpp">
+      <Filter>core\node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\syncsession.cpp">
+      <Filter>framework\session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\session.cpp">
+      <Filter>framework\session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\syncacceptor.cpp">
+      <Filter>framework\session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\syncsessionpool.cpp">
+      <Filter>framework\pool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\buffer.cpp">
+      <Filter>core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bufferpool.cpp">
+      <Filter>framework\pool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\asyncsession.cpp">
+      <Filter>framework\session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\asyncresultpool.cpp">
+      <Filter>framework\pool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\asyncsessionpool.cpp">
+      <Filter>framework\pool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\asyncacceptor.cpp">
+      <Filter>framework\session</Filter>
+    </ClCompile>
+    <ClCompile Include="..\thread.cpp">
+      <Filter>core\parallel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\idbhandle.cpp">
+      <Filter>core\db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mysqlhandle.cpp">
+      <Filter>core\db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\postgresqlhandle.cpp">
+      <Filter>core\db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\eventresult.cpp">
+      <Filter>framework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\asyncresultimpl.cpp">
+      <Filter>framework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\iocpproactor.cpp">
+      <Filter>framework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\epollreactor.cpp">
+      <Filter>framework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\kqueuereactor.cpp">
+      <Filter>framework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\selectreactor.cpp">
+      <Filter>framework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\threadspecdata.cpp">
+      <Filter>core\parallel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\server.cpp">
+      <Filter>framework\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\demultiplexer.cpp">
+      <Filter>framework\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\acceptor.cpp">
+      <Filter>framework\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ipackethandler.cpp">
+      <Filter>framework\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\msgqueue.cpp">
+      <Filter>core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\iniloader.cpp">
+      <Filter>core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\danodelist.cpp">
+      <Filter>core\node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ringbuffer.cpp">
+      <Filter>core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\osapi.cpp">
+      <Filter>core\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\packet.cpp">
+      <Filter>framework\net</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="deploy">
+      <UniqueIdentifier>{de62e31e-8636-461c-99ee-f8a9d20dbaef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{e1d9b594-2ce3-47ba-a246-28e319c58499}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework">
+      <UniqueIdentifier>{28e52aca-f2e8-4275-9253-c1ae8c0d66a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\net">
+      <UniqueIdentifier>{5285190a-c5cb-49b4-9731-f892f711d074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\memory">
+      <UniqueIdentifier>{c17dfcbf-2209-450e-bc44-273eac681fe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework\event">
+      <UniqueIdentifier>{79c502d2-8beb-4924-b8d5-df81abb7b70c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\os">
+      <UniqueIdentifier>{30703c9c-9216-4f5b-8d4f-37235fbe14c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\parallel">
+      <UniqueIdentifier>{5c3204d4-e372-44c9-a02c-0c3339300b9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\primitive">
+      <UniqueIdentifier>{40ac4c2b-df55-455b-be2e-fb72860ec4c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\util">
+      <UniqueIdentifier>{676b3e02-55a7-40d5-90ca-4baf1ff53939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework\pool">
+      <UniqueIdentifier>{7b4aa9d7-f808-4af9-9456-0ff4f74af8a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\node">
+      <UniqueIdentifier>{48ee6d86-e263-49b4-9c35-abecc95e81b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework\session">
+      <UniqueIdentifier>{98978ffc-e1a2-4141-8fd1-f64a15fa88d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework\net">
+      <UniqueIdentifier>{4e1fd94a-4449-45a3-bc5e-31c630a77811}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\db">
+      <UniqueIdentifier>{256cf769-5cbf-48c5-8975-4bb033158acd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework\server">
+      <UniqueIdentifier>{4f2ea85f-9b9c-4c6e-aabd-d8482ccb4c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\service">
+      <UniqueIdentifier>{dc960de6-a532-46d3-8bc1-708300227bf1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="deploy.bat">
+      <Filter>deploy</Filter>
+    </None>
+    <None Include="..\pool.inl">
+      <Filter>core\memory</Filter>
+    </None>
+    <None Include="..\node.inl">
+      <Filter>core\node</Filter>
+    </None>
+    <None Include="..\buffer.inl">
+      <Filter>core\util</Filter>
+    </None>
+    <None Include="..\ringbuffer.inl">
+      <Filter>core\util</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,8 +1,8 @@
 #include "Acceptor.h"
 #include "Log.h"
 
-namespace X1
-{
+NS_X1_START
+
 #ifdef	USE_TEMPLATE
 	template<typename T>
 	Acceptor<T>
@@ -192,4 +192,4 @@ namespace X1
 		return X1_OK;
 	}
 
-}
+NS_X1_END

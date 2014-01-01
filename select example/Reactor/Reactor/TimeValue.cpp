@@ -8,7 +8,7 @@ modification history
 01b,17dec01,nel  Add include symbol for TimeValue.
 01a,08Jul99,aim  created
 */
-#include "Config.h"
+#include "X1.h"
 #include "TimeValue.h"
 
 
@@ -26,8 +26,8 @@ extern "C" int include_vxdcom_TimeValue (void)
 	return 0;
 }
 
-namespace X1
-{
+NS_X1_START
+
 	TimeValue::~TimeValue ()
 	{}
 
@@ -289,4 +289,4 @@ namespace X1
 		return os;
 	}
 
-}
+NS_X1_END

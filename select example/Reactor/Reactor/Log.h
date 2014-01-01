@@ -1,11 +1,13 @@
 #pragma once
 
+#include "X1.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
-namespace X1
-{
-	class Log
+NS_X1_START
+
+	class DECL_SPEC_DLL Log
 	{
 		enum 
 		{
@@ -14,8 +16,9 @@ namespace X1
 		};
 	private:
 		static Log*	volatile m_pLog;
-		FILE*		m_pFile;
 		static long		m_lMode;
+
+		FILE*		m_pFile;
 
 	protected:
 		Log(void);
@@ -34,7 +37,7 @@ namespace X1
 		int SetMode(long lMode);
 	};
 
-}
+NS_X1_END
 
 
 #define LOG_INFO(format,...)	Log::GetInstance()->Write("Info", __FILE__, __LINE__, format, ##__VA_ARGS__)

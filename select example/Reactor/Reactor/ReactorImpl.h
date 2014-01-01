@@ -15,12 +15,12 @@
 #elif	defined(_X1_VXWORKS_)
 #endif
 
-namespace X1
-{
+NS_X1_START
+
 	/*
 	 * interface class for reactor demultiplexer
 	 */
-	class ReactorImpl
+	class DECL_SPEC_DLL ReactorImpl
 	{
 	public:
 		virtual int	RegisterHandler(EventHandler *eh, ET et) = 0;
@@ -99,4 +99,5 @@ namespace X1
 #elif	defined(_X1_VXWORKS_)
 #endif
 	};
-}
+
+NS_X1_END

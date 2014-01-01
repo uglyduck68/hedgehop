@@ -6,19 +6,19 @@
 #include "Debug.h"
 #include "Log.h"
 
-namespace X1
+NS_X1_START
+/**
+ * @class	X1
+ * @brief	X1 library initializer
+ */
+class Lib
 {
-	/**
-	 * @class	X1
-	 * @brief	X1 library initializer
-	 */
-	class Lib
-	{
-	protected:
-		int		m_nComponents;
-	public:
-		static int Init();
+protected:
+	int		m_nComponents;
+public:
+	static int Init();
 
-		static int Fin();
-	};
-}
+	static int Fin();
+};
+
+NS_X1_END

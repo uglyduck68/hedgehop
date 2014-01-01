@@ -1,0 +1,11 @@
+# platform (FREEBSD | LINUX)
+OS_PLATFORM			:= LINUX
+
+CC		:= gcc
+CXX		:= g++
+LD		:= g++
+AR		:= ar rcu
+RANLIB	:= ranlib
+
+include makefile
+

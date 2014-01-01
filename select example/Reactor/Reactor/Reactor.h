@@ -4,11 +4,11 @@
 
 #include "EventHandler.h"
 
-namespace X1
-{
+NS_X1_START
+
 	class ReactorImpl;
 
-	class Reactor
+	class DECL_SPEC_DLL Reactor
 	{
 	public:
 		int	RegisterHandler(EventHandler *eh, ET et);
@@ -35,4 +35,5 @@ namespace X1
 		static Reactor*	volatile m_pReactor;
 
 	};
-}
+
+NS_X1_END

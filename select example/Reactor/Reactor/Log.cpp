@@ -1,9 +1,10 @@
 #include "X1.h"
 #include "Log.h"
-#include "Lock.h"
+#include "Mutex.h"
+#include "Guard.h"
 
-namespace X1
-{
+NS_X1_START
+
 	Log* volatile Log::m_pLog	= NULL;
 	long Log::m_lMode			= 0;
 
@@ -38,7 +39,9 @@ namespace X1
 		 */
 		if (m_pLog == NULL)
 		{
-			Lock		lock;	// scoped locking -> change to use Guard
+			Mutex				mutex;
+			Guard<Mutex>		lock(mutex);
+
 			if (m_pLog == NULL)
 				m_pLog	= new Log;
 		}
@@ -138,4 +141,5 @@ namespace X1
 
 		return nRet;;
 	}
-}
+
+NS_X1_END

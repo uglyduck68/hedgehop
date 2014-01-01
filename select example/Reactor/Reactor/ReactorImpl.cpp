@@ -5,8 +5,8 @@
 #include <WinSock2.h>
 #include <assert.h>
 
-namespace X1
-{
+NS_X1_START
+
 	DemuxTable::DemuxTable()
 	{
 		memset(m_Table, 0x00, FD_SETSIZE * sizeof(struct Tuple));
@@ -216,4 +216,4 @@ namespace X1
 		return X1_OK;
 	}
 
-}
+NS_X1_END

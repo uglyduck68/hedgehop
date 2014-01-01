@@ -10,8 +10,8 @@ modification history
 01a,08Jul99,aim  created
 */
 
-#ifndef __INCTimeValue_h
-#define __INCTimeValue_h
+#ifndef _TimeValue_h_
+#define _TimeValue_h_
 
 #include "Config.h"
 #include "Types.h"
@@ -33,9 +33,9 @@ modification history
 
 using namespace std;
 
-namespace X1
-{
-	class TimeValue
+NS_X1_START
+
+	class DECL_SPEC_DLL TimeValue
 	{
 	public:
 
@@ -125,5 +125,6 @@ namespace X1
 		struct timeval m_tv;
 	};
 
-}
-#endif // __INCTimeValue_h
+NS_X1_END
+
+#endif // _TimeValue_h_

@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D38EF373-1D2C-49D4-9FB5-DC3B269821C5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ecila</RootNamespace>
+    <ProjectName>ecila</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>../bin/</OutDir>
+    <IntDir>../obj/</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(ProjectName)_r</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;USE_DEBUG_MODE;USE_DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../extlibs/db/mysql-6.0.2-wini32/include;../../extlibs/db/postgresql-8.4.2-1-win/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../../extlibs/db/mysql-6.0.2-wini32/lib;../../extlibs/db/postgresql-8.4.2-1-win/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>deploy.bat</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>ecila.dll, ecila.lib 를 어플리케이션 bin 디렉토리로 카피한다.</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;INFRA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\acceptor.h" />
+    <ClInclude Include="..\iactsession.h" />
+    <ClInclude Include="..\asyncresultimpl.h" />
+    <ClInclude Include="..\asyncresultpool.h" />
+    <ClInclude Include="..\asyncacceptor.h" />
+    <ClInclude Include="..\asyncsession.h" />
+    <ClInclude Include="..\asyncsessionpool.h" />
+    <ClInclude Include="..\basemacro.h" />
+    <ClInclude Include="..\buffer.h" />
+    <ClInclude Include="..\bufferpool.h" />
+    <ClInclude Include="..\danodelist.h" />
+    <ClInclude Include="..\demultiplexer.h" />
+    <ClInclude Include="..\epollreactor.h" />
+    <ClInclude Include="..\eventresult.h" />
+    <ClInclude Include="..\iacceptor.h" />
+    <ClInclude Include="..\iasyncresult.h" />
+    <ClInclude Include="..\idbhandle.h" />
+    <ClInclude Include="..\iniloader.h" />
+    <ClInclude Include="..\iocpproactor.h" />
+    <ClInclude Include="..\iservice.h" />
+    <ClInclude Include="..\itask.h" />
+    <ClInclude Include="..\kqueuereactor.h" />
+    <ClInclude Include="..\msgqueue.h" />
+    <ClInclude Include="..\mysqlhandle.h" />
+    <ClInclude Include="..\osapi.h" />
+    <ClInclude Include="..\packet.h" />
+    <ClInclude Include="..\ipackethandler.h" />
+    <ClInclude Include="..\postgresqlhandle.h" />
+    <ClInclude Include="..\ringbuffer.h" />
+    <ClInclude Include="..\serial.h" />
+    <ClInclude Include="..\server.h" />
+    <ClInclude Include="..\syncacceptor.h" />
+    <ClInclude Include="..\basetype.h" />
+    <ClInclude Include="..\config.h" />
+    <ClInclude Include="..\eventhandlerrep.h" />
+    <ClInclude Include="..\eventtype.h" />
+    <ClInclude Include="..\file.h" />
+    <ClInclude Include="..\guard.h" />
+    <ClInclude Include="..\ieventhandler.h" />
+    <ClInclude Include="..\ecila.h" />
+    <ClInclude Include="..\ipaddrs.h" />
+    <ClInclude Include="..\idemultiplexer.h" />
+    <ClInclude Include="..\log.h" />
+    <ClInclude Include="..\node.h" />
+    <ClInclude Include="..\nullmutex.h" />
+    <ClInclude Include="..\os.h" />
+    <ClInclude Include="..\os_freebsd.h" />
+    <ClInclude Include="..\os_linux.h" />
+    <ClInclude Include="..\os_windows.h" />
+    <ClInclude Include="..\pool.h" />
+    <ClInclude Include="..\selectreactor.h" />
+    <ClInclude Include="..\session.h" />
+    <ClInclude Include="..\syncsessionpool.h" />
+    <ClInclude Include="..\socket.h" />
+    <ClInclude Include="..\syncsession.h" />
+    <ClInclude Include="..\thread.h" />
+    <ClInclude Include="..\threadcondition.h" />
+    <ClInclude Include="..\threadmutex.h" />
+    <ClInclude Include="..\threadspecdata.h" />
+    <ClInclude Include="..\timer.h" />
+    <ClInclude Include="..\tokenizer.h" />
+    <ClInclude Include="..\unittestsuite.h" />
+    <ClInclude Include="..\unittest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\acceptor.cpp" />
+    <ClCompile Include="..\asyncacceptor.cpp" />
+    <ClCompile Include="..\asyncresultimpl.cpp" />
+    <ClCompile Include="..\asyncresultpool.cpp" />
+    <ClCompile Include="..\asyncsession.cpp" />
+    <ClCompile Include="..\asyncsessionpool.cpp" />
+    <ClCompile Include="..\buffer.cpp" />
+    <ClCompile Include="..\bufferpool.cpp" />
+    <ClCompile Include="..\danodelist.cpp" />
+    <ClCompile Include="..\demultiplexer.cpp" />
+    <ClCompile Include="..\epollreactor.cpp" />
+    <ClCompile Include="..\eventresult.cpp" />
+    <ClCompile Include="..\idbhandle.cpp" />
+    <ClCompile Include="..\iniloader.cpp" />
+    <ClCompile Include="..\iocpproactor.cpp" />
+    <ClCompile Include="..\ipackethandler.cpp" />
+    <ClCompile Include="..\kqueuereactor.cpp" />
+    <ClCompile Include="..\msgqueue.cpp" />
+    <ClCompile Include="..\mysqlhandle.cpp" />
+    <ClCompile Include="..\osapi.cpp" />
+    <ClCompile Include="..\packet.cpp" />
+    <ClCompile Include="..\postgresqlhandle.cpp" />
+    <ClCompile Include="..\ringbuffer.cpp" />
+    <ClCompile Include="..\server.cpp" />
+    <ClCompile Include="..\syncacceptor.cpp" />
+    <ClCompile Include="..\eventhandlerrep.cpp" />
+    <ClCompile Include="..\file.cpp" />
+    <ClCompile Include="..\ieventhandler.cpp" />
+    <ClCompile Include="..\ipaddrs.cpp" />
+    <ClCompile Include="..\log.cpp" />
+    <ClCompile Include="..\node.cpp" />
+    <ClCompile Include="..\selectreactor.cpp" />
+    <ClCompile Include="..\session.cpp" />
+    <ClCompile Include="..\syncsessionpool.cpp" />
+    <ClCompile Include="..\socket.cpp" />
+    <ClCompile Include="..\syncsession.cpp" />
+    <ClCompile Include="..\thread.cpp" />
+    <ClCompile Include="..\threadspecdata.cpp" />
+    <ClCompile Include="..\timer.cpp" />
+    <ClCompile Include="..\tokenizer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\buffer.inl" />
+    <None Include="..\node.inl" />
+    <None Include="..\pool.inl" />
+    <None Include="..\ringbuffer.inl" />
+    <None Include="deploy.bat" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
