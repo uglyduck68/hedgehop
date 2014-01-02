@@ -12,7 +12,7 @@ NS_X1_START
 class DECL_SPEC_DLL Cond
 {
 private:
-	thread_condition_t	m_Cond;
+	thread_cond_t		m_Cond;
 	const Mutex&		m_Mutex;
 
 public:

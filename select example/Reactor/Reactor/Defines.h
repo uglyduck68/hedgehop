@@ -36,4 +36,9 @@
 	#define DECL_SPEC_TLS			__thread
 #endif
 
+/**
+ * @brief	default number of threads in threadpool
+ */
+#define THREAD_POOL_QUEUE_SIZE 100
+
 #endif	//_DEFINES_H_

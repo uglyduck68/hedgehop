@@ -25,7 +25,8 @@ public:
 	uint32_t	thread_idx_;	//thread index (setup by user)
 
 	Thread		*thread_;		//thread instance pointer
-	Task		*task_;			//assocation task pointer
+//	Task		*task_;			//assocation task pointer
+	THRDFUNC		*task_;			//assocation task pointer
 	void		*user_ptr_;		//user data pointer
 };
 
@@ -101,22 +102,22 @@ public:
 
 	static void SetValue(ThrdCtrlInfo *thread_si)
 	{
-		#if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
+#if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 		TlsSetValue(key_, thread_si);
-		#else
+#else
 		pthread_setspecific(key_, thread_si);
-		#endif
+#endif
 	}
 
 
 
 	static ThrdCtrlInfo* GetValue()
 	{
-		#if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
+#if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 		return (ThrdCtrlInfo*)TlsGetValue(key_);
-		#else
+#else
 		return (ThrdCtrlInfo*)pthread_getspecific(key_);
-		#endif
+#endif
 	}
 
 

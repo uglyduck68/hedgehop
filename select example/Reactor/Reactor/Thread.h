@@ -16,24 +16,43 @@ NS_X1_START
 
 /**
  * @class	Thread
- * @brief	class for scoped locking
+ * @brief	thread wrapper class
  */
 
 class DECL_SPEC_DLL Thread
 {
 private:
-	THRFUNC*	m_pFunc;
-	void*		m_pArg;
+
+#if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
+	static uint32_t __stdcall m_Invoker(void *thread_si);
+#else
+	static void* (m_Invoker)(void *thread_si);
+#endif
+	//	void*		m_pArg;
+
 
 public:
 	Thread();
+	virtual ~Thread();
 
-	int		Start(THRFUNC* pFunc, void* arg);
+	static int		Init(Thread* pThrd);
+	int		Init();
+	int		Start(Task* pTask, void* arg);
+	int		Start(THRDFUNC* pFunc, void* arg);
 	void	Join(TimeValue *timeout = 0);
+	int		Suspend();
+	int		Resume();
+	int		Kill();
+
+	/// get thread id
+	thread_id_t	Self();
 
 protected:
 
-	TLS			thread_si_;
+	friend class Threadpool;
+
+	/// Thread control information that have thread-specific parameters
+	ThrdCtrlInfo			thread_si_;
 
 };
 

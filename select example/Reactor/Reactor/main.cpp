@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 {
 	SOCKET ListenSocket;
 	SOCKET AcceptSocket;
-	SOCKADDR_IN InternetAddr;
+//	SOCKADDR_IN InternetAddr;
 	FD_SET WriteSet;
 	FD_SET ReadSet;
 	DWORD i;

@@ -89,10 +89,10 @@
 	typedef pthread_t				thread_t;
 	typedef pthread_t				thread_id_t;
 	typedef pthread_mutex_t			thread_mutex_t;
-	typedef pthread_cond_t			thread_condition_t;
+	typedef pthread_cond_t			thread_cond_t;
 	typedef pthread_key_t			thread_local_storage_t;
 
-	typedef void* (THRFUNC)(void *thread_si);
+	typedef void* (THRDFUNC)(void *thread_si);
 
 	#ifndef INVALID_HANDLE_VALUE
 	#define INVALID_HANDLE_VALUE	((handle_t)(ulong_ptr)-1)
@@ -128,10 +128,10 @@
 	typedef HANDLE					thread_t;
 	typedef uint32_t				thread_id_t;
 	typedef CRITICAL_SECTION		thread_mutex_t;
-	typedef CONDITION_VARIABLE		thread_condition_t;
+	typedef CONDITION_VARIABLE		thread_cond_t;
 	typedef DWORD					thread_local_storage_t;
 
-	typedef uint32_t __stdcall THRFUNC(void *thread_si);	// for _beginthreadex
+	typedef uint32_t __stdcall THRDFUNC(void *thread_si);	// for _beginthreadex
 #endif
 
 namespace X1
