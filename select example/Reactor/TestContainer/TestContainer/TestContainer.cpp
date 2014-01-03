@@ -164,7 +164,7 @@ int	TestListQueue_T()
  * test message queue
  *****************************************************************************/
 
-/// step 0: create thread-safe message queue. if single thread, use MutexNull object.
+/// step 0: create thread-safe message queue. use MutexNull object in case of single thread.
 MsgQueue<QDATA, Mutex/*MutexNull*/>		g_MsgQ;
 
 const int	MAX_SIZE		= 1000;

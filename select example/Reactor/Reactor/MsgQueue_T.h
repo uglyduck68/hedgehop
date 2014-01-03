@@ -6,6 +6,10 @@
 
 NS_X1_START
 
+/**
+ * MsgQueue is template thread-safe message queue. But you can user MutexNull object for single thread.
+ * FIXME: use lock-free algorithm of MPMC.
+ */
 template<typename T, typename L>
 class DECL_SPEC_DLL MsgQueue
 {
