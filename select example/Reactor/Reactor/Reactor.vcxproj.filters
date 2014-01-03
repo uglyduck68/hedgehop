@@ -99,6 +99,15 @@
     <ClInclude Include="Threadpool.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ListQueue_T.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MutexNull.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MsgQueue_T.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

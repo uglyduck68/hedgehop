@@ -28,6 +28,8 @@
 #include "Acceptor.h"
 
 #include "EchoService.h"
+#include "MsgQueue_T.h"
+#include "ListQueue_T.h"
 
 using namespace	X1;
 

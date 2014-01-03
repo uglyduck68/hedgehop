@@ -8,11 +8,6 @@ Mutex::Mutex(void)
 	{
 		// error
 	}
-
-	if (pthread_mutex_lock(&m_Mutex) != 0)
-	{
-		// error
-	}
 }
 
 
@@ -22,6 +17,7 @@ Mutex::~Mutex(void)
 	{
 
 	}
+
 	pthread_mutex_destroy(&m_Mutex);
 }
 
