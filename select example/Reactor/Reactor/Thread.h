@@ -52,7 +52,7 @@ protected:
 	friend class Threadpool;
 
 	/// Thread control information that have thread-specific parameters
-	ThrdCtrlInfo			thread_si_;
+	ThrdCtrlInfo			m_ThreadInfo;
 
 };
 

@@ -45,6 +45,8 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 	if (NULL != tv)
 	{
 		// get system time
+		// In Windows XP, time resolution is 15ms
+		// In Windows 7, time resolution is sub-ms.
 		GetSystemTimeAsFileTime(&ft);
 
 		tmpres |= ft.dwHighDateTime;
@@ -54,10 +56,10 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 		// change 100 nano sec. to 1 micro sec.
 		tmpres /= 10;
 
-		// change to epoch time
+		// change to UNIX epoch time
 		tmpres -= DELTA_EPOCH_IN_MICROSECS;    
 
-		// adjust nano sec. to sec & micro sec.
+		// adjust to sec & micro sec.
 		tv->tv_sec	= long(tmpres / 1000000UL);
 		tv->tv_usec	= (tmpres % 1000000UL);
 	}

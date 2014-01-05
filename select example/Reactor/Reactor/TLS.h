@@ -17,17 +17,17 @@ public:
 	ThrdCtrlInfo(void);
 	~ThrdCtrlInfo(void);
 
-	bool_t		b_stop_;		//stop yn flag
-	bool_t		b_task_;		//association task yn
+	bool_t		m_bStop;		//stop yn flag
+	bool_t		m_bTask;		//association task yn
 
-	thread_t	h_thread_;		//thread id (handle)
-	thread_id_t	thread_id_;		//thread index (setup by os : windows)
-	uint32_t	thread_idx_;	//thread index (setup by user)
+	thread_t	m_hThread;		//thread id (handle)
+	thread_id_t	m_hThreadId;		//thread index (setup by os : windows)
+	uint32_t	m_nThreadIdx;	//thread index (setup by user)
 
-	Thread		*thread_;		//thread instance pointer
-//	Task		*task_;			//assocation task pointer
-	THRDFUNC		*task_;			//assocation task pointer
-	void		*user_ptr_;		//user data pointer
+	Thread		*m_pThread;		//thread instance pointer
+//	Task		*m_pTask;			//assocation task pointer
+	THRDFUNC		*m_pTask;			//assocation task pointer
+	void		*m_pTaskArg;		//user data pointer
 };
 
 /**

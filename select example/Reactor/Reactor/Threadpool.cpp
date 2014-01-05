@@ -206,9 +206,9 @@ void *Threadpool::worker_thr_routine(void *data)
 		}
 
 		/* Execute routine (if any). */
-		if (task->thread_si_.task_) 
+		if (task->m_ThreadInfo.m_pTask) 
 		{
-			task->thread_si_.task_(task->thread_si_.user_ptr_);
+			task->m_ThreadInfo.m_pTask(task->m_ThreadInfo.m_pTaskArg);
 
 			/* Release the task by returning it to the free_task_queue. */
 			task->Init();
@@ -430,8 +430,8 @@ int	Threadpool::Add(THRDFUNC pData, void* pArg, int nBlocking)
 		return -1;
 	}
 
-	task->thread_si_.user_ptr_	= pArg;
-	task->thread_si_.task_		= pData;
+	task->m_ThreadInfo.m_pTaskArg	= pArg;
+	task->m_ThreadInfo.m_pTask		= pData;
 
 	/* Add the task, to the tasks queue. */
 	if (pthread_mutex_lock(&(m_pPool->mutex))) 

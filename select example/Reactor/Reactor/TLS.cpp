@@ -4,16 +4,16 @@ NS_X1_START
 
 ThrdCtrlInfo::ThrdCtrlInfo(void)
 {
-	b_stop_		= FALSE;
-	b_task_		= FALSE;
+	m_bStop		= FALSE;
+	m_bTask		= FALSE;
 
-//	h_thread_	= 0;	// pthread_t is structure type
-//	thread_id_	= 0;
-	thread_idx_	= 0;
+//	m_hThread	= 0;	// pthread_t is structure type
+//	m_hThreadId	= 0;
+	m_nThreadIdx	= 0;
 
-	thread_		= 0;
-	task_		= 0;
-	user_ptr_	= 0;
+	m_pThread		= 0;
+	m_pTask		= 0;
+	m_pTaskArg	= 0;
 }
 
 
