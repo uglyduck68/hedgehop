@@ -113,6 +113,8 @@ void*	thr_parse_packet(void* Arg)
 
 	delete thr;
 
+	printf("Debug: thr_parse_packet finished\n");
+
 	return NULL;
 }
 

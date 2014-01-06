@@ -113,8 +113,27 @@ void	Thread::Join(TimeValue *timeout /*= 0*/)
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 	WaitForSingleObject(m_ThreadInfo.m_hThread, timeout_msec == 0 ? INFINITE : timeout_msec);
 #else
-	int32_t status = 0;
-	pthread_join(m_ThreadInfo.m_hThread, (void **)&status); 
+	int32_t	status = 0;
+	int		nRet	= 0;
+	
+	if ((nRet = pthread_join(m_ThreadInfo.m_hThread, (void **)&status)) != 0)
+	{
+		// INTERNAL ERROR
+		switch(nRet)
+		{
+		case ESRCH:
+			printf("Internal error: ESRCH\n");
+			break;
+		case EINVAL:
+			printf("Internal error: EINVAL\n");
+			break;
+		case EDEADLK:
+			printf("Internal error: EDEADLK\n");
+			break;
+		default:
+			break;
+		}
+	}
 #endif
 
 }
