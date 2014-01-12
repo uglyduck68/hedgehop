@@ -47,6 +47,9 @@ public:
 	/// get thread id
 	thread_id_t	Self();
 
+	/// get group id
+	int	 GrpId();
+
 protected:
 
 	friend class Threadpool;
