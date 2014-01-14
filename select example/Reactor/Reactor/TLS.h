@@ -8,14 +8,14 @@ class Thread;
 class Task;
 
 /**
- * @class	ThrdCtrlInfo
+ * @class	ThrCtrlInfo
  * @brief	information of thread control
  */
-class DECL_SPEC_DLL ThrdCtrlInfo
+class DECL_SPEC_DLL ThrCtrlInfo
 {
 public:
-	ThrdCtrlInfo(void);
-	~ThrdCtrlInfo(void);
+	ThrCtrlInfo(void);
+	~ThrCtrlInfo(void);
 
 	bool_t		m_bStop;		//stop yn flag
 	bool_t		m_bTask;		//association task yn
@@ -100,7 +100,7 @@ public:
 
 
 
-	static void SetValue(ThrdCtrlInfo *thread_si)
+	static void SetValue(ThrCtrlInfo *thread_si)
 	{
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 		TlsSetValue(key_, thread_si);
@@ -111,12 +111,12 @@ public:
 
 
 
-	static ThrdCtrlInfo* GetValue()
+	static ThrCtrlInfo* GetValue()
 	{
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-		return (ThrdCtrlInfo*)TlsGetValue(key_);
+		return (ThrCtrlInfo*)TlsGetValue(key_);
 #else
-		return (ThrdCtrlInfo*)pthread_getspecific(key_);
+		return (ThrCtrlInfo*)pthread_getspecific(key_);
 #endif
 	}
 

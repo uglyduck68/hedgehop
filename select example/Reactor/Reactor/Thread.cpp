@@ -20,8 +20,8 @@ NS_X1_START
 	void* Ret	= NULL;
 #endif
 
-	ThrdCtrlInfo *p_thread_si = (ThrdCtrlInfo*)thread_si;
-	TLS::Instance()->SetValue(p_thread_si);
+	ThrCtrlInfo *p_thread_si = (ThrCtrlInfo*)thread_si;
+//	TLS::Instance()->SetValue(p_thread_si);
 
 	if(!p_thread_si) 
 	{ 
@@ -71,12 +71,8 @@ int		Thread::Init()
 	return Init(this);
 }
 
-int		Thread::Start(Task* pTask, void* arg)
-{
-	return X1_OK;
-}
 
-int	Thread::Start(THRDFUNC* pFunc, void* arg)
+int	Thread::Run(THRDFUNC* pFunc, void* arg, int CreateFlag /*= 0*/, int StackSize /*= -1*/)
 {
 	if (pFunc == NULL)
 		return X1_FAIL;
@@ -84,7 +80,7 @@ int	Thread::Start(THRDFUNC* pFunc, void* arg)
 	m_ThreadInfo.m_bTask		= (pFunc) ? TRUE : FALSE;
 	m_ThreadInfo.m_pThread		= this;
 	m_ThreadInfo.m_pTask		= pFunc;
-	m_ThreadInfo.m_pTaskArg	= arg;
+	m_ThreadInfo.m_pTaskArg		= arg;
 
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 	m_ThreadInfo.m_hThread = (thread_t)_beginthreadex(0, 0, m_Invoker, &m_ThreadInfo, 0, &m_ThreadInfo.m_hThreadId);

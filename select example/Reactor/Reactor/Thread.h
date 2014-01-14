@@ -32,13 +32,19 @@ private:
 
 
 public:
+
+	enum 
+	{
+		THR_SUSPENDED,
+		THR_DETACHED
+	};
+
 	Thread();
 	virtual ~Thread();
 
 	static int		Init(Thread* pThrd);
 	int		Init();
-	int		Start(Task* pTask, void* arg);
-	int		Start(THRDFUNC* pFunc, void* arg);
+	int		Run(THRDFUNC* pFunc, void* arg, int CreateFlag = 0, int StackSize = -1);
 	void	Join(TimeValue *timeout = 0);
 	int		Suspend();
 	int		Resume();
@@ -50,9 +56,10 @@ public:
 protected:
 
 	friend class Threadpool;
+	friend class Task;
 
 	/// Thread control information that have thread-specific parameters
-	ThrdCtrlInfo			m_ThreadInfo;
+	ThrCtrlInfo			m_ThreadInfo;
 
 };
 

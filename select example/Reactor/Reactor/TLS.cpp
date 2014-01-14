@@ -2,7 +2,7 @@
 
 NS_X1_START
 
-ThrdCtrlInfo::ThrdCtrlInfo(void)
+ThrCtrlInfo::ThrCtrlInfo(void)
 {
 	m_bStop		= FALSE;
 	m_bTask		= FALSE;
@@ -17,7 +17,7 @@ ThrdCtrlInfo::ThrdCtrlInfo(void)
 }
 
 
-ThrdCtrlInfo::~ThrdCtrlInfo(void)
+ThrCtrlInfo::~ThrCtrlInfo(void)
 {
 }
 
