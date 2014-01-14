@@ -107,7 +107,7 @@ void*	thr_parse_packet(void* Arg)
 	// call the packet handler
 	Thread*		thr	= new Thread();
 
-	thr->Start(PacketHandler[i], NULL);
+	thr->Run(PacketHandler[i], NULL);
 
 	thr->Join();
 
@@ -131,7 +131,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 //		printf("thread[%d] starts\n", i);
 		// start thread to parse the packet
-		if (thr->Start(thr_parse_packet, (void*)i) != X1_OK)
+		if (thr->Run(thr_parse_packet, (void*)i) != X1_OK)
 		{
 			printf("Error: fail to start thread\n");
 			break;

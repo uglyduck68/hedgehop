@@ -33,18 +33,12 @@ private:
 
 public:
 
-	enum 
-	{
-		THR_SUSPENDED,
-		THR_DETACHED
-	};
-
 	Thread();
 	virtual ~Thread();
 
 	static int		Init(Thread* pThrd);
 	int		Init();
-	int		Run(THRDFUNC* pFunc, void* arg, int CreateFlag = 0, int StackSize = -1);
+	int		Run(THRDFUNC* pFunc, void* arg, int StackSize = -1, int CreateFlag = 0);
 	void	Join(TimeValue *timeout = 0);
 	int		Suspend();
 	int		Resume();

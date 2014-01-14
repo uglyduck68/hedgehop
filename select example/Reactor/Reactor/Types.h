@@ -184,3 +184,9 @@ enum DEMUX_TYPE
 	X1_KQUEUE,
 };
 
+enum 
+{
+	THR_SUSPENDED,
+	THR_DETACHED
+};
+

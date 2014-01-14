@@ -72,7 +72,7 @@ int		Thread::Init()
 }
 
 
-int	Thread::Run(THRDFUNC* pFunc, void* arg, int CreateFlag /*= 0*/, int StackSize /*= -1*/)
+int	Thread::Run(THRDFUNC* pFunc, void* arg, int StackSize /*= -1*/, int CreateFlag /*= 0*/)
 {
 	if (pFunc == NULL)
 		return X1_FAIL;
