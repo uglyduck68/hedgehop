@@ -105,9 +105,11 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="Thread.h" />
+    <ClInclude Include="ThreadMgr.h" />
     <ClInclude Include="Threadpool.h" />
     <ClInclude Include="TimeValue.h" />
     <ClInclude Include="TLS.h" />
+    <ClInclude Include="TRACE.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="X1.h" />
   </ItemGroup>
@@ -126,9 +128,11 @@
     <ClCompile Include="ReactorImpl_WIN32_select.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Thread.cpp" />
+    <ClCompile Include="ThreadMgr.cpp" />
     <ClCompile Include="Threadpool.cpp" />
     <ClCompile Include="TimeValue.cpp" />
     <ClCompile Include="TLS.cpp" />
+    <ClCompile Include="TRACE.cpp" />
     <ClCompile Include="X1.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -44,6 +44,7 @@ NS_X1_END
 #define LOG_WARNING(format,...)	Log::GetInstance()->Write("Warn", __FILE__, __LINE__, format, ##__VA_ARGS__)
 #define LOG_ERROR(format,...)	Log::GetInstance()->Write("Error", __FILE__, __LINE__, format, ##__VA_ARGS__)
 #define LOG_FATAL(format,...)	Log::GetInstance()->Write("Fatal", __FILE__, __LINE__, format, ##__VA_ARGS__)
+#define LOG_DEBUG(format,...)	Log::GetInstance()->Write("Debug", __FILE__, __LINE__, format, ##__VA_ARGS__)
 
 #define LOG_INIT(filename)	do	\
 	{	\

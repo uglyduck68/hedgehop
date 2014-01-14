@@ -180,4 +180,10 @@ thread_id_t	Thread::Self()
 #endif
 
 }
+
+int	Thread::GrpId()
+{
+	return m_ThreadInfo.m_nThreadIdx;
+}
+
 NS_X1_END
