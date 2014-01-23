@@ -26,12 +26,14 @@ public:
 			 Task() {}
 	virtual ~Task() {}
 
-	int	Spawn(THRDFUNC* pFunc, void* arg, int StackSize[], int CreateFlag = 0);
+	/// spawn a thread
+	int	Spawn(THRDFUNC* pFunc, void* pArg, thread_id_t* pThreadId, int nStackSize, int nCreateFlag, int nPriority);
+
 
 	/**
 	 * @param	ThrNum specify the number of thread to be created
 	 */
-	int	Spawn(THRDFUNC* pFunc, void* arg, int ThrNum, int& GrpId, int StackSize[], int CreateFlag = 0);
+	int	Spawn(THRDFUNC* pFunc, void* pArg, int nThrNum, int& GrpId, thread_id_t* pThreadId[], int nStackSize, int nCreateFlag, int nPriority);
 	void	Join(TimeValue *timeout = 0);
 	void	Wait(TimeValue *timeout = 0)
 	{

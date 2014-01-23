@@ -51,21 +51,21 @@
 
 // polymorphic type
 #if defined (_X1_WINDOWS_)
-	typedef INT_PTR			int_ptr;
-	typedef UINT_PTR		uint_ptr;
-	typedef LONG_PTR		long_ptr;
-	typedef ULONG_PTR		ulong_ptr;
+	typedef INT_PTR					int_ptr;
+	typedef UINT_PTR				uint_ptr;
+	typedef LONG_PTR				long_ptr;
+	typedef ULONG_PTR				ulong_ptr;
 #else
 	#if   defined (USE_32BIT)
-	typedef int				int_ptr;
-	typedef unsigned int	uint_ptr;
-	typedef long			long_ptr;
-	typedef unsigned long	ulong_ptr;
+	typedef int						int_ptr;
+	typedef unsigned int			uint_ptr;
+	typedef long					long_ptr;
+	typedef unsigned long			ulong_ptr;
 	#elif defined (USE_64BIT)
-	typedef int64_t			int_ptr;
-	typedef uint64_t		uint_ptr;
-	typedef long			long_ptr;
-	typedef unsigned long	ulong_ptr;
+	typedef int64_t					int_ptr;
+	typedef uint64_t				uint_ptr;
+	typedef long					long_ptr;
+	typedef unsigned long			ulong_ptr;
 	#endif
 #endif
 
@@ -165,6 +165,9 @@ struct timezone
 	int  tz_dsttime;     /* type of dst correction */
 };
 
+/**
+ * return types of X1 functions
+ */
 enum RET_TYPE
 {
 	X1_CLOSED		= -1,
@@ -184,6 +187,9 @@ enum DEMUX_TYPE
 	X1_KQUEUE,
 };
 
+/**
+ * thread creation flags
+ */
 enum 
 {
 	THR_SUSPENDED,
