@@ -1,0 +1,3325 @@
+From: =?ks_c_5601-1987?B?V2luZG93cyBJbnRlcm5ldCBFeHBsb3JlciAxML+hvK0gwPrA5bXK?=
+Subject: 
+Date: Sun, 26 Jan 2014 21:39:51 +0900
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0000_01CF1ADF.25227C80"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.2.9200.16384
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: text/html;
+	charset="ks_c_5601-1987"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN" =
+""><HTML><HEAD><META=20
+content=3D"IE=3D5.0000" http-equiv=3D"X-UA-Compatible">
+ <TITLE></TITLE>=20
+<META http-equiv=3D"Content-Type" content=3D"text/html; =
+charset=3Dks_c_5601-1987">
+<META name=3D"GENERATOR" content=3D"MSHTML 10.00.9200.16750"></HEAD>=20
+<BODY bgcolor=3D"#ffffff">
+<P align=3D"right" class=3D"navbar"><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/index.html"><I=
+MG=20
+alt=3D"[Contents]" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/contents.=
+gif"=20
+border=3D"0"></A><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/vnpgIX.html"><=
+IMG=20
+alt=3D"[Index]" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/index.gif=
+"=20
+border=3D"0"></A><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-dynRoutPrtcl=
+s.html"><IMG=20
+alt=3D"[Prev]" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/prev.gif"=
+=20
+border=3D"0"></A><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-remAccApps.h=
+tml"><IMG=20
+alt=3D"[Next]" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/next.gif"=
+=20
+border=3D"0"></A> </P><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H1 align=3D"right" class=3D"H1Chapter"><I><A name=3D"86892"></A>    =
+7</I></H1>
+<H1 align=3D"right"><I>Sockets under VxWorks</I></H1></FONT> <BR =
+class=3D"H2"><A=20
+name=3D"89039"></A> <BR class=3D"H2navbar"><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif">
+<H3 class=3D"H2"><I>7.1  &nbsp;&nbsp; Introduction</I></H3></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"89041"></A>This chapter describes how =
+to use the=20
+    standard BSD socket interface for stream sockets and datagram =
+sockets on a=20
+    VxWorks target. It also describes how to use zbuf sockets, an =
+alternative=20
+    set of socket calls based on a data abstraction called the <I=20
+    class=3D"term">zbuf</I>. These zbuf calls let you share data buffers =
+(or=20
+    portions of data buffers) between separate software modules.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"86896"></A>Using sockets, processes can =
+communicate=20
+    within a single CPU, across a backplane, across an Ethernet, or =
+across any=20
+    connected combination of networks. Socket communications can occur =
+between=20
+    VxWorks tasks and host system processes in any combination. In all =
+cases,=20
+    the communications appear identical to the application--except, of =
+course,=20
+    for the speed of the communications.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"86897"></A>One of the biggest =
+advantages of socket=20
+    communication is that it is a homogeneous mechanism: socket =
+communications=20
+    among processes are the same, regardless of the location of the =
+processes in=20
+    the network or the operating system where they run. This is true =
+even if you=20
+    use zbuf sockets, which are fully interoperable with standard BSD=20
+    sockets.</P></DD></DL></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"table">
+  <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+    <TBODY>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD>
+        <HR>
+      </TD></TR>
+    <TR valign=3D"top">
+      <TD><IMG alt=3D"*" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/note.gif"=
+=20
+        border=3D"0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <DIV class=3D"CalloutCell"><A name=3D"88865"></A> <B =
+class=3D"symbol_UC"><FONT=20
+        class=3D"sans" face=3D"Helvetica, sans-serif" size=3D"-1">NOTE:  =
+</FONT></B>
+         This chapter focuses on how to use a socket connection between=20
+        processes. If you are interested in learning how to add =
+socket-support=20
+        code to a new network service or protocol, see <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-newNetServic=
+e.html#84741"><I=20
+        class=3D"title">11.4&nbsp;Adding a Socket Interface to Your =
+Service</I>,=20
+        p.234</A>. </DIV></TD></TR>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <HR>
+      </TD></TR>
+    <TR valign=3D"middle">
+      <TD colspan=3D"20"></TD></TR></TBODY></TABLE></P>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"86898"></A>For additional information =
+on the socket=20
+    interface, see the <B class=3D"library">sockLib</B> reference=20
+  entry.</P></DD></DL></DD></DL><BR class=3D"H2"><A name=3D"89104"></A> =
+<BR class=3D"H2navbar"><FONT=20
+class=3D"sans" face=3D"Helvetica, sans-serif">
+<H3 class=3D"H2"><I>7.2  &nbsp;&nbsp; BSD Sockets</I></H3></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"86900"></A>A socket is a communications =
+end-point=20
+    that is <I class=3D"term">bound</I> to a UDP or TCP port within the =
+node.=20
+    Under VxWorks, your application can use the <I =
+class=3D"emphasis">sockets</I>=20
+    interface to access features of the Internet Protocol suite =
+(features such=20
+    as multicasting). Depending on the bound port type, a socket is =
+referred to=20
+    either as a stream socket or a datagram socket. VxWorks sockets are =
+UNIX BSD=20
+    4.4 compatible. However, VxWorks does not support signal =
+functionality for=20
+    VxWorks sockets.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"86902"></A>S<I class=3D"term">tream =
+sockets </I>use=20
+    TCP to bind to a particular port number. Another process, on any =
+host in the=20
+    network, can then create another stream socket and request that it =
+be=20
+    connected to the first socket by specifying its host Internet =
+address and=20
+    port number. After the two TCP sockets are connected, there is a <I =
+class=3D"term">virtual=20
+    circuit</I> set up between them, allowing reliable socket-to-socket=20
+    communications. This style of communication is conversational.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"86903"></A><I class=3D"term">Datagram =
+socket</I>s use=20
+    UDP to bind to a particular port number. Other processes, on any =
+host in the=20
+    network, can then send messages to that socket by specifying the =
+host=20
+    Internet address and the port number. Compared to TCP, UDP provides =
+a=20
+    simpler but less robust communication method. In a UDP =
+communication, data=20
+    is sent between sockets in separate, unconnected, individually =
+addressed=20
+    packets called <I class=3D"term">datagrams</I>. There is no sense of =
+
+    conversation with a datagram socket. The communication is in the =
+style of a=20
+    letter. Each packet carries the address of both the destination and =
+the=20
+    sender. Compared to TCP, UDP is unreliable. Like the mail, packets =
+that are=20
+    lost or out-of-sequence are not reported.</P></DD></DL></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"table">
+  <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+    <TBODY>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD>
+        <HR>
+      </TD></TR>
+    <TR valign=3D"top">
+      <TD><IMG alt=3D"*" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/note.gif"=
+=20
+        border=3D"0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <DIV class=3D"CalloutCell"><A name=3D"90389"></A> <B =
+class=3D"symbol_UC"><FONT=20
+        class=3D"sans" face=3D"Helvetica, sans-serif" size=3D"-1">NOTE:  =
+</FONT></B>
+         The complexities of socket programming are beyond the scope of =
+this=20
+        document. For additional information, consult a =
+socket-programming book,=20
+        such as those mentioned in the introduction to this =
+manual.</DIV></TD></TR>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <HR>
+      </TD></TR>
+    <TR valign=3D"middle">
+      <TD colspan=3D"20"></TD></TR></TBODY></TABLE></P></DD></DL><FONT =
+class=3D"sans"=20
+face=3D"Helvetica, sans-serif">
+<H4 class=3D"H3"><I><A name=3D"90395"></A>7.2.1  =
+&nbsp;&nbsp;VxWorks-Specific Socket=20
+Dependencies </I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"90396"></A>Although the socket =
+interface is=20
+    compatible with VxWorks, the environment does affect how you use =
+sockets.=20
+    Specifically, the globally accessible file descriptors available in =
+the=20
+    task-independent address space of VxWorks require that you take =
+extra=20
+    precautions when closing a file descriptor. </P>
+    <DD>
+    <P class=3D"Body"><A name=3D"89171"></A>You must make sure that one =
+task does=20
+    not close the file descriptor on which another task is pending =
+during an <B=20
+    class=3D"routine">accept(&nbsp;)</B>. Although the <B=20
+    class=3D"routine">accept(&nbsp;)</B> on the closed file descriptor =
+sometimes=20
+    returns with an error, the <B class=3D"routine">accept(&nbsp;)</B> =
+can also=20
+    fail to return at all. Thus, if you need to be able to close a =
+socket=20
+    connection's file descriptor asynchronously, you may need to set up =
+a=20
+    semaphore-based locking mechanism that prevents the close while an =
+<B class=3D"routine">accept(&nbsp;)</B>=20
+    is pending on the file descriptor.</P></DD></DL></DL><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif">
+<H4 class=3D"H3"><I><A name=3D"89100"></A>7.2.2  &nbsp;&nbsp;Datagram =
+Sockets=20
+(UDP)</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"86911"></A>You can use datagram (UDP) =
+sockets to=20
+    implement a simple client-server communication system. You can also =
+use UDP=20
+    sockets to handle multicasting.</P></DD></DL></DL>
+<DL class=3D"margin">
+  <DD><FONT class=3D"sans" face=3D"Helvetica, sans-serif" size=3D"-1">
+  <H5 class=3D"HU"><I><A name=3D"86912"></A>Using a Datagram Socket to =
+Implement a=20
+  Client-Server Communication System</I></H5></FONT>
+  <DL class=3D"margin">=20
+    <DD>
+    <P class=3D"Body"><A name=3D"86914"></A>The following code example =
+uses a=20
+    client-server communication model. The server communicates with =
+clients=20
+    using datagram-oriented (UDP) sockets. The main server loop, in <B =
+class=3D"routine">udpServer</B><FONT=20
+    class=3D"Default" color=3D"red">(</FONT>&nbsp;<FONT =
+class=3D"Default"=20
+    color=3D"red">)</FONT>, reads requests and optionally displays the =
+client's=20
+    message. The client builds the request by prompting the user for =
+input. Note=20
+    that this code assumes that it executes on machines that have the =
+same data=20
+    sizes and alignment.</P></DD></DL></DD></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"86915"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Example 7-1	:&nbsp;&nbsp; <B>Datagram Sockets =
+(UDP)</B></FONT></P>
+  <DL class=3D"margin">
+    <DD>
+    <HR class=3D"Line">
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"86917"></A>/* udpExample.h - header used =
+by both UDP server and client examples */ <BR> <BR>#define =
+SERVER_PORT_NUM         5002    /* server's port number for bind() */ =
+<BR>#define REQUEST_MSG_SIZE        1024    /* max size of request =
+message */ <BR> <BR>/* structure used for client's request */ <BR> =
+<BR>struct request <BR>    { <BR>    int  display;                       =
+/* TRUE =3D display message */ <BR>    char message[REQUEST_MSG_SIZE];   =
+  /* message buffer */ <BR>    };</PRE></FONT>=20
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <HR class=3D"Line">
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"86919"></A>/* udpClient.c - UDP client =
+example */ <BR> <BR>/* <BR>DESCRIPTION <BR>This file contains the =
+client-side of the vxWorks UDP example code. <BR>The example code =
+demonstrates the usage of several BSD 4.4-style <BR>socket routine =
+calls. <BR>*/ <BR> <BR> <BR>/* includes */ <BR> <BR>#include "vxWorks.h" =
+<BR>#include "sockLib.h" <BR>#include "inetLib.h" <BR>#include =
+"stdioLib.h" <BR>#include "strLib.h" <BR>#include "hostLib.h" =
+<BR>#include "ioLib.h" <BR>#include "udpExample.h" <BR> =
+<BR>/********************************************************************=
+******** <BR>* <BR>* udpClient - send a message to a server over a UDP =
+socket <BR>* <BR>* This routine sends a user-provided message to a =
+server over a UDP socket. <BR>* Optionally, this routine can request =
+that the server display the message. <BR>* This routine may be invoked =
+as follows: <BR>*       -&gt; udpClient "remoteSystem" <BR>*       =
+Message to send: <BR>*       Greetings from UDP client <BR>*       Would =
+you like server to display your message (Y or N):  <BR>*       y <BR>*   =
+    value =3D 0 =3D 0x0 <BR>* <BR>* RETURNS: OK, or ERROR if the message =
+could not be sent to the server. <BR>*/ <BR> <BR>STATUS udpClient <BR>   =
+ ( <BR>    char *              serverName     /* name or IP address of =
+server */ <BR>    ) <BR>    { <BR>    struct request      myRequest;     =
+/* request to send to server */ <BR>    struct sockaddr_in  serverAddr;  =
+  /* server's socket address */ <BR>    char                display;     =
+  /* if TRUE, server prints message */ <BR>    int                 =
+sockAddrSize;  /* size of socket address structure */ <BR>    int        =
+         sFd;           /* socket file descriptor */  <BR>    int        =
+         mlen;          /* length of message */  <BR> <BR>    /* create =
+client's socket */ <BR> <BR>    if ((sFd =3D socket (AF_INET, =
+SOCK_DGRAM, 0)) =3D=3D ERROR) <BR>        { <BR>        perror =
+("socket"); <BR>        return (ERROR); <BR>        } <BR> <BR>    /* =
+explicit bind not required - local port number is dynamic */ <BR> <BR>   =
+ /* build server socket address */ <BR> <BR>    sockAddrSize =3D sizeof =
+(struct sockaddr_in); <BR>    bzero ((char *) &amp;serverAddr, =
+sockAddrSize); <BR>    serverAddr.sin_len =3D (u_char) sockAddrSize; =
+<BR>    serverAddr.sin_family =3D AF_INET; <BR>    serverAddr.sin_port =
+=3D htons (SERVER_PORT_NUM); <BR> <BR>    if =
+(((serverAddr.sin_addr.s_addr =3D inet_addr (serverName)) =3D=3D ERROR) =
+&amp;&amp; <BR>        ((serverAddr.sin_addr.s_addr =3D hostGetByName =
+(serverName)) =3D=3D ERROR)) <BR>        { <BR>        perror ("unknown =
+server name"); <BR>        close (sFd); <BR>        return (ERROR); <BR> =
+       } <BR> <BR>    /* build request, prompting user for message */ =
+<BR> <BR>    printf ("Message to send: \n"); <BR>    mlen =3D read =
+(STD_IN, myRequest.message, REQUEST_MSG_SIZE); <BR>    =
+myRequest.message[mlen - 1] =3D '\0'; <BR> <BR>    printf ("Would you =
+like the server to display your message (Y or N): \n"); <BR>    read =
+(STD_IN, &amp;display, 1); <BR>    switch (display) <BR>        { <BR>   =
+     case 'y': <BR>        case 'Y': myRequest.display =3D TRUE; <BR>    =
+        break; <BR>        default: myRequest.display =3D FALSE; <BR>    =
+        break; <BR>        } <BR> <BR>    /* send request to server */ =
+<BR> <BR>    if (sendto (sFd, (caddr_t) &amp;myRequest, sizeof =
+(myRequest), 0, <BR>        (struct sockaddr *) &amp;serverAddr, =
+sockAddrSize) =3D=3D ERROR) <BR>        { <BR>        perror ("sendto"); =
+<BR>        close (sFd); <BR>        return (ERROR); <BR>        } <BR> =
+<BR>    close (sFd); <BR>    return (OK); <BR>    }</PRE></FONT>=20
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <HR class=3D"Line">
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"86921"></A>/* udpServer.c - UDP server =
+example */ <BR> <BR>/* <BR>DESCRIPTION <BR>This file contains the =
+server-side of the vxWorks UDP example code. <BR>The example code =
+demonstrates the usage of several BSD 4.4-style <BR>socket routine =
+calls. <BR>*/ <BR> <BR>/* includes */ <BR>#include "vxWorks.h" =
+<BR>#include "sockLib.h" <BR>#include "inetLib.h" <BR>#include =
+"stdioLib.h" <BR>#include "strLib.h" <BR>#include "ioLib.h" <BR>#include =
+"fioLib.h" <BR>#include "udpExample.h" <BR> <BR> =
+<BR>/********************************************************************=
+* <BR>* <BR>* udpServer - read from UDP socket and display client's =
+message if requested  <BR>* <BR>* Example of vxWorks UDP server: <BR>*   =
+    -&gt; sp udpServer <BR>*       task spawned: id =3D 0x3a1f6c, name =
+=3D t2 <BR>*       value =3D 3809132 =3D 0x3a1f6c <BR>*       -&gt; =
+MESSAGE FROM CLIENT (Internet Address 150.12.0.11, port 1028): <BR>*     =
+  Greetings from UDP client <BR>* <BR>* RETURNS: Never, or ERROR if a =
+resources could not be allocated. <BR>*/ <BR> <BR>STATUS udpServer =
+(void) <BR>    { <BR>    struct sockaddr_in  serverAddr;    /* server's =
+socket address */ <BR>    struct sockaddr_in  clientAddr;    /* client's =
+socket address */ <BR>    struct request      clientRequest; /* =
+request/Message from client */ <BR>    int                 sockAddrSize; =
+ /* size of socket address structure */ <BR>    int                 sFd; =
+          /* socket file descriptor */ <BR>    char                =
+inetAddr[INET_ADDR_LEN]; <BR>                                       /* =
+buffer for client's inet addr */ <BR> <BR>    /* set up the local =
+address */ <BR> <BR>    sockAddrSize =3D sizeof (struct sockaddr_in); =
+<BR>    bzero ((char *) &amp;serverAddr, sockAddrSize); <BR>    =
+serverAddr.sin_len =3D (u_char) sockAddrSize; <BR>    =
+serverAddr.sin_family =3D AF_INET; <BR>    serverAddr.sin_port =3D htons =
+(SERVER_PORT_NUM); <BR>    serverAddr.sin_addr.s_addr =3D htonl =
+(INADDR_ANY); <BR> <BR>    /* create a UDP-based socket */ <BR> <BR>    =
+if ((sFd =3D socket (AF_INET, SOCK_DGRAM, 0)) =3D=3D ERROR) <BR>        =
+{ <BR>        perror ("socket"); <BR>        return (ERROR); <BR>        =
+} <BR> <BR>    /* bind socket to local address */ <BR> <BR>    if (bind =
+(sFd, (struct sockaddr *) &amp;serverAddr, sockAddrSize) =3D=3D ERROR) =
+<BR>        { <BR>        perror ("bind"); <BR>        close (sFd); <BR> =
+       return (ERROR); <BR>        } <BR> <BR>    /* read data from a =
+socket and satisfy requests */ <BR> <BR>    FOREVER <BR>        { <BR>   =
+     if (recvfrom (sFd, (char *) &amp;clientRequest, sizeof =
+(clientRequest), 0, <BR>            (struct sockaddr *) &amp;clientAddr, =
+&amp;sockAddrSize) =3D=3D ERROR) <BR>            { <BR>            =
+perror ("recvfrom"); <BR>            close (sFd); <BR>            return =
+(ERROR); <BR>            } <BR> <BR>        /* if client requested that =
+message be displayed, print it */ <BR> <BR>        if =
+(clientRequest.display) <BR>            { <BR>            /* convert =
+inet address to dot notation */ <BR> <BR>            inet_ntoa_b =
+(clientAddr.sin_addr, inetAddr); <BR>            printf ("MSG FROM =
+CLIENT (Internet Address %s, port %d):\n%s\n", <BR>                =
+inetAddr, ntohs (clientAddr.sin_port), clientRequest.message); <BR>      =
+      } <BR>        } <BR>    }</PRE></FONT>=20
+    </DD></DL></DD></DL><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H4 class=3D"H4"><I><A name=3D"86924"></A>Using a Datagram (UDP) Socket =
+to Access IP=20
+Multicasting</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"86926"></A>Multicasting is the delivery =
+of the same=20
+    packets to multiple IP addresses. Typical multicasting applications =
+include=20
+    audio and video conferencing, resource discovery tools, and shared =
+white=20
+    boards. Multicasting is a feature of the IP layer, but to access =
+this=20
+    function, an application uses a UDP socket.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"86927"></A>A VxWorks process must =
+multicast on a=20
+    network interface driver that supports multicasting (many do not). =
+To review=20
+    the capabilities of all attached network drivers, use <B=20
+    class=3D"routine">ifShow(&nbsp;)</B>. If a network interface =
+supports=20
+    multicasting, <B class=3D"symbol_UC">IFF_MULTICAST</B> is listed =
+among the=20
+    flags for that network interface.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"86929"></A>Multicast IP addresses range =
+from=20
+    224.0.0.0 to 239.255.255.255. These addresses are also called class =
+D=20
+    addresses or multicast groups. A datagram with a class D destination =
+address=20
+    is delivered to every process that has joined the corresponding =
+multicast=20
+    group.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"86930"></A>To multicast a packet, a =
+VxWorks process=20
+    need do nothing special. The process just sends to the appropriate =
+multicast=20
+    address. The process can use any normal UDP socket. To set the route =
+to the=20
+    destination multicast address, use <B=20
+    class=3D"routine">mRouteAdd(&nbsp;)</B>.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"86932"></A>To receive a multicast =
+packet, a VxWorks=20
+    process must join a multicast group. To do this, the VxWorks process =
+must=20
+    set the appropriate socket options on the socket (see <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#86943">Table&nbsp;7-1</A>).=20
+    </P></DD></DL></DL>
+<P class=3D"table">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"86943"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Table 7-1	:&nbsp;&nbsp; <B>Multicasting Socket =
+Options<SUP><B=20
+  class=3D"FootnoteMarker">1</B></SUP>&nbsp;&nbsp;&nbsp; =
+</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+      <TBODY>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86949"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Command</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86951"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Argument</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86953"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Description</FONT></B></DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule2">
+        </TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86956"></A><B=20
+          class=3D"symbol_UC">IP_MULTICAST_IF</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86958"></A><B =
+class=3D"symbol_lc">struct=20
+          in_addr</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86960"></A>Select default =
+interface for=20
+          outgoing multicasts.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86963"></A><B=20
+          class=3D"symbol_UC">IP_MULTICAST_TTL</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86965"></A><B=20
+          class=3D"symbol_lc">char</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86967"></A>Select default time =
+to live=20
+          (TTL) for outgoing multicast packets. </DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86970"></A><B=20
+          class=3D"symbol_UC">IP_MULTICAST_LOOP</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86972"></A><B=20
+          class=3D"symbol_lc">char</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86974"></A>Enable or disable =
+loopback of=20
+          outgoing multicasts. </DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86977"></A><B=20
+          class=3D"symbol_UC">IP_ADD_MEMBERSHIP</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86979"></A><B =
+class=3D"symbol_lc">struct=20
+          ip_mreq</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86981"></A>Join a multicast =
+group.=20
+      </DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86984"></A><B=20
+          class=3D"symbol_UC">IP_DROP_MEMBERSHIP</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86986"></A><B =
+class=3D"symbol_lc">struct=20
+          ip_mreq</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"86988"></A>Leave a multicast =
+group.=20
+        </DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD colspan=3D"20"><SPAN class=3D"TableFootnote"><A =
+name=3D"86942"></A>
+          <P class=3D"FootnoteNumberMarker">1:&nbsp; <SPAN=20
+          class=3D"TableFootnote"><A name=3D"86942"></A>For more on =
+multicasting=20
+          socket options, see the <B =
+class=3D"routine">setsockopt(&nbsp;)</B>=20
+          reference entry. </SPAN></P></SPAN>
+          <P></P></TD></TR></TBODY></TABLE></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P>
+    <DD>
+    <P class=3D"Body"><A name=3D"86989"></A>When choosing an address =
+upon which to=20
+    multicast, remember that certain addresses and address ranges are =
+already=20
+    registered to specific uses and protocols. For example, 244.0.0.1 =
+multicasts=20
+    to all systems on the local subnet. The Internet Assigned Numbers =
+Authority=20
+    (IANA) maintains a list of registered IP multicast groups. The =
+current list=20
+    can be found in RFC 1700. For more information about the IANA, see =
+<I class=3D"title">RFC=20
+    1700</I>. <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#86997">Table&nbsp;7-2</A>=20
+    lists some of the well known multicast groups. </P></DD></DL></DL>
+<P class=3D"table">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"86997"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Table 7-2	:&nbsp;&nbsp; <B>Well Known Multicast=20
+  Groups&nbsp;&nbsp;&nbsp;</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+      <TBODY>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87003"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Group</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87005"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1"> Constant</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87007"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Description</FONT></B></DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule2">
+        </TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87009"></A>224.0.0.0</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87011"></A><B=20
+          class=3D"symbol_UC">INADDR_UNSPEC_GROUP</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87013"></A>Reserved for =
+protocols that=20
+          implement IP unicast and multicast routing mechanisms. =
+Datagrams sent=20
+          to any of these groups are not forwarded beyond the local =
+network by=20
+          multicast routers.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87015"></A>224.0.0.1</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87017"></A><B=20
+          class=3D"symbol_UC">INADDR_ALLHOSTS_GROUP</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87019"></A>All systems on this =
+subnet. This=20
+          value is automatically added to all network drivers at =
+initialization.=20
+          </DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87021"></A>224.0.0.2</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87023"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87025"></A>All routers on this =
+subnet.=20
+          </DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87027"></A>224.0.0.3</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87029"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87031"></A>Unassigned. =
+</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87033"></A>224.0.0.4</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87035"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87037"></A>DVMRP routers. =
+</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87039"></A>224.0.0.5</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87041"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87043"></A>OSPF routers. =
+</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87045"></A>224.0.0.6</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87047"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87049"></A>OSPF designated =
+routers.=20
+        </DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87051"></A>224.0.0.9</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87053"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87055"></A>All RIP routers. =
+</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A =
+name=3D"87057"></A>224.0.0.255</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87059"></A><B=20
+          class=3D"symbol_UC">INADDR_MAX_LOCAL_GROUP</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87061"></A>Unassigned. =
+</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87063"></A>224.0.1.1</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87065"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87067"></A>NTP (Network Time =
+Protocol).=20
+          </DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD colspan=3D"20"></TD></TR></TBODY></TABLE></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87069"></A>The following code samples =
+define two=20
+    routines, <B class=3D"routine">mcastSend(&nbsp;)</B> and <B=20
+    class=3D"routine">mcastRcv(&nbsp;)</B>. These routines demonstrate =
+how to use=20
+    UDP sockets for sending and receiving multicast traffic.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87070"></A><B =
+class=3D"routine">mcastSend(&nbsp;)</B>=20
+    transmits a buffer to the specified multicast address. As input, =
+this=20
+    routine expects a multicast destination, a port number, a buffer =
+pointer,=20
+    and a buffer length. For example:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code2"><A name=3D"87071"></A>status =3D mcastSend =
+("224.1.0.1", 7777, bufPtr, 100);</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87072"></A><B =
+class=3D"routine">mcastRcv(&nbsp;)=20
+    </B>receives any packet sent to a specified multicast address. As =
+input,=20
+    this routine expects the interface address from which the packet =
+came, a=20
+    multicast address, a port number, and the number of bytes to read =
+from the=20
+    packet. The returned value of the function is a pointer a buffer =
+containing=20
+    the read bytes. For example:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code2"><A name=3D"87073"></A>buf =3D mcastRcv (ifAddress, =
+"224.1.0.1", 7777, 100) ;</PRE></FONT>=20
+      </DD></DL></DD></DL></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87074"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Example 7-2	:&nbsp;&nbsp; <B>Datagram Sockets (UDP) and=20
+  Multicasting</B></FONT></P>
+  <DL class=3D"margin">
+    <DD>
+    <HR class=3D"Line">
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87076"></A>/* includes */ <BR>#include =
+"vxWorks.h" <BR>#include "taskLib.h" <BR>#include "socket.h" =
+<BR>#include "netinet/in.h" <BR>#include "stdio.h" <BR>#include =
+"stdlib.h" <BR>#include "string.h" <BR>#include "sockLib.h" <BR>#include =
+"inetLib.h" <BR>#include "ioLib.h" <BR>#include "routeLib.h" <BR>  =
+<BR>/* defines */ <BR>/* globals */ <BR>/* forward declarations */ <BR> =
+<BR> <BR>STATUS mcastSend (char * mcastAddr, USHORT mcastPort, char * =
+sendBuf, <BR>                  int sendLen);  <BR>char * mcastRcv (char =
+* ifAddr, char * mcastAddr, USHORT mcastPort,  <BR>                 int =
+numRead);  <BR> =
+<BR>/********************************************************************=
+**** <BR>* mcastSend - send a message to the multicast address <BR>* =
+This function sends a message to the multicast address <BR>* The =
+multicast group address to send, the port number, the pointer to the  =
+<BR>* send buffer and the send buffer length are given as input =
+parameters. <BR>* RETURNS: OK if successful or ERROR <BR>*/ <BR> =
+<BR>STATUS mcastSend <BR>    ( <BR>    char *      mcastAddr,      /* =
+multicast address  */ <BR>    USHORT      mcastPort,      /* udp port =
+number */ <BR>    char *      sendBuf,        /* send Buffer */ <BR>    =
+int         sendLen         /* length of send buffer */ <BR>    ) <BR>   =
+ { <BR>    struct sockaddr_in  sin;  <BR>    struct sockaddr_in  toAddr; =
+ <BR>    int                 toAddrLen; <BR>    int                 =
+sockDesc; <BR>    char *              bufPtr; <BR>    int                =
+ len; <BR> <BR>    /* create a send and recv socket */ <BR> <BR>    if =
+((sockDesc =3D socket (AF_INET, SOCK_DGRAM, 0)) &lt; 0 ) <BR>        { =
+<BR>        printf (" cannot open send socket\n");  <BR>        return =
+(ERROR);  <BR>        } <BR> <BR>    /* zero out the structures */ <BR>  =
+  bzero ((char *)&amp;sin, sizeof (sin)); <BR>    bzero ((char =
+*)&amp;toAddr, sizeof (toAddr)); <BR> <BR>    sin.sin_len =3D (u_char) =
+sizeof(sin);  <BR>    sin.sin_family =3D AF_INET;  <BR>    =
+sin.sin_addr.s_addr =3D INADDR_ANY; <BR>    sin.sin_port =3D htons(0); =
+<BR> <BR>    if (bind(sockDesc, (struct sockaddr *)&amp;sin, =
+sizeof(sin)) !=3D 0) <BR>        { <BR>        perror("bind"); <BR>      =
+  if (sockDesc) <BR>            close (sockDesc); <BR>        return =
+(ERROR);  <BR>        } <BR> <BR>    toAddrLen =3D sizeof(struct =
+sockaddr_in); <BR>    toAddr.sin_len      =3D (u_char) toAddrLen; <BR>   =
+ toAddr.sin_family      =3D AF_INET; <BR> <BR> <BR>    /* initialize the =
+address to the send */ <BR>    toAddr.sin_addr.s_addr =3D inet_addr =
+(mcastAddr); <BR> <BR>    /* initialize the port to send */ <BR>    =
+toAddr.sin_port        =3D htons(mcastPort); <BR> <BR>    bufPtr =3D =
+sendBuf;           /* initialize the buffer pointer */ <BR> <BR>    /* =
+send the buffer */ <BR>    while (sendLen &gt; 0) <BR>        { <BR>     =
+   if ((len =3D sendto (sockDesc, bufPtr, sendLen, 0,  <BR>              =
+             (struct sockaddr *)&amp;toAddr, toAddrLen)) &lt; 0 ) <BR>   =
+         { <BR>            printf("mcastSend sendto errno:0x%x\n", errno =
+);  <BR>            break; <BR>            } <BR> <BR>        sendLen =
+-=3D len; <BR>        bufPtr +=3D len; <BR> <BR>        taskDelay (1);   =
+       /* give  a taskDelay */ <BR>        } <BR> <BR>    close =
+(sockDesc);  <BR> <BR>    return (OK); <BR>    } <BR> =
+<BR>/********************************************************************=
+**** <BR> * mcastRcv - receive a message from a  multicast address <BR> =
+* This function receives a message from a  multicast address  <BR> * The =
+interface address from which to receive the multicast packet, <BR> * the =
+multicast address to recv from, the port number and the number of  <BR> =
+* bytes to read are given as input parameters to this routine. <BR> * =
+RETURNS: Pointer to the Buffer or NULL if error. <BR> */ <BR> <BR>char * =
+mcastRcv <BR>    ( <BR>    char *      ifAddr,         /* interface =
+address to recv mcast packets */ <BR>    char *      mcastAddr,      /* =
+multicast address  */ <BR>    USHORT      mcastPort,      /* udp port =
+number to recv */ <BR>    int         numRead         /* number of bytes =
+to read */ <BR>    ) <BR>    { <BR>    struct sockaddr_in  fromAddr;  =
+<BR>    struct sockaddr_in  sin;  <BR>    int                 fromLen;  =
+<BR>    struct ip_mreq      ipMreq;  <BR>    int                 =
+recvLen; <BR>    int                 sockDesc; <BR>    char *            =
+  bufPtr;  <BR>    int                 status  =3D OK; <BR>    char *    =
+          recvBuf =3D NULL; <BR> <BR>    if ((sockDesc =3D socket =
+(AF_INET, SOCK_DGRAM, 0)) &lt; 0)  <BR>        { <BR>        printf (" =
+cannot open recv socket\n");  <BR>        return (NULL); <BR>        } =
+<BR> <BR>    bzero ((char *)&amp;sin, sizeof (sin)); <BR>    bzero =
+((char *) &amp;fromAddr, sizeof(fromAddr)); <BR>    fromLen =3D =
+sizeof(fromAddr);  <BR> <BR>    if ((recvBuf =3D calloc (numRead, sizeof =
+(char))) =3D=3D NULL) <BR>        { <BR>        printf (" calloc error, =
+cannot allocate memory\n");  <BR>        status =3D ERROR; <BR>        =
+goto cleanUp; <BR>        } <BR> <BR>    sin.sin_len =3D (u_char) =
+sizeof(sin);  <BR>    sin.sin_family =3D AF_INET;  <BR>    =
+sin.sin_addr.s_addr =3D INADDR_ANY;  <BR> <BR>    /* UDP port number to =
+match for the received packets */ <BR>    sin.sin_port =3D htons =
+(mcastPort); <BR> <BR>    /* bind a port number to the socket */ <BR>    =
+if (bind(sockDesc, (struct sockaddr *)&amp;sin, sizeof(sin)) !=3D 0) =
+<BR>        { <BR>        perror("bind"); <BR>        status =3D ERROR; =
+<BR>        goto cleanUp; <BR>        } <BR>     <BR>    /* fill in the =
+argument structure to join the multicast group */ <BR>    /* initialize =
+the multicast address to join */ <BR> <BR>    =
+ipMreq.imr_multiaddr.s_addr =3D inet_addr (mcastAddr); <BR> <BR>    /* =
+unicast interface addr from which to receive the multicast packets */ =
+<BR>    ipMreq.imr_interface.s_addr =3D inet_addr (ifAddr); <BR>     =
+<BR>    /* set the socket option to join the MULTICAST group */ <BR>    =
+if (setsockopt (sockDesc, IPPROTO_IP, IP_ADD_MEMBERSHIP,  <BR>           =
+     (char *)&amp;ipMreq,  <BR>                sizeof (ipMreq)) &lt; 0) =
+<BR>        {  <BR>        printf ("setsockopt IP_ADD_MEMBERSHIP =
+error:\n");  <BR>        status =3D ERROR; <BR>        goto cleanUp; =
+<BR>        } <BR> <BR>    /* get the data destined to the above =
+multicast group */ <BR>    bufPtr =3D recvBuf; <BR> <BR> <BR> <BR>    =
+while (numRead &gt; 0) <BR>      { <BR>      if ((recvLen =3D recvfrom =
+(sockDesc, bufPtr, numRead, 0,  <BR>                             (struct =
+sockaddr *)&amp;fromAddr, &amp;fromLen)) &lt; 0) <BR>          { <BR>    =
+      perror("recvfrom");  <BR>          status =3D ERROR; <BR>          =
+break; <BR>          } <BR>       numRead -=3D recvLen;       /* =
+decrement number of bytes to read */ <BR>      bufPtr  +=3D recvLen;     =
+  /* increment the buffer pointer */ <BR>      } <BR>     <BR>    /* set =
+the socket option to leave the MULTICAST group */ <BR>    if (setsockopt =
+(sockDesc, IPPROTO_IP, IP_DROP_MEMBERSHIP,  <BR>                    =
+(char *)&amp;ipMreq,  <BR>                    sizeof (ipMreq)) &lt; 0)  =
+<BR>        printf ("setsockopt IP_DROP_MEMBERSHIP error:\n");  <BR> =
+<BR>    cleanUp: <BR>        close (sockDesc); <BR>    if ((status !=3D =
+OK) &amp;&amp; (recvBuf !=3D NULL)) <BR>        { <BR>        free =
+(recvBuf); <BR>        recvBuf =3D NULL; <BR>        } <BR>     return =
+(recvBuf); <BR>    } <BR></PRE></FONT>=20
+    </DD></DL></DD></DL><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H4 class=3D"H3"><I><A name=3D"87079"></A>7.2.3  &nbsp;&nbsp;Stream =
+Sockets=20
+(TCP)</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87081"></A>The Transmission Control =
+Protocol (TCP)=20
+    provides reliable, two-way transmission of data. In a TCP =
+communication, two=20
+    sockets are <I class=3D"term">connected</I>, allowing a reliable =
+byte-stream=20
+    to flow between them in either direction. TCP is referred to as a <I =
+class=3D"term">virtual=20
+    circuit</I> protocol, because it behaves as though a circuit is =
+created=20
+    between the two sockets.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87082"></A>A good analogy for TCP =
+communications is=20
+    a telephone system. Connecting two sockets is similar to calling =
+from one=20
+    telephone to another. After the connection is established, you can =
+write and=20
+    read data (talk and listen).</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87086"></A><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87090">Table&nbsp;7-3</A>=20
+    shows the steps in establishing socket communications with TCP, and =
+the=20
+    analogy of each step with telephone communications. =
+</P></DD></DL></DL>
+<P class=3D"table">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87090"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Table 7-3	:&nbsp;&nbsp; <B>TCP Analogy to Telephone=20
+  Communication&nbsp;&nbsp;&nbsp;</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+      <TBODY>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87098"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Task 1 <BR>Waits</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87100"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Task 2 <BR>Calls</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87102"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Function</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87104"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Analogy</FONT></B></DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule2">
+        </TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87106"></A><B=20
+          class=3D"routine">socket</B><FONT class=3D"Default"=20
+          color=3D"red">(</FONT>&nbsp;<FONT class=3D"Default"=20
+          color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87108"></A><B=20
+          class=3D"routine">socket</B><FONT class=3D"Default"=20
+          color=3D"red">(</FONT>&nbsp;<FONT class=3D"Default"=20
+          color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87110"></A>Create =
+sockets.</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87112"></A>Hook up =
+telephones.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87114"></A><B =
+class=3D"routine">bind</B><FONT=20
+          class=3D"Default" color=3D"red">(</FONT>&nbsp;<FONT =
+class=3D"Default" color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87116"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87118"></A>Assign address to=20
+        socket.</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87120"></A>Assign telephone=20
+      number.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87122"></A><B=20
+          class=3D"routine">listen</B><FONT class=3D"Default"=20
+          color=3D"red">(</FONT>&nbsp;<FONT class=3D"Default"=20
+          color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87124"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87126"></A>Allow others to =
+connect to=20
+          socket.</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87128"></A>Allow others to=20
+call.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87130"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87132"></A><B=20
+          class=3D"routine">connect</B><FONT class=3D"Default"=20
+          color=3D"red">(</FONT>&nbsp;<FONT class=3D"Default"=20
+          color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87134"></A>Request connection =
+to another=20
+          socket.</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87136"></A>Dial another =
+telephone 's=20
+          number.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87138"></A><B=20
+          class=3D"routine">accept</B><FONT class=3D"Default"=20
+          color=3D"red">(</FONT>&nbsp;<FONT class=3D"Default"=20
+          color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87140"></A></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87142"></A>Complete connection =
+between=20
+          sockets.</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87144"></A>Answer telephone and =
+establish=20
+          connection.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87146"></A><B=20
+          class=3D"routine">write</B><FONT class=3D"Default"=20
+          color=3D"red">(</FONT>&nbsp;<FONT class=3D"Default"=20
+          color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87148"></A><B=20
+          class=3D"routine">write</B><FONT class=3D"Default"=20
+          color=3D"red">(</FONT>&nbsp;<FONT class=3D"Default"=20
+          color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87150"></A>Send data to other=20
+        socket.</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A =
+name=3D"87152"></A>Talk.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87154"></A><B =
+class=3D"routine">read</B><FONT=20
+          class=3D"Default" color=3D"red">(</FONT>&nbsp;<FONT =
+class=3D"Default" color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87156"></A><B =
+class=3D"routine">read</B><FONT=20
+          class=3D"Default" color=3D"red">(</FONT>&nbsp;<FONT =
+class=3D"Default" color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87158"></A>Receive data from =
+other=20
+          socket.</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A =
+name=3D"87160"></A>Listen.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87162"></A><B=20
+          class=3D"routine">close</B><FONT class=3D"Default"=20
+          color=3D"red">(</FONT>&nbsp;<FONT class=3D"Default"=20
+          color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87164"></A><B=20
+          class=3D"routine">close</B><FONT class=3D"Default"=20
+          color=3D"red">(</FONT>&nbsp;<FONT class=3D"Default"=20
+          color=3D"red">)</FONT></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87166"></A>Close =
+sockets.</DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87168"></A>Hang =
+up.</DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD colspan=3D"20"></TD></TR></TBODY></TABLE></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P></DL></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87170"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Example 7-3	:&nbsp;&nbsp; <B>Stream Sockets =
+(TCP)</B></FONT></P>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87172"></A>The following code example =
+uses a=20
+    client-server communication model. The server communicates with =
+clients=20
+    using stream-oriented (TCP) sockets. The main server loop, in <B =
+class=3D"routine">tcpServerWorkTask</B><FONT=20
+    class=3D"Default" color=3D"red">(</FONT>&nbsp;<FONT =
+class=3D"Default"=20
+    color=3D"red">)</FONT>, reads requests, prints the client's message =
+to the=20
+    console, and, if requested, sends a reply back to the client. The =
+client=20
+    builds the request by prompting for input. It sends a message to the =
+server=20
+    and, optionally, waits for a reply to be sent back. To simplify the =
+example,=20
+    we assume that the code is executed on machines that have the same =
+data=20
+    sizes and alignment.</P></DD></DL>
+  <DL class=3D"margin">
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87173"></A>/* tcpExample.h - header used =
+by both TCP server and client examples */  <BR> <BR>/* defines */ =
+<BR>#define SERVER_PORT_NUM         5001   /* server's port number for =
+bind() */ <BR>#define SERVER_WORK_PRIORITY    100    /* priority of =
+server's work task */ <BR>#define SERVER_STACK_SIZE       10000  /* =
+stack size of server's work task */ <BR>#define SERVER_MAX_CONNECTIONS  =
+4      /* max clients connected at a time */ <BR>#define =
+REQUEST_MSG_SIZE        1024   /* max size of request message */ =
+<BR>#define REPLY_MSG_SIZE          500    /* max size of reply message =
+*/ <BR> <BR>/* structure for requests from clients to server */ =
+<BR>struct request <BR>    { <BR>    int reply;                         =
+/* TRUE =3D request reply from server */  <BR>    int msgLen;            =
+            /* length of message text */ <BR>    char =
+message[REQUEST_MSG_SIZE];    /* message buffer */  <BR>    =
+};</PRE></FONT>=20
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <HR class=3D"Line">
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87175"></A>/* tcpClient.c - TCP client =
+example */ <BR> <BR>/* <BR>DESCRIPTION <BR>This file contains the =
+client-side of the VxWorks TCP example code. <BR>The example code =
+demonstrates the usage of several BSD 4.4-style <BR>socket routine =
+calls. <BR>*/ <BR> <BR>/* includes */ <BR> <BR>#include "vxWorks.h" =
+<BR>#include "sockLib.h" <BR>#include "inetLib.h" <BR>#include =
+"stdioLib.h" <BR>#include "strLib.h" <BR>#include "hostLib.h" =
+<BR>#include "ioLib.h" <BR>#include "tcpExample.h" <BR> =
+<BR>/********************************************************************=
+******** <BR>* <BR>* tcpClient - send requests to server over a TCP =
+socket <BR>* <BR>* This routine connects over a TCP socket to a server, =
+and sends a <BR>* user-provided message to the server.  Optionally, this =
+routine <BR>* waits for the server's reply message. <BR>* <BR>* This =
+routine may be invoked as follows: <BR>*       -&gt; tcpClient =
+"remoteSystem" <BR>*       Message to send: <BR>*       Hello out there =
+<BR>*       Would you like a reply (Y or N): <BR>*       y <BR>*       =
+value =3D 0 =3D 0x0 <BR>*       -&gt; MESSAGE FROM SERVER: <BR>*       =
+Server received your message <BR>* <BR>* RETURNS: OK, or ERROR if the =
+message could not be sent to the server. <BR>*/ <BR> <BR>STATUS =
+tcpClient <BR>    ( <BR>    char *              serverName     /* name =
+or IP address of server */ <BR>    ) <BR>    { <BR>    struct request    =
+  myRequest;     /* request to send to server */ <BR>    struct =
+sockaddr_in  serverAddr;    /* server's socket address */ <BR>    char   =
+             replyBuf[REPLY_MSG_SIZE]; /* buffer for reply */ <BR>    =
+char                reply;         /* if TRUE, expect reply back */ <BR> =
+   int                 sockAddrSize;  /* size of socket address =
+structure */ <BR>    int                 sFd;           /* socket file =
+descriptor */ <BR>    int                 mlen;          /* length of =
+message */ <BR> <BR>    /* create client's socket */ <BR>    if ((sFd =
+=3D socket (AF_INET, SOCK_STREAM, 0)) =3D=3D ERROR) <BR>        { <BR>   =
+     perror ("socket"); <BR>        return (ERROR); <BR>        } <BR> =
+<BR>    /* bind not required - port number is dynamic */ <BR>    /* =
+build server socket address */ <BR>    sockAddrSize =3D sizeof (struct =
+sockaddr_in); <BR>    bzero ((char *) &amp;serverAddr, sockAddrSize); =
+<BR>    serverAddr.sin_family =3D AF_INET; <BR>    serverAddr.sin_len =
+=3D (u_char) sockAddrSize; <BR>    serverAddr.sin_port =3D htons =
+(SERVER_PORT_NUM); <BR> <BR>    if (((serverAddr.sin_addr.s_addr =3D =
+inet_addr (serverName)) =3D=3D ERROR) &amp;&amp; <BR>        =
+((serverAddr.sin_addr.s_addr =3D hostGetByName (serverName)) =3D=3D =
+ERROR)) <BR>        { <BR>        perror ("unknown server name"); <BR>   =
+     close (sFd); <BR>        return (ERROR); <BR>        } <BR> <BR>    =
+/* connect to server */ <BR>    if (connect (sFd, (struct sockaddr *) =
+&amp;serverAddr, sockAddrSize) =3D=3D ERROR) <BR>        { <BR>        =
+perror ("connect"); <BR>        close (sFd); <BR>        return (ERROR); =
+<BR>        } <BR> <BR>    /* build request, prompting user for message =
+*/ <BR>    printf ("Message to send: \n"); <BR>    mlen =3D read =
+(STD_IN, myRequest.message, REQUEST_MSG_SIZE); <BR>    myRequest.msgLen =
+=3D mlen; <BR>    myRequest.message[mlen - 1] =3D '\0'; <BR>    printf =
+("Would you like a reply (Y or N): \n"); <BR>    read (STD_IN, =
+&amp;reply, 1); <BR>    switch (reply) <BR>        { <BR>        case =
+'y': <BR>        case 'Y': myRequest.reply =3D TRUE; <BR>            =
+break; <BR>        default: myRequest.reply =3D FALSE; <BR>            =
+break; <BR>        } <BR> <BR>    /* send request to server */ <BR> <BR> =
+   if (write (sFd, (char *) &amp;myRequest, sizeof (myRequest)) =3D=3D =
+ERROR) <BR>        { <BR>        perror ("write"); <BR>        close =
+(sFd); <BR>        return (ERROR); <BR>        } <BR> <BR>    if =
+(myRequest.reply)        /* if expecting reply, read and display it */  =
+<BR>        { <BR>        if (read (sFd, replyBuf, REPLY_MSG_SIZE) &lt; =
+0) <BR>            { <BR>            perror ("read"); <BR>            =
+close (sFd); <BR>            return (ERROR); <BR>            =
+}</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87176"></A>        printf ("MESSAGE FROM =
+SERVER:\n%s\n", replyBuf); <BR>        }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87177"></A>    close (sFd); <BR>    =
+return (OK); <BR>    }</PRE></FONT>=20
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <HR class=3D"Line">
+    </DD></DL>
+  <DL class=3D"margin">
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87179"></A>/* tcpServer.c - TCP server =
+example */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87180"></A>/* <BR>DESCRIPTION <BR>This =
+file contains the server-side of the VxWorks TCP example code. <BR>The =
+example code demonstrates the usage of several BSD 4.4-style <BR>socket =
+routine calls. <BR>*/</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87181"></A>/* includes */ <BR>#include =
+"vxWorks.h" <BR>#include "sockLib.h" <BR>#include "inetLib.h" =
+<BR>#include "taskLib.h" <BR>#include "stdioLib.h" <BR>#include =
+"strLib.h" <BR>#include "ioLib.h" <BR>#include "fioLib.h" <BR>#include =
+"tcpExample.h"</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87182"></A>/* function declarations =
+*/</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87183"></A>VOID tcpServerWorkTask (int =
+sFd, char * address, u_short port);</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A =
+name=3D"87184"></A>/*****************************************************=
+*********************** <BR>* <BR>* tcpServer - accept and process =
+requests over a TCP socket <BR>* <BR>* This routine creates a TCP =
+socket, and accepts connections over the socket <BR>* from clients.  =
+Each client connection is handled by spawning a separate <BR>* task to =
+handle client requests. <BR>* <BR>* This routine may be invoked as =
+follows: <BR>*       -&gt; sp tcpServer <BR>*       task spawned: id =3D =
+0x3a6f1c, name =3D t1 <BR>*       value =3D 3829532 =3D 0x3a6f1c <BR>*   =
+    -&gt; MESSAGE FROM CLIENT (Internet Address 150.12.0.10, port 1027): =
+<BR>*       Hello out there <BR>* <BR>* RETURNS: Never, or ERROR if a =
+resources could not be allocated. <BR>*/</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87185"></A>STATUS tcpServer (void) <BR>   =
+ { <BR>    struct sockaddr_in  serverAddr;    /* server's socket address =
+*/ <BR>    struct sockaddr_in  clientAddr;    /* client's socket address =
+*/ <BR>    int                 sockAddrSize;  /* size of socket address =
+structure */ <BR>    int                 sFd;           /* socket file =
+descriptor */ <BR>    int                 newFd;         /* socket =
+descriptor from accept */ <BR>    int                 ix =3D 0;        =
+/* counter for work task names */ <BR>    char                =
+workName[16];  /* name of work task */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87186"></A>    /* set up the local =
+address */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87187"></A>    sockAddrSize =3D sizeof =
+(struct sockaddr_in); <BR>    bzero ((char *) &amp;serverAddr, =
+sockAddrSize); <BR>    serverAddr.sin_family =3D AF_INET; <BR>    =
+serverAddr.sin_len =3D (u_char) sockAddrSize; <BR>    =
+serverAddr.sin_port =3D htons (SERVER_PORT_NUM); <BR>    =
+serverAddr.sin_addr.s_addr =3D htonl (INADDR_ANY);</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87188"></A>    /* create a TCP-based =
+socket */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87189"></A>    if ((sFd =3D socket =
+(AF_INET, SOCK_STREAM, 0)) =3D=3D ERROR) <BR>        { <BR>        =
+perror ("socket"); <BR>        return (ERROR); <BR>        =
+}</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87190"></A>    /* bind socket to local =
+address */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87191"></A>    if (bind (sFd, (struct =
+sockaddr *) &amp;serverAddr, sockAddrSize) =3D=3D ERROR) <BR>        { =
+<BR>        perror ("bind"); <BR>        close (sFd); <BR>        return =
+(ERROR); <BR>        }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87192"></A>    /* create queue for client =
+connection requests */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87193"></A>    if (listen (sFd, =
+SERVER_MAX_CONNECTIONS) =3D=3D ERROR) <BR>        { <BR>        perror =
+("listen"); <BR>        close (sFd); <BR>        return (ERROR); <BR>    =
+    }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87194"></A>    /* accept new connect =
+requests and spawn tasks to process them */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87195"></A>    FOREVER <BR>        { <BR> =
+       if ((newFd =3D accept (sFd, (struct sockaddr *) &amp;clientAddr, =
+<BR>            &amp;sockAddrSize)) =3D=3D ERROR) <BR>            { <BR> =
+           perror ("accept"); <BR>            close (sFd); <BR>          =
+  return (ERROR); <BR>            }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87196"></A>        sprintf (workName, =
+"tTcpWork%d", ix++); <BR>        if (taskSpawn(workName, =
+SERVER_WORK_PRIORITY, 0, SERVER_STACK_SIZE, <BR>            (FUNCPTR) =
+tcpServerWorkTask, newFd, <BR>            (int) inet_ntoa =
+(clientAddr.sin_addr), ntohs (clientAddr.sin_port), <BR>            0, =
+0, 0, 0, 0, 0, 0) =3D=3D ERROR) <BR>            { <BR>            /* if =
+taskSpawn fails, close fd and return to top of loop */ <BR> <BR>         =
+   perror ("taskSpawn"); <BR>            close (newFd); <BR>            =
+} <BR>        } <BR>    } <BR> =
+<BR>/********************************************************************=
+******** <BR>* <BR>* tcpServerWorkTask - process client requests <BR>* =
+<BR>* This routine reads from the server's socket, and processes client =
+<BR>* requests.  If the client requests a reply message, this routine =
+<BR>* will send a reply to the client. <BR>* <BR>* RETURNS: N/A. <BR>*/ =
+<BR> <BR>VOID tcpServerWorkTask <BR>    ( <BR>    int                 =
+sFd,            /* server's socket fd */ <BR>    char *              =
+address,        /* client's socket address */ <BR>    u_short            =
+ port            /* client's socket port */ <BR>    ) <BR>    { <BR>    =
+struct request      clientRequest;  /* request/message from client */ =
+<BR>    int                 nRead;          /* number of bytes read */ =
+<BR>    static char         replyMsg[] =3D "Server received your =
+message"; <BR> <BR>    /* read client request, display message */ <BR> =
+<BR>    while ((nRead =3D fioRead (sFd, (char *) &amp;clientRequest, =
+<BR>        sizeof (clientRequest))) &gt; 0) <BR>        { <BR>        =
+printf ("MESSAGE FROM CLIENT (Internet Address %s, port %d):\n%s\n", =
+<BR>                 address, port, clientRequest.message); <BR> <BR>    =
+    free (address);                 /* free malloc from inet_ntoa() */ =
+<BR> <BR>        if (clientRequest.reply) <BR>            if (write =
+(sFd, replyMsg, sizeof (replyMsg)) =3D=3D ERROR) <BR>                =
+perror ("write"); <BR>        } <BR> <BR>    if (nRead =3D=3D ERROR)     =
+            /* error from read() */ <BR>        perror ("read"); <BR> =
+<BR>    close (sFd);                        /* close server socket =
+connection */ <BR>    }</PRE></FONT>=20
+    </DD></DL></DD></DL><BR class=3D"H2"><A name=3D"90869"></A> <BR=20
+class=3D"H2navbar"><FONT class=3D"sans" face=3D"Helvetica, sans-serif">
+<H3 class=3D"H2"><I>7.3  &nbsp;&nbsp; Zbuf Sockets</I></H3></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"90873"></A>VxWorks includes an =
+alternative set of=20
+    socket calls based on a data abstraction called a <I =
+class=3D"term">zbuf</I>,=20
+    a zero-copy buffer. Using the zbuf socket interface, applications =
+can read=20
+    and write UNIX BSD sockets without copying data between application =
+buffers=20
+    and network buffers. You can use zbufs with either UDP or TCP =
+applications.=20
+    The TCP subset of the zbuf interface is sometimes called <I=20
+    class=3D"term">zero-copy TCP</I>.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87202"></A>Zbuf-based socket calls are =
+<I class=3D"term">interoperable</I>=20
+    with the standard BSD socket interface: the other end of a socket =
+has no way=20
+    of telling whether your end is using zbuf-based calls or traditional =
+calls.=20
+    However, zbuf-based socket calls are<I class=3D"term"></I><I=20
+    class=3D"emphasis">not source-compatible</I> with the standard BSD =
+socket=20
+    interface: you must call different socket functions to use the zbuf=20
+    interface. Applications that use the zbuf interface are thus less =
+portable.=20
+    </P></DD></DL></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"table">
+  <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+    <TBODY>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD>
+        <HR>
+      </TD></TR>
+    <TR valign=3D"top">
+      <TD><IMG alt=3D"*" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/warning.g=
+if"=20
+        border=3D"0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <DIV class=3D"CalloutCell"><A name=3D"87208"></A> <B =
+class=3D"symbol_UC"><FONT=20
+        class=3D"sans" face=3D"Helvetica, sans-serif" =
+size=3D"-1">WARNING: =20
+        </FONT></B> The send socket buffer size must exceed that of any =
+zbufs=20
+        sent over the socket. To set the send socket buffer size, use =
+either the=20
+        <B class=3D"symbol_UC">TCP_SND_SIZE_DFLT</B> or <B=20
+        class=3D"symbol_UC">UDP_SND_SIZE_DFLT </B>configuration =
+parameter.=20
+      </DIV></TD></TR>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <HR>
+      </TD></TR>
+    <TR valign=3D"middle">
+      <TD colspan=3D"20"></TD></TR></TBODY></TABLE></P>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87217"></A>To include zbuf =
+functionality in your=20
+    image, use the <B class=3D"symbol_UC">INCLUDE_ZBUF_SOCK</B> =
+configuration=20
+    parameter. </P></DD></DL></DD></DL><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif">
+<H4 class=3D"H3"><I><A name=3D"87220"></A>7.3.1  &nbsp;&nbsp;Zbuf =
+Sockets and=20
+Protection Domains</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87221"></A>If you are using zbufs =
+within the=20
+    VxWorks AE protection domain model, you must do so within the kernel =
+domain.=20
+    </P></DD></DL></DL><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H4 class=3D"H3"><I><A name=3D"87222"></A>7.3.2  &nbsp;&nbsp;Zbuf Calls =
+to Send=20
+Existing Data Buffers</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87224"></A>The simplest way to use zbuf =
+sockets is=20
+    to call either <B class=3D"routine">zbufSockBufSend(&nbsp;)</B> (in =
+place of=20
+    <B class=3D"routine">send(&nbsp;)</B> for a TCP connection) or <B =
+class=3D"routine">zbufSockBufSendto(&nbsp;)</B>=20
+    (in place of <B class=3D"routine">sendto(&nbsp;)</B> for a UDP =
+datagram). In=20
+    either case, you supply a pointer to your application's data buffer=20
+    containing the data or message to send, and the network protocol =
+uses that=20
+    same buffer rather than copying the data out of =
+it.</P></DD></DL></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"table">
+  <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+    <TBODY>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD>
+        <HR>
+      </TD></TR>
+    <TR valign=3D"top">
+      <TD><IMG alt=3D"*" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/warning.g=
+if"=20
+        border=3D"0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <DIV class=3D"CalloutCell"><A name=3D"87232"></A> <B =
+class=3D"symbol_UC"><FONT=20
+        class=3D"sans" face=3D"Helvetica, sans-serif" =
+size=3D"-1">WARNING: =20
+        </FONT></B> Using zbufs allows different modules to share the =
+same=20
+        buffers. This lets your application avoid the performance hit =
+associated=20
+        with copying the buffer. To make this work, your application =
+must not=20
+        modify (let alone free!) the data buffer while network software =
+is still=20
+        using it. Instead of freeing your buffer explicitly, you can =
+supply a=20
+        free-routine callback: a pointer to a routine that knows how to =
+free the=20
+        buffer. The zbuf library keeps track of how many zbufs point to =
+a data=20
+        buffer and calls the free routine when the data buffer is no =
+longer in=20
+        use.</DIV></TD></TR>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <HR>
+      </TD></TR>
+    <TR valign=3D"middle">
+      <TD colspan=3D"20"></TD></TR></TBODY></TABLE></P>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87240"></A>To receive socket data using =
+zbufs, see=20
+    the following sections. <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87247"><I=20
+    class=3D"title">7.3.3&nbsp;Manipulating the Zbuf Data Structure</I>, =
+p.143</A>=20
+    describes the routines to create and manage zbufs, and <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87537"><I=20
+    class=3D"title">7.3.4&nbsp;Zbuf Socket Calls</I>, p.152</A> =
+introduces the=20
+    remaining zbuf-specific socket routines. See also the reference =
+entries for=20
+    <B class=3D"library">zbufLib</B> and <B=20
+    class=3D"library">zbufSockLib</B>.</P></DD></DL></DD></DL><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif">
+<H4 class=3D"H3"><I><A name=3D"87247"></A>7.3.3  =
+&nbsp;&nbsp;Manipulating the Zbuf=20
+Data Structure</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87249"></A>A zbuf has three essential=20
+    properties:</P></DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Bullet" type=3D"disc">
+      <LI><A name=3D"87250"></A>A zbuf holds a sequence of =
+bytes.</LI></UL>
+    <P></P>
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Bullet" type=3D"disc">
+      <LI><A name=3D"87251"></A>The data in a zbuf is organized into one =
+or more=20
+      <I class=3D"term">segments</I> of contiguous data. Successive zbuf =
+segments=20
+      are not usually contiguous to each other.</LI></UL>
+    <P></P>
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Bullet" type=3D"disc">
+      <LI><A name=3D"87252"></A>Zbuf segments refer to data buffers =
+through=20
+      pointers. The underlying data buffers can be shared by more than =
+one zbuf=20
+      segment.</LI></UL>
+    <P></P></DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87253"></A>Zbuf segments are at the =
+heart of how=20
+    zbufs minimize data copying; if you have a data buffer, you can =
+incorporate=20
+    it (by reference, so that only pointers and lengths move around) =
+into a new=20
+    zbuf segment. Conversely, you can get pointers to the data in zbuf =
+segments,=20
+    and examine the data there directly.</P></DD></DL></DL><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif">
+<H4 class=3D"H4"><I><A name=3D"87254"></A>Zbuf Byte =
+Locations</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87256"></A>You can address the contents =
+of a zbuf=20
+    by <I class=3D"term">byte locations</I>. A zbuf byte location has =
+two parts,=20
+    an <I class=3D"term">offset </I>and a <I class=3D"term">segment =
+ID</I>.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87259"></A>An <I =
+class=3D"term">offset</I> is a=20
+    signed integer (type <B class=3D"keyword">int</B>): the distance in =
+bytes to a=20
+    portion of data in the zbuf, relative to the beginning of a =
+particular=20
+    segment. Zero refers to the first byte in a segment; negative =
+integers refer=20
+    to bytes in previous segments; and positive integers refer to bytes =
+after=20
+    the start of the current segment.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87260"></A>A <I class=3D"term">segment =
+ID</I> is an=20
+    arbitrary integer (type <B class=3D"symbol_UC">ZBUF_SEG</B>) that =
+identifies a=20
+    particular segment of a zbuf. You can always use <B=20
+    class=3D"symbol_UC">NULL</B> to refer to the first segment of a =
+zbuf.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87264"></A><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87268">Figure&nbsp;7-1</A>=20
+    shows a simple zbuf with data organized into two segments. The =
+offsets are=20
+    relative to the first segment. This is the most efficient addressing =
+scheme=20
+    to use to refer to bytes a, b, or c in the figure. =
+</P></DD></DL></DL>
+<P class=3D"frame">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87268"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Figure 7-1	:&nbsp;&nbsp; <B>Zbuf Addressing Relative to =
+First=20
+  Segment (NULL)</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <DIV class=3D"Anchor"><A name=3D"87297"></A> <IMG class=3D"figure" =
+alt=3D"" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/images/c-socket=
+sa.gif"=20
+    border=3D"0"> </DIV></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87301"></A><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87305">Figure&nbsp;7-2</A>=20
+    shows the same zbuf, but it is labeled with offsets relative to the =
+second=20
+    segment. This is the most efficient addressing scheme to refer to =
+bytes d,=20
+    e, f, or g in the figure. </P></DD></DL></DL>
+<P class=3D"frame">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87305"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Figure 7-2	:&nbsp;&nbsp; <B>Zbuf Addressing Relative to =
+Second=20
+  Segment</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <DIV class=3D"Anchor"><A name=3D"87333"></A> <IMG class=3D"figure" =
+alt=3D"" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/images/c-socket=
+s2.gif"=20
+    border=3D"0"> </DIV></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87334"></A>Two special shortcuts give =
+the fastest=20
+    access to either the beginning or the end of a zbuf. The constant <B =
+class=3D"symbol_UC">ZBUF_END</B>=20
+    refers to the position after all existing bytes in the zbuf. =
+Similarly, <B=20
+    class=3D"symbol_UC">ZBUF_BEGIN</B> refers to the position before all =
+existing=20
+    bytes. These constants are the only offsets with meanings not =
+relative to a=20
+    particular segment.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87337"></A>When you insert data in a =
+zbuf, the new=20
+    data is always inserted <I class=3D"emphasis">before</I> the byte =
+location you=20
+    specify in the call to an insertion routine. That is, the byte =
+location you=20
+    specify becomes the address of the newly inserted =
+data.</P></DD></DL></DL><FONT=20
+class=3D"sans" face=3D"Helvetica, sans-serif">
+<H4 class=3D"H4"><I><A name=3D"87339"></A>Creating and Destroying=20
+Zbufs</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87341"></A>To create a new zbuf, call =
+<B class=3D"routine">zbufCreate(&nbsp;)</B>.=20
+    The routine takes no arguments, and returns a zbuf identifier (type =
+<B=20
+    class=3D"keyword">ZBUF_ID</B>) for a zbuf containing no segments. =
+After you=20
+    have the zbuf ID, you can attach segments or otherwise insert data. =
+While=20
+    the zbuf is empty, <B class=3D"symbol_UC">NULL</B> is the only valid =
+segment=20
+    ID, and 0 the only valid offset.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87343"></A>When you no longer need a =
+particular=20
+    zbuf, call <B class=3D"routine">zbufDelete(&nbsp;)</B>. Its single =
+argument is=20
+    the ID for the zbuf to delete. The <B =
+class=3D"routine">zbufDelete(&nbsp;)</B>=20
+    routine calls the free routine associated with each segment in the =
+zbuf, for=20
+    segments that are not shared by other zbufs. After you delete a =
+zbuf, its=20
+    zbuf ID is meaningless; any reference to a deleted zbuf ID is an =
+error.=20
+    </P></DD></DL></DL>
+<P class=3D"table">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87346"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Table 7-4	:&nbsp;&nbsp; <B>Zbuf Creation and Deletion=20
+  Routines&nbsp;&nbsp;&nbsp;</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+      <TBODY>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87350"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Call</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87352"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Description</FONT></B></DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule2">
+        </TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87354"></A><B=20
+          class=3D"routine">zbufCreate(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87356"></A>Create an empty=20
+zbuf.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87358"></A><B=20
+          class=3D"routine">zbufDelete(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87360"></A>Delete a zbuf and =
+free any=20
+          associated segments.</DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD colspan=3D"20"></TD></TR></TBODY></TABLE></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P></DL></DL><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H4 class=3D"H4"><I><A name=3D"87361"></A>Getting Data In and Out of=20
+Zbufs</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87363"></A>The usual way to place data =
+in a zbuf is=20
+    to call <B class=3D"routine">zbufInsertBuf(&nbsp;)</B>. This routine =
+builds a=20
+    zbuf segment pointing to an existing data buffer, and inserts the =
+new=20
+    segment at whatever byte location you specify in a zbuf. You can =
+also supply=20
+    a callback pointer to a free routine, which the zbuf library calls =
+when no=20
+    zbuf segments point to that data buffer.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87364"></A>Because the purpose of the =
+zbuf socket=20
+    interface is to avoid data copying, the need to actually copy data =
+into a=20
+    zbuf (rather than designating its location as a shareable buffer) =
+occurs=20
+    much less frequently. When that need does arise, however, the =
+routine <B=20
+    class=3D"routine">zbufInsertCopy(&nbsp;)</B> is available. This =
+routine does=20
+    not require a callback pointer to a free routine, because the =
+original=20
+    source of the data is not shared.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87366"></A>Similarly, the most =
+efficient way to=20
+    examine data in zbufs is to read it in place, rather than to copy it =
+to=20
+    another location. However, if you must copy some of the data out of =
+a zbuf=20
+    (for example, to guarantee the data is contiguous, or to place it in =
+a data=20
+    structure required by another interface), call <B=20
+    class=3D"routine">zbufExtractCopy(&nbsp;)</B>. Within the call, =
+specify what=20
+    to copy (zbuf ID, byte location, and the number of bytes) and where =
+to put=20
+    it (an application buffer). </P></DD></DL></DL>
+<P class=3D"table">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87371"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Table 7-5	:&nbsp;&nbsp; <B>Zbuf Data Copying=20
+  Routines&nbsp;&nbsp;&nbsp;</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+      <TBODY>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87375"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Call</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87377"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Description</FONT></B></DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule2">
+        </TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87379"></A><B=20
+          class=3D"routine">zbufInsertBuf(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87381"></A>Create a zbuf =
+segment from a=20
+          buffer and insert into a zbuf.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87383"></A><B=20
+          class=3D"routine">zbufInsertCopy(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87385"></A>Copy buffer data =
+into a=20
+          zbuf.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87387"></A><B=20
+          class=3D"routine">zbufExtractCopy(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87389"></A>Copy data from a =
+zbuf to a=20
+          buffer.</DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD colspan=3D"20"></TD></TR></TBODY></TABLE></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P></DL></DL><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H4 class=3D"H4"><I><A name=3D"87390"></A>Operations on =
+Zbufs</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87424"></A>The routines listed in <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87397">Table&nbsp;7-6</A>=20
+    perform several fundamental operations on zbufs. </P></DD></DL></DL>
+<P class=3D"table">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87397"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Table 7-6	:&nbsp;&nbsp; <B>Zbuf=20
+  Operations&nbsp;&nbsp;&nbsp;</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+      <TBODY>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87401"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Call</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87403"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Description</FONT></B></DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule2">
+        </TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87405"></A><B=20
+          class=3D"routine">zbufLength(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87407"></A>Determine the length =
+of a zbuf,=20
+          in bytes.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87409"></A><B=20
+          class=3D"routine">zbufDup(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87411"></A>Duplicate a =
+zbuf.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87413"></A><B=20
+          class=3D"routine">zbufInsert(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87415"></A>Insert a zbuf into =
+another=20
+          zbuf.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87417"></A><B=20
+          class=3D"routine">zbufSplit(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87419"></A>Split a zbuf into =
+two separate=20
+          zbufs.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87421"></A><B=20
+          class=3D"routine">zbufCut(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87423"></A>Delete bytes from a=20
+        zbuf.</DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD colspan=3D"20"></TD></TR></TBODY></TABLE></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87426"></A>The routine <B=20
+    class=3D"routine">zbufLength(&nbsp;)</B> reports how many bytes are =
+in a=20
+    zbuf.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87428"></A>The routine <B=20
+    class=3D"routine">zbufDup(&nbsp;)</B> provides the simplest =
+mechanism for=20
+    sharing segments between zbufs: it produces a new zbuf ID that =
+refers to=20
+    some or all of the data in the original zbuf. You can exploit this =
+sort of=20
+    sharing to get two different views of the same data. For example, =
+after=20
+    duplicating a zbuf, you can insert another zbuf into one of the two=20
+    duplicates, with <B class=3D"routine">zbufInsert(&nbsp;)</B>. None =
+of the data=20
+    in the original zbuf segments moves, yet after some byte location =
+(the byte=20
+    location where you inserted data) addressing the two zbufs gives =
+completely=20
+    different data.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87431"></A>The <B=20
+    class=3D"routine">zbufSplit(&nbsp;)</B> routine divides one zbuf =
+into two; you=20
+    specify the byte location for the split, and the result of the =
+routine is a=20
+    new zbuf ID. The new zbuf's data begins after the specified byte =
+location.=20
+    The original zbuf ID also has a modified view of the data: it is =
+truncated=20
+    to the byte location of the split. However, none of the data in the=20
+    underlying segments moves through all this. If you duplicate the =
+original=20
+    zbuf before splitting it, three zbuf IDs share segments. The =
+duplicate=20
+    permits you to view the entire original range of data, another zbuf =
+contains=20
+    a leading fragment, and the third zbuf holds the trailing =
+fragment.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87433"></A>Similarly, if you call <B =
+class=3D"routine">zbufCut(&nbsp;)</B>=20
+    to remove some range of bytes from within a zbuf, the effects are =
+visible=20
+    only to callers who view the data through the same zbuf ID you used =
+for the=20
+    deletion. Other zbuf segments can still address the original data =
+through a=20
+    shared buffer.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"88814"></A>For the most part, these =
+routines do not=20
+    free data buffers or delete zbufs, but there are two =
+exceptions:</P></DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Bullet" type=3D"disc">
+      <LI><A name=3D"88816"></A><B =
+class=3D"routine">zbufInsert(&nbsp;)</B> deletes=20
+      the zbuf ID it inserts. No segments are freed, because they now =
+form part=20
+      of the larger zbuf.</LI></UL>
+    <P></P>
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Bullet" type=3D"disc">
+      <LI><A name=3D"87438"></A>If the bytes you remove with <B=20
+      class=3D"routine">zbufCut(&nbsp;)</B> span one or more complete =
+segments,=20
+      the free routines for those segments can be called (if no other =
+zbuf=20
+      segment refers to the same data).</LI></UL>
+    <P></P></DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"89075"></A>The data-buffer free routine =
+runs only=20
+    when <I class=3D"emphasis">none</I> of the data in a segment is part =
+of any=20
+    zbuf. To avoid data copying, zbuf manipulation routines such as <B =
+class=3D"routine">zbufCut(&nbsp;)</B>=20
+    record which parts of a segment are currently in a zbuf, postponing =
+the=20
+    deletion of a segment until no part of its data is in=20
+use.</P></DD></DL></DL><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H4 class=3D"H4"><I><A name=3D"87440"></A>Segments of =
+Zbufs</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87445"></A>The routines in <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87449">Table&nbsp;7-7</A>=20
+    give your applications access to the underlying segments in a zbuf.=20
+  </P></DD></DL></DL>
+<P class=3D"table">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87449"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Table 7-7	:&nbsp;&nbsp; <B>Zbuf Segment=20
+  Routines&nbsp;&nbsp;&nbsp;</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+      <TBODY>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87453"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Call</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87455"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Description</FONT></B></DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule2">
+        </TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87457"></A><B=20
+          class=3D"routine">zbufSegFind(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87459"></A>Find the zbuf =
+segment containing=20
+          a specified byte location.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87461"></A><B=20
+          class=3D"routine">zbufSegNext(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87463"></A>Get the next segment =
+in a=20
+          zbuf.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87465"></A><B=20
+          class=3D"routine">zbufSegPrev(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87467"></A>Get the previous =
+segment in a=20
+          zbuf.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87469"></A><B=20
+          class=3D"routine">zbufSegData(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87471"></A>Determine the =
+location of data=20
+          in a zbuf segment.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87473"></A><B=20
+          class=3D"routine">zbufSegLength(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87475"></A>Determine the length =
+of a zbuf=20
+          segment.</DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD colspan=3D"20"></TD></TR></TBODY></TABLE></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87476"></A>By specifying a <B=20
+    class=3D"symbol_UC">NULL</B> segment ID, you can address the entire =
+contents=20
+    of a zbuf as offsets from its very first data byte. However, it is =
+always=20
+    more efficient to address data in a zbuf relative to the closest =
+segment.=20
+    Use <B class=3D"routine">zbufSegFind(&nbsp;)</B> to translate any =
+zbuf byte=20
+    location into the most local form.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87480"></A>The pair <B=20
+    class=3D"routine">zbufSegNext(&nbsp;)</B> and <B=20
+    class=3D"routine">zbufSegPrev(&nbsp;)</B> are useful for going =
+through the=20
+    segments of a zbuf in order, perhaps in conjunction with <B=20
+    class=3D"routine">zbufSegLength(&nbsp;)</B>.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87483"></A>Finally, <B=20
+    class=3D"routine">zbufSegData(&nbsp;)</B> allows the most direct =
+access to the=20
+    data in zbufs: it gives your application the address where a =
+segment's data=20
+    begins. If you manage segment data directly using this pointer, bear =
+the=20
+    following restrictions in mind:</P></DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Bullet" type=3D"disc">
+      <LI><A name=3D"87484"></A>Do not change data if any other zbuf =
+segment is=20
+      sharing it.</LI></UL>
+    <P></P>
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Bullet" type=3D"disc">
+      <LI><A name=3D"87485"></A>As with any other direct memory access, =
+it is up=20
+      to your own code to restrict itself to meaningful data: remember =
+that the=20
+      next segment in a zbuf is usually not contiguous. Use <B=20
+      class=3D"routine">zbufSegLength(&nbsp;)</B> as a limit, and <B =
+class=3D"routine">zbufSegNext(&nbsp;)</B>=20
+      when you exceed that limit.</LI></UL>
+    <P></P></DD></DL></DL><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H4 class=3D"H4"><I><A name=3D"87489"></A>Example: Manipulating Zbuf=20
+Structure</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87490"></A>The following interaction =
+illustrates=20
+    the use of some of the previously described <B =
+class=3D"library">zbufLib</B>=20
+    routines, and their effect on zbuf segments and data sharing. To =
+keep the=20
+    example manageable, the zbuf data used is artificially small, and =
+the=20
+    execution environment is the Tornado shell (for details on this =
+shell, see=20
+    the <I class=3D"title">Tornado User's Guide: Shell</I>).</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87491"></A>To begin with, we create a =
+zbuf, and use=20
+    its ID <B class=3D"symbol_lc">zId</B> to verify that a newly created =
+zbuf=20
+    contains no data; <B class=3D"routine">zbufLength(&nbsp;)</B> =
+returns a result=20
+    of 0.</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87492"></A>-&gt; <FONT =
+color=3D"#00a000"><B>zId =3D zbufCreate() <BR></B></FONT>new symbol =
+"zId" added to symbol table. <BR>zId =3D 0x3b58e8: value =3D 3886816 =3D =
+0x3b4ee0 <BR>-&gt; <FONT color=3D"#00a000"><B>zbufLength (zId) =
+<BR></B></FONT>value =3D 0 =3D 0x0</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87493"></A>Next, we create a data =
+buffer <B class=3D"symbol_lc">buf1</B>,=20
+    insert it into zbuf <B class=3D"symbol_lc">zId</B>, and verify that =
+<B class=3D"routine">zbufLength(&nbsp;)</B>=20
+    now reports a positive length. To keep the example simple, <B =
+class=3D"symbol_lc">buf1</B>=20
+    is a literal string, and therefore we do not supply a free-routine =
+callback=20
+    argument to <B class=3D"routine">zbufInsertBuf(&nbsp;)</B>.</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87494"></A>-&gt; <FONT =
+color=3D"#00a000"><B>buf1 =3D "I cannot repeat enough!" =
+<BR></B></FONT>new symbol "buf1" added to symbol table. <BR>buf1 =3D =
+0x3b5898: value =3D 3889320 =3D 0x3b58a8 =3D buf1 + 0x10 <BR>-&gt; <FONT =
+color=3D"#00a000"><B>zbufInsertBuf (zId, 0, 0, buf1, strlen(buf1), 0, 0) =
+<BR></B></FONT>value =3D 3850240 =3D 0x3ac000 <BR>-&gt; <FONT =
+color=3D"#00a000"><B>zbufLength (zId) <BR></B></FONT>value =3D 23 =3D =
+0x17</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87495"></A>To examine the effect of =
+other zbuf=20
+    operations, it is useful to have a zbuf-display routine. The =
+remainder of=20
+    this example uses a routine called <B=20
+    class=3D"routine">zbufDisplay(&nbsp;)</B> for that purpose; for the =
+complete=20
+    source code, see <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87515">Example&nbsp;7-4</A>.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87499"></A>For each zbuf segment, <B =
+class=3D"routine">zbufDisplay(&nbsp;)</B>=20
+    shows the segment ID, the start-of-data address, the offset from =
+that=20
+    address, the length of the segment, and the data in the segment as a =
+
+    character string. The following display of <B =
+class=3D"symbol_lc">zId</B>=20
+    illustrates that the underlying data in its only segment is still at =
+the <B=20
+    class=3D"symbol_lc">buf1</B> address (0x3b58a8), because <B=20
+    class=3D"routine">zbufInsertBuf(&nbsp;)</B> incorporates its buffer =
+argument=20
+    into the zbuf without copying data.</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87500"></A>-&gt; <FONT =
+color=3D"#00a000"><B>ld &lt;/usr/jane/zbuf-examples/zbufDisplay.o =
+<BR></B></FONT>value =3D 3890416 =3D 0x3b5cf0 =3D zbufDisplay.o_bss + =
+0x8 <BR>-&gt; <FONT color=3D"#00a000"><B>zbufDisplay zId =
+<BR></B></FONT>segID 0x3ac000 at 0x3b58a8 + 0x0 (23 bytes): I cannot =
+repeat enough! <BR>value =3D 0 =3D 0x0</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87501"></A>When we copy the zbuf, the =
+copy has its=20
+    own IDs, but still uses the same data address:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87502"></A>-&gt; <FONT =
+color=3D"#00a000"><B>zId2 =3D zbufDup (zId,0,0,23) <BR></B></FONT>new =
+symbol "zId2" added to symbol table. <BR>zId2 =3D 0x3b5ff0: value =3D =
+3886824 =3D 0x3b4ee8 <BR>-&gt; <FONT color=3D"#00a000"><B>zbufDisplay =
+zId2 <BR></B></FONT>segID 0x3abf80 at 0x3b58a8 + 0x0 (23 bytes): I =
+cannot repeat enough! <BR>value =3D 0 =3D 0x0</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87503"></A>If we insert a second buffer =
+into the=20
+    middle of the existing data in<B class=3D"symbol_lc"> zId</B>, there =
+is still=20
+    no data copying. Inserting the new buffer gives us a zbuf made up of =
+three=20
+    segments--but notice that the address of the first segment is still =
+the=20
+    start of <B class=3D"symbol_lc">buf1</B>, and the third segment =
+points into=20
+    the middle of <B class=3D"symbol_lc">buf1</B>:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87504"></A>-&gt; <FONT =
+color=3D"#00a000"><B>buf2 =3D " this" <BR></B></FONT>new symbol "buf2" =
+added to symbol table. <BR>buf2 =3D 0x3b5fb0: value =3D 3891136 =3D =
+0x3b5fc0 =3D buf2 + 0x10 <BR>-&gt; <FONT =
+color=3D"#00a000"><B>zbufInsertBuf (zId, 0, 15, buf2, strlen(buf2), 0, =
+0) <BR></B></FONT>value =3D 3849984 =3D 0x3abf00 <BR>-&gt; <FONT =
+color=3D"#00a000"><B>zbufDisplay zId <BR></B></FONT>segID 0x3ac000 at =
+0x3b58a8 + 0x0 (15 bytes): I cannot repeat <BR>segID 0x3abf00 at =
+0x3b5fc0 + 0x0 ( 5 bytes):  this <BR>segID 0x3abe80 at 0x3b58b7 + 0x0 ( =
+8 bytes):  enough! <BR>value =3D 0 =3D 0x0</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87505"></A>Because the underlying =
+buffer is not=20
+    modified, both <B class=3D"symbol_lc">buf1</B> and the duplicate =
+zbuf <B=20
+    class=3D"symbol_lc">zId2</B> still contain the original string, =
+rather than=20
+    the modified one now in <B class=3D"symbol_lc">zId</B>:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87506"></A>-&gt; <FONT =
+color=3D"#00a000"><B>printf ("%s\n", buf1) <BR></B></FONT>I cannot =
+repeat enough! <BR>value =3D 24 =3D 0x18 <BR>-&gt; <FONT =
+color=3D"#00a000"><B>zbufDisplay zId2 <BR></B></FONT>segID 0x3abf80 at =
+0x3b58a8 + 0x0 (23 bytes): I cannot repeat enough! <BR>value =3D 0 =3D =
+0x0</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87507"></A>The <B=20
+    class=3D"routine">zbufDup(&nbsp;)</B> routine can also select part =
+of a zbuf=20
+    without copying, for instance to incorporate some of the same data =
+into=20
+    another zbuf--or even into the same zbuf, as in the following =
+example:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87508"></A>-&gt; <FONT =
+color=3D"#00a000"><B>zTmp =3D zbufDup (zId, 0, 15, 5) <BR></B></FONT>new =
+symbol "zTmp" added to symbol table. <BR>zTmp =3D 0x3b5f70: value =3D =
+3886832 =3D 0x3b4ef0</PRE></FONT>=20
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87509"></A>-&gt; <FONT =
+color=3D"#00a000"><B>zbufInsert (zId, 0, 15, zTmp) <BR></B></FONT>value =
+=3D 3849728 =3D 0x3abe00 <BR>-&gt; <FONT =
+color=3D"#00a000"><B>zbufDisplay zId <BR></B></FONT>segID 0x3ac000 at =
+0x3b58a8 + 0x0 (15 bytes): I cannot repeat <BR>segID 0x3abe00 at =
+0x3b5fc0 + 0x0 ( 5 bytes):  this <BR>segID 0x3abf00 at 0x3b5fc0 + 0x0 ( =
+5 bytes):  this <BR>segID 0x3abe80 at 0x3b58b7 + 0x0 ( 8 bytes):  =
+enough! <BR>value =3D 0 =3D 0x0</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87510"></A>After <B=20
+    class=3D"routine">zbufInsert(&nbsp;)</B> combines two zbufs, the =
+second zbuf=20
+    ID (<B class=3D"symbol_lc">zTmp</B> in this example) is =
+automatically deleted.=20
+    Thus, <B class=3D"symbol_lc">zTmp</B> is no longer a valid zbuf =
+ID--for=20
+    example, <B class=3D"routine">zbufLength(&nbsp;)</B> returns =
+ERROR:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87511"></A>-&gt; <FONT =
+color=3D"#00a000"><B>zbufLength (zTmp) <BR></B></FONT>value =3D -1 =3D =
+0xffffffff =3D zId2 + 0xffc4a00f</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87512"></A>However, you must still =
+delete the=20
+    remaining two zbuf IDs explicitly when they are no longer needed. =
+This=20
+    releases all associated zbuf-structure storage. In a real =
+application, with=20
+    free-routine callbacks filled in, it also calls the specified free =
+routine=20
+    on the data buffers, as follows:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#009090">
+<PRE class=3D"Terminal2"><A name=3D"87513"></A>-&gt; <FONT =
+color=3D"#00a000"><B>zbufDelete (zId) <BR></B></FONT>value =3D 0 =3D 0x0 =
+<BR>-&gt; <FONT color=3D"#00a000"><B>zbufDelete (zId2) =
+<BR></B></FONT>value =3D 0 =3D 0x0</PRE></FONT>=20
+      </DD></DL></DD></DL></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87515"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Example 7-4	:&nbsp;&nbsp; <B>Zbuf Display =
+Routine</B></FONT></P>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87517"></A>The following is the =
+complete source=20
+    code for the <B class=3D"routine">zbufDisplay(&nbsp;)</B> utility =
+used in the=20
+    preceding example:</P></DD></DL>
+  <DL class=3D"margin">
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87518"></A>/* zbufDisplay.c - zbuf =
+example display routine */ <BR> <BR>/* includes */ <BR> <BR>#include =
+"vxWorks.h" <BR>#include "zbufLib.h" <BR>#include "ioLib.h" <BR>#include =
+"stdio.h"</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A =
+name=3D"87519"></A>/*****************************************************=
+*************** <BR>* <BR>* zbufDisplay - display contents of a zbuf =
+<BR>* <BR>* RETURNS: OK, or ERROR if the specified data could not be =
+displayed. <BR>*/</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87520"></A>STATUS zbufDisplay <BR>    ( =
+<BR>    ZBUF_ID     zbufId,         /* zbuf to display */ <BR>    =
+ZBUF_SEG    zbufSeg,        /* zbuf segment base for &lt;offset&gt; */ =
+<BR>    int         offset,         /* relative byte offset */ <BR>    =
+int         len,            /* number of bytes to display */ <BR>    =
+BOOL        silent          /* do not print out debug info */ <BR>    ) =
+<BR>    { <BR>    int         lenData; <BR>    char *      =
+pData;</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87521"></A>    /* find the most-local =
+byte location */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87522"></A>    if ((zbufSeg =3D =
+zbufSegFind (zbufId, zbufSeg, &amp;offset)) =3D=3D NULL) <BR>        =
+return (ERROR);</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87523"></A>    if (len &lt;=3D 0) <BR>    =
+    len =3D ZBUF_END;</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87524"></A>    while ((len !=3D 0) =
+&amp;&amp; (zbufSeg !=3D NULL)) <BR>        { <BR>        /* find =
+location and data length of zbuf segment */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87525"></A>        pData =3D zbufSegData =
+(zbufId, zbufSeg) + offset; <BR>        lenData =3D zbufSegLength =
+(zbufId, zbufSeg) - offset; <BR>        lenData =3D min (len, lenData);  =
+   /* print all of seg ? */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87526"></A>        if (!silent) <BR>      =
+      printf ("segID 0x%x at 0x%x + 0x%x (%2d bytes): ", <BR>            =
+    (int) zbufSeg, (int) pData, offset, lenData); <BR>        write =
+(STD_OUT, pData, lenData);     /* display data */ <BR>        if =
+(!silent) <BR>            printf ("\n");</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87527"></A>        zbufSeg =3D =
+zbufSegNext (zbufId, zbufSeg); /* update segment */ <BR>        len -=3D =
+lenData;                      /* update length */ <BR>        offset =3D =
+0;                          /* no more offset */ <BR>        =
+}</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87528"></A>    return (OK); <BR>    =
+}</PRE></FONT>=20
+    </DD></DL></DD></DL><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H4 class=3D"H4"><I><A name=3D"87530"></A>Limitations of the Zbuf=20
+Implementation</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87532"></A>The following zbuf =
+limitations are due=20
+    to the current implementation; they are not inherent to the data=20
+    abstraction. They are described because they can have an impact on=20
+    application performance.</P></DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Bullet" type=3D"disc">
+      <LI><A name=3D"87533"></A>With the current implementation, =
+references to=20
+      data in zbuf segments before a particular location (whether with =
+<B class=3D"routine">zbufSegPrev(&nbsp;)</B>,=20
+      or with a negative offset in a byte location) are significantly =
+slower=20
+      than references to data after a particular location.</LI></UL>
+    <P></P>
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Bullet" type=3D"disc">
+      <LI><A name=3D"87534"></A>The data in small zbuf segments (less =
+than 512=20
+      bytes) is sometimes copied, rather than having references =
+propagated to=20
+      it.</LI></UL>
+    <P></P></DD></DL></DL><FONT class=3D"sans" face=3D"Helvetica, =
+sans-serif">
+<H4 class=3D"H3"><I><A name=3D"87537"></A>7.3.4  &nbsp;&nbsp;Zbuf Socket =
+
+Calls</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87542"></A>The zbuf socket calls listed =
+in <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87546">Table&nbsp;7-8</A>=20
+    are named to emphasize parallels with the standard BSD socket calls: =
+thus,=20
+    <B class=3D"routine">zbufSockSend(&nbsp;)</B> is the zbuf version of =
+<B class=3D"routine">send(&nbsp;)</B>,=20
+    and <B class=3D"routine">zbufSockRecvfrom(&nbsp;)</B> is the zbuf =
+version of=20
+    <B class=3D"routine">recvfrom(&nbsp;)</B>. The arguments also =
+correspond=20
+    directly to those of the standard socket calls. </P></DD></DL></DL>
+<P class=3D"table">
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87546"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Table 7-8	:&nbsp;&nbsp; <B>Zbuf Socket Library=20
+  Routines&nbsp;&nbsp;&nbsp;</B></FONT></P></DD></DL>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+      <TBODY>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87550"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Call</FONT></B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87552"></A><B><FONT =
+class=3D"sans" face=3D"Helvetica, sans-serif"=20
+          size=3D"-1">Description</FONT></B></DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule2">
+        </TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87555"></A><B=20
+          class=3D"routine">zbufSockLibInit(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87557"></A>Initialize socket =
+libraries=20
+          (called automatically if the configuration has zbuf sockets =
+enabled.=20
+          The relevant configuration parameter is <B=20
+          class=3D"symbol_UC">INCLUDE_SOCK_ZBUF</B>).</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87563"></A><B=20
+          class=3D"routine">zbufSockSend(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87565"></A>Send zbuf data =
+through a TCP=20
+          socket.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87568"></A><B=20
+          class=3D"routine">zbufSockSendto(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"88658"></A>Send a zbuf message =
+through a=20
+          UDP socket.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"97472"></A><B=20
+          class=3D"routine">zbufSockBufSend(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87575"></A>Create a zbuf and =
+send it as TCP=20
+          socket data.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"97475"></A><B=20
+          class=3D"routine">zbufSockBufSendto(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87580"></A>Create a zbuf and =
+send it as a=20
+          UDP socket message.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87583"></A><B=20
+          class=3D"routine">zbufSockRecv(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87585"></A>Receive data in a =
+zbuf from a=20
+          TCP socket.</DIV></TD></TR>
+      <TR valign=3D"top">
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87588"></A><B=20
+          class=3D"routine">zbufSockRecvfrom(&nbsp;)</B></DIV></TD>
+        <TD rowspan=3D"1" colspan=3D"1">
+          <DIV align=3D"left"><A name=3D"87590"></A>Receive a message in =
+a zbuf from=20
+          a UDP socket.</DIV></TD></TR>
+      <TR>
+        <TD colspan=3D"20">
+          <HR class=3D"tablerule">
+        </TD></TR>
+      <TR valign=3D"middle">
+        <TD colspan=3D"20"></TD></TR></TBODY></TABLE></DD></DL></DL>
+<P></P>
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <P></P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87591"></A>For a detailed description =
+of each=20
+    routine, see the corresponding reference =
+entry.</P></DD></DL></DL><FONT class=3D"sans"=20
+face=3D"Helvetica, sans-serif">
+<H4 class=3D"H4"><I><A name=3D"87592"></A>Standard Socket Calls and Zbuf =
+Socket=20
+Calls</I></H4></FONT>=20
+<DL class=3D"margin">
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87593"></A>The zbuf socket calls are =
+particularly=20
+    useful when large data transfer is a significant part of your socket =
+
+    application. For example, many socket applications contain sections =
+of code=20
+    like the following fragment:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code2"><A name=3D"87594"></A>pBuffer =3D malloc (BUFLEN); =
+<BR>while ((readLen =3D read (fdDevice, pBuffer, BUFLEN))  &gt; 0) <BR>  =
+  write (fdSock, pBuffer, readLen);</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87595"></A>You can eliminate the =
+overhead of=20
+    copying from the application buffer <B =
+class=3D"symbol_lc">pBuffer</B> into=20
+    the internal socket buffers by changing the code to use zbuf socket =
+calls.=20
+    For example, the following fragment is a zbuf version of the =
+preceding=20
+    loop:</P>
+    <DL class=3D"margin">
+      <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code2"><A name=3D"87596"></A>pBuffer =3D malloc (BUFLEN * =
+BUFNUM);           /* allocate memory */ <BR>for (ix =3D 0; ix &lt; =
+(BUFNUM - 1); ix++, pBuffer +=3D BUFLEN) <BR>    appBufRetn (pBuffer);   =
+                 /* fill list of free bufs */ <BR> <BR>while ((readLen =
+=3D read (fdDevice, pBuffer, BUFLEN)) &gt; 0) <BR>    { <BR>    zId =3D =
+zbufCreate ();                     /* insert into new zbuf */ <BR>    =
+zbufInsertBuf (zId, NULL, 0, pBuffer, readLen, appBufRetn, 0); <BR>    =
+zbufSockSend (fdSock, zId, readLen, 0);   /* send zbuf */ <BR>    =
+pBuffer =3D appBufGet (WAIT_FOREVER);       /* get a fresh buffer */ =
+<BR>    }</PRE></FONT>=20
+      </DD></DL>
+    <DD>
+    <P class=3D"Body"><A name=3D"87597"></A>The <B=20
+    class=3D"routine">appBufGet(&nbsp;)</B> and <B=20
+    class=3D"routine">appBufRetn(&nbsp;)</B> references in the preceding =
+code=20
+    fragment stand for application-specific buffer management routines,=20
+    analogous to <B class=3D"routine">malloc(&nbsp;)</B> and <B=20
+    class=3D"routine">free(&nbsp;)</B>. In many applications, these =
+routines do=20
+    nothing more than manipulate a linked list of free fixed-length=20
+    buffers.</P></DD></DL></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"EntityTitle"><A name=3D"87599"></A><FONT class=3D"sans" =
+face=3D"Helvetica, sans-serif"=20
+  size=3D"-1">	Example 7-5	:&nbsp;&nbsp; <B>The TCP Example Server Using =
+
+  Zbufs</B></FONT></P>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87601"></A>For a small but complete =
+example that=20
+    illustrates the mechanics of using the zbuf socket library, consider =
+the=20
+    conversion of the client-server example in <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87170">Example&nbsp;7-3</A>=20
+    to use zbuf socket calls.</P>
+    <DD>
+    <P class=3D"Body"><A name=3D"87605"></A>No conversion is needed for =
+the client=20
+    side of the example; the client operates the same regardless of =
+whether or=20
+    not the server uses zbufs. The next example illustrates the =
+following=20
+    changes to convert the server side to use zbufs:</P></DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Dash" type=3D"circle">
+      <LI><A name=3D"87606"></A>Instead of including the header file <B =
+class=3D"file">sockLib.h</B>,=20
+      include <B class=3D"file">zbufSockLib.h</B>.</LI></UL>
+    <P></P>
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Dash" type=3D"circle">
+      <LI><A name=3D"87607"></A>The data processing component must be =
+capable of=20
+      dealing with potentially non-contiguous data in successive zbuf =
+segments.=20
+      In the TCP example, this component displays a message using <B =
+class=3D"routine">printf(&nbsp;)</B>;=20
+      we can use the <B class=3D"routine">zbufDisplay(&nbsp;)</B> =
+routine from <A=20
+      =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87515">Example&nbsp;7-4</A>=20
+      instead.</LI></UL>
+    <P></P>
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Dash" type=3D"circle">
+      <LI><A name=3D"87611"></A>The original TCP example exploits <B =
+class=3D"routine">fioRead(&nbsp;)</B>=20
+      to collect the complete message, rather than calling <B=20
+      class=3D"routine">recv(&nbsp;)</B> directly. To achieve the same =
+end while=20
+      avoiding data copying by using zbufs, the following example =
+defines a <B=20
+      class=3D"routine">zbufFioSockRecv(&nbsp;)</B> subroutine to call =
+<B class=3D"routine">zbufSockRecv(&nbsp;)</B>=20
+      repeatedly until the complete message is received.</LI></UL>
+    <P></P>
+    <DD>
+    <P class=3D"listspace">
+    <UL class=3D"Dash" type=3D"circle">
+      <LI><A name=3D"87612"></A>A new version of the worker routine <B =
+class=3D"routine">tcpServerWorkTask(&nbsp;)</B>=20
+      must tie together these separate modifications, and must =
+explicitly=20
+      extract the <B class=3D"symbol_lc">reply</B> and <B=20
+      class=3D"symbol_lc">msgLen</B> fields from the client's =
+transmission to do=20
+      so. When using zbufs, these fields cannot be extracted by =
+reference to the=20
+      C structure in <B class=3D"file">tcpExample.h</B> because of the =
+possibility=20
+      that the data is not contiguous.</LI></UL>
+    <P></P></DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"87613"></A>The following example shows =
+the=20
+    auxiliary <B class=3D"routine">zbufFioSockRecv(&nbsp;)</B> routine =
+and the=20
+    zbuf version of <B class=3D"routine">tcpServerWorkTask(&nbsp;)</B>. =
+To run=20
+    this code:</P></DD></DL>
+  <DL class=3D"margin">
+    <DD>
+    <OL class=3D"List">
+      <LI value=3D"1"><A name=3D"87617"></A> Start with <B=20
+      class=3D"file">tcpServer.c</B> as defined in <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87170">Example&nbsp;7-3</A>.</LI></OL>
+    <DD>
+    <OL class=3D"List">
+      <LI value=3D"2"><A name=3D"87618"></A> Include the header file <B=20
+      class=3D"file">zbufSockLib.h</B>.</LI></OL>
+    <DD>
+    <OL class=3D"List">
+      <LI value=3D"3"><A name=3D"87622"></A> Insert the <B=20
+      class=3D"routine">zbufDisplay(&nbsp;)</B> routine from <A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-sockets.html=
+#87515">Example&nbsp;7-4</A>.</LI></OL>
+    <DD>
+    <OL class=3D"List">
+      <LI value=3D"4"><A name=3D"87623"></A> Replace the <B=20
+      class=3D"routine">tcpServerWorkTask(&nbsp;)</B> definition with =
+the=20
+      following two routines:</LI></OL></DD></DL>
+  <DL class=3D"margin">
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A =
+name=3D"87624"></A>/*****************************************************=
+******************* <BR>* <BR>* zbufFioSockRecv - receive &lt;len&gt; =
+bytes from a socket into a zbuf <BR>* <BR>* This routine receives a =
+specified amount of data from a socket into a <BR>* zbuf, by repeatedly =
+calling zbufSockRecv() until &lt;len&gt; bytes <BR>* are read. <BR>* =
+<BR>* RETURNS: <BR>* The ID of the zbuf containing &lt;len&gt; bytes of =
+data, <BR>* or NULL if there is an error during the zbufSockRecv() =
+operation. <BR>* <BR>* SEE ALSO: zbufSockRecv() <BR>*/</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87625"></A>ZBUF_ID zbufFioSockRecv <BR>   =
+ ( <BR>    int         fd,             /* file descriptor of file to =
+read */ <BR>    int         len             /* maximum number of bytes =
+to read */ <BR>    ) <BR>    { <BR>    BOOL        first =3D TRUE;       =
+    /* first time thru ? */ <BR>    ZBUF_ID     zRecvTotal =3D NULL;     =
+ /* zbuf to return */ <BR>    ZBUF_ID     zRecv;                  /* =
+zbuf read from sock */ <BR>    int         nbytes;                 /* =
+number of recv bytes */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87626"></A>    for (; len &gt; 0; len =
+-=3D nbytes) <BR>        { <BR>        nbytes =3D len;                   =
+/* set number of bytes wanted */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87627"></A>        /* read a zbuf from =
+the socket */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87628"></A>        if (((zRecv =3D =
+zbufSockRecv (fd, 0, &amp;nbytes)) =3D=3D NULL) || <BR>            =
+(nbytes &lt;=3D 0)) <BR>            { <BR>            if (zRecvTotal =
+!=3D NULL) <BR>                zbufDelete (zRecvTotal); <BR>            =
+return (NULL); <BR>            }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87629"></A>        /* append recv'ed zbuf =
+onto end of zRecvTotal */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"97408"></A>        if&nbsp;(first) <BR>   =
+         =
+zRecvTotal&nbsp;=3D&nbsp;zRecv;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;/*&nbsp;cannot&nbsp;append&nbsp;to&nbsp;empty&nbsp;zbuf&nbsp;=
+*/ <BR>            =
+first&nbsp;=3D&nbsp;FALSE;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;can&nbsp;append&nbsp;now...&=
+nbsp;*/ <BR>        =
+else&nbsp;if&nbsp;(zbufInsert&nbsp;(zRecvTotal,&nbsp;NULL,&nbsp;ZBUF_END,=
+&nbsp;zRecv)&nbsp;=3D=3D&nbsp;NULL) <BR>            { <BR>            =
+zbufDelete (zRecv); <BR>            zbufDelete (zRecvTotal); <BR>        =
+    return (NULL); <BR>            } <BR>        }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87632"></A>    return (zRecvTotal); <BR>  =
+  }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A =
+name=3D"87633"></A>/*****************************************************=
+******************* <BR>* <BR>* tcpServerWorkTask - process client =
+requests <BR>* <BR>* This routine reads from the server's socket, and =
+processes client <BR>* requests.  If the client requests a reply =
+message, this routine <BR>* sends a reply to the client. <BR>* <BR>* =
+RETURNS: N/A. <BR>*/</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87634"></A>VOID tcpServerWorkTask <BR>    =
+( <BR>    int                 sFd,            /* server's socket fd */ =
+<BR>    char *              address,        /* client's socket address =
+*/ <BR>    u_short             port            /* client's socket port =
+*/ <BR>    ) <BR>    { <BR>    static char         replyMsg[] =3D =
+"Server received your message"; <BR>    ZBUF_ID             zReplyOrig;  =
+   /* original reply msg */ <BR>    ZBUF_ID             zReplyDup;      =
+/* duplicate reply msg */ <BR>    ZBUF_ID             zRequest;       /* =
+request msg from client */ <BR>    int                 msgLen;         =
+/* request msg length */ <BR>    int                 reply;          /* =
+reply requested ? */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87635"></A>    /* create original reply =
+message zbuf */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87636"></A>    if ((zReplyOrig =3D =
+zbufCreate ()) =3D=3D NULL) <BR>        { <BR>        perror ("zbuf =
+create"); <BR>        free (address);                 /* free malloc =
+from inet_ntoa() */ <BR>        return; <BR>        }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87637"></A>    /* insert reply message =
+into zbuf */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87638"></A>    if (zbufInsertBuf =
+(zReplyOrig, NULL, 0, replyMsg,  <BR>        sizeof (replyMsg), NULL, 0) =
+=3D=3D NULL) <BR>        { <BR>        perror ("zbuf insert"); <BR>      =
+  zbufDelete (zReplyOrig); <BR>        free (address);                 =
+/* free malloc from inet_ntoa() */ <BR>        return; <BR>        =
+}</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87639"></A>    /* read client request, =
+display message */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87640"></A>    while ((zRequest =3D =
+zbufFioSockRecv (sFd, sizeof(struct request))) !=3D NULL) <BR>        { =
+<BR>        /* extract reply field into &lt;reply&gt; */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87641"></A>        (void) zbufExtractCopy =
+(zRequest, NULL, 0, <BR>            (char *) &amp;reply, sizeof =
+(reply)); <BR>        (void) zbufCut (zRequest, NULL, 0, sizeof =
+(reply));</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87642"></A>        /* extract msgLen =
+field into &lt;msgLen&gt; */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87643"></A>        (void) zbufExtractCopy =
+(zRequest, NULL, 0, <BR>            (char *) &amp;msgLen, sizeof =
+(msgLen)); <BR>        (void) zbufCut (zRequest, NULL, 0, sizeof =
+(msgLen));</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87644"></A>        /* duplicate reply =
+message zbuf, preserving original */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87645"></A>        if ((zReplyDup =3D =
+zbufDup (zReplyOrig, NULL, 0, ZBUF_END)) =3D=3D NULL) <BR>            { =
+<BR>            perror ("zbuf duplicate"); <BR>            zbufDelete =
+(zRequest); <BR>            break; <BR>            }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87646"></A>        printf ("MESSAGE FROM =
+CLIENT (Internet Address %s, port %d):\n", <BR>             address, =
+port); <BR>                           <BR>        /* display request =
+message zbuf */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87647"></A>        (void) zbufDisplay =
+(zRequest, NULL, 0, msgLen, TRUE); <BR>        printf ("\n"); <BR>       =
+ if (reply)  <BR>            { <BR>            if (zbufSockSend (sFd, =
+zReplyDup, sizeof (replyMsg), 0) &lt; 0) <BR>                perror =
+("zbufSockSend"); <BR>            }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87648"></A>        /* finished with =
+request message zbuf */</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87649"></A>        zbufDelete (zRequest); =
+<BR>        }</PRE></FONT>=20
+    <DD><FONT color=3D"#0000a0">
+<PRE class=3D"Code"><A name=3D"87650"></A>    free (address);            =
+         /* free malloc from inet_ntoa() */ <BR>    zbufDelete =
+(zReplyOrig); <BR>    close (sFd); <BR>    }</PRE></FONT>=20
+    </DD></DL></DD></DL>
+<DL class=3D"margin">
+  <DD>
+  <P class=3D"table">
+  <TABLE border=3D"0" cellspacing=3D"0" cellpadding=3D"2">
+    <TBODY>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD>
+        <HR>
+      </TD></TR>
+    <TR valign=3D"top">
+      <TD><IMG alt=3D"*" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/caution.g=
+if"=20
+        border=3D"0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <DIV class=3D"CalloutCell"><A name=3D"87655"></A> <B =
+class=3D"symbol_UC"><FONT=20
+        class=3D"sans" face=3D"Helvetica, sans-serif" =
+size=3D"-1">CAUTION: =20
+        </FONT></B> In the interests of brevity, the <B=20
+        class=3D"symbol_UC">STATUS</B> return values for several zbuf =
+socket calls=20
+        are discarded with casts to <B class=3D"keyword">void</B>. In a =
+real=20
+        application, check these return values for possible errors. =
+</DIV></TD></TR>
+    <TR valign=3D"top">
+      <TD rowspan=3D"1" colspan=3D"1"></TD>
+      <TD rowspan=3D"1" colspan=3D"1">
+        <HR>
+      </TD></TR>
+    <TR valign=3D"middle">
+      <TD colspan=3D"20"></TD></TR></TBODY></TABLE></P>
+  <DL class=3D"margin">
+    <DD>
+    <P class=3D"Body"><A name=3D"79990"></A></P></DD></DL></DD></DL>
+<HR class=3D"pagebottom">
+
+<P align=3D"right" class=3D"navbar"><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/index.html"><I=
+MG=20
+alt=3D"[Contents]" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/contents.=
+gif"=20
+border=3D"0"></A><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/vnpgIX.html"><=
+IMG=20
+alt=3D"[Index]" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/index.gif=
+"=20
+border=3D"0"></A><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-dynRoutPrtcl=
+s.html"><IMG=20
+alt=3D"[Prev]" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/prev.gif"=
+=20
+border=3D"0"></A><A =
+href=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/c-remAccApps.h=
+tml"><IMG=20
+alt=3D"[Next]" =
+src=3D"http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/next.gif"=
+=20
+border=3D"0"></A> </P></BODY></HTML><!---=0A=
+This file generated by WRS documentation, Wind River Systems, Inc.=0A=
+    conversion tool:  Quadralay WebWorks Publisher Professional Edition =
+6.0.7 --->
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/contents.gif
+
+R0lGODdhUwAVAPMAAAAAAAAA/19fX1+Zn3B3cH9/f4CAgIKCgo+Pj5+fn6BmYL+/v8DAwP///wAA
+AAAAACwAAAAAUwAVAAAE/hDISau9OOvNbftgKI5kaZ5o+hmS6r5wDBp02zB4ru987//AIJDGAnyE
+yKRyySPakIVJgokDLKhWptN4C0quCwn2yswut0dgdJcNf3PWyVWOcxfg7iw9T/ahuz9mO2FgZm9i
+DGaEiWSHAFWNU2s/f159OgBTOAmPjHWdhpphkJ+kngyXTTVclj2Co6ewhmSytKBkUYJ+q2mBqXF9
+taWnFqbCdblDvIA+k6WZOZzGt6ao06SaqJ27Rb2Bd9p3i4ux1AyTiIrUiM49lUK5r3TX52a54OU4
+UQt5uqrdzKgIHKjkHcGDCLk9Sciw4R8iECNKnEixosWLGCFKyMixo8ePCRI7iBxJsmSGCAA7
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/index.gif
+
+R0lGODdhUwAVAPMAAAAAAAAA/19fX1+Zn3B3cH9/f4CAgIKCgo+Pj5+fn6BmYL+/v8DAwP///wAA
+AAAAACwAAAAAUwAVAAAE3RDISau9OOvNbftgKI5kaZ5o+hmS6r5wDBp02zB4ru987//AIJDGAnyE
+yKRyySPamDzAIrkAQJlO4+2ak1Kt3GT2GGZ4zVXJlJGYVHPpAq4Arq6xNW0ZjVObrW1TaTh2fGYJ
+h1xjW2FnZ29nbGAAiAxvlgB0YYt7jmuQd5ePYH93UJxlnoRWkaIVXZGneWSNa6OJq32hq5qKs4xc
+qpiYghJzk5NTmb5FtMG2n3VupHTLf6umSqh73N04297hzE/i5bLNDUTq6+zt7u/w8fLqEvP29/j5
+7B38/f7/GSIAADs=
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/prev.gif
+
+R0lGODdhUwAVAPMAAAAAAAAA/19fX1+Zn3B3cH9/f4CAgIKCgo+Pj5+fn6BmYL+/v8DAwP///wAA
+AAAAACwAAAAAUwAVAAAE/hDISau9OOvNbftgKI5kaZ5o+hmS6r5wDBp02zB4ru987//AIJDGAnyE
+yKRyySPamDrLAkoNOo03IaAHmOIK26q4WcNqw7tubhHuAhIMtsSrZrxxank9LilYy0dAE1xeDAV+
+dnmKU4d8bXhwYDhsU3s9V4E+GXgVOXV3OAlbbAyio21edHB8Q4BZXJt2hRJ4dIWkdrJbCYhge3W4
+PpivsBe1a6jHk6hbbre+nBStRZmatDx7uJ+rpWGHo5KlyMpx009B12mziMCLy35ynF/ebWiXrkj2
+nhSIsshzUVQtm1DIVz9h+MYoXEiGGjGGEMUMi0hRoisiGDNq3Mixo8ePEiAxSghJsqTJkxo7qFzJ
+smWGCAA7
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/next.gif
+
+R0lGODdhUwAVAPMAAAAAAAAA/19fX1+Zn3B3cH9/f4CAgIKCgo+Pj5+fn6BmYL+/v8DAwP///wAA
+AAAAACwAAAAAUwAVAAAE/hDISau9OOvNbftgKI5kaZ5o+hmS6r5wDBp02zB4ru987//AIJDGAnyE
+yKRyySPahJYFc0rNOY23IECKKwCq4N33dz1quYzFeAtIpCfcLa49l6ol6HvhJyHXsFBoBXsMeG92
+coNva3NuXjhqUnI9Ez5lWUAWOZN0OAlfagyfoGtccW5vmxg9l4GqdbCQjGyihF6ThaZjhRlNf2aZ
+eaWxqblfbHm3cxWqF6y/mHzCsZ2iY4Ogj6I5obncPpXPRcDSm4STkYeye3fLXddru2LyO61aFITe
+soabp/v8DG7l40GvHrQwCBOKe6KwYUJ7DiNSuUSkosWLGDNq3MixY0UJDx5DihxJ8mKHkyhTqswQ
+AQA7
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/note.gif
+
+R0lGODdhEgASAPAAACPgSf///ywAAAAAEgASAAACIoSPqcvtGuI7sU5T5QV554B8YoeNZml+k7pa
+D+vAr7bVVwEAOw==
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/warning.gif
+
+R0lGODlhEgASAPEAAP///wAAAAAA//8AACH5BAEAAAIALAAAAAASABIAAAI/lH+ByxLfYhgqrker
+NXPQzXmiJnmARzIdwKJWN5xuA8fip97yjNT2nfLdeI4ha8fzHYcV4RBYfEozj6r1Wi0AADs=
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/images/c-socketsa.gif
+
+R0lGODdhQQKDAPcAAAAAAAAAPwAAfwAAwAAA/wAqAAAqPwAqfwAqwAAq/wBVAABVPwBVfwBVwABV
+/wB/AAB/PwB/fwB/wAB//wCqAACqPwCqfwCqwACq/wDVAADVPwDVfwDVwADV/wD/AAD/PwD/fwD/
+wAD//yoAACoAPyoAfyoAwCoA/yoqACoqPyoqfyoqwCoq/ypVACpVPypVfypVwCpV/yp/ACp/Pyp/
+fyp/wCp//yqqACqqPyqqfyqqwCqq/yrVACrVPyrVfyrVwCrV/yr/ACr/Pyr/fyr/wCr//1UAAFUA
+P1UAf1UAwFUA/1UqAFUqP1Uqf1UqwFUq/1VVAFVVP1VVf1VVwFVV/1V/AFV/P1V/f1V/wFV//1Wq
+AFWqP1Wqf1WqwFWq/1XVAFXVP1XVf1XVwFXV/1X/AFX/P1X/f1X/wFX//38AAH8AP38Af38AwH8A
+/38qAH8qP38qf38qwH8q/39VAH9VP39Vf39VwH9V/39/AH9/P39/f39/wH9//3+qAH+qP3+qf3+q
+wH+q/3/VAH/VP3/Vf3/VwH/V/3//AH//P3//f3//wH///6oAAKoAP6oAf6oAwKoA/6oqAKoqP6oq
+f6oqwKoq/6pVAKpVP6pVf6pVwKpV/6p/AKp/P6p/f6p/wKp//6qqAKqqP6qqf6qqwKqq/6rVAKrV
+P6rVf6rVwKrV/6r/AKr/P6r/f6r/wKr//9UAANUAP9UAf9UAwNUA/9UqANUqP9Uqf9UqwNUq/9VV
+ANVVP9VVf9VVwNVV/9V/ANV/P9V/f9V/wNV//9WqANWqP9Wqf9WqwNWq/9XVANXVP9XVf9XVwNXV
+/9X/ANX/P9X/f9X/wNX///8AAP8AP/8Af/8AwP8A//8qAP8qP/8qf/8qwP8q//9VAP9VP/9Vf/9V
+wP9V//9/AP9/P/9/f/9/wP9///+qAP+qP/+qf/+qwP+q///VAP/VP//Vf//VwP/V////AP//P///
+f///wP////8AAP8AP/8Af/8AwAAAACoqKlVVVX9/f6qqqtXV1f///ywAAAAAQQKDAAAI/wD/CRxI
+sKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaPHjyBDihxJsqTJkyhTqlzJsqXLlzBjypxJs6bN
+mzhz6tzJs6fPn0CDCh1KVCfAfAIHEixo8CDChAoXMmzocCHAfwIHEixo8CDChAoXMmzo8CHEiBIn
+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
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/images/c-sockets2.gif
+
+R0lGODdhQAJ9APcAAAAAAAAAPwAAfwAAwAAA/wAqAAAqPwAqfwAqwAAq/wBVAABVPwBVfwBVwABV
+/wB/AAB/PwB/fwB/wAB//wCqAACqPwCqfwCqwACq/wDVAADVPwDVfwDVwADV/wD/AAD/PwD/fwD/
+wAD//yoAACoAPyoAfyoAwCoA/yoqACoqPyoqfyoqwCoq/ypVACpVPypVfypVwCpV/yp/ACp/Pyp/
+fyp/wCp//yqqACqqPyqqfyqqwCqq/yrVACrVPyrVfyrVwCrV/yr/ACr/Pyr/fyr/wCr//1UAAFUA
+P1UAf1UAwFUA/1UqAFUqP1Uqf1UqwFUq/1VVAFVVP1VVf1VVwFVV/1V/AFV/P1V/f1V/wFV//1Wq
+AFWqP1Wqf1WqwFWq/1XVAFXVP1XVf1XVwFXV/1X/AFX/P1X/f1X/wFX//38AAH8AP38Af38AwH8A
+/38qAH8qP38qf38qwH8q/39VAH9VP39Vf39VwH9V/39/AH9/P39/f39/wH9//3+qAH+qP3+qf3+q
+wH+q/3/VAH/VP3/Vf3/VwH/V/3//AH//P3//f3//wH///6oAAKoAP6oAf6oAwKoA/6oqAKoqP6oq
+f6oqwKoq/6pVAKpVP6pVf6pVwKpV/6p/AKp/P6p/f6p/wKp//6qqAKqqP6qqf6qqwKqq/6rVAKrV
+P6rVf6rVwKrV/6r/AKr/P6r/f6r/wKr//9UAANUAP9UAf9UAwNUA/9UqANUqP9Uqf9UqwNUq/9VV
+ANVVP9VVf9VVwNVV/9V/ANV/P9V/f9V/wNV//9WqANWqP9Wqf9WqwNWq/9XVANXVP9XVf9XVwNXV
+/9X/ANX/P9X/f9X/wNX///8AAP8AP/8Af/8AwP8A//8qAP8qP/8qf/8qwP8q//9VAP9VP/9Vf/9V
+wP9V//9/AP9/P/9/f/9/wP9///+qAP+qP/+qf/+qwP+q///VAP/VP//Vf//VwP/V////AP//P///
+f///wP////8AAP8AP/8Af/8AwAAAACoqKlVVVX9/f6qqqtXV1f///ywAAAAAQAJ9AAAI/wD/CRxI
+sKDBgwgTKlzIsKHDhvkePnz48KHAfAD/CRxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaNH
+jwDzCRQI8J/AgQQLGjx4MF++fPkQIkSIcGC+fAD/CRxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgz
+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
+y5cwY8qcSbOmzZs4c+rcydNiQAA7Ow==
+
+------=_NextPart_000_0000_01CF1ADF.25227C80
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.vxdev.com/docs/vx55man/vxworks/netguide/icons/caution.gif
+
+R0lGODlhEgASAPEAAAAAAAAA////AAAAACH5BAEAAAEALAAAAAASABIAAAI5jG8AyB3qooKRASFW
+PQrTfXVaJYajc2Xpaa2uhKkxm6TxTNv33N4djtDJfBzhzqMxHj21ifP52TQKADs=
+
+------=_NextPart_000_0000_01CF1ADF.25227C80--
