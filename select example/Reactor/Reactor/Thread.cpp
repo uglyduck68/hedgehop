@@ -6,43 +6,40 @@ NS_X1_START
 
 	/**
 	 * @function	Thread::m_Invoker
-	 * @brief		invoke function that call user callback
+	 * @brief		invoke function that call user thread
 	 */
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-	uint32_t __stdcall Thread::m_Invoker(void *thread_si)
+	thread_return_t __stdcall Thread::m_Invoker(void *pThreadCtrlArg)
 #else
-	void* (Thread::m_Invoker)(void *thread_si)
+	thread_return_t (Thread::m_Invoker)(void *pThreadCtrlArg)
 #endif
 {
-#if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-	uint32_t Ret
-#else
-	void* Ret	= NULL;
-#endif
+	thread_return_t Ret	= NULL;
 
-	ThrCtrlInfo *p_thread_si = (ThrCtrlInfo*)thread_si;
-//	TLS::Instance()->SetValue(p_thread_si);
 
-	if(!p_thread_si) 
+	ThrCtrlInfo *pThreadArg = (ThrCtrlInfo*)pThreadCtrlArg;
+//	TLS::Instance()->SetValue(pThreadArg);
+
+	if(!pThreadArg) 
 	{ 
 		return 0; 
 	}
 
-	if(p_thread_si->m_bTask)
+	if(pThreadArg->m_bTask)
 	{
-		if (p_thread_si->m_pTask == NULL)
+		if (pThreadArg->m_pTask == NULL)
 		{
 			// INTERNAL ERROR
-			printf("Error: p_thread_si->m_pTask is NULL\n");
+			printf("Error: pThreadArg->m_pTask is NULL\n");
 			
 			return NULL;
 		}
 
 		/// run user thread
-		Ret	= p_thread_si->m_pTask(p_thread_si->m_pTaskArg);
+		Ret	= pThreadArg->m_pTask(pThreadArg->m_pTaskArg);
 
 		/// after user thread end, I will clear internal structure
-		p_thread_si->m_pThread->Init();
+		pThreadArg->m_pThread->Init();
 
 		return Ret;
 	}
@@ -71,8 +68,25 @@ int		Thread::Init()
 	return Init(this);
 }
 
+/**
+ * adjust thread priority according to the platform
+ */
+int Thread::AdjustPriority(int nPriority)
+{
+#if defined(PTHREAD_H)
+	/* Supported policy values are SCHED_FIFO, SCHED_RR, SCHED_OTHER,
+	SCHED_BATCH, and SCHED_IDLE.
+	Linux allows the static priority value range 1 to 99 for SCHED_FIFO
+       and SCHED_RR and the priority 0 for SCHED_OTHER, SCHED_BATCH, and
+       SCHED_IDLE.
+	*/
+	//sched_get_priority_min(int policy);
+	//sched_get_priority_max(int policy);
+#endif
+	return nPriority;
+}
 
-int	Thread::Run(THRDFUNC* pFunc, void* arg, int StackSize /*= -1*/, int CreateFlag /*= 0*/)
+int	Thread::Spawn(THRDFUNC* pFunc, void* pArg, int nPriority /*= 0*/, int nStackSize /*= -1*/, int nCreateFlag /*= 0*/)
 {
 	if (pFunc == NULL)
 		return X1_FAIL;
@@ -80,9 +94,13 @@ int	Thread::Run(THRDFUNC* pFunc, void* arg, int StackSize /*= -1*/, int CreateFl
 	m_ThreadInfo.m_bTask		= (pFunc) ? TRUE : FALSE;
 	m_ThreadInfo.m_pThread		= this;
 	m_ThreadInfo.m_pTask		= pFunc;
-	m_ThreadInfo.m_pTaskArg		= arg;
+	m_ThreadInfo.m_pTaskArg		= pArg;
+	m_ThreadInfo.m_nPriority	= (nPriority == -1? 0: nPriority);//AdjustPriority(nPriority);
+	m_ThreadInfo.m_nStackSize	= (nStackSize == -1? 0: nStackSize);
+	m_ThreadInfo.m_nCreateFlag	= nCreateFlag;
 
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
+
 	m_ThreadInfo.m_hThread = (thread_t)_beginthreadex(0, 0, m_Invoker, &m_ThreadInfo, 0, &m_ThreadInfo.m_hThreadId);
 
 	if(!m_ThreadInfo.m_hThreadId) 
@@ -90,7 +108,45 @@ int	Thread::Run(THRDFUNC* pFunc, void* arg, int StackSize /*= -1*/, int CreateFl
 		return X1_FAIL; 
 	}
 #else
-	int32_t ret = pthread_create(&m_ThreadInfo.m_hThread, 0, m_Invoker, &m_ThreadInfo);
+
+	/* NOTE
+	 *	- you MUST set the pthread_attr_t
+	 */
+	pthread_attr_t				attr;
+	struct sched_param			prio;	// priority
+	int							nRet;
+
+	nRet = pthread_attr_init(&attr);
+	if (nRet != 0)
+		return X1_FAIL;
+
+	if (m_ThreadInfo.m_nStackSize >= 0)
+	{
+		nRet = pthread_attr_setstacksize(&attr, m_ThreadInfo.m_nStackSize);
+
+		if (nRet != 0)
+			return X1_FAIL;
+	}
+
+	if (m_ThreadInfo.m_nPriority >= 0)
+	{
+		// set the priority explicitly
+		nRet	= pthread_attr_setschedparam(&attr, &prio);
+
+		if (nRet != 0)
+			return X1_FAIL;
+
+		// set scheduling parameter
+		nRet	= pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
+	}
+
+	// create thread invoker
+	int32_t ret = pthread_create(&m_ThreadInfo.m_hThread, &attr, m_Invoker, &m_ThreadInfo);
+	
+	nRet = pthread_attr_destroy(&attr);
+
+	if (nRet != 0)
+		return X1_FAIL;
 
 	if(ret < 0) 
 	{ 

@@ -28,6 +28,9 @@ public:
 //	Task		*m_pTask;			//assocation task pointer
 	THRDFUNC		*m_pTask;			//assocation task pointer
 	void		*m_pTaskArg;		//user data pointer
+	int			m_nPriority;		// priority of thread function
+	int			m_nStackSize;		// stack size of thread
+	int			m_nCreateFlag;		// creation flag of thread
 };
 
 /**
