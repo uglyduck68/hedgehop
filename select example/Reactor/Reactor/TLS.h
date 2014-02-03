@@ -2,6 +2,8 @@
 
 #include "X1.h"
 
+#include <pthread.h>
+
 NS_X1_START
 
 class Thread;
@@ -31,6 +33,10 @@ public:
 	int			m_nPriority;		// priority of thread function
 	int			m_nStackSize;		// stack size of thread
 	int			m_nCreateFlag;		// creation flag of thread
+#if defined(PTHREAD_H)
+	pthread_mutex_t		m_SuspendMutex;
+	pthread_cond_t		m_ResumeCond;
+#endif
 };
 
 /**

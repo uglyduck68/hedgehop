@@ -4,13 +4,24 @@
 
 NS_X1_START
 
-	/**
-	 * @function	Thread::m_Invoker
-	 * @brief		invoke function that call user thread
-	 */
+Thread::Thread()
+{
+#if defined(PTHREAD_H)
+	m_ThreadInfo.m_SuspendMutex	= PTHREAD_MUTEX_INITIALIZER;
+	m_ThreadInfo.m_ResumeCond	= PTHREAD_COND_INITIALIZER;
+#endif
+}
+
+Thread::~Thread()
+{
+}
+/**
+ * @function	Thread::m_Invoker
+ * @brief		invoke function that call user thread
+ */
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 	thread_return_t __stdcall Thread::m_Invoker(void *pThreadCtrlArg)
-#else
+#else	// POSIX
 	thread_return_t (Thread::m_Invoker)(void *pThreadCtrlArg)
 #endif
 {
@@ -22,6 +33,7 @@ NS_X1_START
 
 	if(!pThreadArg) 
 	{ 
+		assert("pThreadArg MUST not NULL" == 0);
 		return 0; 
 	}
 
@@ -30,9 +42,15 @@ NS_X1_START
 		if (pThreadArg->m_pTask == NULL)
 		{
 			// INTERNAL ERROR
-			printf("Error: pThreadArg->m_pTask is NULL\n");
+			LOG_INTERNAL("Error: pThreadArg->m_pTask is NULL\n");
 			
 			return NULL;
+		}
+
+		if (pThreadArg->m_nCreateFlag & THR_SUSPENDED)
+		{
+			// I will be suspended here
+			pthread_cond_wait(&pThreadArg->m_ResumeCond, &pThreadArg->m_SuspendMutex);
 		}
 
 		/// run user thread
@@ -47,13 +65,6 @@ NS_X1_START
 	return NULL;
 }
 
-Thread::Thread()
-{
-}
-
-Thread::~Thread()
-{
-}
 
 int		Thread::Init(Thread* pThrd)
 {
@@ -101,10 +112,20 @@ int	Thread::Spawn(THRDFUNC* pFunc, void* pArg, int nPriority /*= 0*/, int nStack
 
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 
-	m_ThreadInfo.m_hThread = (thread_t)_beginthreadex(0, 0, m_Invoker, &m_ThreadInfo, 0, &m_ThreadInfo.m_hThreadId);
+	if (m_ThreadInfo.m_nCreateFlag & THR_SUSPENDED)
+		m_ThreadInfo.m_nCreateFlag	= CREATE_SUSPENDED;
 
-	if(!m_ThreadInfo.m_hThreadId) 
+	m_ThreadInfo.m_hThread = (thread_t)_beginthreadex
+		(0,									// security
+		m_ThreadInfo.m_nStackSize,			// stack size
+		m_Invoker,							// start address of thread
+		&m_ThreadInfo,						// thread argument
+		m_ThreadInfo.m_nCreateFlag,			// creation flag
+		&m_ThreadInfo.m_hThreadId);			// thread ID
+
+	if(m_ThreadInfo.m_hThreadId == 0L) 
 	{ 
+		LOG_INTERNAL("_beginthreadex fails. errno is %d\n", errno);
 		return X1_FAIL; 
 	}
 #else
@@ -131,13 +152,22 @@ int	Thread::Spawn(THRDFUNC* pFunc, void* pArg, int nPriority /*= 0*/, int nStack
 	if (m_ThreadInfo.m_nPriority >= 0)
 	{
 		// set the priority explicitly
-		nRet	= pthread_attr_setschedparam(&attr, &prio);
+		nRet = pthread_attr_setschedparam(&attr, &prio);
 
 		if (nRet != 0)
 			return X1_FAIL;
 
 		// set scheduling parameter
-		nRet	= pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
+		nRet = pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
+	}
+
+	if (m_ThreadInfo.m_nCreateFlag & THR_SUSPENDED)
+	{
+
+	}
+	else if (m_ThreadInfo.m_nCreateFlag & THR_DETACHED)
+	{
+
 	}
 
 	// create thread invoker
@@ -193,9 +223,9 @@ void	Thread::Join(TimeValue *timeout /*= 0*/)
 int		Thread::Suspend()
 {
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-	if(m_hThread != NULL)
+	if(m_ThreadInfo.m_hThread != NULL)
 	{
-		return SuspendThread(m_ThreadInfo.m_hThread)==0xFFFFFFFF?false:true;
+		return SuspendThread(m_ThreadInfo.m_hThread)==0xFFFFFFFF? X1_FAIL: X1_OK;
 	}
 #elif defined(_X1_LINUX_)
 
@@ -205,6 +235,18 @@ int		Thread::Suspend()
 
 int		Thread::Resume()
 {
+#if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
+	if(m_ThreadInfo.m_hThread != NULL)
+	{
+		// resume thread that is suspended by SuspendThread API.
+		return ResumeThread(m_ThreadInfo.m_hThread)==0xFFFFFFFF? X1_FAIL: X1_OK;
+	}
+
+#if defined(PTHREAD_H)
+	// wake up Invoker that is suspended according to the creation flag
+	pthread_cond_signal(&m_ThreadInfo.m_ResumeCond);
+#endif
+
 	return X1_OK;
 }
 

@@ -85,7 +85,6 @@ protected:
 
 	/// Thread control information that have thread-specific parameters
 	ThrCtrlInfo			m_ThreadInfo;
-
 };
 
 NS_X1_END

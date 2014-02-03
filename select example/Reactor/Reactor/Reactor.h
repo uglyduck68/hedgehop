@@ -6,34 +6,34 @@
 
 NS_X1_START
 
-	class ReactorImpl;
+class ReactorImpl;
 
-	class DECL_SPEC_DLL Reactor
-	{
-	public:
-		int	RegisterHandler(EventHandler *eh, ET et);
-		int	RemoveHandler(EventHandler *eh, ET et);
+class DECL_SPEC_DLL Reactor
+{
+public:
+	int	RegisterHandler(EventHandler *eh, ET et);
+	int	RemoveHandler(EventHandler *eh, ET et);
 
-		/**
-		 * @return	X1_OK : successfully return
-		 *			X1_CLOSED : IO closed
-		 *			X1_FAIL : error return
-		 */
-		int	HandleEvent(TimeValue *timeout = 0);
+	/**
+		* @retval	X1_OK : successfully return
+		* @retval	X1_CLOSED : IO closed
+		* @retval	X1_FAIL : error return
+		*/
+	int	HandleEvent(TimeValue *timeout = 0);
 
-		static Reactor* GetInstance();
+	static Reactor* GetInstance();
 
-		Reactor();
-		virtual ~Reactor();
+	Reactor();
+	virtual ~Reactor();
 
-	protected:
+protected:
 
-		/// bridge pattern for demultiplexer implementation
-		ReactorImpl*	m_pImpl;
+	/// bridge pattern for demultiplexer implementation
+	ReactorImpl*	m_pImpl;
 
-		/// m_pReactor is static for signleton 
-		static Reactor*	volatile m_pReactor;
+	/// m_pReactor is static for singleton 
+	static Reactor*	volatile m_pReactor;
 
-	};
+};
 
 NS_X1_END
