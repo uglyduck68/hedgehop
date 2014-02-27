@@ -1,0 +1,166 @@
+## Makefile.common -- 
+##  Copyright (c) Sriram Rao
+##                This source is provided as is without any express or
+##                written warranty.  Permission to use, copy, modify, and 
+##                distribute this software for any purpose without fee is
+##                hereby granted, provided that this entire notice is 
+##                included in all copies of any software which is or includes
+##                a copy or modification of this software and in all copies
+##                of the supporting documentation for such software.
+##                All Rights Reserved.
+## $Locker:  $
+## $Log: Makefile.common,v $
+## Revision 1.1.1.1  2001/02/12 00:00:18  ravshank
+## Start of Spring 2001
+##
+## Revision 1.12  2000/11/28 17:26:40  phoebe
+## Found what is hopefully the last of the memcpy core dumps and fixed it. Was connected with the numSegs variable (it was being set imporperly). Also restructured some of the stats to get a more accurate picture of where time is being spent. In addition, the SentStore is now doing all flushing and garbageCollecting with threads. Need to change the checkpoint to get rid of threads before saving state.
+##
+## Revision 1.11  2000/11/21 22:27:18  phoebe
+## GarbageCollect in the SentStore is now working async. We changed the logic slightly so that all files are cleaned by one process and we clean when we've heard 3 responses (not necessarily all from different processes...this is ok we think.) Also...our favorite core dump on TakeCkpt (the memcpy one) has crept back in the picture. <grrrr>
+##
+## Revision 1.10  2000/10/17 15:02:34  phoebe
+## Stable code checkin. RBP is extremely stable except if you kill the master and slave at exactly the same time....it will hang in ReplayDeliver. SBP cannot support concurrent failures due to the lost control messages or hanging in ReplayDeliver. Causal can do +concurrent+ failures as long as control messages are not lost....so the restart must be staggered. Causal seems to suffer the same RBP problem with a master/slave pair, but unsure if this is the problem or if I didn't set numfailures=2...think the later would fix this. All the sentLog protocols (SBP and Causal) suffer from processes dumping core during WriteCkpt if they have been running for a long time since we are not flushing volatile memory at the moment. Should go away with the proper sentLog class fix.
+##
+## Revision 1.9  2000/08/09 15:32:53  phoebe
+## Changed the buffer size in CkptImpl.cc to be a #define instead of being hardwired to 4096. Also made fix in DetStore.cc and EventStore.cc that will allow both writing dets one at at time and in lists to be viable when hashing is turned on. Before this would have caused problems.
+##
+## Revision 1.8  2000/06/29 20:10:32  phoebe
+## By commenting out the std::cout's in the Full RestoreSegment method, Egida is now able to restart once again!
+##
+## Revision 1.7  2000/06/27 20:15:51  phoebe
+## Cleaned up Makefiles. Made DebugTrace into a proper class. Fixed the communication tracking part of Stats.cc.
+##
+## Revision 1.6  2000/06/27 13:23:11  phoebe
+## Filename changes. Now files are generally named after the class they contain.
+##
+## Revision 1.5  2000/06/26 21:31:16  phoebe
+## Egida_Internal functions are now part of the Egida class and thus are contained in Egida_Object.cc. All data memebers of the Egida class are now private.
+##
+## Revision 1.4  2000/06/23 18:48:09  phoebe
+## Made Egida_Object_Init.cc a method of the Egida class. It's now called ProtocolSpecificInit.
+##
+## Revision 1.3  2000/06/22 20:59:08  phoebe
+## Merged the function ComputeTimeDiff into the Timer namespace. Got rid of the TimeDiff.cc and TimeDiff.H files.
+##
+## Revision 1.2  2000/03/06 20:43:56  phoebe
+## Contains Security.cc and Security.H with no hooks in the code. Just changed the
+## Makefile to compile and add Security to the libEgida.a
+##
+## Revision 1.1.1.1  2000/03/06 20:00:22  phoebe
+## Sriram's original code with no modifications
+##
+## $Id: Makefile.common,v 1.1.1.1 2001/02/12 00:00:18 ravshank Exp $
+## Author          : Sriram Rao
+## Created On      : Thu Oct 15 10:44:27 1998
+## Last Modified By: Sriram Rao
+## Last Modified On: Sun Aug 15 17:34:58 1999
+## Update Count    : 58
+## Status          : Unknown, Use with caution!
+## PURPOSE
+## 	|>Description of modules purpose<|
+
+CXX = CC
+
+MPI_BASE_DIR = /home/ravshank/EGIDA/mpich
+ 
+EGIDA_DIR = ${MPI_BASE_DIR}/mpid/ch_p4/Egida
+
+EGIDA_SOURCE_DIR =  ${EGIDA_DIR}/source
+EGIDA_INCLUDE_DIR = ${EGIDA_DIR}/include
+
+P4_INCLUDE_DIR = ${MPI_BASE_DIR}/mpid/ch_p4/p4-1.4/include
+SECURITY_INCLUDE_DIR = /home/ravshank/SSLeay/x86/include
+
+
+INCLUDE_FLAGS = -I. -I${EGIDA_INCLUDE_DIR} -I${P4_INCLUDE_DIR} -I${SECURITY_INCLUDE_DIR}
+DEBUG_FLAGS = -g
+THREAD_FLAGS = 
+OPT_FLAGS =
+
+#lifted out p4/lib's Makefile
+P4_FLAGS = -DHAVE_NETINET_IN_H=1 -DHAVE_STDLIB_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDARG_H=1 \
+ -DHAVE_STRING_H=1 -DHAVE_STRINGS_H=1 -DHAVE_TERMIO_H=1 -DHAVE_TERMIOS_H=1 -DBOTH_STRING_INCS=1 \
+ -DUSE_STDARG=1 -DHAVE_SIGACTION=1 -DHAVE_STRERROR=1 -DHAVE_VPRINTF=1 \
+ -DNO_ECHO=1    -DHAVE_NETINET_IN_H=1 -DHAVE_STDLIB_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDARG_H=1 \
+ -DHAVE_STRING_H=1 -DHAVE_STRINGS_H=1 -DHAVE_TERMIO_H=1 -DHAVE_TERMIOS_H=1 \
+ -DBOTH_STRING_INCS=1 -DUSE_STDARG=1 -DHAVE_SIGACTION=1 -DHAVE_STRERROR=1 \
+ -DHAVE_VPRINTF=1 -DNO_ECHO=1 -DRSHCOMMAND='""'
+
+CXXFLAGS = ${OPT_FLAGS} ${THREAD_FLAGS} ${DEBUG_FLAGS} ${INCLUDE_FLAGS} ${P4_FLAGS}
+
+DEPEND = $(CXX) -xM1 $(CXXFLAGS)
+
+COMMON_SOURCES = \
+	${EGIDA_SOURCE_DIR}/CausalLogProtocol.cc \
+	${EGIDA_SOURCE_DIR}/CICProtocols.cc \
+	${EGIDA_SOURCE_DIR}/CkptImpl.cc \
+	${EGIDA_SOURCE_DIR}/CkptProtocol.cc \
+	${EGIDA_SOURCE_DIR}/CollectRecInfo.cc \
+	${EGIDA_SOURCE_DIR}/Communication.cc \
+	${EGIDA_SOURCE_DIR}/DebugTrace.cc \
+	${EGIDA_SOURCE_DIR}/DeliveredStore.cc \
+	${EGIDA_SOURCE_DIR}/DetLog.cc \
+	${EGIDA_SOURCE_DIR}/DetStore.cc \
+	${EGIDA_SOURCE_DIR}/Egida_API.cc \
+	${EGIDA_SOURCE_DIR}/Egida_AppLoop.cc \
+	${EGIDA_SOURCE_DIR}/Egida_Object.cc \
+	${EGIDA_SOURCE_DIR}/EventHandler.cc \
+	${EGIDA_SOURCE_DIR}/EventLog.cc \
+	${EGIDA_SOURCE_DIR}/EventStore.cc \
+	${EGIDA_SOURCE_DIR}/FailDetect.cc \
+	${EGIDA_SOURCE_DIR}/FlushPolicy.cc \
+	${EGIDA_SOURCE_DIR}/FlushScheduler.cc \
+	${EGIDA_SOURCE_DIR}/HowToCkpt.cc \
+	${EGIDA_SOURCE_DIR}/Init.cc \
+	${EGIDA_SOURCE_DIR}/LogProtocol.cc \
+	${EGIDA_SOURCE_DIR}/MsgPoll.cc \
+	${EGIDA_SOURCE_DIR}/MsgQueue.cc \
+	${EGIDA_SOURCE_DIR}/NullLogProtocol.cc \
+	${EGIDA_SOURCE_DIR}/OptLogProtocol.cc \
+	${EGIDA_SOURCE_DIR}/OrphanDetection.cc \
+	${EGIDA_SOURCE_DIR}/OutputCommit.cc \
+	${EGIDA_SOURCE_DIR}/ProtocolSpecificInit.cc \
+	${EGIDA_SOURCE_DIR}/Recovery.cc \
+	${EGIDA_SOURCE_DIR}/Security.cc \
+	${EGIDA_SOURCE_DIR}/SentStore.cc \
+	${EGIDA_SOURCE_DIR}/SocketUtil.cc \
+	${EGIDA_SOURCE_DIR}/Stats.cc \
+	${EGIDA_SOURCE_DIR}/Timer.cc 
+
+COMMON_OBJECTS = \
+	CausalLogProtocol.o \
+	CICProtocols.o \
+	CkptImpl.o \
+	CkptProtocol.o \
+	CollectRecInfo.o \
+	Communication.o \
+	DeliveredStore.o \
+	DebugTrace.o \
+	DetLog.o \
+	DetStore.o \
+	Egida_API.o \
+	Egida_AppLoop.o \
+	Egida_Object.o \
+	EventHandler.o \
+	EventLog.o \
+	EventStore.o \
+	FailDetect.o \
+	FlushPolicy.o \
+	FlushScheduler.o \
+	HowToCkpt.o \
+	Init.o \
+	LogProtocol.o \
+	MsgPoll.o \
+	MsgQueue.o \
+	NullLogProtocol.o \
+	OptLogProtocol.o \
+	OrphanDetection.o \
+	OutputCommit.o \
+	ProtocolSpecificInit.o \
+	Recovery.o \
+	Security.o \
+	SentStore.o \
+	SocketUtil.o \
+	Stats.o \
+	Timer.o

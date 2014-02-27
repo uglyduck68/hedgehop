@@ -1,0 +1,22 @@
+NAME = condor_q
+all_target($(NAME))
+
+#if WANT_CLASSAD_ANALYSIS
+ANALYSIS_FLAGS = -DWANT_CLASSAD_ANALYSIS -I$(NEW_CLASSADS_INC)
+ANALYSIS_LIBS  = ../classad_analysis/libanalysis.a ../classad_analysis/libconversion.a -L$(NEW_CLASSADS_LIB) -lclassad_ns
+#else
+ANALYSIS_FLAGS = 
+ANALYSIS_LIBS  = 
+#endif
+
+LDFLAGS = $(STD_LDFLAGS) $(CONFIGURE_PCRE_LDFLAGS)
+C_PLUS_FLAGS = $(ANALYSIS_FLAGS) $(STD_C_PLUS_FLAGS) $(QUILL_INC) $(TT_INC) $(CONFIGURE_POSTGRESQL_CFLAGS) $(CONFIGURE_PCRE_CFLAGS)
+LIB = $(ANALYSIS_LIBS) $(STD_LIBS) $(QUILL_LIB) $(TT_LIB) $(CONFIGURE_POSTGRESQL_LDFLAGS)
+
+OBJ = queue.o 
+
+public_c_plus_target($(NAME),bin,$(OBJ),$(LIB))
+
+html:
+
+testbin:: all

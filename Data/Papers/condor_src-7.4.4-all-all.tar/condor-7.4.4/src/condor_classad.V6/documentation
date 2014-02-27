@@ -1,0 +1,15 @@
+//@Include: operators.h
+//@Include: exprTree.h
+
+//@Include: classad.h
+//@Include: literals.h
+//@Include: attrrefs.h
+//@Include: exprList.h
+//@Include: fnCall.h
+//@Include: value.h
+
+//@Include: source.h
+//@Include: sink.h
+//@Include: matchClassad.h
+
+//@Include: classadItor.h
