@@ -1,0 +1,28 @@
+// AceInit.cpp: implementation of the CAceInit class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "AceInit.h"
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CAceInit::CAceInit()
+{
+	WSADATA WSAData;
+	WSAStartup(
+		MAKEWORD(2,2),
+		&WSAData		
+		);
+
+	ACE::init();
+}
+
+CAceInit::~CAceInit()
+{
+
+	ACE::fini();
+	WSACleanup();
+}

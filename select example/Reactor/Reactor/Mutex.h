@@ -17,7 +17,8 @@ public:
 	void Acquire()
 	{
 #if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-		EnterCriticalSection(&m_Mutex);
+		WaitForSingleObject(m_Mutex, INFINITE);
+		//EnterCriticalSection(&m_Mutex);
 #else
 		pthread_mutex_lock(&m_Mutex);
 #endif
@@ -27,12 +28,23 @@ public:
 	void Release()
 	{
 #if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-		LeaveCriticalSection(&m_Mutex);
+		ReleaseMutex(m_Mutex);
+		//LeaveCriticalSection(&m_Mutex);
 #else
 		pthread_mutex_unlock(&m_Mutex);
 #endif
 	}
 
+	void Lock()
+	{
+		Acquire();
+	}
+	
+	void Unlock()
+	{
+		Release();
+	}
+	
 	friend class Cond;
 };
 
