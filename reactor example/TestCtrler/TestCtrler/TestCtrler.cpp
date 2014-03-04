@@ -9,8 +9,6 @@
 #include "ace\Select_Reactor.h"
 #include "ace\TP_Reactor.h"
 #include "ace\Thread_Manager.h" 
-#include "AceInit.h"
-
 #include "Option.h"
 #include "Error.h"
 #include "Admin.h"
@@ -24,21 +22,23 @@
 /**
  * ACE reactor setting
  */
-CAceInit				g_AceInit;
-ACE_Select_Reactor		g_SelectReactor;
-ACE_TP_Reactor			g_TPReactor;
+ACE_Select_Reactor*		g_pSelectReactor	= NULL;
+ACE_TP_Reactor*			g_pTPReactor		= NULL;
 
-ACE_Reactor				g_Reactor(&g_TPReactor);
+
+
 CAdmin*					mAdmin;
 
 static ACE_THR_FUNC_RETURN event_acceptor_loop (void *arg) 
 { 
-  ACE_Reactor *reactor = static_cast<ACE_Reactor *>(arg); 
+	ACE_TRACE("enter event_accoptor_loop");
+	
+	ACE_Reactor *reactor = static_cast<ACE_Reactor *>(arg); 
+	
+	reactor->owner (ACE_OS::thr_self ()); 
+	reactor->run_reactor_event_loop (); 
 
-  reactor->owner (ACE_OS::thr_self ()); 
-  reactor->run_reactor_event_loop (); 
-
-  return 0; 
+	return 0; 
 } 
 
 // CTestCtrlerApp
@@ -84,7 +84,7 @@ BOOL CTestCtrlerApp::InitInstance()
 	/**
 	* VisualStudio2010에서 아래 명령이 웬지 오류를 일으킨다. 단지 특정 소스를 컴파일만 한 경우에도..희안하다.
 	*/
-//	InitCommonControlsEx(&InitCtrls);
+	InitCommonControlsEx(&InitCtrls);
 
 	CWinApp::InitInstance();
 
@@ -103,6 +103,26 @@ BOOL CTestCtrlerApp::InitInstance()
 	// TODO: 이 문자열을 회사 또는 조직의 이름과 같은
 	// 적절한 내용으로 수정해야 합니다.
 	SetRegistryKey(_T("로컬 응용 프로그램 마법사에서 생성된 응용 프로그램"));
+
+	/**
+	* winsock & ACE initialization
+	*/
+	WSADATA WSAData;
+	WSAStartup(MAKEWORD(2,2), &WSAData);
+
+	ACE::init();
+
+	try
+	{
+//		g_pSelectReactor	= new ACE_Select_Reactor;
+		g_pTPReactor		= new ACE_TP_Reactor;
+	}
+	catch(...)
+	{
+		return FALSE;
+	}
+
+	ACE_Reactor				g_Reactor(g_pTPReactor);
 
 	/**
 	* read test configureation for clients
@@ -157,6 +177,15 @@ BOOL CTestCtrlerApp::InitInstance()
 	{
 		delete pShellManager;
 	}
+
+//	delete g_pSelectReactor;
+	delete g_pTPReactor;
+
+	/**
+	* winsock & ACE finalization
+	*/
+	ACE::fini();
+	WSACleanup();
 
 	// 대화 상자가 닫혔으므로 응용 프로그램의 메시지 펌프를 시작하지 않고  응용 프로그램을 끝낼 수 있도록 FALSE를
 	// 반환합니다.

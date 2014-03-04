@@ -125,6 +125,7 @@ BOOL CEchoSvrDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	OnBnClickedButtonRun();
 
 	PrintMsg("Start\n");
 
@@ -229,7 +230,7 @@ CCpuUsage	m_cpu;
 void CALLBACK TimerCB(HWND, UINT, UINT, DWORD)
 {
 	float		nCpu		= m_cpu.GetCpuUsage();
-	float		nBandwidth	= (m_cpu.GetBandwidth() * 8 * 100) / (100.0f*MEGA);
+	float		nBandwidth	= (m_cpu.GetBandwidth() * 8 * 100.0f) / (100.0f*MEGA);
 
 	AfxGetApp()->GetMainWnd()->SendMessage(WM_USAGE, (WPARAM)&nCpu, (LPARAM)&nBandwidth);
 
@@ -284,9 +285,9 @@ int CEchoSvrDlg::GetTime(char* pcTime)
 {
 	SYSTEMTIME	st;
 
-	GetSystemTime(&st);
+	GetLocalTime(&st);
 
-	sprintf(pcTime, "[%4d-%02d-%02d %02:%02d:%02d.%04d] ", 
+	sprintf(pcTime, "[%4d-%02d-%02d %02d:%02d:%02d.%04d] ", 
 		st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 
 	return 1;
@@ -342,8 +343,12 @@ afx_msg LRESULT CEchoSvrDlg::OnPrintMessage(WPARAM wParam, LPARAM lParam)
 
 afx_msg LRESULT CEchoSvrDlg::OnUsage(WPARAM wParam, LPARAM lParam)
 {
-	m_nCpuPercentage	= *(float*)wParam;
-	m_nBandwidth		= *(float*)lParam;
+	if (0 <= *(float*)wParam && *(float*)wParam <= 100)
+		m_nCpuPercentage	= *(float*)wParam;
+
+
+	if (0 <= *(float*)lParam && *(float*)lParam <= 100)
+		m_nBandwidth		= *(float*)lParam;
 
 	UpdateData(FALSE);
 

@@ -11,7 +11,8 @@
 #include "ace/SOCK_Stream.h"
 #include "ace/Sock_Connect.h"
 #include "ace/Reactor.h"
-#include "ace\Thread_Manager.h" 
+#include "ace/Thread_Manager.h" 
+#include "Client.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -58,12 +59,13 @@ CEchoClientDlg::CEchoClientDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CEchoClientDlg::IDD, pParent)
 	, m_dwIP(2130706433)	// 127.0.0.1
 	, m_nPort(8000)
-	, m_strMsg(_T("Hi! Are You OK? Winner takes all as you know"))
+	, m_strMsg(_T("Hi! Are You OK? Winner takes all as you know\n"))
 	, m_bAuto(FALSE)
-	, m_nDuration(0)
+	, m_nDuration(1000)		// 1 sec
 	, m_bConnect(FALSE)
 	, m_bTimer(FALSE)
 	, m_nTimerID(0)
+	, m_pClient(NULL)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -77,7 +79,8 @@ void CEchoClientDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MaxChars(pDX, m_strMsg, 1000);
 	DDX_Check(pDX, IDC_CHECK_AUTO, m_bAuto);
 	DDX_Text(pDX, IDC_EDIT_DURATION, m_nDuration);
-	DDV_MinMaxInt(pDX, m_nDuration, 0, 60);
+
+	DDX_Control(pDX, IDC_EDIT_LOG_MSG, m_ctrlLogMsg);
 }
 
 BEGIN_MESSAGE_MAP(CEchoClientDlg, CDialogEx)
@@ -87,6 +90,7 @@ BEGIN_MESSAGE_MAP(CEchoClientDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_CONNECT, &CEchoClientDlg::OnBnClickedButtonConnect)
 	ON_BN_CLICKED(IDC_BUTTON_SEND, &CEchoClientDlg::OnBnClickedButtonSend)
 	ON_BN_CLICKED(IDC_CHECK_AUTO, &CEchoClientDlg::OnBnClickedCheckAuto)
+	ON_MESSAGE(WM_PRINT_MESSAGE, &CEchoClientDlg::OnPrintMessage)
 END_MESSAGE_MAP()
 
 
@@ -196,10 +200,11 @@ void CEchoClientDlg::OnBnClickedButtonConnect()
 
 	ACE_INET_Addr		addr(m_nPort, m_dwIP);
 
-	if (m_Connector.connect(m_Sock, addr) == -1)
+	m_pClient = ::new Client();
+
+	if (connector.connect (m_pClient, addr) == -1)
 	{
 		AfxMessageBox("fail to connect");
-
 		return;
 	}
 
@@ -225,7 +230,12 @@ void CEchoClientDlg::OnBnClickedButtonSend()
 
 	if (m_bConnect)
 	{
-		m_Sock.send_n(m_strMsg, m_strMsg.GetLength());
+		if (m_pClient->peer ().send_n(m_strMsg, m_strMsg.GetLength()) == m_strMsg.GetLength())
+		{
+			//m_strMsg += "\n";
+
+			//PrintMsg(m_strMsg.GetBuffer());
+		}
 
 		if (m_bAuto && m_nDuration > 0 && m_bTimer == FALSE)
 		{
@@ -267,4 +277,45 @@ void CEchoClientDlg::OnOK()
 	Fin();
 
 	CDialogEx::OnOK();
+}
+
+int CEchoClientDlg::GetTime(char* pcTime)
+{
+	SYSTEMTIME	st;
+
+	GetLocalTime(&st);
+
+	sprintf(pcTime, "[%4d-%02d-%02d %02d:%02d:%02d.%04d] ", 
+		st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
+
+	return 1;
+}
+
+int	CEchoClientDlg::PrintMsg(char* pcFmt, ...)
+{
+	char		caMsg[1024]	= {0,};
+	va_list		args;
+
+	// get current time
+	GetTime(caMsg);
+
+	va_start(args, pcFmt);
+
+	_vsprintf_p(caMsg+strlen(caMsg), 1024, pcFmt, args);
+
+	va_end(args);
+
+	// print message to control
+	int		nLen	= m_ctrlLogMsg.GetWindowTextLengthA();
+	m_ctrlLogMsg.SetSel(nLen, nLen);
+	m_ctrlLogMsg.ReplaceSel(caMsg);
+
+	return 1;
+}
+
+afx_msg LRESULT CEchoClientDlg::OnPrintMessage(WPARAM wParam, LPARAM lParam)
+{
+	PrintMsg((char*)lParam);
+
+	return 0;
 }

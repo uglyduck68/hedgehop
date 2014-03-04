@@ -102,7 +102,6 @@
     <None Include="res\TestCtrler.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AceInit.h" />
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="MyAcceptor.h" />
@@ -115,7 +114,6 @@
     <ClInclude Include="TestCtrlerDlg.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AceInit.cpp" />
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="MyAcceptor.cpp" />

@@ -56,7 +56,8 @@ int
 	ClientService::handle_input (ACE_HANDLE)
 {
 	const size_t INPUT_SIZE = 4096;
-	char buffer[INPUT_SIZE];
+	char buffer[INPUT_SIZE] = {0,};
+	char	caLogMsg[INPUT_SIZE]	= {0,};
 	ssize_t recv_cnt, send_cnt;
 
 	if ((recv_cnt = this->sock_.recv (buffer, sizeof(buffer))) <= 0)
@@ -66,12 +67,16 @@ int
 		return -1;
 	}
 
-	//TRACE("recv: %s\n", buffer);
+	sprintf(caLogMsg, "%s: '%s'\n", peer_name, buffer);
+
+	// print received message
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_PRINT_MESSAGE, 0U, (LPARAM)caLogMsg);
 
 	send_cnt =
 		this->sock_.send (buffer, static_cast<size_t> (recv_cnt));
 	if (send_cnt == recv_cnt)
 		return 0;
+
 	if (send_cnt == -1 && ACE_OS::last_error () != EWOULDBLOCK)
 		ACE_ERROR_RETURN ((LM_ERROR,
 		ACE_TEXT ("(%P|%t) %p\n"),
