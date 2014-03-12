@@ -14,6 +14,7 @@
 #include "ace/Thread_Manager.h" 
 
 #include "CpuUsage.h"
+#include "Packet.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -125,9 +126,13 @@ BOOL CEchoSvrDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	OnBnClickedButtonRun();
+//	OnBnClickedButtonRun();
 
 	PrintMsg("Start\n");
+
+//	Packet*	pPacket;
+
+//	MakePacket(100, &pPacket);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
