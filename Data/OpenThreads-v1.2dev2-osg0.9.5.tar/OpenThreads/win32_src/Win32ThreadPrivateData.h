@@ -27,7 +27,7 @@
 #include <windows.h>
 #endif
 
-#include <OpenThreads/Thread>
+#include <OpenThreads/Thread.h>
 
 namespace OpenThreads {
 

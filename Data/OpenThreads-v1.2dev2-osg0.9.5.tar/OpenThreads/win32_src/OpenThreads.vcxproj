@@ -141,19 +141,19 @@
     <ClCompile Include="Win32ThreadBarrier.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\include\OpenThreads\Barrier">
+    <CustomBuild Include="..\include\OpenThreads\Barrier.h">
       <FileType>Document</FileType>
     </CustomBuild>
-    <CustomBuild Include="..\include\OpenThreads\Condition">
+    <CustomBuild Include="..\include\OpenThreads\Condition.h">
       <FileType>Document</FileType>
     </CustomBuild>
-    <CustomBuild Include="..\include\OpenThreads\Exports">
+    <CustomBuild Include="..\include\OpenThreads\Exports.h">
       <FileType>Document</FileType>
     </CustomBuild>
-    <CustomBuild Include="..\include\OpenThreads\Mutex">
+    <CustomBuild Include="..\include\OpenThreads\Mutex.h">
       <FileType>Document</FileType>
     </CustomBuild>
-    <CustomBuild Include="..\include\OpenThreads\Thread">
+    <CustomBuild Include="..\include\OpenThreads\Thread.h">
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>
@@ -165,6 +165,9 @@
     <ClInclude Include="Win32ConditionPrivateData.h" />
     <ClInclude Include="Win32MutexPrivateData.h" />
     <ClInclude Include="Win32ThreadPrivateData.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MsgQueue_T.h.org" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

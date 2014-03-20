@@ -1,5 +1,5 @@
 
-#include <OpenThreads\Mutex>
+#include <OpenThreads\Mutex.h>
 #include <OpenThreads\MsgQueue_T.h>
 #include <OpenThreads\Guard.h>
 

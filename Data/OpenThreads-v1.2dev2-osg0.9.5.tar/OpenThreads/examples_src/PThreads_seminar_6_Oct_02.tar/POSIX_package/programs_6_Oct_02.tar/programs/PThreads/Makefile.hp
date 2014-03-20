@@ -1,0 +1,28 @@
+#			Makefile for HP-UX
+
+# Where are semaphores?  -lposix4 ??
+
+
+CC = 		cc
+CPP = 		CC
+CFLAGS=-Ae -D_REENTRANT -D_HPUX_SOURCE
+OPP = 
+#DEBUG = 	-g3 -xansi
+LOCAL =   	-I.
+PTHRLIB =       -lpthread -lrt
+EXTENSIONS =  	-L/tmp/tt -lthread_extensions
+MOTIF = 	-lXm -lXt -lX11 -lm
+SOCKETS = 
+SHARED =	+z
+
+# HP-UX does implement cross-process mutexes, so ipc does work.
+# The real-time system is different, hence no rt_thr
+
+dynamic_libraries = libthread_extensions.sl libcallout.sl
+include Makefile_files
+
+all = $(common_files) ipc
+all : $(all)
+
+
+include Makefile_compiles

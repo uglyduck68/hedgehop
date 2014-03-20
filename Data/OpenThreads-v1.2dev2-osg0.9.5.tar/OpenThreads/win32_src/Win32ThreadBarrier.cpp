@@ -20,7 +20,7 @@
 // ~~~~~~~~~~~~~~~~~~
 //
 
-#include  <OpenThreads/Barrier>
+#include  <OpenThreads/Barrier.h>
 #include "Win32BarrierPrivateData.h"
 using namespace OpenThreads;
 

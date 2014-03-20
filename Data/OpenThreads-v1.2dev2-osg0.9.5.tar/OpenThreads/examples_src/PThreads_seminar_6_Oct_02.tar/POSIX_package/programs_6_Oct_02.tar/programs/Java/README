@@ -1,0 +1,45 @@
+These are the programs from Bil's course and book.
+You are welcome to use them as you see fit, but be
+aware that there is a bug in them and I don't know
+where it is! (Meaning don't build an important system
+with this code unless YOU verify it.)
+
+The book describes most of these programs in some 
+detail. Otherwise, they are not extensively documented.
+
+
+24 March 1999
+
+		Here are the Programs
+
+Cancellation		Show how to kill threads using stop() (bugs!)
+CancellationInterrupt	Show how to kill threads using interrupt()
+CancellationNot		Show how to kill threads by polling 
+Client			Send lots of requests to a socket Server (see Server*)
+Extensions		A bunch of useful extension classes
+FollowMe		A simple threaded applet game 
+HeatFlow		A VERY simple heat-flow analysis style problem
+HeatFlow2		A VERY simple heat-flow analysis style problem
+List2LocalLocks		Compare a series of locking schemes
+ListGlobalLock		Compare a series of locking schemes
+ListGlobalRW2		Compare a series of locking schemes
+LostWakeup		Illustrate the lost wakeup
+MatrixProblem		A matrix add program has a bug. Fix it!
+MatrixSolution		A matrix add program has a bug. Fixed it!
+Multi			Simple program to Start/Exit a bunch of threads
+OneQueueProblem		A producer/consumer program has a bug. Fix it!
+OneQueueSolution	A producer/consumer program has a bug. Fixed it!
+ServerInterruptible	A robust threaded server, shuts down using interrupt()
+ServerProducerConsumer	A non-robust threaded server
+ServerRMI		A simple, non-threaded RMI server & client
+ServerSimple		A simple, non-threaded socket server
+StopQueueProblem	Another p/c program has a bug. Fix it!
+StopQueueSolution	Another p/c program has a bug. Fixed it!
+Test			Misc
+TestRecursiveMutex	Build a recursive posix-style mutex.
+TestTimeout		Show how timeouts work w/wait()
+ThreadMon		A freeware monitor (not very useful)
+ThreadedAWT		A threaded AWT program
+ThreadedSwing		A threaded Swing program
+TimeDisk		A native-thread program showing actual performance.
+TimeTests		A pile of timing tests

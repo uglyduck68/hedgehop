@@ -27,8 +27,8 @@
 #include <windows.h>
 #endif
 
-#include <OpenThreads/Mutex>
-#include <OpenThreads/Condition>
+#include <OpenThreads/Mutex.h>
+#include <OpenThreads/Condition.h>
 
 namespace OpenThreads {
 

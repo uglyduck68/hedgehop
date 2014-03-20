@@ -1,0 +1,5 @@
+# Definitions required for Java MT course.
+# -Bil
+
+
+setenv CLASSPATH .:../Extensions/classes

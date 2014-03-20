@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include <OpenThreads\Exports>
+#include <OpenThreads\Exports.h>
 
 /**
  * MsgQueue is template thread-safe message queue. But you can user MutexNull object for single thread.

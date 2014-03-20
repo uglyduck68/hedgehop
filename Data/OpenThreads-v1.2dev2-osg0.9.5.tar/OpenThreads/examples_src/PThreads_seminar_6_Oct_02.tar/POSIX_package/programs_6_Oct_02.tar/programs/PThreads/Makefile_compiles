@@ -1,0 +1,136 @@
+
+libthread_extensions.so : thread_extensions.c
+	$(cc)  $(SHARED) -o $@ $? $(DEBUG) $(PTHRLIB)
+libcallout.so : callout.c
+	$(cc)  $(SHARED) -o $@ $?  $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+
+# HPUX uses a .sl extension
+libthread_extensions.sl: thread_extensions.c
+	$(cc) $(CFLAGS) $(SHARED) -c thread_extensions.c
+	ld -b -o libthread_extensions.sl thread_extensions.o
+libcallout.sl : callout.c
+	$(cc) $(CFLAGS) $(SHARED) -c callout.c
+	ld -b -o libcallout.sl callout.o
+
+callout_tests : callout_tests.c
+	$(cc) -o $@ $? $(LOCAL) -lcallout $(DEBUG)  $(PTHRLIB) $(EXTENSIONS)
+
+two_queues_problem : two_queues_problem.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+two_queues_solution : two_queues_solution.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+one_queue_problem : one_queue_problem.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+one_queue_solution : one_queue_solution.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+stop_queue_solution : stop_queue_solution.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+stop_queue_problem : stop_queue_problem.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+stop_queue_problem_hint : stop_queue_problem_hint.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+recover : recover.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+
+ThreadWin : ThreadWin.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(MOTIF) $(EXTENSIONS)
+
+cancellation : cancellation.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+cancellation_detached : cancellation_detached.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+cancellation_not : cancellation_not.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+multi_thr : multi_thr.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+ipc : ipc.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+rt_thr : rt_thr.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+client : client.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB)  $(EXTENSIONS) $(SOCKETS)
+server_simple : server_simple.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB)  $(EXTENSIONS) $(SOCKETS)
+server_pc : server_pc.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB)  $(EXTENSIONS) $(SOCKETS)
+server_select: server_select.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS) $(SOCKETS)
+server_ms : server_ms.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB)  $(EXTENSIONS) $(SOCKETS)
+
+list_2local_locks : list_2local_locks.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+list_local_lock : list_local_lock.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+list_local_rw : list_local_rw.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+list_global_rw: list_global_rw.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+list_global_rw2: list_global_rw2.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+list_global_lock: list_global_lock.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+matrix_multiply_problem: matrix_multiply_problem.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+matrix_multiply_solution: matrix_multiply_solution.c
+	$(cc) -o $@ $? $(LOCAL) -fast $(PTHRLIB) $(EXTENSIONS)
+matrix_problem: matrix_problem.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+matrix_solution: matrix_solution.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+matrix_solution2: matrix_solution2.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+monitor: monitor.cc
+	CC -o  $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+test_recursive_mutex: test_recursive_mutex.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+test_timed_mutex: test_timed_mutex.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+test_dmutex: test_dmutex.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+test_fifo_mutex: test_fifo_mutex.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+test_constants: test_constants.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+time_create: time_create.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+test_single_wakeup_cv: test_single_wakeup_cv.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_lock: time_lock.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_cs: time_cs.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_testcancel: time_testcancel.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+test_forker: test_forker.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+test_barrier: test_barrier.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+false_sharing: false_sharing.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+stack_solution: stack_solution.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+stack_problem: stack_problem.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+poll_test : poll_test.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS) $(SOCKETS)
+time_disk : time_disk.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS) -lm
+
+
+
+clean :
+	rm -rf $(all) core .test.*.er
+

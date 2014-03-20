@@ -524,23 +524,26 @@ ThreadMQ<T, L>::ThreadMQ()
 }
 
 template<typename T, typename L>
-ThreadMQQ<T, L>::~ThreadMQ()
+ThreadMQ<T, L>::~ThreadMQ()
 {
 }
 
 template<typename T, typename L>
-int	ThreadMQQ<T, L>::Put(T Data)
+int	ThreadMQ<T, L>::Put(T Data)
 {
+	m_MsgQ.Push(Data);
+
 	return 0;
 }
 
 template<typename T, typename L>
-T ThreadMQQ<T, L>::Get()
+T ThreadMQ<T, L>::Get()
 {
-	return NULL;
+	return m_MsgQ.Pop();
 }
 
-int	ThreadMQQ<T, L>::MQSize()
+template<typename T, typename L>
+int	ThreadMQ<T, L>::MQSize()
 {
-	return 0;
+	return m_MsgQ.Size();
 }

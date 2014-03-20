@@ -1,0 +1,8 @@
+VERSION: 1
+Workpile.java,20,64,Workpile
+Server.java,26,94,Server
+Producer.java,7,54,Producer
+Request.java,8,72,Request
+Killer.java,9,25,Killer
+Client.java,7,73,Client
+Consumer.java,8,32,Consumer

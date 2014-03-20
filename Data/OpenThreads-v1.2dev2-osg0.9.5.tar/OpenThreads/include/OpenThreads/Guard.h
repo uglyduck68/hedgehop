@@ -1,6 +1,6 @@
 #pragma once
 
-#include <OpenThreads\Exports>
+#include <OpenThreads\Exports.h>
 
 /**
  * @class	Guard

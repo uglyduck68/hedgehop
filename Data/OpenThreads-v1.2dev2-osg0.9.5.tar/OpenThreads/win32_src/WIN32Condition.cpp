@@ -19,7 +19,7 @@
 // Win32Condition.c++ - C++ Condition class built on top of posix threads.
 // ~~~~~~~~~~~~~~~~~~~~
 //
-#include <OpenThreads/Condition>
+#include <OpenThreads/Condition.h>
 #include "Win32ConditionPrivateData.h"
 
 using namespace OpenThreads;

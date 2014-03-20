@@ -23,7 +23,7 @@
 // ~~~~~~~~~~~~~~~~
 //
 
-#include <OpenThreads/Mutex>
+#include <OpenThreads/Mutex.h>
 #include "Win32MutexPrivateData.h"
 using namespace OpenThreads;
 

@@ -58,20 +58,23 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\include\OpenThreads\Barrier">
+    <CustomBuild Include="..\include\OpenThreads\Thread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\include\OpenThreads\Condition">
+    <CustomBuild Include="..\include\OpenThreads\Mutex.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\include\OpenThreads\Exports">
+    <CustomBuild Include="..\include\OpenThreads\Exports.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\include\OpenThreads\Mutex">
+    <CustomBuild Include="..\include\OpenThreads\Condition.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\include\OpenThreads\Thread">
+    <CustomBuild Include="..\include\OpenThreads\Barrier.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MsgQueue_T.h.org" />
   </ItemGroup>
 </Project>
