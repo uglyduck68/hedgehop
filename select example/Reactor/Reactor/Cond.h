@@ -1,3 +1,9 @@
+/**
+ * @file	Cond.h
+ *
+ * @author	Kim Young Hwan <uglyduck68@gmail.com>
+ */
+
 #pragma once
 
 #include "X1.h"
@@ -8,69 +14,49 @@ NS_X1_START
 /**
  * @class	Cond
  * @brief	class for conditional variables
+ *
+ * This class is wrapping for conditional variables, which allows
+ * threads to block until shared data changes state.
+ *
  */
-class DECL_SPEC_DLL Cond
+template<typename L>
+class /*DECL_SPEC_DLL*/ Cond
 {
 private:
-	thread_cond_t		m_Cond;
-	const Mutex&		m_Mutex;
+	/// condition variable.
+	thread_cond_t		m_Condv;
+
+	/// reference to mutex lock.
+	L&					m_Mutex;
 
 public:
-	Cond(const Mutex& mutex) : m_Mutex(mutex)
+
+	Cond(/*const*/ L& mutex);
+
+	~Cond(void);
+
+	void Set(L& mutex)
 	{
-		#if	defined(OS_WINDOWS) && !defined(PTHREAD_H)
-		memset(&m_Cond, 0, sizeof(m_Cond));
-		InitializeConditionVariable(&m_Cond);
-		#else
-		if(pthread_cond_init(&m_Cond, 0) != 0)
-		{
-			X1_TRACE();
-		}
-		#endif
+		m_Mutex	= mutex;
 	}
 
-	~Cond(void)
-	{
-		#if	defined(OS_WINDOWS) && !defined(PTHREAD_H)
-		#else
-		if(pthread_cond_destroy(&m_Cond) != 0)
-		{
-			X1_TRACE();
-		}
-		#endif
-	}
+	ret_t Wait(int32_t timeout_msec);
 
-	void Wait(int32_t timeout_msec)
-	{
-		#if	defined(OS_WINDOWS) && !defined(PTHREAD_H)
-		SleepConditionVariableCS(&m_Cond, (thread_mutex_t *)&m_Mutex.m_Mutex, timeout_msec);
-		#else
-		pthread_cond_timedwait(&m_Cond, (thread_mutex_t *)&m_Mutex.m_Mutex, 0);
-		#endif
-	}
+	ret_t Notify();
 
-	void Notify()
-	{
-		#if	defined(OS_WINDOWS) && !defined(PTHREAD_H)
-		WakeConditionVariable(&m_Cond);
-		#else
-		pthread_cond_signal(&m_Cond);
-		#endif
-	}
+	ret_t NotifyAll();
 
-	void NotifyAll()
-	{
-		#if	defined(OS_WINDOWS) && !defined(PTHREAD_H)
-		WakeAllConditionVariable(&m_Cond);
-		#else
-		pthread_cond_broadcast(&m_Cond);
-		#endif
-	}
-
-
+	//
+	// following functions just for ease interface
+	//
+	ret_t Lock();
+	
+	ret_t Unlock();
 private:
 	void operator =(const Cond& ref);// {}
 
 };
 
 NS_X1_END
+
+#include "Cond.cpp"

@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include <OpenThreads\Exports.h>
+#include <OpenThreads/Exports.h>
 
 /**
  * MsgQueue is template thread-safe message queue. But you can user MutexNull object for single thread.
@@ -21,7 +21,6 @@ public:
 	MsgQueue(void);
 	virtual ~MsgQueue(void);
 
-	// FIXME: this class must be modified to support singleton
 	static MsgQueue*	Instance()		
 	{
 		return NULL;

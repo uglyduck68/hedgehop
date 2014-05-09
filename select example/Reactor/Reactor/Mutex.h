@@ -1,7 +1,10 @@
+/**
+ * Mutex class
+ */
 #pragma once
 
 #include "X1.h"
-#include	<pthread.h>
+
 
 NS_X1_START
 
@@ -14,37 +17,17 @@ public:
 	Mutex(void);
 	~Mutex(void);
 
-	void Acquire()
-	{
-#if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-		WaitForSingleObject(m_Mutex, INFINITE);
-		//EnterCriticalSection(&m_Mutex);
-#else
-		pthread_mutex_lock(&m_Mutex);
-#endif
-	}
+	ret_t Acquire();
 
+	ret_t Release();
 
-	void Release()
-	{
-#if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-		ReleaseMutex(m_Mutex);
-		//LeaveCriticalSection(&m_Mutex);
-#else
-		pthread_mutex_unlock(&m_Mutex);
-#endif
-	}
-
-	void Lock()
-	{
-		Acquire();
-	}
+	/// Lock just call Acquire
+	ret_t Lock();
 	
-	void Unlock()
-	{
-		Release();
-	}
+	/// Unlock just call Release
+	ret_t Unlock();
 	
+	template<typename L>
 	friend class Cond;
 };
 

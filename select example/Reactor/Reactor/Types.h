@@ -2,6 +2,10 @@
 
 #include "os.h"
 
+/*
+* PTHREAD_H is defined in <pthread.h>
+*/
+
 //#include <stdio.h>
 
 //#if	defined(_X1_WINDOWS_)
@@ -24,7 +28,7 @@
 	typedef bool					bool_t;
 #endif
 
-#if defined(WIDE_CHARACTER)
+#if defined(_X1_WIDE_CHARACTER)
 	typedef wchar_t					char_t;
 	typedef unsigned short			uchar_t;
 #else
@@ -36,9 +40,9 @@
 	typedef float					float_t;
 	typedef double					double_t;
 
-	typedef short					short_t;
-	typedef unsigned short			ushort_t;
-	typedef unsigned int			uint_t;
+	//typedef short					short_t;
+	//typedef unsigned short			ushort_t;
+	//typedef unsigned int			uint_t;
 	typedef unsigned long			ulong_t;
 	typedef long long				llong_t;
 	typedef unsigned long long		ullong_t;
@@ -56,12 +60,12 @@
 	typedef LONG_PTR				long_ptr;
 	typedef ULONG_PTR				ulong_ptr;
 #else
-	#if   defined (USE_32BIT)
+	#if   defined (_X1_USE_32BIT)
 	typedef int						int_ptr;
 	typedef unsigned int			uint_ptr;
 	typedef long					long_ptr;
 	typedef unsigned long			ulong_ptr;
-	#elif defined (USE_64BIT)
+	#elif defined (_X1_USE_64BIT)
 	typedef int64_t					int_ptr;
 	typedef uint64_t				uint_ptr;
 	typedef long					long_ptr;
@@ -70,7 +74,7 @@
 #endif
 
 // compatible type
-#if defined(_X1_LINUX_) || defined(PTHREAD_H)	// pthread for WIN32
+#if /*defined(_X1_LINUX_) || */defined(PTHREAD_H)
 	typedef void*					handle_t;
 	typedef int						socket_t;
 	typedef int						descriptor_t;
@@ -136,8 +140,8 @@
 	typedef thread_return_t __stdcall THRDFUNC(void *thread_si);	// for _beginthreadex
 #endif
 
-namespace X1
-{
+//namespace X1
+//{
 
 	const int				INVALID_HANDLE	= -1;
 	typedef unsigned long	EVENT_MASK;
@@ -153,7 +157,7 @@ typedef	int		X1_SOCHANDLE;
 #elif	defined(_X1_WINDOWS_)
 	typedef	SOCKET				X1_SOCHANDLE;	// SOCKET is defined as UINT_PTR
 #endif
-}
+//}
 
 //struct timeval {
 //	long    tv_sec;         /* seconds */
@@ -179,6 +183,9 @@ enum RET_TYPE
 	X1_ENETINIT		= 3,
 	X1_ENULLOBJECT	= 4
 };
+
+/// return value of all X1 functions
+typedef	RET_TYPE	ret_t;
 
 enum DEMUX_TYPE
 {

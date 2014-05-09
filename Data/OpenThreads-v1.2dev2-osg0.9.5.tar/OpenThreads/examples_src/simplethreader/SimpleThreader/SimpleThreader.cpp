@@ -25,9 +25,9 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-#include <OpenThreads/Thread>
-#include <OpenThreads/Mutex>
-#include <OpenThreads/Barrier>
+#include <OpenThreads/Thread.h>
+#include <OpenThreads/Mutex.h>
+#include <OpenThreads/Barrier.h>
 #include "ThreadObserver.h"
 #include "ThreadReporter.h"
 
@@ -106,6 +106,7 @@ public:
 	sprintf(tmp, "StackSize: %d\n", getStackSize());
 
         notifyObserversStarted(getThreadId());
+
         notifyObserversMessage(getThreadId(), "This is a thread message.");
 		notifyObserversMessage(getThreadId(), tmp);
 	
@@ -130,7 +131,7 @@ public:
 		Thread::Yield();
 	}
 
-
+	// print "Thread %d finished."
 	notifyObserversFinished(getThreadId());
 
     }
@@ -205,13 +206,14 @@ int _tmain(int argc, _TCHAR* argv[])
     int NUM_ELTS = atoi(argv[1]);
     int NUM_THREADS = atoi(argv[2]);
     
+	/// GLOBAL_NUM_THREADS = one main thread + new created threads
     GLOBAL_NUM_THREADS = NUM_THREADS + 1;
     
     MyThreadObserver observer;
     register int i;
 
     int *dataArray = new int[NUM_ELTS];
-    std::vector<MyThread *> threads;
+    std::vector<MyThread *> vecThreads;
 
     for(i=0; i<NUM_ELTS; ++i) {
 	
@@ -227,7 +229,8 @@ int _tmain(int argc, _TCHAR* argv[])
         int status;
         MyThread *thread = new MyThread(dataArray + (i*(NUM_ELTS/NUM_THREADS)),
                                         NUM_ELTS/NUM_THREADS);
-        threads.push_back(thread);
+        vecThreads.push_back(thread);
+
         thread->addObserver(&observer);
 		thread->setStackSize(1024*256);
 
@@ -236,22 +239,29 @@ int _tmain(int argc, _TCHAR* argv[])
         assert(status == 0);
     }
 
-    bar.block(GLOBAL_NUM_THREADS);  // Block 'till ready
-    bar.block(GLOBAL_NUM_THREADS);  // Block 'till finished
+	std::cout << "Root Thread enter 2 barrier" << endl;
+
+    bar.block(GLOBAL_NUM_THREADS);  // Block 'till all new created threads are ready
+
+    bar.block(GLOBAL_NUM_THREADS);  // Block 'till all new created threads are finished
 
     char val;
     std::cout << "Press any key + return to quit." << std::endl;
     std::cin >> val;
 
     // Notify the threads to quit, wait for this to happen.
-    for(i=0;i<threads.size();++i) {
-        MyThread *thread = threads[i];
+    for(i=0;i<vecThreads.size();++i) {
+        MyThread *thread = vecThreads[i];
         thread->quit();
     }
 
+	int	nSpinCount	= 0;
     while(observer.getFinishedCount() != NUM_THREADS) {
         // Spin our wheels.
+		nSpinCount++;
     }
+
+	std::cout << "Spin Count " << nSpinCount << endl;
 
     std::cout << "Data Array: " << std::endl;
     for(i=0; i < NUM_THREADS; ++i) {
@@ -264,12 +274,12 @@ int _tmain(int argc, _TCHAR* argv[])
     std::cout << std::endl;
 
     // Delete all the threads.
-    for(i=0;i<threads.size();++i) {
-        MyThread *thread = threads[i];
+    for(i=0;i<vecThreads.size();++i) {
+        MyThread *thread = vecThreads[i];
         delete thread;
     }
 
-    threads.clear();
+    vecThreads.clear();
 
     delete [] dataArray;
 

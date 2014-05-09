@@ -127,7 +127,9 @@
     <ClCompile Include="ReactorImpl_WIN32.cpp" />
     <ClCompile Include="ReactorImpl_WIN32_select.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Thread.cpp" />
+    <ClCompile Include="Thread.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ThreadMgr.cpp" />
     <ClCompile Include="Threadpool.cpp" />
     <ClCompile Include="TimeValue.cpp" />

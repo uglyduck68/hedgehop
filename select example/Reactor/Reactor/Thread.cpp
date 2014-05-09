@@ -1,6 +1,8 @@
+#include <signal.h>
+
+#include "X1.h"
 #include "Thread.h"
 
-#include <signal.h>
 
 NS_X1_START
 
@@ -235,12 +237,15 @@ int		Thread::Suspend()
 
 int		Thread::Resume()
 {
+	TCHAR	t;
+
 #if defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 	if(m_ThreadInfo.m_hThread != NULL)
 	{
 		// resume thread that is suspended by SuspendThread API.
 		return ResumeThread(m_ThreadInfo.m_hThread)==0xFFFFFFFF? X1_FAIL: X1_OK;
 	}
+#endif
 
 #if defined(PTHREAD_H)
 	// wake up Invoker that is suspended according to the creation flag

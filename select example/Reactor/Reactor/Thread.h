@@ -1,3 +1,8 @@
+/**
+ * I will replace this class with OpenThread library.
+ *
+ */
+
 #pragma once
 
 #include "X1.h"

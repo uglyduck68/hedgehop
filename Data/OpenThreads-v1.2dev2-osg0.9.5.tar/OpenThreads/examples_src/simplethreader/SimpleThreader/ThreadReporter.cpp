@@ -83,6 +83,8 @@ void ThreadReporter::notifyObserversStarted(const int threadId) {
     std::list<ThreadObserver *>::iterator iter;
     for(iter=_observers.begin(); iter != _observers.end(); ++iter) {
         ThreadObserver *observer = static_cast<ThreadObserver *>(*iter);
+
+		// print Thread %d started.
         observer->threadStarted(threadId);
     }
 }
