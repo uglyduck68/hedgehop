@@ -1,6 +1,11 @@
 /**
+ * @file	MsgQueue.h
+ *
+ * @author	Kim Young Hwan <uglyduck68@gmail.com>
+ *
+ * This is thread-safe message queueu. This class was tested by TestMessageQ project.
+ */
 
-*/
 #pragma once
 
 //#include <pthread.h>
@@ -12,40 +17,42 @@
 NS_X1_START
 
 /**
- * MsgQueue is template thread-safe message queue. But you can user MutexNull object for single thread.
+ * @class	MsgQueue
+ *
+ * MsgQueue is template thread-safe message queue. 
+ * But you can user MutexNull class for single thread.
  * FIXME:	use lock-free algorithm of MPMC.
- *			change thread_mutex_t to L.
  */
 template<typename T, typename L>
-class /*DECL_SPEC_DLL*/ MsgQueue
+class MsgQueue
 {
 private:
 	typedef std::queue< T > QUEUE_T;
 
 	QUEUE_T			m_Queue;
 
-	/// mutex lock. this will be replaced by class.
 	/// this mutex is used to push & pop item.
 	/// so this variables don't be used in Size function.
-	L				m_Mutex;	
+	L				m_Mutex;
+	L				m_MutexSize;
 																
 	/// conditional variable. this will be replaced by class.
-	Cond<L>			m_Cond(typename L xxMutex);		
+	Cond			m_Cond;		
 
 public:
 	MsgQueue(void);
 	virtual ~MsgQueue(void);
 
-
-//	static MsgQueue*	Instance()		{}
-
 	inline void	Push(T pData);
 	inline T		Pop();
 	int		Size()
 	{
-//		m_Mutex.Lock();
+		// no race condition in case of test of 2 threads
+//		m_MutexSize.Lock();
 		int		n = m_Queue.size();
-//		m_Mutex.Unlock();
+//		m_MutexSize.Unlock();
+
+		return n;
 	}
 };
 

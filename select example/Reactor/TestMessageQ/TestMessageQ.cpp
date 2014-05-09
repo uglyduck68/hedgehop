@@ -51,6 +51,8 @@ public:
 class Consumer : public OpenThreads::Thread
 {
 public:
+	int		m_nEnd;
+
 	Consumer(X1::MsgQueue<Item*, Mutex>& Queue) : m_Queue(Queue)
 	{
 	}
@@ -67,10 +69,17 @@ public:
 		{
 			pItem		= m_Queue.Pop();
 
-			printf("Thread: %d,   Item: %d\n", this->getThreadId(), pItem->m_nId);
+			//if ((pItem->m_nId % 100) == 0)
+//			printf("Thread: %d,   Item: %d\n", this->getThreadId(), pItem->m_nId);
 
-			if (pItem->m_nId == g_Iteration)
+			// compare end condition for only 2 threads.
+			// this sample application use 2 threads.
+			// if you use 3 threads, end condition is 3 comparision.
+			if (pItem->m_nId == g_Iteration - 1 || pItem->m_nId == g_Iteration - 2)
+			{
+				printf("Thread: %d, end\n", this->getThreadId());
 				break;
+			}
 		}
 	}
 };
@@ -85,21 +94,37 @@ int _tmain(int argc, _TCHAR* argv[])
 	Consumer*	pConsumer1	= new Consumer(Queue);
 	Consumer*	pConsumer2	= new Consumer(Queue);
 
+	pConsumer1->start();
+	pConsumer2->start();
+
 	Item*	pItem;
 
+	FILETIME		tm1, tm2;
+	GetSystemTimeAsFileTime(&tm1);
+
+	// produce work items
 	for(int i = 0; i < g_Iteration; i++)
 	{
 		pItem	= new Item();
 
 		Queue.Push(pItem);
 
-		pItem	= new Item();
+		//pItem	= new Item();
 
-		Queue.Push(pItem);
+		//Queue.Push(pItem);
+
+		if ((pItem->m_nId % 100) == 0)
+			printf("Main thread produce Item: %d\n", pItem->m_nId);
 	}
+
+//	printf("Main thread enter join\n");
 
 	pConsumer1->join();
 	pConsumer2->join();
+
+	GetSystemTimeAsFileTime(&tm2);
+
+	printf("Main thread end, elapsed: %d\n", tm2.dwLowDateTime - tm1.dwLowDateTime);
 
 	return 0;
 }

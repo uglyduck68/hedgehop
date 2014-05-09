@@ -27,7 +27,7 @@ public:
 	/// Unlock just call Release
 	ret_t Unlock();
 	
-	template<typename L>
+
 	friend class Cond;
 };
 

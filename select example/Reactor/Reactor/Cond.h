@@ -19,28 +19,19 @@ NS_X1_START
  * threads to block until shared data changes state.
  *
  */
-template<typename L>
-class /*DECL_SPEC_DLL*/ Cond
+class DECL_SPEC_DLL Cond
 {
 private:
 	/// condition variable.
 	thread_cond_t		m_Condv;
 
-	/// reference to mutex lock.
-	L&					m_Mutex;
-
 public:
 
-	Cond(/*const*/ L& mutex);
+	Cond();
 
 	~Cond(void);
 
-	void Set(L& mutex)
-	{
-		m_Mutex	= mutex;
-	}
-
-	ret_t Wait(int32_t timeout_msec);
+	ret_t Wait(Mutex& mutex);
 
 	ret_t Notify();
 
@@ -58,5 +49,3 @@ private:
 };
 
 NS_X1_END
-
-#include "Cond.cpp"

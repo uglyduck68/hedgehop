@@ -1,3 +1,9 @@
+/**
+ * @file	Guard.h
+ *
+ * @author	Kim Young Hwan <uglyduck68@gmail.com>
+ */
+
 #pragma once
 
 #include "X1.h"
@@ -10,7 +16,7 @@ NS_X1_START
  */
 
 template <typename LOCK>
-class DECL_SPEC_DLL Guard
+class /*DECL_SPEC_DLL*/ Guard
 {
 private:
 	bool_t	m_bOwner;

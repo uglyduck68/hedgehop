@@ -10,8 +10,7 @@
 NS_X1_START
 
 
-template<typename L>
-Cond<L>::Cond(/*const*/ L& mutex) : m_Mutex(mutex)
+Cond::Cond()
 {
 #if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 	memset(&m_Condv, 0, sizeof(m_Condv));
@@ -24,8 +23,7 @@ Cond<L>::Cond(/*const*/ L& mutex) : m_Mutex(mutex)
 #endif
 }
 
-template<typename L>
-Cond<L>::~Cond(void)
+Cond::~Cond(void)
 {
 #if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 #elif defined(PTHREAD_H)
@@ -36,22 +34,20 @@ Cond<L>::~Cond(void)
 #endif
 }
 
-template<typename L>
-ret_t Cond<L>::Wait(int32_t timeout_msec)
+ret_t Cond::Wait(Mutex& mutex)
 {
 #if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 	SleepConditionVariableCS(&m_Condv, (thread_mutex_t *)&m_Mutex.m_Mutex, timeout_msec);
 #elif defined(PTHREAD_H)
 
-	if (pthread_cond_timedwait(&m_Condv, (thread_mutex_t *)&m_Mutex.m_Mutex, 0) == 0)
+	if (pthread_cond_wait(&m_Condv, (thread_mutex_t *)&mutex.m_Mutex) == 0)
 		return X1_OK;
 
 	return X1_FAIL;
 #endif
 }
 
-template<typename L>
-ret_t Cond<L>::Notify()
+ret_t Cond::Notify()
 {
 #if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 	WakeConditionVariable(&m_Condv);
@@ -64,8 +60,7 @@ ret_t Cond<L>::Notify()
 #endif
 }
 
-template<typename L>
-ret_t Cond<L>::NotifyAll()
+ret_t Cond::NotifyAll()
 {
 #if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
 	WakeAllConditionVariable(&m_Condv);
@@ -78,19 +73,5 @@ ret_t Cond<L>::NotifyAll()
 #endif
 }
 
-//
-// following functions just for ease interface
-//
-template<typename L>
-ret_t Cond<L>::Lock()
-{
-	return m_Mutex.Lock();
-}
-	
-template<typename L>
-ret_t Cond<L>::Unlock()
-{
-	return m_Mutex.Unlock();
-}
 
 NS_X1_END
