@@ -49,12 +49,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(UGLIB)/pthread/include;E:\uglyduck\Projects\X1\hedgehop\Data\OpenThreads-v1.2dev2-osg0.9.5.tar\OpenThreads\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(UGLIB)/pthread/include;$(UGLIB)\OpenThreads-v1.2dev2-osg0.9.5.tar\OpenThreads\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(UGLIB)/pthread/lib/x86;E:\uglyduck\Projects\X1\hedgehop\Data\OpenThreads-v1.2dev2-osg0.9.5.tar\OpenThreads\lib\win32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UGLIB)/pthread/lib/x86;$(UGLIB)\OpenThreads-v1.2dev2-osg0.9.5.tar\OpenThreads\lib\win32</AdditionalLibraryDirectories>
       <AdditionalDependencies>pthreadVC2.lib;OpenThreadsWin32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

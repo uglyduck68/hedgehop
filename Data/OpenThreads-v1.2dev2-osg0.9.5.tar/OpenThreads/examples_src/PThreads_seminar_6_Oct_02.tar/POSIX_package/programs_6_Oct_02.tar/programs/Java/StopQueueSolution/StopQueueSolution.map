@@ -1,8 +1,0 @@
-VERSION: 1
-Request.java,8,50,Request
-Server.java,19,86,Server
-Producer.java,6,40,Producer
-Consumer.java,6,35,Consumer
-Client.java,8,37,Client
-Workpile.java,14,49,Workpile
-Stopper.java,6,27,Stopper

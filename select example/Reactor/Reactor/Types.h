@@ -1,3 +1,11 @@
+/**
+ * @file	Types.h
+ * @author	Kim Young Hwan <uglyduck68@gmail.com>
+ * @date	2014-05-14
+ * @version	0.3
+ *
+ * This file has all type definitions for OS compatability.
+ */
 #pragma	once
 
 #include "os.h"
@@ -74,7 +82,7 @@
 #endif
 
 // compatible type
-#if /*defined(_X1_LINUX_) || */defined(PTHREAD_H)
+#if /*defined(_X1_LINUX_) || */defined(_X1_USE_PTHREAD_)//PTHREAD_H)
 	typedef void*					handle_t;
 	typedef int						socket_t;
 	typedef int						descriptor_t;
@@ -95,6 +103,7 @@
 	typedef pthread_mutex_t			thread_mutex_t;
 	typedef pthread_cond_t			thread_cond_t;
 	typedef pthread_key_t			thread_local_storage_t;
+	typedef pthread_attr_t			thread_attr_t;
 	typedef void*					thread_return_t;
 
 	typedef thread_return_t (THRDFUNC)(void *thread_si);
@@ -135,6 +144,7 @@
 	typedef CRITICAL_SECTION		thread_mutex_t;
 	typedef CONDITION_VARIABLE		thread_cond_t;
 	typedef DWORD					thread_local_storage_t;
+	typedef HANDLE					thread_attr_t;	///< not yet test
 	typedef uint32_t				thread_return_t;
 
 	typedef thread_return_t __stdcall THRDFUNC(void *thread_si);	// for _beginthreadex

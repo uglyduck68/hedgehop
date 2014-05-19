@@ -1,4 +1,6 @@
 [TO DO]
+- config.h에 build macros가 정의됨에 따라 관련 헤더 파일 및 라이브러리의 인클루드 패스가
+	설정이 되어야 하는데 VisualStudio IDE에서는 이걸 미리 알아서할 수가 없다.
 
 [20140508]
 1. replace Thread class with OpenThread library

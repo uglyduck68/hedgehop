@@ -1,5 +1,6 @@
 /**
  * This test the functionality of Message Queue with OpenThread library
+ * And add the function to test Thread class.
  */
 // TestMessageQ.cpp : 콘솔 응용 프로그램에 대한 진입점을 정의합니다.
 //
@@ -42,7 +43,7 @@ public:
 	/// Perhaps MsgQueue name conflict?
 	X1::MsgQueue<Item*, Mutex>& m_Queue;
 
-	virtual void run()
+	virtual void Run()
 	{
 	}
 };
@@ -61,7 +62,7 @@ public:
 	/// Perhaps MsgQueue name conflict?
 	X1::MsgQueue<Item*, Mutex>& m_Queue;
 
-	virtual void run()
+	virtual void Run()
 	{
 		Item*	pItem	= NULL;
 
