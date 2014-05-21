@@ -1,7 +1,6 @@
 #pragma once
 
 #include "X1.h"
-#include <pthread.h>
 
 NS_X1_START
 
@@ -11,10 +10,26 @@ public:
 	MutexNull(void)		{}
 	~MutexNull(void)	{}
 
-	void Acquire()		{}
+	ret_t Acquire()		
+	{
+		return X1_OK;
+	}
 
 
-	void Release()		{}
+	ret_t Release()		
+	{
+		return X1_OK;
+	}
+
+	ret_t Lock()
+	{
+		return Acquire();
+	}
+	
+	ret_t Unlock()
+	{
+		return Release();
+	}
 
 	friend class Cond;
 };

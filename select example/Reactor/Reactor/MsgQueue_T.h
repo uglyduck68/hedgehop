@@ -1,36 +1,58 @@
+/**
+ * @file	MsgQueue.h
+ *
+ * @author	Kim Young Hwan <uglyduck68@gmail.com>
+ *
+ * This is thread-safe message queueu. This class was tested by TestMessageQ project.
+ */
+
 #pragma once
 
-#include "X1.h"
-
+//#include <pthread.h>
 #include <queue>
+
+#include "X1.h"
+#include "Cond.h"
 
 NS_X1_START
 
 /**
- * MsgQueue is template thread-safe message queue. But you can user MutexNull object for single thread.
- * FIXME: use lock-free algorithm of MPMC.
+ * @class	MsgQueue
+ *
+ * MsgQueue is template thread-safe message queue. 
+ * But you can user MutexNull class for single thread.
+ * FIXME:	use lock-free algorithm of MPMC.
  */
 template<typename T, typename L>
-class DECL_SPEC_DLL MsgQueue
+class MsgQueue
 {
 private:
-	typedef std::queue< T* > QUEUE_T;
+	typedef std::queue< T > QUEUE_T;
 
-	QUEUE_T		m_Queue;
-	L			m_Mutex;
+	QUEUE_T			m_Queue;
+
+	/// this mutex is used to push & pop item.
+	/// so this variables don't be used in Size function.
+	L				m_Mutex;
+	L				m_MutexSize;
+																
+	/// conditional variable. this will be replaced by class.
+	Cond			m_Cond;		
 
 public:
 	MsgQueue(void);
 	virtual ~MsgQueue(void);
 
-	// FIXME: this class must be modified to support singleton
-	static MsgQueue*	Instance()		{}
-
-	inline void	Push(T* pData);
-	inline T*		Pop();
+	inline void	Push(T pData);
+	inline T		Pop();
 	int		Size()
 	{
-		return m_Queue.size();
+		// no race condition in case of test of 2 threads
+//		m_MutexSize.Lock();
+		int		n = m_Queue.size();
+//		m_MutexSize.Unlock();
+
+		return n;
 	}
 };
 

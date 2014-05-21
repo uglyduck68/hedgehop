@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{07B01524-DF7B-4778-A43B-2DC7066CD5EF}</ProjectGuid>
+    <ProjectGuid>{E2B9CA43-5800-4F82-807D-53ABD58811BD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Reactor</RootNamespace>
+    <RootNamespace>TestMessageQ</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -45,25 +45,23 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>USE_DLL_EXPORT;_CRT_NON_CONFORMING_SWPRINTFS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(UGLIB)\pthread\include;$(UGLIB)\OpenThreads-v1.2dev2-osg0.9.5.tar\OpenThreads\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(UGLIB)/pthread/include;$(UGLIB)\OpenThreads-v1.2dev2-osg0.9.5.tar\OpenThreads\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>pthreadVC2.lib;OpenThreadsWin32.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(UGLIB)\pthread\lib\x86;$(UGLIB)\OpenThreads-v1.2dev2-osg0.9.5.tar\OpenThreads\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UGLIB)/pthread/lib/x86;$(UGLIB)\OpenThreads-v1.2dev2-osg0.9.5.tar\OpenThreads\lib\win32</AdditionalLibraryDirectories>
+      <AdditionalDependencies>pthreadVC2.lib;OpenThreadsWin32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -80,62 +78,21 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Acceptor.h" />
-    <ClInclude Include="Cond.h" />
-    <ClInclude Include="Config.h" />
-    <ClInclude Include="Debug.h" />
-    <ClInclude Include="Defines.h" />
-    <ClInclude Include="EchoService.h" />
-    <ClInclude Include="EventHandler.h" />
-    <ClInclude Include="Guard.h" />
-    <ClInclude Include="ListQueue_T.h" />
-    <ClInclude Include="MsgQueue_T.h" />
-    <ClInclude Include="Mutex.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="MutexNull.h" />
-    <ClInclude Include="NetAddr.h" />
-    <ClInclude Include="os.h" />
-    <ClInclude Include="os_linux.h" />
-    <ClInclude Include="os_windows.h" />
-    <ClInclude Include="Reactor.h" />
-    <ClInclude Include="ReactorImpl.h" />
-    <ClInclude Include="ReactorImpl_WIN32.h" />
-    <ClInclude Include="ReactorImpl_WIN32_select.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Task.h" />
-    <ClInclude Include="Thread.h" />
-    <ClInclude Include="ThreadMgr.h" />
-    <ClInclude Include="Threadpool.h" />
-    <ClInclude Include="TimeValue.h" />
-    <ClInclude Include="TLS.h" />
-    <ClInclude Include="TRACE.h" />
-    <ClInclude Include="Types.h" />
-    <ClInclude Include="X1.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Acceptor.cpp" />
-    <ClCompile Include="Cond.cpp" />
-    <ClCompile Include="EchoService.cpp" />
-    <ClCompile Include="EventHandler.cpp" />
-    <ClCompile Include="gettimeofday.cpp" />
-    <ClCompile Include="Mutex.cpp" />
-    <ClCompile Include="Log.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Reactor.cpp" />
-    <ClCompile Include="ReactorImpl.cpp" />
-    <ClCompile Include="ReactorImpl_WIN32.cpp" />
-    <ClCompile Include="ReactorImpl_WIN32_select.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Thread.cpp">
+    <ClCompile Include="..\Reactor\Cond.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ThreadMgr.cpp" />
-    <ClCompile Include="Threadpool.cpp" />
-    <ClCompile Include="TimeValue.cpp" />
-    <ClCompile Include="TLS.cpp" />
-    <ClCompile Include="TRACE.cpp" />
-    <ClCompile Include="X1.cpp" />
+    <ClCompile Include="..\Reactor\Mutex.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TestMessageQ.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

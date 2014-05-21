@@ -1,6 +1,18 @@
+/**
+ * @file	Types.h
+ * @author	Kim Young Hwan <uglyduck68@gmail.com>
+ * @date	2014-05-14
+ * @version	0.3
+ *
+ * This file has all type definitions for OS compatability.
+ */
 #pragma	once
 
 #include "os.h"
+
+/*
+* PTHREAD_H is defined in <pthread.h>
+*/
 
 //#include <stdio.h>
 
@@ -24,7 +36,7 @@
 	typedef bool					bool_t;
 #endif
 
-#if defined(WIDE_CHARACTER)
+#if defined(_X1_WIDE_CHARACTER)
 	typedef wchar_t					char_t;
 	typedef unsigned short			uchar_t;
 #else
@@ -36,9 +48,9 @@
 	typedef float					float_t;
 	typedef double					double_t;
 
-	typedef short					short_t;
-	typedef unsigned short			ushort_t;
-	typedef unsigned int			uint_t;
+	//typedef short					short_t;
+	//typedef unsigned short			ushort_t;
+	//typedef unsigned int			uint_t;
 	typedef unsigned long			ulong_t;
 	typedef long long				llong_t;
 	typedef unsigned long long		ullong_t;
@@ -56,12 +68,12 @@
 	typedef LONG_PTR				long_ptr;
 	typedef ULONG_PTR				ulong_ptr;
 #else
-	#if   defined (USE_32BIT)
+	#if   defined (_X1_USE_32BIT)
 	typedef int						int_ptr;
 	typedef unsigned int			uint_ptr;
 	typedef long					long_ptr;
 	typedef unsigned long			ulong_ptr;
-	#elif defined (USE_64BIT)
+	#elif defined (_X1_USE_64BIT)
 	typedef int64_t					int_ptr;
 	typedef uint64_t				uint_ptr;
 	typedef long					long_ptr;
@@ -70,7 +82,7 @@
 #endif
 
 // compatible type
-#if defined(_X1_LINUX_) || defined(PTHREAD_H)	// pthread for WIN32
+#if /*defined(_X1_LINUX_) || */defined(_X1_USE_PTHREAD_)//PTHREAD_H)
 	typedef void*					handle_t;
 	typedef int						socket_t;
 	typedef int						descriptor_t;
@@ -91,6 +103,7 @@
 	typedef pthread_mutex_t			thread_mutex_t;
 	typedef pthread_cond_t			thread_cond_t;
 	typedef pthread_key_t			thread_local_storage_t;
+	typedef pthread_attr_t			thread_attr_t;
 	typedef void*					thread_return_t;
 
 	typedef thread_return_t (THRDFUNC)(void *thread_si);
@@ -131,13 +144,14 @@
 	typedef CRITICAL_SECTION		thread_mutex_t;
 	typedef CONDITION_VARIABLE		thread_cond_t;
 	typedef DWORD					thread_local_storage_t;
+	typedef HANDLE					thread_attr_t;	///< not yet test
 	typedef uint32_t				thread_return_t;
 
 	typedef thread_return_t __stdcall THRDFUNC(void *thread_si);	// for _beginthreadex
 #endif
 
-namespace X1
-{
+//namespace X1
+//{
 
 	const int				INVALID_HANDLE	= -1;
 	typedef unsigned long	EVENT_MASK;
@@ -153,7 +167,7 @@ typedef	int		X1_SOCHANDLE;
 #elif	defined(_X1_WINDOWS_)
 	typedef	SOCKET				X1_SOCHANDLE;	// SOCKET is defined as UINT_PTR
 #endif
-}
+//}
 
 //struct timeval {
 //	long    tv_sec;         /* seconds */
@@ -179,6 +193,9 @@ enum RET_TYPE
 	X1_ENETINIT		= 3,
 	X1_ENULLOBJECT	= 4
 };
+
+/// return value of all X1 functions
+typedef	RET_TYPE	ret_t;
 
 enum DEMUX_TYPE
 {
