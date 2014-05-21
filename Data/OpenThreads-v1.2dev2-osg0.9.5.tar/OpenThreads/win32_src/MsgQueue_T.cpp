@@ -38,7 +38,11 @@ T		MsgQueue<T, L>::Pop()
 
 	return pData;
 }
-
+template<typename T, typename L>
+int		ClearAll()
+{
+	m_Queue<T>.Clear();
+}
 /**
  * The explicit template instantiation of MsgQueue
  */

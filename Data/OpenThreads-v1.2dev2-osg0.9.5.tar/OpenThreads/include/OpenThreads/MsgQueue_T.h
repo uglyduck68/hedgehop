@@ -33,6 +33,8 @@ public:
 	{
 		return m_Queue.size();
 	}
+
+	int		ClearAll();
 };
 
 //#include "MsgQueue_T.cpp"
