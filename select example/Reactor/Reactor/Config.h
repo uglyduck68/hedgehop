@@ -21,6 +21,7 @@
 
 #ifdef	_X1_USE_PTHREAD_
 #include <pthread.h>
+#include <semaphore.h>
 #endif
 
 #ifdef	_X1_USE_OPENTHREADS_

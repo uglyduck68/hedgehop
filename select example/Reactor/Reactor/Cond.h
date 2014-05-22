@@ -1,13 +1,17 @@
 /**
  * @file	Cond.h
- *
  * @author	Kim Young Hwan <uglyduck68@gmail.com>
+ * @date	2014-05-20
+ * @version	0.1
+ *
+ * This is interface of condition variable.
  */
 
 #pragma once
 
 #include "X1.h"
 #include "Mutex.h"
+#include "CondI.h"
 
 NS_X1_START
 
@@ -23,8 +27,7 @@ class DECL_SPEC_DLL Cond
 {
 private:
 	/// condition variable.
-	thread_cond_t		m_Condv;
-
+	CondI*				m_pCondv;
 public:
 
 	Cond();

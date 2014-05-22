@@ -1,30 +1,24 @@
 /**
- * @file	Mutex.h
+ * @file	Mutex_Pthd.h
  * @author	Kim Young Hwan <uglyduck68@gmail.com>
  * @date	2014-05-20
  * @version	0.1
  *
- * This is interface of mutex.
+ * This is wrapper class of Mutex for Pthread.
  */
 
-/**
- * Mutex class
- */
 #pragma once
 
-#include "X1.h"
-#include "MutexI.h"
+#include "mutexi.h"
 
 NS_X1_START
 
-class DECL_SPEC_DLL Mutex
+class Mutex_Pthd :
+	public MutexI
 {
-protected:
-	MutexI*    m_pMutex;
-
 public:
-	Mutex(void);
-	~Mutex(void);
+	Mutex_Pthd(void);
+	~Mutex_Pthd(void);
 
 	ret_t Acquire();
 
@@ -35,13 +29,16 @@ public:
 	
 	/// Unlock just call Release
 	ret_t Unlock();
-	
 
-	const thread_mutex_t&	GetMutex();
+	thread_mutex_t&	GetMutex()
+	{
+		return m_Mutex;
+	}
 
 	ret_t Destroy();
 
-	friend class Cond;
+protected:
+	thread_mutex_t		m_Mutex;
 };
 
 NS_X1_END

@@ -105,6 +105,7 @@
 	typedef pthread_key_t			thread_local_storage_t;
 	typedef pthread_attr_t			thread_attr_t;
 	typedef void*					thread_return_t;
+//	typedef	sem_t					Sem_t;	///< Semaphore type		
 
 	typedef thread_return_t (THRDFUNC)(void *thread_si);
 
@@ -146,6 +147,7 @@
 	typedef DWORD					thread_local_storage_t;
 	typedef HANDLE					thread_attr_t;	///< not yet test
 	typedef uint32_t				thread_return_t;
+//	typedef	HANDLE					Sem_t;			///< Semaphore type
 
 	typedef thread_return_t __stdcall THRDFUNC(void *thread_si);	// for _beginthreadex
 #endif

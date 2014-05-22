@@ -35,7 +35,6 @@ class Thread
 {
 public:
 	Thread(void);
-	Thread(const string& name); 
 	virtual ~Thread(); 
 	void Init();
 	int Start(); 
@@ -83,7 +82,6 @@ private:
 	static void* ThreadHandler(void* arg); 
 	static void InterruptHandler(int sigInt); 
 	
-	void init(const string& name); 
 
 //	virtual void run() = 0;	
 	virtual void Run() = 0; 

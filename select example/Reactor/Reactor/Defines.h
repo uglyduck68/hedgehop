@@ -18,7 +18,8 @@
 #define NS_X1_START		namespace X1 {
 #define NS_X1_END		}
 #define NS_X1			X1
-#define US_X1			using namespace NS_X1;
+#define NS_X1_USE		using namespace NS_X1;
+
 
 #if defined(_X1_WINDOWS_)
 	#define DECL_SPEC_DLL_EXPORT	__declspec(dllexport)

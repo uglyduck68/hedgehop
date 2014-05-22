@@ -6,71 +6,39 @@
  * This template implementation file is included to Cond.h.
  */
 #include "Cond.h"
+#include "Cond_Pthd.h"
+#include "Cond_Win.h"
 
 NS_X1_START
 
 
 Cond::Cond()
 {
-#if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-	memset(&m_Condv, 0, sizeof(m_Condv));
-	InitializeConditionVariable(&m_Condv);
-#elif defined(PTHREAD_H)
-	if(pthread_cond_init(&m_Condv, 0) != 0)
-	{
-		X1_TRACE();
-	}
+#if	defined(_X1_WINDOWS_) && !defined(_X1_USE_PTHREAD_)
+	m_pCondv		= new Cond_Win;
+#elif defined(_X1_USE_PTHREAD_)
+	m_pCondv		= new Cond_Pthd;
 #endif
 }
 
 Cond::~Cond(void)
 {
-#if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-#elif defined(PTHREAD_H)
-	if(pthread_cond_destroy(&m_Condv) != 0)
-	{
-		X1_TRACE();
-	}
-#endif
+	delete m_pCondv;
 }
 
 ret_t Cond::Wait(Mutex& mutex)
 {
-#if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-	SleepConditionVariableCS(&m_Condv, (thread_mutex_t *)&m_Mutex.m_Mutex, timeout_msec);
-#elif defined(PTHREAD_H)
-
-	if (pthread_cond_wait(&m_Condv, (thread_mutex_t *)&mutex.m_Mutex) == 0)
-		return X1_OK;
-
-	return X1_FAIL;
-#endif
+	return m_pCondv->Wait(mutex);
 }
 
 ret_t Cond::Notify()
 {
-#if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-	WakeConditionVariable(&m_Condv);
-#elif defined(PTHREAD_H)
-
-	if (pthread_cond_signal(&m_Condv) == 0)
-		return X1_OK;
-
-	return X1_FAIL;
-#endif
+	return m_pCondv->Notify();
 }
 
 ret_t Cond::NotifyAll()
 {
-#if	defined(_X1_WINDOWS_) && !defined(PTHREAD_H)
-	WakeAllConditionVariable(&m_Condv);
-#elif defined(PTHREAD_H)
-
-	if (pthread_cond_broadcast(&m_Condv) == 0)
-		return X1_OK;
-
-	return X1_FAIL;
-#endif
+	return m_pCondv->NotifyAll();
 }
 
 

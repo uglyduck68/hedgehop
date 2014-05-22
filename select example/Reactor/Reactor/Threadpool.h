@@ -1,82 +1,98 @@
+/**
+ * @file ThreadPool.h
+ * @brief	Thread Pool implementation for unix / linux environments
+ * @author	Shobhit Gupta
+ * @version
+ * @date	2008
+ * @copyright	see <http://www.gnu.org/licenses/>
+ */
+
+
+/* Improvements
+ *
+ * 1. add function to terminate all threads
+ * 2. add function to wait for the end of all threads
+ *
+ */
 #pragma once
 
-#include "X1.h"
-#include "Thread.h"
 
-NS_X1_START
+#include <iostream>
+#include <vector>
 
-class THRDPOOL_QUEUE
+#include "semaphore.h"
+#include "Mutex.h"
+
+NS_X1_USE
+
+using namespace std;
+
+
+/**
+ * WorkerThread class
+ * This class needs to be sub classed by the user.
+ */
+class WorkerThread
 {
 public:
-	unsigned int head;
-	unsigned int tail;
+    int id;
 
-	unsigned int num_of_cells;
+    virtual void* Run()	= 0;
 
-	// FIXME: change to dynamic allocation
-	void *cells[THREAD_POOL_QUEUE_SIZE];
+    WorkerThread(int id) : id(id) {}
+    virtual ~WorkerThread(){}
 
-	THRDPOOL_QUEUE();
-
-	int	Init();
-	int	Enqueue(void* pData);
-	void*	Dequeue();
-	int	IsEmpty()
-	{
-		return (num_of_cells == 0 ? 1: 0);
-	}
-
-	int	GetSize()
-	{
-		return num_of_cells;
-	}
 };
 
-class THRDPOOL
+
+/**
+ * ThreadPool class manages all the ThreadPool related activities. 
+ * This includes keeping track of idle threads and synchronizations between all threads.
+ */
+class ThreadPool
 {
 public:
-	THRDPOOL_QUEUE tasks_queue;
-	THRDPOOL_QUEUE free_tasks_queue;
-
-	// FIXME: change to dynamic allocation
-	Thread tasks[THREAD_POOL_QUEUE_SIZE];
-
-	// FIXME thr_arr must be integrated with tasks
-	thread_t *thr_arr;
-
-	unsigned short				num_of_threads;
-	volatile unsigned short		stop_flag;
-
-	thread_mutex_t				free_tasks_mutex;
-	thread_mutex_t				mutex;
-	thread_cond_t				free_tasks_cond;
-	thread_cond_t				cond;
-
-	THRDPOOL();
-
-	int	Init();
-	int	Init(Thread* pThrd);
-
-	Thread*	GetTask();
-};
-
-class Threadpool
-{
-protected:
+    ThreadPool();
+    ThreadPool(int maxThreadsTemp);
+    virtual ~ThreadPool();
 	
-	THRDPOOL*	m_pPool;
+	void DestroyPool(int maxPollSecs);
 
-public:
-	Threadpool(void);
-	virtual ~Threadpool(void);
+    bool AssignWork(WorkerThread *worker);
+    bool FetchWork(WorkerThread **worker);
 
-	static void *worker_thr_routine(void *data);
-	static void *stop_worker_thr_routines_cb(void *ptr);
+	void InitializeThreads();
+	
+    
+private:
+     static void *ThreadExecute(void *param);
+    
+    static /*thread_mutex_t*/Mutex mutexSync;
+	static /*thread_mutex_t*/Mutex mutexWorkCompletion;
 
-	int	Init(int num_of_threads);
-	int	Add(THRDFUNC, void* pArg, int nBlocking);
-	int	Fin(int nBlocking);
+	int m_nMaxThreads;
+
+	// # of available works
+    Semaphore			availableWork;
+
+	// # of available threads in queue
+    Semaphore			availableThreads;
+
+	// thread queue
+    vector<WorkerThread *>	WorkerQueue;
+	vector<thread_t>		WorkerIDQueue;
+
+    int m_nTopIndex;
+    int m_nBottomIndex;
+	
+	int m_nIncompleteWork;
+
+    
+    int m_nQueueSize;
+
 };
 
-NS_X1_END
+
+
+
 
