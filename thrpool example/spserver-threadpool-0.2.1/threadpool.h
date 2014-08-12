@@ -8,9 +8,9 @@
 #ifndef __threadpool_h__
 #define __threadpool_h__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
 // maximum number of threads allowed in a pool
 #define MAXT_IN_POOL 200
@@ -60,9 +60,9 @@ int dispatch_threadpool(threadpool from_me, dispatch_fn dispatch_to_here,
  */
 void destroy_threadpool(threadpool destroyme);
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 
 #endif
 

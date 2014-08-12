@@ -18,7 +18,10 @@
     <ClCompile Include="..\testthreadpool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\threadpool.c">
+    <ClCompile Include="..\threadpool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\spthread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

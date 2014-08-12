@@ -101,7 +101,7 @@ sp_thread_result_t SP_THREAD_CALL wrapper_fn( void * arg )
 		if( 0 != ((_threadpool*)thread->parent)->tp_stop ) break;
 
 		sp_thread_mutex_lock( &thread->mutex );
-		if( 0 == save_thread( thread->parent, thread ) ) {
+		if( 0 == save_thread( (_threadpool*)thread->parent, thread ) ) {
 			sp_thread_cond_wait( &thread->cond, &thread->mutex );
 			sp_thread_mutex_unlock( &thread->mutex );
 		} else {

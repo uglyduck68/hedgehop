@@ -118,8 +118,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\spthread.cpp" />
     <ClCompile Include="..\testthreadpool.cpp" />
-    <ClCompile Include="..\threadpool.c" />
+    <ClCompile Include="..\threadpool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\spthread.h" />
