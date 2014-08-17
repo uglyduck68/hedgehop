@@ -1,68 +1,94 @@
 /**
- * threadpool.h
- *
- * This file declares the functionality associated with
- * your implementation of a threadpool.
- */
+* @file		Threadpool.h
+* @auther	Younghwan Kim<uglyduck68@gmail.com>
+* @version	0.1
+* @date		20140816
+* @brief	interface file for threadpool
+*/
+#pragma once
 
-#ifndef __threadpool_h__
-#define __threadpool_h__
+#include	"X1.h"
+#include	"Task.h"
+#include	"Mutex.h"
+#include	"CondVar.h"
 
-//#ifdef __cplusplus
-//extern "C" {
-//#endif
+NS_X1_START
 
-// maximum number of threads allowed in a pool
-#define MAXT_IN_POOL 200
-
-// You must hide the internal details of the threadpool
-// structure from callers, thus declare threadpool of type "void".
-// In threadpool.c, you will use type conversion to coerce
-// variables of type "threadpool" back and forth to a
-// richer, internal type.  (See threadpool.c for details.)
-
-typedef void *threadpool;
-
-// "dispatch_fn" declares a typed function pointer.  A
-// variable of type "dispatch_fn" points to a function
-// with the following signature:
-// 
-//     void dispatch_function(void *arg);
-
+	// maximum number of threads allowed in a pool
+	#define MAXT_IN_POOL 200
 typedef void (*dispatch_fn)(void *);
 
-/**
- * create_threadpool creates a fixed-sized thread
- * pool.  If the function succeeds, it returns a (non-NULL)
- * "threadpool", else it returns NULL.
- */
-threadpool create_threadpool(int num_threads_in_pool);
+	class DECL_SPEC_DLL Threadpool;
+
+	/**
+	* @class	WorkerThread
+	* @brief	WorkerThread class is only for threadpool
+	*/
+	class WorkerThread
+	{
+	public:
+		WorkerThread(Task* pThread, Threadpool* pPool);
+		~WorkerThread();
+
+		/** thread handle */
+		sp_thread_t		m_Id;
+
+	protected:
+		Mutex			m_Mutex;
+		CondVar			m_Cond;
+
+		// pointer to user thread
+		Task*			m_pThread;
+
+		// pointer to threadpool
+		Threadpool*		m_pPool;
+
+		friend class Threadpool;
+	};
+
+	/**
+	* @class	Threadpool
+	* @brief	This class is for threadpool
+	*/
+	class DECL_SPEC_DLL Threadpool
+	{
+	public:
+		Threadpool(int num_threads_in_pool);
+		~Threadpool(void);
+
+		/**
+		* @function	Assign
+		* @return	0 if success
+		*			> 0 if fails
+		*/
+		int		Assign(Task* pThread);
+		void	Destroy();
+
+	protected:
 
 
-/**
- * dispatch sends a thread off to do some work.  If
- * all threads in the pool are busy, dispatch will
- * block until a thread becomes free and is dispatched.
- * 
- * Once a thread is dispatched, this function returns
- * immediately.
- * 
- * The dispatched thread calls into the function
- * "dispatch_to_here" with argument "arg".
- */
-int dispatch_threadpool(threadpool from_me, dispatch_fn dispatch_to_here,
-	      void *arg);
+		/**
+		* @function	SaveThread
+		* @return	0 if success
+		*			> 0 if fails
+		*/
+		int		SaveThread(WorkerThread* pThread);
+		static sp_thread_result_t SP_THREAD_CALL wrapper_fn( void * arg );
 
-/**
- * destroy_threadpool kills the threadpool, causing
- * all threads in it to commit suicide, and then
- * frees all the memory associated with the threadpool.
- */
-void destroy_threadpool(threadpool destroyme);
+		void	PrintStatus();
 
-//#ifdef __cplusplus
-//}
-//#endif
+	protected:
+		Mutex			m_tp_mutex;
+		CondVar			m_tp_idle;
+		CondVar			m_tp_full;
+		CondVar			m_tp_empty;
+		WorkerThread*	m_tp_list[MAXT_IN_POOL];
 
-#endif
+		int				m_tp_index;
+		int				m_tp_max_index;
+		int				m_tp_stop;
 
+		int				m_tp_total;
+	};
+
+NS_X1_END

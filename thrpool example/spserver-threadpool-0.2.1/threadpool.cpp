@@ -1,227 +1,240 @@
 /**
- * threadpool.c
- *
- * This file will contain your implementation of a threadpool.
- */
+* @file		Threadpool.cpp
+* @auther	Younghwan Kim<uglyduck68@gmail.com>
+* @version	0.1
+* @date		20140816
+* @brief	threadpool implementation file
+*/
+#include "Threadpool.h"
+#include "Exception.h"
+#include "Guard.h"
+#include "Log.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-//#include <unistd.h>
-//#include <sp_thread.h>
-#include <string.h>
+#include <new.h>
 
-#include "threadpool.h"
-#include "spthread.h"
+NS_X1_USE
 
-typedef struct _thread_st {
-	sp_thread_t id;
-	sp_thread_mutex_t mutex;
-	sp_thread_cond_t cond;
-	dispatch_fn fn;
-	void *arg;
-	threadpool parent;
-} _thread;
+///////////////////////////////////////////////////////////////////////////////
+// WorkerThread
+///////////////////////////////////////////////////////////////////////////////
 
-// _threadpool is the internal threadpool structure that is
-// cast to type "threadpool" before it given out to callers
-typedef struct _threadpool_st {
-	// you should fill in this structure with whatever you need
-	sp_thread_mutex_t tp_mutex;
-	sp_thread_cond_t tp_idle;
-	sp_thread_cond_t tp_full;
-	sp_thread_cond_t tp_empty;
-	_thread ** tp_list;
-	int tp_index;
-	int tp_max_index;
-	int tp_stop;
-
-	int tp_total;
-} _threadpool;
-
-threadpool create_threadpool(int num_threads_in_pool)
+WorkerThread::WorkerThread(Task* pThread, Threadpool* pPool) :
+	m_pThread(pThread), m_pPool(pPool)
 {
-	_threadpool *pool;
-
-	// sanity check the argument
-	if ((num_threads_in_pool <= 0) || (num_threads_in_pool > MAXT_IN_POOL))
-		return NULL;
-
-	pool = (_threadpool *) malloc(sizeof(_threadpool));
-	if (pool == NULL) {
-		fprintf(stderr, "Out of memory creating a new threadpool!\n");
-		return NULL;
-	}
-
-	// add your code here to initialize the newly created threadpool
-	sp_thread_mutex_init( &pool->tp_mutex, NULL );
-	sp_thread_cond_init( &pool->tp_idle, NULL );
-	sp_thread_cond_init( &pool->tp_full, NULL );
-	sp_thread_cond_init( &pool->tp_empty, NULL );
-	pool->tp_max_index = num_threads_in_pool;
-	pool->tp_index = 0;
-	pool->tp_stop = 0;
-	pool->tp_total = 0;
-	pool->tp_list = ( _thread ** )malloc( sizeof( void * ) * MAXT_IN_POOL );
-	memset( pool->tp_list, 0, sizeof( void * ) * MAXT_IN_POOL );
-
-	return (threadpool) pool;
 }
 
-int save_thread( _threadpool * pool, _thread * thread )
+WorkerThread::~WorkerThread()
+{
+	m_pThread	= NULL;
+	m_pPool		= NULL;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Threadpool Class
+///////////////////////////////////////////////////////////////////////////////
+
+Threadpool::Threadpool(int num_threads_in_pool) :
+	m_tp_index(0), m_tp_max_index(0), m_tp_stop(0), m_tp_total(0)
+{
+	if ((num_threads_in_pool <= 0) || (num_threads_in_pool > MAXT_IN_POOL))
+		throw  IllegalThreadStateException("num_threads_in_pool is invalid"); 
+
+
+	m_tp_max_index = num_threads_in_pool;
+}
+
+Threadpool::~Threadpool()
+{
+	Destroy();
+}
+
+/**
+* @function	SaveThread
+* @return	0 if success
+*			> 0 if fails
+*/
+int		Threadpool::SaveThread(WorkerThread* pThread)
 {
 	int ret = -1;
 
-	sp_thread_mutex_lock( &pool->tp_mutex );
+	// scoped lock
+	Guard<Mutex>	guard(m_tp_mutex );
 
-	if( pool->tp_index < pool->tp_max_index ) {
-		pool->tp_list[ pool->tp_index ] = thread;
-		pool->tp_index++;
+	if( m_tp_index < m_tp_max_index ) 
+	{
+		m_tp_list[ m_tp_index ] = pThread;
+		m_tp_index++;
 		ret = 0;
 
-		sp_thread_cond_signal( &pool->tp_idle );
+		m_tp_idle.Signal();
 
-		if( pool->tp_index >= pool->tp_total ) {
-			sp_thread_cond_signal( &pool->tp_full );
+		if( m_tp_index >= m_tp_total ) 
+		{
+			m_tp_full.Signal();
 		}
 	}
-
-	sp_thread_mutex_unlock( &pool->tp_mutex );
 
 	return ret;
 }
 
-sp_thread_result_t SP_THREAD_CALL wrapper_fn( void * arg )
+sp_thread_result_t SP_THREAD_CALL Threadpool::wrapper_fn( void * arg )
 {
-	_thread * thread = (_thread*)arg;
-	_threadpool * pool = (_threadpool*)thread->parent;
+	WorkerThread * thread	= (WorkerThread*)arg;
+	Threadpool * pool		= (Threadpool*) thread->m_pPool;
 
-	for( ; 0 == ((_threadpool*)thread->parent)->tp_stop; ) {
-		thread->fn( thread->arg );
+	for( ; 0 == ((Threadpool*)thread->m_pPool)->m_tp_stop; ) 
+	{
+		// run user thread function
+		thread->m_pThread->Run( thread->m_pThread );
 
-		if( 0 != ((_threadpool*)thread->parent)->tp_stop ) break;
+		if( 0 != ((Threadpool*)thread->m_pPool)->m_tp_stop ) 
+			break;
 
-		sp_thread_mutex_lock( &thread->mutex );
-		if( 0 == save_thread( (_threadpool*)thread->parent, thread ) ) {
-			sp_thread_cond_wait( &thread->cond, &thread->mutex );
-			sp_thread_mutex_unlock( &thread->mutex );
-		} else {
-			sp_thread_mutex_unlock( &thread->mutex );
-			sp_thread_cond_destroy( &thread->cond );
-			sp_thread_mutex_destroy( &thread->mutex );
+		thread->m_Mutex.Lock( );
 
-			free( thread );
+		if( 0 == ((Threadpool*)thread->m_pPool)->SaveThread(thread) ) 
+		{
+			thread->m_Cond.Wait(thread->m_Mutex );
+			thread->m_Mutex.UnLock( );
+		} 
+		else 
+		{
+			thread->m_Mutex.UnLock( );
+
+			delete thread;
+
 			break;
 		}
 	}
 
-	sp_thread_mutex_lock( &pool->tp_mutex );
-	pool->tp_total--;
-	if( pool->tp_total <= 0 ) sp_thread_cond_signal( &pool->tp_empty );
-	sp_thread_mutex_unlock( &pool->tp_mutex );
+	((Threadpool*)thread->m_pPool)->m_tp_mutex.Lock( );
+	((Threadpool*)thread->m_pPool)->m_tp_total--;
+
+	if( ((Threadpool*)thread->m_pPool)->m_tp_total <= 0 ) 
+		((Threadpool*)thread->m_pPool)->m_tp_empty.Signal( );
+	((Threadpool*)thread->m_pPool)->m_tp_mutex.UnLock( );
 
 	return 0;
 }
 
-int dispatch_threadpool(threadpool from_me, dispatch_fn dispatch_to_here, void *arg)
+/**
+* @function	Assign
+* @return	0 if success
+*			> 0 if fails
+*/
+int		Threadpool::Assign(Task* pThread)
 {
 	int ret = 0;
 
-	_threadpool *pool = (_threadpool *) from_me;
-	sp_thread_attr_t attr;
-	_thread * thread = NULL;
+	Threadpool *pool		= this;
+	WorkerThread * thread	= NULL;
 
 	// add your code here to dispatch a thread
-	sp_thread_mutex_lock( &pool->tp_mutex );
+	pool->m_tp_mutex.Lock( );
 
-	while( pool->tp_index <= 0 && pool->tp_total >= pool->tp_max_index ) {
-		sp_thread_cond_wait( &pool->tp_idle, &pool->tp_mutex );
+	while( pool->m_tp_index <= 0 && pool->m_tp_total >= pool->m_tp_max_index ) 
+	{
+		LOG("beofore idle.Wait\n"); PrintStatus();
+		pool->m_tp_idle.Wait(pool->m_tp_mutex );
+		LOG("after idle.Wait\n"); PrintStatus();
 	}
 
-	if( pool->tp_index <= 0 ) {
-		_thread * thread = ( _thread * )malloc( sizeof( _thread ) );
-		memset( &( thread->id ), 0, sizeof( thread->id ) );
-		sp_thread_mutex_init( &thread->mutex, NULL );
-		sp_thread_cond_init( &thread->cond, NULL );
-		thread->fn = dispatch_to_here;
-		thread->arg = arg;
-		thread->parent = pool;
+	if( pool->m_tp_index <= 0 ) 
+	{
+		thread = new (std::nothrow) WorkerThread(pThread, this );
+
+		if (thread == NULL)
+			throw IllegalThreadStateException("no memory"); 
+
+		sp_thread_attr_t attr;
 
 		sp_thread_attr_init( &attr );
 		sp_thread_attr_setdetachstate( &attr, SP_THREAD_CREATE_DETACHED );
 
-		if( 0 == sp_thread_create( &thread->id, &attr, wrapper_fn, thread ) ) {
-			pool->tp_total++;
-			printf( "create thread#%ld\n", thread->id );
-		} else {
+		if( 0 == sp_thread_create( &thread->m_pThread->Self(), &attr, wrapper_fn, thread ) ) 
+		{
+			pool->m_tp_total++;
+			LOG( "Debug: create thread#%ld\n", thread->m_pThread->GetId() );
+		} 
+		else 
+		{
 			ret = -1;
-			printf( "cannot create thread\n" );
-			sp_thread_mutex_destroy( &thread->mutex );
-			sp_thread_cond_destroy( &thread->cond );
-			free( thread );
+			LOG( "Error: cannot create thread\n" );
+
+			delete thread;
 		}
-	} else {
-		pool->tp_index--;
-		thread = pool->tp_list[ pool->tp_index ];
-		pool->tp_list[ pool->tp_index ] = NULL;
+	} 
+	else 
+	{
+		pool->m_tp_index--;
+		thread = pool->m_tp_list[ pool->m_tp_index ];
+		pool->m_tp_list[ pool->m_tp_index ] = NULL;
 
-		thread->fn = dispatch_to_here;
-		thread->arg = arg;
-		thread->parent = pool;
+		// save thread handle
+		pThread->Self()		= thread->m_pThread->Self();
+		thread->m_pThread	= pThread;
+		thread->m_pPool		= pool;
 
-		sp_thread_mutex_lock( &thread->mutex );
-		sp_thread_cond_signal( &thread->cond ) ;
-		sp_thread_mutex_unlock ( &thread->mutex );
+		thread->m_Mutex.Lock( );
+		thread->m_Cond.Signal( ) ;
+		thread->m_Mutex.UnLock( );
 	}
 
-	sp_thread_mutex_unlock( &pool->tp_mutex );
+	pool->m_tp_mutex.UnLock( );
 
 	return ret;
 }
 
-void destroy_threadpool(threadpool destroyme)
+void	Threadpool::Destroy()
 {
-	_threadpool *pool = (_threadpool *) destroyme;
+	Threadpool *pool = this;
+	int			i;
 
-	// add your code here to kill a threadpool
-	int i = 0;
+	if( pool->m_tp_stop == 1)
+		// already being destroyed
+		return;
 
-	sp_thread_mutex_lock( &pool->tp_mutex );
+	pool->m_tp_mutex.Lock( );
 
-	if( pool->tp_index < pool->tp_total ) {
-		printf( "waiting for %d thread(s) to finish\n", pool->tp_total - pool->tp_index );
-		sp_thread_cond_wait( &pool->tp_full, &pool->tp_mutex );
+	if( pool->m_tp_index < pool->m_tp_total ) 
+	{
+		LOG( "Debug: waiting for %d thread(s) to finish\n", pool->m_tp_total - pool->m_tp_index );
+		pool->m_tp_full.Wait(pool->m_tp_mutex );
 	}
 
-	pool->tp_stop = 1;
+	pool->m_tp_stop = 1;
 
-	for( i = 0; i < pool->tp_index; i++ ) {
-		_thread * thread = pool->tp_list[ i ];
+	for( i = 0; i < pool->m_tp_index; i++ ) 
+	{
+		WorkerThread * thread = pool->m_tp_list[ i ];
 
-		sp_thread_mutex_lock( &thread->mutex );
-		sp_thread_cond_signal( &thread->cond ) ;
-		sp_thread_mutex_unlock ( &thread->mutex );
+		thread->m_Mutex.Lock( );
+		thread->m_Cond.Signal( ) ;
+		thread->m_Mutex.UnLock( );
 	}
 
-	if( pool->tp_total > 0 ) {
-		printf( "waiting for %d thread(s) to exit\n", pool->tp_total );
-		sp_thread_cond_wait( &pool->tp_empty, &pool->tp_mutex );
+	if( pool->m_tp_total > 0 ) 
+	{
+		LOG( "Debug: waiting for %d thread(s) to exit\n", pool->m_tp_total );
+		pool->m_tp_empty.Wait(pool->m_tp_mutex );
 	}
 
-	for( i = 0; i < pool->tp_index; i++ ) {
-		free( pool->tp_list[ i ] );
-		pool->tp_list[ i ] = NULL;
+	for( i = 0; i < pool->m_tp_index; i++ ) 
+	{
+		delete( pool->m_tp_list[ i ] );
+		pool->m_tp_list[ i ] = NULL;
 	}
 
-	sp_thread_mutex_unlock( &pool->tp_mutex );
+	pool->m_tp_mutex.UnLock( );
 
-	pool->tp_index = 0;
+	pool->m_tp_index = 0;
 
-	sp_thread_mutex_destroy( &pool->tp_mutex );
-	sp_thread_cond_destroy( &pool->tp_idle );
-	sp_thread_cond_destroy( &pool->tp_full );
-	sp_thread_cond_destroy( &pool->tp_empty );
-
-	free( pool->tp_list );
-	free( pool );
+	return;
 }
 
+void	Threadpool::PrintStatus()
+{
+	LOG("index: %d, max_index: %d, total: %d, stop: %d\n",
+		m_tp_index, m_tp_max_index, m_tp_total, m_tp_stop);
+}
