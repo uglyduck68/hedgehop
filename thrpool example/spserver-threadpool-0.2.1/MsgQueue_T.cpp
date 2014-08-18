@@ -7,9 +7,9 @@
  */
 
 #include "Guard.h"
-#include "Cond.h"
+#include "CondVar.h"
 
-NS_X1_START
+NS_X1_USE
 
 template<typename T, typename L>
 MsgQueue<T, L>::MsgQueue(void)
@@ -33,7 +33,7 @@ void	MsgQueue<T, L>::Push(T pData)
 	m_Queue.push(pData);
 
 	// wakeup threads
-	m_Cond.Notify();
+	m_Cond.Signal();
 }
 
 
@@ -48,9 +48,9 @@ T		MsgQueue<T, L>::Pop()
 	}
 
 	T		pData	= m_Queue.front();
-	m_Queue.pop_front();
+	m_Queue.pop();
 
-	m_Mutex.Unlock();
+	m_Mutex.UnLock();
 
 	return pData;
 }
@@ -61,8 +61,7 @@ int		MsgQueue<T, L>::Size()
 	// use scope lock class. But You use direct lock of mutex below.
 	m_Mutex.Lock();
 	int		n = m_Queue.size();
-	m_Mutex.Unlock();
+	m_Mutex.UnLock();
 
 	return n;
 }
-NS_X1_END

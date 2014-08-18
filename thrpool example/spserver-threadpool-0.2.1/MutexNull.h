@@ -1,6 +1,7 @@
 #pragma once
 
 #include "X1.h"
+#include "CondVar.h"
 
 NS_X1_START
 
@@ -10,28 +11,17 @@ public:
 	MutexNull(void)		{}
 	~MutexNull(void)	{}
 
-	ret_t Acquire()		
+	int Lock()
 	{
-		return X1_OK;
-	}
-
-
-	ret_t Release()		
-	{
-		return X1_OK;
-	}
-
-	ret_t Lock()
-	{
-		return Acquire();
+		return 0;
 	}
 	
-	ret_t Unlock()
+	int UnLock()
 	{
-		return Release();
+		return 0;
 	}
 
-	friend class Cond;
+	friend class CondVar;
 };
 
 NS_X1_END

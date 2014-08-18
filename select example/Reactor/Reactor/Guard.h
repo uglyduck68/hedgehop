@@ -34,23 +34,23 @@ public:
 
 	~Guard()
 	{
-		Release();
+		UnLock();
 	}
 
 
-	void UnLock()
+	void Lock()
 	{
 		m_pLock->Lock();
 		m_bOwner = TRUE;
 	}
 
 
-	void Release()
+	void UnLock()
 	{
 		if(m_bOwner)
 		{
 			m_bOwner = FALSE;
-			m_pLock->UnLock();
+			m_pLock->Unlock();
 		}
 	}
 };

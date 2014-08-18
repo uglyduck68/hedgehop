@@ -35,6 +35,20 @@ Thread::~Thread(void)
 	sp_thread_destroy(m_h);
 }
 
+sp_thread_t&	Thread::Self()
+{
+	return m_h;//sp_thread_self();
+}
+
+/*
+* @function		GetId()
+* @return		return thread id that is printable.
+*/
+sp_thread_id_t	Thread::GetId()
+{
+	return sp_thread_get_id(m_h);
+}
+
 static sp_thread_result_t	SP_THREAD_CALL RunThread(void* pArg)
 {
 	sp_thread_result_t	ret;

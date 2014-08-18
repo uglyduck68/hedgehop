@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{46455104-32D8-4095-98FA-E426D62D5470}</ProjectGuid>
+    <ProjectGuid>{310BE2E1-86E5-4B9B-986F-7D39AA03A0CC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>TestThread</RootNamespace>
+    <RootNamespace>TestMsgQueue</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -45,7 +45,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -54,14 +55,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(UGLIB)\pthreads-w32-2-9-1-release\Pre-built.2\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UGLIB)\pthreads-w32-2-9-1-release\Pre-built.2\lib\x86;</AdditionalLibraryDirectories>
       <AdditionalDependencies>pthreadVC2.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -78,7 +80,13 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CondVar.h" />
+    <ClInclude Include="..\MsgQueue_T.h" />
+    <ClInclude Include="..\Mutex.h" />
+    <ClInclude Include="..\MutexNull.h" />
+    <ClInclude Include="..\spthread.h" />
     <ClInclude Include="..\Task.h" />
+    <ClInclude Include="..\Thread.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -88,11 +96,8 @@
     <ClCompile Include="..\spthread.cpp" />
     <ClCompile Include="..\Task.cpp" />
     <ClCompile Include="..\Thread.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="TestThread.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="TestMsgQueue.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -48,7 +48,7 @@ T		MsgQueue<T, L>::Pop()
 	}
 
 	T		pData	= m_Queue.front();
-	m_Queue.pop_front();
+	m_Queue.pop();
 
 	m_Mutex.Unlock();
 

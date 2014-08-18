@@ -15,7 +15,7 @@
 
 NS_X1_START
 
-	class DECL_SPEC_DLL Thread :public Task
+	class DECL_SPEC_DLL Thread //:public Task
 	{
 	public:
 		Thread(void);
@@ -28,7 +28,19 @@ NS_X1_START
 		int	Detach();
 
 
-//		virtual sp_thread_result_t	Run(Thread* pArg)	= 0;
+		virtual sp_thread_result_t	Run(Thread* pArg)	= 0;
+
+		/*
+		* @function		Self
+		* @return		return thread handle. Not thread ID.
+		*/
+		sp_thread_t&	Self();
+
+		/*
+		* @function		GetId()
+		* @return		return thread id that is printable.
+		*/
+		sp_thread_id_t	GetId();
 
 		enum STATS { NOT_CREATED = 0, RUNNING = 1, DEAD = 2 };
 
@@ -36,6 +48,8 @@ NS_X1_START
 		STATS		m_Running;
 
 	protected:
+		/** contains the thread handle */
+		sp_thread_t		m_h;
 
 		/** flag that is 1 when thread wait the signal */
 		int			m_nJoinable;

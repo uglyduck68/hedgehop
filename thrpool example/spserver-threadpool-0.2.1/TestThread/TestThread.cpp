@@ -11,7 +11,7 @@ class MyThread : public Thread
   public:
 	  MyThread() {}
 
-    sp_thread_result_t	Run(Task* pArg) 
+    sp_thread_result_t	Run(Thread* pArg) 
 	{
 		MyThread*	pThread	= static_cast<MyThread*>(pArg);
 
