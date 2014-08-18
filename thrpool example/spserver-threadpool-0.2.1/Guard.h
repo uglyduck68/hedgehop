@@ -1,8 +1,10 @@
 /**
- * @file	Guard.h
- *
- * @author	Kim Young Hwan <uglyduck68@gmail.com>
- */
+* @file		Guard.h
+* @auther	Younghwan Kim<uglyduck68@gmail.com>
+* @version	0.1
+* @date		20140816
+* @brief	This file has Guard class that support scoped lock.
+*/
 
 #pragma once
 
@@ -34,18 +36,18 @@ public:
 
 	~Guard()
 	{
-		Release();
+		UnLock();
 	}
 
 
-	void UnLock()
+	void Lock()
 	{
 		m_pLock->Lock();
 		m_bOwner = TRUE;
 	}
 
 
-	void Release()
+	void UnLock()
 	{
 		if(m_bOwner)
 		{

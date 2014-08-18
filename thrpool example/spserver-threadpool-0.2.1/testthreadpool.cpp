@@ -8,11 +8,15 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <stdarg.h>
-#include "threadpool.h"
+#include "threadpool_org.h"
 
 #include "spthread.h"
 
+#include "Threadpool.h"
+
 extern int errno;
+
+using namespace X1;
 
 void mylog( FILE * fp, const  char  *format,  /*args*/ ...)
 {
@@ -24,7 +28,8 @@ void mylog( FILE * fp, const  char  *format,  /*args*/ ...)
 	fflush( stdout );
 }
 
-void dispatch_threadpool_to_me(void *arg) {
+void dispatch_threadpool_to_me(void *arg) 
+{
   int seconds = (int) arg;
 
   fprintf(stdout, "  in dispatch_threadpool %d\n", seconds);
@@ -33,7 +38,85 @@ void dispatch_threadpool_to_me(void *arg) {
   fprintf(stdout, "  done dispatch_threadpool %d\n", seconds);
 }
 
-int main(int argc, char **argv) {
+class Worker :public Task
+{
+public:
+	Worker() : m_nSecond(0)
+	{
+	}
+
+	~Worker()
+	{
+	}
+
+	Worker(int n) : m_nSecond(n)
+	{
+	}
+
+	sp_thread_result_t	Run(Task* pArg)
+	{
+		int seconds = static_cast<Worker*>(pArg)->m_nSecond;
+
+		fprintf(stdout, "  in dispatch_threadpool %d\n", seconds);
+		fprintf(stdout, "  thread#: %ld\n", GetId());
+		sp_sleep(seconds);
+		fprintf(stdout, "  done dispatch_threadpool %d\n", seconds);
+
+		return 0;
+	}
+
+protected:
+	int		m_nSecond;
+};
+
+int TestThreadpool()
+{
+	Threadpool		Thdpool(2);
+	Worker			Three(3);
+	Worker			Six(6);
+	Worker			Seven(7);
+	Worker			Three2(3);
+	Worker			Six2(6);
+	Worker			Seven2(7);
+
+	fprintf(stdout, "**main** dispatch_threadpool 3\n");
+
+	Thdpool.Assign(&Three);
+
+	fprintf(stdout, "**main** dispatch_threadpool 6\n");
+	
+	Thdpool.Assign(&Six);
+	
+	fprintf(stdout, "**main** dispatch_threadpool 7\n");
+	
+	Thdpool.Assign(&Seven);
+
+	fprintf(stdout, "**main** done first\n");
+	
+	sp_sleep(10);
+
+	fprintf(stdout, "\n\n");
+
+	fprintf(stdout, "**main** dispatch_threadpool 3\n");
+	Thdpool.Assign(&Three2);
+	fprintf(stdout, "**main** dispatch_threadpool 6\n");
+	Thdpool.Assign(&Six2);
+	fprintf(stdout, "**main** dispatch_threadpool 7\n");
+	Thdpool.Assign(&Seven2);
+
+	fprintf(stdout, "**main done second\n");
+
+	Thdpool.Destroy();
+
+	return 0;
+}
+
+int main(int argc, char **argv) 
+{
+#if	1
+	return TestThreadpool();
+#endif
+
   threadpool tp;
 
   tp = create_threadpool(2);

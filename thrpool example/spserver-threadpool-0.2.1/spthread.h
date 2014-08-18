@@ -1,18 +1,59 @@
+/*
+* @file		Types.h
+* @author	Younghwan Kim<uglyduck68@gmail.com>
+* @version	0.1
+* @date		20140816
+* @brief	define data types for each build envirionment and platform
+*/
 
-#ifndef __spthread_hpp__
-#define __spthread_hpp__
+#include "Config.h"
 
-#ifndef WIN32
+#include <stdlib.h>
+
+#if _BUILD_USE_WIN32_ONLY_ == 1
+#include <winsock2.h>
+#include <process.h>
+#endif
+
+#ifdef	WIN32
+#include <Windows.h>
+#endif
+
+#pragma once
+
+///////////////////////////////////////////////////////////////////////////////
+// Type Definition related to platform
+///////////////////////////////////////////////////////////////////////////////
+#ifdef	WIN32
+	typedef BOOL					bool_t;
+
+#elif defined(LINUX)
+	typedef bool					bool_t;
+
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+// Type Definition related to threading
+///////////////////////////////////////////////////////////////////////////////
+
+#if _BUILD_USE_PTHREAD_ == 1
+
+typedef	pthread_id_np_t	sp_thread_id_t;		/** integral type thread id */
+
+#elif _BUILD_USE_PTHREAD_ == 1 || _BUILD_USE_PTHREAD_WIN32_ == 1
 
 /// pthread
 
 #include <pthread.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 typedef void * sp_thread_result_t;
 typedef pthread_mutex_t sp_thread_mutex_t;
 typedef pthread_cond_t  sp_thread_cond_t;
 typedef pthread_t       sp_thread_t;
+#ifdef	WIN32
+typedef	DWORD			sp_thread_id_t;
+#endif
 typedef pthread_attr_t  sp_thread_attr_t;
 
 #define sp_thread_mutex_init(m,a)   pthread_mutex_init(m,a)
@@ -32,19 +73,40 @@ typedef pthread_attr_t  sp_thread_attr_t;
 #define sp_thread_self    pthread_self
 #define sp_thread_create  pthread_create
 
+/** [20140815] sean, add */
+#define	sp_thread_detach	pthread_detach
+#define	sp_thread_cancel	pthread_cancel
+#define	sp_thread_join		pthread_join
+#define	sp_thread_attr_destroy	pthread_attr_destroy
+#define	sp_thread_destroy
+
+
 #define SP_THREAD_CALL
 typedef sp_thread_result_t ( * sp_thread_func_t )( void * args );
 
-#define sp_sleep(x) sleep(x)
+/**
+* @function		sp_thread_get_id
+* @brief		This function is used only with pthread-win32
+*/
+extern	sp_thread_id_t	sp_thread_get_id(sp_thread_t hThread);
 
-#else ///////////////////////////////////////////////////////////////////////
+#ifdef	WIN32
+#define	sp_sleep(x)	Sleep(x * 1000)
+#else
+#define sp_sleep(x) sleep(x)
+#endif
+
+#elif _BUILD_USE_WIN32_ONLY_ == 1 ///////////////////////////////////////////////////////////////////////
 
 // win32 thread
 
 #include <winsock2.h>
 #include <process.h>
 
-typedef unsigned sp_thread_t;
+/** [20140815] sean, change */
+//typedef unsigned sp_thread_t;	/** sp_thread_t has thread ID */
+typedef HANDLE	sp_thread_t;	/** sp_thread_t has thread handle */
+typedef	DWORD	sp_thread_id_t;		/** integral type thread id */
 
 typedef unsigned sp_thread_result_t;
 #define SP_THREAD_CALL __stdcall
@@ -57,42 +119,17 @@ typedef DWORD   sp_thread_attr_t;
 #define SP_THREAD_CREATE_DETACHED 1
 #define sp_sleep(x) Sleep(1000*x)
 
-int sp_thread_mutex_init( sp_thread_mutex_t * mutex, void * attr )
-{
-	*mutex = CreateMutex( NULL, FALSE, NULL );
-	return NULL == * mutex ? GetLastError() : 0;
-}
+extern int sp_thread_mutex_init( sp_thread_mutex_t * mutex, void * attr );
 
-int sp_thread_mutex_destroy( sp_thread_mutex_t * mutex )
-{
-	int ret = CloseHandle( *mutex );
+extern int sp_thread_mutex_destroy( sp_thread_mutex_t * mutex );
 
-	return 0 == ret ? GetLastError() : 0;
-}
+extern int sp_thread_mutex_lock( sp_thread_mutex_t * mutex );
 
-int sp_thread_mutex_lock( sp_thread_mutex_t * mutex )
-{
-	int ret = WaitForSingleObject( *mutex, INFINITE );
-	return WAIT_OBJECT_0 == ret ? 0 : GetLastError();
-}
+extern int sp_thread_mutex_unlock( sp_thread_mutex_t * mutex );
 
-int sp_thread_mutex_unlock( sp_thread_mutex_t * mutex )
-{
-	int ret = ReleaseMutex( *mutex );
-	return 0 != ret ? 0 : GetLastError();
-}
+extern int sp_thread_cond_init( sp_thread_cond_t * cond, void * attr );
 
-int sp_thread_cond_init( sp_thread_cond_t * cond, void * attr )
-{
-	*cond = CreateEvent( NULL, FALSE, FALSE, NULL );
-	return NULL == *cond ? GetLastError() : 0;
-}
-
-int sp_thread_cond_destroy( sp_thread_cond_t * cond )
-{
-	int ret = CloseHandle( *cond );
-	return 0 == ret ? GetLastError() : 0;
-}
+extern int sp_thread_cond_destroy( sp_thread_cond_t * cond );
 
 /*
 Caller MUST be holding the mutex lock; the
@@ -100,50 +137,32 @@ lock is released and the caller is blocked waiting
 on 'cond'. When 'cond' is signaled, the mutex
 is re-acquired before returning to the caller.
 */
-int sp_thread_cond_wait( sp_thread_cond_t * cond, sp_thread_mutex_t * mutex )
-{
-	int ret = 0;
+extern int sp_thread_cond_wait( sp_thread_cond_t * cond, sp_thread_mutex_t * mutex );
 
-	sp_thread_mutex_unlock( mutex );
+extern int sp_thread_cond_signal( sp_thread_cond_t * cond );
 
-	ret = WaitForSingleObject( *cond, INFINITE );
+/**
+* [NOTE] [20140815] sean, change
+*	GetCurrentThreadId return DWORD thread ID.
+*	But I force to cast it to sp_thread_t type for compatiblity.
+*/
+extern sp_thread_t sp_thread_self();
 
-	sp_thread_mutex_lock( mutex );
+extern int sp_thread_attr_init( sp_thread_attr_t * attr );
 
-	return WAIT_OBJECT_0 == ret ? 0 : GetLastError();
-}
+extern int sp_thread_attr_setdetachstate( sp_thread_attr_t * attr, int detachstate );
 
-int sp_thread_cond_signal( sp_thread_cond_t * cond )
-{
-	int ret = SetEvent( *cond );
-	return 0 == ret ? GetLastError() : 0;
-}
+extern int sp_thread_create( sp_thread_t * thread, sp_thread_attr_t * attr,
+		sp_thread_func_t myfunc, void * args );
 
-sp_thread_t sp_thread_self()
-{
-	return GetCurrentThreadId();
-}
-
-int sp_thread_attr_init( sp_thread_attr_t * attr )
-{
-	*attr = 0;
-	return 0;
-}
-
-int sp_thread_attr_setdetachstate( sp_thread_attr_t * attr, int detachstate )
-{
-	*attr |= detachstate;
-	return 0;
-}
-
-int sp_thread_create( sp_thread_t * thread, sp_thread_attr_t * attr,
-		sp_thread_func_t myfunc, void * args )
-{
-	// _beginthreadex returns 0 on an error
-	HANDLE h = (HANDLE)_beginthreadex( NULL, 0, myfunc, args, 0, thread );
-	return h > 0 ? 0 : GetLastError();
-}
-
-#endif
-
+/** 
+* [20140815] sean, add 
+* thread cancellation on Windows is *NOT* implemented.
+*/
+extern	int	sp_thread_detach(sp_thread_t thread);
+extern	int	sp_thread_cancel(sp_thread_t thread);
+extern	int	sp_thread_join(sp_thread_t thread, void** retval);
+extern	int sp_thread_attr_destroy(sp_thread_attr_t*);
+extern	sp_thread_id_t	sp_thread_get_id(sp_thread_t hThread);
+extern	void sp_thread_destroy(sp_thread_t h);
 #endif
