@@ -11,3 +11,9 @@ Enjoy!
 			-- stephen liu <stephen.nil@gmail.com>
 
 this threadpool is subproject of http://code.google.com/p/spserver/
+
+TO DO
+-------
+- half-sync half-async algorithm or
+- leader/follower algorithm implementation
+- wrapper class for object-oriented implementation

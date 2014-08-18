@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "threadpool", "threadpool.vcxproj", "{FF77C4DC-2CFE-4B03-E57D-9E2F3B29B76A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "threadpool", "threadpool.vcxproj", "{9ED7DA3B-3D78-C1A3-B1EA-0B74A8434BD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FF77C4DC-2CFE-4B03-E57D-9E2F3B29B76A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FF77C4DC-2CFE-4B03-E57D-9E2F3B29B76A}.Debug|Win32.Build.0 = Debug|Win32
-		{FF77C4DC-2CFE-4B03-E57D-9E2F3B29B76A}.Release|Win32.ActiveCfg = Release|Win32
-		{FF77C4DC-2CFE-4B03-E57D-9E2F3B29B76A}.Release|Win32.Build.0 = Release|Win32
+		{9ED7DA3B-3D78-C1A3-B1EA-0B74A8434BD2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9ED7DA3B-3D78-C1A3-B1EA-0B74A8434BD2}.Debug|Win32.Build.0 = Debug|Win32
+		{9ED7DA3B-3D78-C1A3-B1EA-0B74A8434BD2}.Release|Win32.ActiveCfg = Release|Win32
+		{9ED7DA3B-3D78-C1A3-B1EA-0B74A8434BD2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
