@@ -10,13 +10,30 @@
 
 #include <stdlib.h>
 
-#if _BUILD_USE_WIN32_ONLY_ == 1
+
+#ifdef	WIN32	// this is same with _BUILD_USE_WIN32_ONLY_ == 1 || _BUILD_USE_PTHREAD_WIN32_ == 1 condition.
 #include <winsock2.h>
 #include <process.h>
-#endif
-
-#ifdef	WIN32
 #include <Windows.h>
+
+///////////////////////////////////////////////////////////////////////////////
+// timeval
+///////////////////////////////////////////////////////////////////////////////
+
+typedef	long	suseconds_t;
+
+// struct timeval is defined in winsock2.h
+//struct timeval {
+//	time_t    tv_sec;         /* seconds */
+//	long    tv_usec;        /* and microseconds */
+//};
+
+// for timezone
+struct timezone
+{
+	int  tz_minuteswest; /* minutes W of Greenwich */
+	int  tz_dsttime;     /* type of dst correction */
+};
 #endif
 
 #pragma once
@@ -100,8 +117,6 @@ extern	sp_thread_id_t	sp_thread_get_id(sp_thread_t hThread);
 
 // win32 thread
 
-#include <winsock2.h>
-#include <process.h>
 
 /** [20140815] sean, change */
 //typedef unsigned sp_thread_t;	/** sp_thread_t has thread ID */
@@ -165,4 +180,7 @@ extern	int	sp_thread_join(sp_thread_t thread, void** retval);
 extern	int sp_thread_attr_destroy(sp_thread_attr_t*);
 extern	sp_thread_id_t	sp_thread_get_id(sp_thread_t hThread);
 extern	void sp_thread_destroy(sp_thread_t h);
+
+
+
 #endif
