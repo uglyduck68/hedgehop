@@ -2,12 +2,17 @@
 
 #include	"gettimeofday.h"
 
+/**
+* @function		gettimeofday
+* @param		tv that is the time in UTC format
+* @brief		emulation of gettimeofday of POSIX
+*/
 int gettimeofday( struct timeval* tv ) 
 {
     FILETIME time;
     double   timed;
 
-	// get system time
+	// get system time in Coordinated Universal Time (UTC) format
 	// In Windows XP, time resolution is 15ms
 	// In Windows 7, time resolution is sub-ms.
 	GetSystemTimeAsFileTime( &time );
@@ -35,7 +40,11 @@ int gettimeofday( struct timeval* tv )
 #endif
 
 
-// gettimeofday in windows
+/**
+* @function		gettimeofday
+* @param		tv that is the time in UTC format
+* @brief		emulation of gettimeofday of POSIX
+*/
 int gettimeofday(struct timeval *tv, struct timezone *tz)
 {
 	FILETIME ft;

@@ -129,6 +129,7 @@
     <ClCompile Include="..\Thread.cpp" />
     <ClCompile Include="..\Threadpool.cpp" />
     <ClCompile Include="..\threadpool_org.cpp" />
+    <ClCompile Include="..\timeval.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CondVar.h" />

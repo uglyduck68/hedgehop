@@ -115,6 +115,11 @@ int TestThreadpool()
 
 int main(int argc, char **argv) 
 {
+	int year, month, day, hour, min, sec, msec;
+
+	TimeVal::Now(year, month, day, hour, min, sec, msec);
+
+	printf("%04d/%02d/%02d %02d:%02d:%02d.%04d\n", year, month, day, hour, min, sec, msec);
 #if	1
 	return TestThreadpool();
 #endif

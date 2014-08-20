@@ -9,5 +9,10 @@
 
 #include	"spthread.h"
 
+/**
+* @function		gettimeofday
+* @param		tv that is the time in UTC format
+* @brief		emulation of gettimeofday of POSIX
+*/
 extern int gettimeofday( struct timeval* tv );
 extern int gettimeofday(struct timeval *tv, struct timezone *tz);
