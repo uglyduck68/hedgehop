@@ -17,6 +17,10 @@ TimeVal::TimeVal(bool bNow /*= true*/)
 	}
 }
 
+/**
+* @function		TimeVal
+* @param		mseconds means milliseconds
+*/
 TimeVal::TimeVal(time_t mseconds)
 {
 	if(mseconds < 0 )
@@ -31,7 +35,11 @@ TimeVal::TimeVal(time_t mseconds)
 	}
 }
 
-
+/**
+* @function		TimeVal
+* @param		seconds means seconds
+*				useconds means microseconds
+*/
 TimeVal::TimeVal(time_t seconds, suseconds_t useconds)
 {
 	// If the microseconds value is negative, then "borrow" from the seconds value.

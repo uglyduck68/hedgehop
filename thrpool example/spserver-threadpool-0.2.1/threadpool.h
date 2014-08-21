@@ -9,6 +9,7 @@
 
 #include	"X1.h"
 #include	"Task.h"
+#include	"Thread.h"
 #include	"Mutex.h"
 #include	"CondVar.h"
 
@@ -27,7 +28,7 @@ typedef void (*dispatch_fn)(void *);
 	class WorkerThread
 	{
 	public:
-		WorkerThread(Task* pThread, Threadpool* pPool);
+		WorkerThread(Thread* pThread, Threadpool* pPool);
 		~WorkerThread();
 
 		/** thread handle */
@@ -38,7 +39,7 @@ typedef void (*dispatch_fn)(void *);
 		CondVar			m_Cond;
 
 		// pointer to user thread
-		Task*			m_pThread;
+		Thread*			m_pThread;
 
 		// pointer to threadpool
 		Threadpool*		m_pPool;
@@ -61,7 +62,7 @@ typedef void (*dispatch_fn)(void *);
 		* @return	0 if success
 		*			> 0 if fails
 		*/
-		int		Assign(Task* pThread);
+		int		Assign(Thread* pThread);
 		void	Destroy();
 
 	protected:

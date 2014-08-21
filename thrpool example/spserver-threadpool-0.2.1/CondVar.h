@@ -1,6 +1,6 @@
 /**
 * @file		CondVar.h
-* @auther	Younghwan Kim (uglyduck68@gmail.com)
+* @auther	Younghwan Kim<uglyduck68@gmail.com>
 * @version	0.1
 * @date		20140816
 * @brief	interface file for conditional variable

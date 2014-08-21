@@ -40,7 +40,7 @@ void dispatch_threadpool_to_me(void *arg)
   fprintf(stdout, "  done dispatch_threadpool %d\n", seconds);
 }
 
-class Worker :public Task
+class Worker :public Thread
 {
 public:
 	Worker() : m_nSecond(0)
@@ -55,7 +55,7 @@ public:
 	{
 	}
 
-	sp_thread_result_t	Run(Task* pArg)
+	sp_thread_result_t	Run(Thread* pArg)
 	{
 		int seconds = static_cast<Worker*>(pArg)->m_nSecond;
 

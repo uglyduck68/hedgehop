@@ -87,6 +87,8 @@
     <ClInclude Include="..\spthread.h" />
     <ClInclude Include="..\Task.h" />
     <ClInclude Include="..\Thread.h" />
+    <ClInclude Include="..\threadpool.h" />
+    <ClInclude Include="..\ThreadWithMsgQueue.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -96,6 +98,8 @@
     <ClCompile Include="..\spthread.cpp" />
     <ClCompile Include="..\Task.cpp" />
     <ClCompile Include="..\Thread.cpp" />
+    <ClCompile Include="..\threadpool.cpp" />
+    <ClCompile Include="..\ThreadWithMsgQueue.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TestMsgQueue.cpp" />
   </ItemGroup>

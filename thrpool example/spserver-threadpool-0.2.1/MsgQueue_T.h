@@ -61,7 +61,7 @@ struct MsgQueueItem
 		pUsrData	= NULL;
 	}
 
-	MsgQueueItem(const void* pData, int Len)
+	MsgQueueItem(void* pData, int Len)
 	{
 		Set(pData, Len);
 	}
@@ -86,12 +86,12 @@ struct MsgQueueItem
 		return Set(pData->pUsrData, pData->nLen);
 	}
 
-	int	Set(const void* pData, int Len)
+	int	Set(void* pData, int Len)
 	{
 		nLen		= Len;
 
-		if (Len <= 0)
-			pUsrData		= NULL;
+		if (Len <= sizeof(void*))
+			pUsrData		= pData;
 		else
 		{
 			// malloc do memory allocation if Len is 0

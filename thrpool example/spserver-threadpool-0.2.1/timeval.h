@@ -108,6 +108,7 @@ NS_X1_START
 	private:
 		// on WIN32 m_timeval.tv_sec & m_timeval.tv_usec is long type in WinSock2.h.
 		// on POSIX m_timeval.tv_sec & m_timeval.tv_usec is time_t type But time_t is long.
+		// tv_sec means seconds and tv_usec means *microseconds*
 		struct timeval m_timeval;
 	};
 

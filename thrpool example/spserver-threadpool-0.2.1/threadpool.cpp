@@ -18,7 +18,7 @@ NS_X1_USE
 // WorkerThread
 ///////////////////////////////////////////////////////////////////////////////
 
-WorkerThread::WorkerThread(Task* pThread, Threadpool* pPool) :
+WorkerThread::WorkerThread(Thread* pThread, Threadpool* pPool) :
 	m_pThread(pThread), m_pPool(pPool)
 {
 }
@@ -123,7 +123,7 @@ sp_thread_result_t SP_THREAD_CALL Threadpool::wrapper_fn( void * arg )
 * @return	0 if success
 *			> 0 if fails
 */
-int		Threadpool::Assign(Task* pThread)
+int		Threadpool::Assign(Thread* pThread)
 {
 	int ret = 0;
 

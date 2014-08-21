@@ -129,6 +129,7 @@
     <ClCompile Include="..\Thread.cpp" />
     <ClCompile Include="..\Threadpool.cpp" />
     <ClCompile Include="..\threadpool_org.cpp" />
+    <ClCompile Include="..\ThreadWithMsgQueue.cpp" />
     <ClCompile Include="..\timeval.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="..\Thread.h" />
     <ClInclude Include="..\Threadpool.h" />
     <ClInclude Include="..\threadpool_org.h" />
+    <ClInclude Include="..\ThreadWithMsgQueue.h" />
     <ClInclude Include="..\timeval.h" />
     <ClInclude Include="..\X1.h" />
   </ItemGroup>

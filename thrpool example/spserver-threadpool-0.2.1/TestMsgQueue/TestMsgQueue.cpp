@@ -5,6 +5,8 @@
 #include "MsgQueue_T.h"
 #include "Mutex.h"
 #include "Thread.h"
+#include "ThreadWithMsgQueue.h"
+#include "threadpool.h"
 
 NS_X1_USE
 
@@ -116,6 +118,9 @@ public:
 };
 
 
+///////////////////////////////////////////////////////////////////////////////
+// Test MsgQueue_T class
+///////////////////////////////////////////////////////////////////////////////
 
 int	TestMsgQueue_T()
 {
@@ -167,9 +172,115 @@ int	TestMsgQueue_T()
 	return 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Test ThreadWithMsgQueue class
+// [Scenario]
+//	- Create a receive thread that emulate to receive the packets 
+//		from remote TCP/IP application.
+//	- This receive thread push the received packet to message queue 
+//		in message handler thread.
+//	- The message handler thread receive the packet and parse it and assign
+//		this packet into any thread in the threadpool.
+///////////////////////////////////////////////////////////////////////////////
+int a(void* pData, int nLen)
+{
+	return 1;
+}
+
+class HandlerThread : public ThreadWithMsgQueue
+{
+public:
+	sp_thread_result_t	Run(Thread* pArg)
+	{
+		void*	pData;
+		int		nLen;
+
+		for(int i = 0; i < MAX_SIZE; i++)
+		{
+			Pop(&pData, &nLen);
+
+			// parsing the message queue
+			switch( ((Dummy*)pData)->nId )
+			{
+			case 0:
+				// I want to insert function and argument into threadpool to process it by thread
+				a(pData, nLen);
+				break;
+			case 1:
+				break;
+
+			case 2:
+				break;
+
+			case 3:
+				break;
+
+			case 4:
+				break;
+
+			case 5:
+				break;
+			}
+		}
+
+		return NULL;
+	}
+};
+
+#define	MSG_COUNT	10
+
+class ReceiveThread : public Thread
+{
+public:
+	sp_thread_result_t	Run(Thread* pArg)
+	{
+		MsgQueueItem*	pData;
+
+		for(int i = 0; i < MAX_SIZE; i++)
+		{
+			g_Packet.nId = (i % MSG_COUNT);
+
+			// push message into queue to handle this message by handler
+			m_pHandler->Push(&g_Packet, g_Packet.nSize);
+		}
+		return NULL;
+	}
+
+	void Set(HandlerThread* pThread)
+	{
+		m_pHandler	= pThread;
+	}
+
+protected:
+	HandlerThread*	m_pHandler;	// point to handler thread
+};
+
+int TestThreadWithMesQueue()
+{
+	ReceiveThread	RcvThread;
+	HandlerThread	WorkThread;
+
+	RcvThread.Set(&WorkThread);
+
+	WorkThread.Start();
+	RcvThread.Start();
+
+
+	RcvThread.Join();
+	WorkThread.Join();
+
+	return 0;
+}
+
+
 int _tmain(int argc, _TCHAR* argv[])
 {
+#if	0
 	TestMsgQueue_T();
+#endif
+
+	TestThreadWithMesQueue();
+
 	return 0;
 }
 
