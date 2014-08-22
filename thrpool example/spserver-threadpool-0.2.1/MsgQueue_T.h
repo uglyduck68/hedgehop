@@ -70,6 +70,7 @@ struct MsgQueueItem
 	{
 		if (pUsrData && nLen > sizeof(void*))
 		{
+			printf("free: %0x\n", pUsrData);
 			free(pUsrData);
 		}
 
@@ -96,6 +97,8 @@ struct MsgQueueItem
 		{
 			// malloc do memory allocation if Len is 0
 			pUsrData			= malloc(Len);
+			
+			printf("malloc: %0x\n", pUsrData);
 
 			if (pUsrData)
 			{

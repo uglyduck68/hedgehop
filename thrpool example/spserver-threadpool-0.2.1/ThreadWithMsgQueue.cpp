@@ -23,6 +23,13 @@ int	ThreadWithMsgQueue::Push(void* pItem, int nLen)
 
 	m_MsgQueue.Push(QItem);
 
+	if( QItem.nLen > sizeof(void*))
+	{
+		// reset pointer because tp prevent MsgQueueItem.dtor to free pUsrData
+		QItem.pUsrData	= NULL;
+		QItem.nLen		= 0;
+	}
+
 	return 0;
 }
 

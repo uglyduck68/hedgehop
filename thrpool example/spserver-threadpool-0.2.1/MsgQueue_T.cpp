@@ -52,6 +52,7 @@ T		MsgQueue<T, L>::Pop()
 
 	m_Mutex.UnLock();
 
+	/// [error] T::dtor is call to free resources
 	return pData;
 }
 

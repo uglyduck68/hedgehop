@@ -17,7 +17,7 @@ NS_X1_USE
 /// step 0: create thread-safe message queue. use MutexNull object in case of single thread.
 MsgQueue<MsgQueueItem*, Mutex>		g_MsgQ;
 
-const int	MAX_SIZE		= 100000;
+const int	MAX_SIZE		= 1000;
 
 /**
 * general message emulation for general network application
@@ -339,7 +339,7 @@ public:
 			printf("ReceiveThread::Run: Push: %d\n", i);
 
 			// push message into queue to handle this message by handler
-			m_pHandler->Push(&g_Packet, sizeof(void*)/*g_Packet.nSize*/);
+			m_pHandler->Push(&g_Packet, /*sizeof(void*)*/g_Packet.nSize);
 
 			g_Packet.nId++;
 
