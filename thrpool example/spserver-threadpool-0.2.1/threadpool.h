@@ -29,6 +29,7 @@ typedef void (*dispatch_fn)(void *);
 	{
 	public:
 		WorkerThread(Thread* pThread, Threadpool* pPool);
+		WorkerThread(sp_thread_func_t pFunc, void* pArg, Threadpool* pPool);
 		~WorkerThread();
 
 		/** thread handle */
@@ -40,6 +41,12 @@ typedef void (*dispatch_fn)(void *);
 
 		// pointer to user thread
 		Thread*			m_pThread;
+
+		/// user function that is run instead of m_pThread
+		sp_thread_func_t	m_pFunc;
+
+		/// argument is passwd to m_pFunc
+		void*				m_pArg;
 
 		// pointer to threadpool
 		Threadpool*		m_pPool;
@@ -59,10 +66,23 @@ typedef void (*dispatch_fn)(void *);
 
 		/**
 		* @function	Assign
+		* @param	pThread that is Thread class pointer to 
+		*			user working thread class
 		* @return	0 if success
 		*			> 0 if fails
 		*/
 		int		Assign(Thread* pThread);
+
+		/**
+		* @function	Assign
+		* @param	pFunc that is function pointer to 
+		*			user function
+		* @param	pArg that is argument to pFunc
+		* @return	0 if success
+		*			> 0 if fails
+		*/
+		int		Assign(sp_thread_func_t pFunc, void* pArg);
+
 		void	Destroy();
 
 	protected:
@@ -74,6 +94,9 @@ typedef void (*dispatch_fn)(void *);
 		*			> 0 if fails
 		*/
 		int		SaveThread(WorkerThread* pThread);
+
+		int		Dispatch(Thread* pThread, sp_thread_func_t pFunc, void* pArg);
+
 		static sp_thread_result_t SP_THREAD_CALL wrapper_fn( void * arg );
 
 		void	PrintStatus();

@@ -21,7 +21,7 @@ int	ThreadWithMsgQueue::Push(void* pItem, int nLen)
 {
 	MsgQueueItem	QItem(pItem, nLen);
 
-	m_MsgQueue.Push(&QItem);
+	m_MsgQueue.Push(QItem);
 
 	return 0;
 }
@@ -32,18 +32,14 @@ int	ThreadWithMsgQueue::Push(void* pItem, int nLen)
 */
 int ThreadWithMsgQueue::Pop(void** ppItem, int* pnLen)
 {
-	int				nRet	= -1;
-	MsgQueueItem*	pQItem	= NULL;
+	int				nRet	= 0;
+	MsgQueueItem	pQItem;
 
 	pQItem	= m_MsgQueue.Pop();
 
-	if (pQItem != NULL)
-	{
-		*ppItem		= pQItem->pUsrData;
-		*pnLen		= pQItem->nLen;
 
-		nRet		= 0;
-	}
+	*ppItem		= pQItem.pUsrData;
+	*pnLen		= pQItem.nLen;
 
 	return nRet;
 }

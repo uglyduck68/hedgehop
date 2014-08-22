@@ -68,12 +68,12 @@ struct MsgQueueItem
 
 	void	Fin()
 	{
-		if (pUsrData)
+		if (pUsrData && nLen > sizeof(void*))
 		{
 			free(pUsrData);
-
-			pUsrData	= NULL;
 		}
+
+		pUsrData	= NULL;
 	}
 
 	~MsgQueueItem()

@@ -19,8 +19,7 @@ NS_X1_START
 	*				If message queueu empty then thread wait for the message queue item 
 	*				to get into the queue.
 	*/
-	class ThreadWithMsgQueue :
-		public Thread
+	class ThreadWithMsgQueue : public Thread
 	{
 	public:
 		ThreadWithMsgQueue(void);
@@ -42,7 +41,7 @@ NS_X1_START
 		int Pop(void** ppItem, int* pnLen);
 
 	protected:
-		MsgQueue<MsgQueueItem*, Mutex>	m_MsgQueue;
+		MsgQueue<MsgQueueItem, Mutex>	m_MsgQueue;
 	};
 
 NS_X1_END

@@ -17,7 +17,7 @@ NS_X1_USE
 /// step 0: create thread-safe message queue. use MutexNull object in case of single thread.
 MsgQueue<MsgQueueItem*, Mutex>		g_MsgQ;
 
-const int	MAX_SIZE		= 1000;
+const int	MAX_SIZE		= 100000;
 
 /**
 * general message emulation for general network application
@@ -174,6 +174,7 @@ int	TestMsgQueue_T()
 
 ///////////////////////////////////////////////////////////////////////////////
 // Test ThreadWithMsgQueue class
+///////////////////////////////////////////////////////////////////////////////
 // [Scenario]
 //	- Create a receive thread that emulate to receive the packets 
 //		from remote TCP/IP application.
@@ -182,18 +183,100 @@ int	TestMsgQueue_T()
 //	- The message handler thread receive the packet and parse it and assign
 //		this packet into any thread in the threadpool.
 ///////////////////////////////////////////////////////////////////////////////
-int a(void* pData, int nLen)
+
+
+sp_thread_result_t A_PacketHandler(void* pData)
 {
-	return 1;
+	Dummy*	pPacket		= static_cast<Dummy*>(pData);
+
+	// process the packet
+	sp_sleep(1);
+
+	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
+
+	return NULL;
 }
 
+sp_thread_result_t B_PacketHandler(void* pData)
+{
+	Dummy*	pPacket		= static_cast<Dummy*>(pData);
+
+	// process the packet
+	sp_sleep(1);
+
+	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
+
+	return NULL;
+}
+
+sp_thread_result_t C_PacketHandler(void* pData)
+{
+	Dummy*	pPacket		= static_cast<Dummy*>(pData);
+
+	// process the packet
+	sp_sleep(1);
+
+	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
+
+	return NULL;
+}
+
+sp_thread_result_t D_PacketHandler(void* pData)
+{
+	Dummy*	pPacket		= static_cast<Dummy*>(pData);
+
+	// process the packet
+	sp_sleep(1);
+
+	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
+
+	return NULL;
+}
+
+sp_thread_result_t E_PacketHandler(void* pData)
+{
+	Dummy*	pPacket		= static_cast<Dummy*>(pData);
+
+	// process the packet
+	sp_sleep(1);
+
+	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
+
+	return NULL;
+}
+
+sp_thread_result_t F_PacketHandler(void* pData)
+{
+	Dummy*	pPacket		= static_cast<Dummy*>(pData);
+
+	// process the packet
+	sp_sleep(1);
+
+	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
+
+	return NULL;
+}
+/**
+* @class	HandlerThread that pop the packet from message queue,
+*			parse it, and send handler function and the packet as argument into threadpool.
+*/
 class HandlerThread : public ThreadWithMsgQueue
 {
 public:
+	HandlerThread()
+	{
+		m_pPool		= new Threadpool(2);
+	}
+
+	~HandlerThread()
+	{
+		delete m_pPool;
+	}
+
 	sp_thread_result_t	Run(Thread* pArg)
 	{
-		void*	pData;
-		int		nLen;
+		void*	pData	= NULL;
+		int		nLen	= 0;
 
 		for(int i = 0; i < MAX_SIZE; i++)
 		{
@@ -204,44 +287,64 @@ public:
 			{
 			case 0:
 				// I want to insert function and argument into threadpool to process it by thread
-				a(pData, nLen);
+				m_pPool->Assign(A_PacketHandler, pData);
 				break;
 			case 1:
+				m_pPool->Assign(B_PacketHandler, pData);
 				break;
 
 			case 2:
+				m_pPool->Assign(C_PacketHandler, pData);
 				break;
 
 			case 3:
+				m_pPool->Assign(D_PacketHandler, pData);
 				break;
 
 			case 4:
+				m_pPool->Assign(E_PacketHandler, pData);
 				break;
 
-			case 5:
+			default:
+				// process packet #5 to #9
+				m_pPool->Assign(F_PacketHandler, pData);
 				break;
 			}
+
+			printf("%d: processed the packet(%d)\n", i, ((Dummy*)pData)->nId);
 		}
 
 		return NULL;
 	}
+
+protected:
+	Threadpool*		m_pPool;
 };
 
 #define	MSG_COUNT	10
 
+/**
+* @class	ReceiveThread that is emulate the thread that receive the packet 
+*			from remote TCP/IP application.
+*/
 class ReceiveThread : public Thread
 {
 public:
 	sp_thread_result_t	Run(Thread* pArg)
 	{
-		MsgQueueItem*	pData;
-
 		for(int i = 0; i < MAX_SIZE; i++)
 		{
 			g_Packet.nId = (i % MSG_COUNT);
 
+			printf("ReceiveThread::Run: Push: %d\n", i);
+
 			// push message into queue to handle this message by handler
-			m_pHandler->Push(&g_Packet, g_Packet.nSize);
+			m_pHandler->Push(&g_Packet, sizeof(void*)/*g_Packet.nSize*/);
+
+			g_Packet.nId++;
+
+			// wait next packet
+			sp_sleep(1);
 		}
 		return NULL;
 	}
@@ -260,12 +363,20 @@ int TestThreadWithMesQueue()
 	ReceiveThread	RcvThread;
 	HandlerThread	WorkThread;
 
+	// set packet handler
 	RcvThread.Set(&WorkThread);
 
+	///////////////////////////////////////////////////////////////////////////
+	// start emulation threads
+	///////////////////////////////////////////////////////////////////////////
+
+	// wait the packet
 	WorkThread.Start();
+
+	// generate packet and push the packet into the message queue in packet handler
 	RcvThread.Start();
 
-
+	// wait the end of threads
 	RcvThread.Join();
 	WorkThread.Join();
 

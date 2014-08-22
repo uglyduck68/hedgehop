@@ -19,14 +19,22 @@ NS_X1_USE
 ///////////////////////////////////////////////////////////////////////////////
 
 WorkerThread::WorkerThread(Thread* pThread, Threadpool* pPool) :
-	m_pThread(pThread), m_pPool(pPool)
+	m_pThread(pThread), m_pPool(pPool),
+	m_pFunc(NULL), m_pArg(NULL)
 {
 }
 
+WorkerThread::WorkerThread(sp_thread_func_t pFunc, void* pArg, Threadpool* pPool) :
+	m_pThread(NULL), m_pPool(pPool),
+	m_pFunc(pFunc), m_pArg(pArg)
+{
+}
 WorkerThread::~WorkerThread()
 {
 	m_pThread	= NULL;
 	m_pPool		= NULL;
+	m_pFunc		= NULL;
+	m_pArg		= NULL;
 }
 
 
@@ -86,7 +94,10 @@ sp_thread_result_t SP_THREAD_CALL Threadpool::wrapper_fn( void * arg )
 	for( ; 0 == ((Threadpool*)thread->m_pPool)->m_tp_stop; ) 
 	{
 		// run user thread function
-		thread->m_pThread->Run( thread->m_pThread );
+		if (thread->m_pFunc)
+			thread->m_pFunc(thread->m_pArg);
+		else
+			thread->m_pThread->Run( thread->m_pThread );
 
 		if( 0 != ((Threadpool*)thread->m_pPool)->m_tp_stop ) 
 			break;
@@ -118,12 +129,7 @@ sp_thread_result_t SP_THREAD_CALL Threadpool::wrapper_fn( void * arg )
 	return 0;
 }
 
-/**
-* @function	Assign
-* @return	0 if success
-*			> 0 if fails
-*/
-int		Threadpool::Assign(Thread* pThread)
+int		Threadpool::Dispatch(Thread* pThread, sp_thread_func_t pFunc, void* pArg)
 {
 	int ret = 0;
 
@@ -142,7 +148,10 @@ int		Threadpool::Assign(Thread* pThread)
 
 	if( pool->m_tp_index <= 0 ) 
 	{
-		thread = new (std::nothrow) WorkerThread(pThread, this );
+		if (pFunc)
+			thread = new (std::nothrow) WorkerThread(pFunc, pArg, this );
+		else if(pThread)
+			thread = new (std::nothrow) WorkerThread(pThread, this );
 
 		if (thread == NULL)
 			throw IllegalThreadStateException("no memory"); 
@@ -152,10 +161,22 @@ int		Threadpool::Assign(Thread* pThread)
 		sp_thread_attr_init( &attr );
 		sp_thread_attr_setdetachstate( &attr, SP_THREAD_CREATE_DETACHED );
 
-		if( 0 == sp_thread_create( &thread->m_pThread->Self(), &attr, wrapper_fn, thread ) ) 
+		int		nIsCreated	= 0;
+
+		if (pFunc)
+		{
+			nIsCreated	= sp_thread_create( &thread->m_Id, &attr, wrapper_fn, thread );
+			LOG( "Debug: create thread#%ld\n", thread->m_Id );
+		}
+		else if(pThread)
+		{
+			nIsCreated	= sp_thread_create( &thread->m_pThread->Self(), &attr, wrapper_fn, thread );
+			LOG( "Debug: create thread#%ld\n", thread->m_pThread->GetId() );
+		}
+
+		if( 0 == nIsCreated ) 
 		{
 			pool->m_tp_total++;
-			LOG( "Debug: create thread#%ld\n", thread->m_pThread->GetId() );
 		} 
 		else 
 		{
@@ -164,6 +185,8 @@ int		Threadpool::Assign(Thread* pThread)
 
 			delete thread;
 		}
+
+		sp_thread_attr_destroy(&attr);
 	} 
 	else 
 	{
@@ -172,8 +195,17 @@ int		Threadpool::Assign(Thread* pThread)
 		pool->m_tp_list[ pool->m_tp_index ] = NULL;
 
 		// save thread handle
-		pThread->Self()		= thread->m_pThread->Self();
-		thread->m_pThread	= pThread;
+		if (pFunc)
+		{
+			thread->m_pFunc		= pFunc;
+			thread->m_pArg		= pArg;
+		}
+		else if (pThread)
+		{
+			pThread->Self()		= thread->m_pThread->Self();
+			thread->m_pThread	= pThread;
+		}
+
 		thread->m_pPool		= pool;
 
 		thread->m_Mutex.Lock( );
@@ -184,6 +216,32 @@ int		Threadpool::Assign(Thread* pThread)
 	pool->m_tp_mutex.UnLock( );
 
 	return ret;
+}
+
+
+/**
+* @function	Assign
+* @param	pThread that is Thread class pointer to 
+*			user working thread class
+* @return	0 if success
+*			> 0 if fails
+*/
+int		Threadpool::Assign(Thread* pThread)
+{
+	return Dispatch(pThread, NULL, NULL);
+}
+
+/**
+* @function	Assign
+* @param	pFunc that is function pointer to 
+*			user function
+* @param	pArg that is argument to pFunc
+* @return	0 if success
+*			> 0 if fails
+*/
+int		Threadpool::Assign(sp_thread_func_t pFunc, void* pArg)
+{
+	return Dispatch(NULL, pFunc, pArg);
 }
 
 void	Threadpool::Destroy()
