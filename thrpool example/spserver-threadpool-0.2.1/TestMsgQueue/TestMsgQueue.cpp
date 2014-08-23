@@ -17,8 +17,8 @@ NS_X1_USE
 /// step 0: create thread-safe message queue. use MutexNull object in case of single thread.
 MsgQueue<MsgQueueItem*, Mutex>		g_MsgQ;
 
-const int	MAX_SIZE		= 1000;
-
+const int	MAX_SIZE		= 100;
+const char	END_PACKET		= 0xff;
 /**
 * general message emulation for general network application
 */
@@ -30,8 +30,9 @@ typedef struct tagDummy
 
 	tagDummy()
 	{
-		nId		= 0;
-		nSize	= sizeof(*this);
+		nId			= 0;
+		nSize		= sizeof(*this);
+		caBody[0]	= 0x00;
 	}
 } Dummy;
 
@@ -184,6 +185,13 @@ int	TestMsgQueue_T()
 //		this packet into any thread in the threadpool.
 ///////////////////////////////////////////////////////////////////////////////
 
+void	FreePacket(Dummy* pPacket)
+{
+	if (pPacket->nSize> sizeof(void*))
+	{
+		free(pPacket);
+	}
+}
 
 sp_thread_result_t A_PacketHandler(void* pData)
 {
@@ -193,6 +201,8 @@ sp_thread_result_t A_PacketHandler(void* pData)
 	sp_sleep(1);
 
 	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
+
+	FreePacket(pPacket);
 
 	return NULL;
 }
@@ -206,6 +216,8 @@ sp_thread_result_t B_PacketHandler(void* pData)
 
 	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
 
+	FreePacket(pPacket);
+
 	return NULL;
 }
 
@@ -217,6 +229,8 @@ sp_thread_result_t C_PacketHandler(void* pData)
 	sp_sleep(1);
 
 	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
+
+	FreePacket(pPacket);
 
 	return NULL;
 }
@@ -230,6 +244,8 @@ sp_thread_result_t D_PacketHandler(void* pData)
 
 	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
 
+	FreePacket(pPacket);
+
 	return NULL;
 }
 
@@ -242,20 +258,25 @@ sp_thread_result_t E_PacketHandler(void* pData)
 
 	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
 
+	FreePacket(pPacket);
+
 	return NULL;
 }
 
 sp_thread_result_t F_PacketHandler(void* pData)
 {
-	Dummy*	pPacket		= static_cast<Dummy*>(pData);
+	Dummy*	pPacket		= ((Dummy*)pData);
 
 	// process the packet
 	sp_sleep(1);
 
 	printf("%s: ID: %d... is processed\n", __FUNCTION__, pPacket->nId);
 
+	FreePacket(pPacket);
+
 	return NULL;
 }
+
 /**
 * @class	HandlerThread that pop the packet from message queue,
 *			parse it, and send handler function and the packet as argument into threadpool.
@@ -311,7 +332,13 @@ public:
 				break;
 			}
 
-			printf("%d: processed the packet(%d)\n", i, ((Dummy*)pData)->nId);
+			if( ((Dummy*)pData)->caBody[0]	== END_PACKET)
+			{
+				// end of thread
+				printf("%s: end of thread: The processed packet is %d\n", 
+					__FUNCTION__, i+1);
+				break;
+			}
 		}
 
 		return NULL;
@@ -336,11 +363,35 @@ public:
 		{
 			g_Packet.nId = (i % MSG_COUNT);
 
-			printf("ReceiveThread::Run: Push: %d\n", i);
+			printf("ReceiveThread::Run: Push: %d, count: %d\n", g_Packet.nId, i);
 
 			// push message into queue to handle this message by handler
-			m_pHandler->Push(&g_Packet, /*sizeof(void*)*/g_Packet.nSize);
+			// if g_Packet.nSize is more than sizeof(void*), then
+			// Push function allocate the memory and copy g_Packet to it.
+			// This allocated memory *MUST* be free by user in side of Pop.
 
+			if( i == MAX_SIZE-1 )
+			{
+				// prepare the last packet
+				g_Packet.caBody[0]	= END_PACKET;
+			}
+
+#if	0		// Push method test #1
+			// Push just assign the address of g_Packet
+			// This is useful for user to want just the pointer of packet, 
+			// Any malloc and copy operation is *NOT* made.
+			m_pHandler->Push(&g_Packet, sizeof(void*));
+#endif
+
+#if	0		// Push method test #2
+			// g_Packet.nSize > sizeof(void*), so Push method malloc and copy it.
+			m_pHandler->Push(&g_Packet, g_Packet.nSize);
+#endif
+			
+#if	1		// Push method test #3
+			// This Push method is for just convenient according to the concept of OO.
+			m_pHandler->Push(new MsgQueueItem(&g_Packet, g_Packet.nSize));
+#endif
 			g_Packet.nId++;
 
 			// wait next packet

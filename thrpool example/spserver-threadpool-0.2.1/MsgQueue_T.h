@@ -20,6 +20,10 @@ NS_X1_START
  *
  * MsgQueue is template thread-safe message queue. 
  * But you can user MutexNull class for single thread.
+ * As you know if T is class object (not pointer type) then
+ * after Pop operation T::~T is called. Sometimes this 
+ * situation is unintended to free resource too oftern and
+ * this cause the memory error.
  * FIXME:	use lock-free algorithm of MPMC.
  */
 template<typename T, typename L>
@@ -48,7 +52,10 @@ public:
 
 /**
 * @class	MsgQueueItem
-* @brief	emulate general data type
+* @brief	emulate general data type. if MsgQueueItem is used 
+* as MsgQueue<MsgQueueItem, L> and MsqQueue::Pop operation is to
+* call the MsgQueueItem::dtor to free resource. Sometimes this
+* cause the memory leak.
 */
 struct MsgQueueItem
 {
@@ -66,11 +73,14 @@ struct MsgQueueItem
 		Set(pData, Len);
 	}
 
+	/**
+	* @function		Free
+	* @brief		free the memory
+	*/
 	void	Fin()
 	{
 		if (pUsrData && nLen > sizeof(void*))
 		{
-			printf("free: %0x\n", pUsrData);
 			free(pUsrData);
 		}
 
@@ -79,7 +89,11 @@ struct MsgQueueItem
 
 	~MsgQueueItem()
 	{
-		Fin();
+		// it MsgQueueItem is local or stack variable, then
+		// this dtor is called to free resources. 
+		// this situation is sometimes unintened.
+		// so comment out
+	//	Fin();
 	}
 
 	int Set(MsgQueueItem* pData)
@@ -98,8 +112,6 @@ struct MsgQueueItem
 			// malloc do memory allocation if Len is 0
 			pUsrData			= malloc(Len);
 			
-			printf("malloc: %0x\n", pUsrData);
-
 			if (pUsrData)
 			{
 				// FIXME: memcpy have a big overload

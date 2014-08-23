@@ -23,12 +23,20 @@ int	ThreadWithMsgQueue::Push(void* pItem, int nLen)
 
 	m_MsgQueue.Push(QItem);
 
-	if( QItem.nLen > sizeof(void*))
-	{
-		// reset pointer because tp prevent MsgQueueItem.dtor to free pUsrData
-		QItem.pUsrData	= NULL;
-		QItem.nLen		= 0;
-	}
+	return 0;
+}
+
+/**
+* @function		Push
+* @Param		pItem
+* @return		0 if success
+*/
+
+int ThreadWithMsgQueue::Push(MsgQueueItem* pItem)
+{
+	m_MsgQueue.Push(*pItem);
+
+	delete pItem;
 
 	return 0;
 }
@@ -40,13 +48,14 @@ int	ThreadWithMsgQueue::Push(void* pItem, int nLen)
 int ThreadWithMsgQueue::Pop(void** ppItem, int* pnLen)
 {
 	int				nRet	= 0;
-	MsgQueueItem	pQItem;
+	MsgQueueItem	QItem;
 
-	pQItem	= m_MsgQueue.Pop();
+	QItem		= m_MsgQueue.Pop();
 
 
-	*ppItem		= pQItem.pUsrData;
-	*pnLen		= pQItem.nLen;
+	*ppItem		= QItem.pUsrData;
+	*pnLen		= QItem.nLen;
+
 
 	return nRet;
 }
