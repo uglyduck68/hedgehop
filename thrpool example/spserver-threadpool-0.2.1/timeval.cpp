@@ -91,6 +91,20 @@ TimeVal& TimeVal::operator=(const TimeVal& rhs)
 	return *this;
 }
 
+TimeVal::operator timeval () const
+{
+	return m_timeval;
+}
+
+TimeVal::operator const timeval* () const
+{
+	return reinterpret_cast<const timeval*> (&m_timeval);
+}
+
+TimeVal::operator timeval* ()
+{
+	return &m_timeval;
+}
 /**
 * @function		Now
 * @param		yy means year

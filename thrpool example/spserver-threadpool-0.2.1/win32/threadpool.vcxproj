@@ -121,8 +121,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\CondVar.cpp" />
+    <ClCompile Include="..\Exception.cpp" />
     <ClCompile Include="..\gettimeofday.cpp" />
     <ClCompile Include="..\Mutex.cpp" />
+    <ClCompile Include="..\SelectTimer.cpp" />
     <ClCompile Include="..\spthread.cpp" />
     <ClCompile Include="..\Task.cpp" />
     <ClCompile Include="..\testthreadpool.cpp" />
@@ -141,6 +143,7 @@
     <ClInclude Include="..\Guard.h" />
     <ClInclude Include="..\Log.h" />
     <ClInclude Include="..\Mutex.h" />
+    <ClInclude Include="..\SelectTimer.h" />
     <ClInclude Include="..\spthread.h" />
     <ClInclude Include="..\Task.h" />
     <ClInclude Include="..\Thread.h" />

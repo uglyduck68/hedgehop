@@ -101,6 +101,10 @@ NS_X1_START
 				((lhs.m_timeval.tv_sec == rhs.m_timeval.tv_sec) && (lhs.m_timeval.tv_usec < rhs.m_timeval.tv_usec))) ;
 		}
 
+		operator timeval () const;
+		operator const timeval* () const;
+		operator timeval* ();
+
 	protected:
 		static void GetGregorianData(long JD, int& year, int& month, int& day);
 		static long GetJulianDay(int Year, int Month, int Day);
