@@ -1,0 +1,11 @@
+material AxisMaterial
+{
+   technique
+   {
+      pass
+      {
+         lighting off
+         ambient 1 1 1
+      }
+   }
+}
