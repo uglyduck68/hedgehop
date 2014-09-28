@@ -1,0 +1,18 @@
+# Sean, according to http://www.ogre3d.org/forums/viewtopic.php?f=3&t=52268 
+# Ogre depth sorts for scene_blen add, not  scene_bland alpha_blend.
+material debug_draw
+{
+   technique
+   {
+      pass
+      {
+         lighting off
+         scene_blend add	//modulate	//alpha_blend
+         depth_check on
+         depth_write off
+         ambient vertexcolour
+         diffuse vertexcolour
+         specular vertexcolour
+      }
+   }
+}
