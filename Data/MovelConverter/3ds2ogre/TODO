@@ -1,0 +1,13 @@
+Add options for:
+- export material or not
+- building edge list
+- generating LOD
+
+Add functionality:
+- use smoothing group to compute normals
+- export animations
+- export cameras
+
+Bug:
+- correct memory leaking reported by Ogre3D
+- when mesh have no associated material, do the export

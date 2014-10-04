@@ -1,0 +1,6 @@
+C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/SkyX/CMakeFiles/ALL_BUILD.dir
+C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/SkyX/CMakeFiles/SkyX.dir
+C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/SkyXDemo1/CMakeFiles/SkyXDemo1.dir
+C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/SkyXDemo2/CMakeFiles/SkyXDemo2.dir
+C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/SkyXDemo3/CMakeFiles/SkyXDemo3.dir
+C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/CMakeFiles/ZERO_CHECK.dir

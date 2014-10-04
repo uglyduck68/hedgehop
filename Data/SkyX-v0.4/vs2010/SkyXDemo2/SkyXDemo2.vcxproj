@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{69A370C1-6E33-491B-B645-E8FD3FF72BE6}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>SkyXDemo2</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\bin\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">SkyXDemo2.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">SkyXDemo2</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\bin\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">SkyXDemo2.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">SkyXDemo2</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\bin\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">SkyXDemo2.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">SkyXDemo2</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\bin\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">SkyXDemo2.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">SkyXDemo2</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(OGRE_HOME)\addon\SkyX-v0.4\SkyX\include;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\include;$(OGRE_HOME)\boost;$(OGRE_HOME)\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;$(OGRE_HOME)\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\lib\Debug\SkyX_d.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Debug\OIS_d.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Debug\OgreMain_d.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Debug\OgreOverlay_d.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Release;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Release/$(Configuration);;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Debug;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Debug/$(Configuration);;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/boost/lib;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/boost/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/lib/Debug/SkyXDemo2.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/bin/Debug/SkyXDemo2.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(OGRE_HOME)\addon\SkyX-v0.4\SkyX\include;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\include;$(OGRE_HOME)\boost;$(OGRE_HOME)\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;$(OGRE_HOME)\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\lib\Release\SkyX.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Release\OIS.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Release\OgreMain.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Release\OgreOverlay.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OGRE_HOME)/lib/Release;$(OGRE_HOME)/lib/Release/$(Configuration);C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Debug;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Debug/$(Configuration);C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/boost/lib;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/boost/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/lib/Release/SkyXDemo2.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/bin/Release/SkyXDemo2.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE\Overlay;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\lib\MinSizeRel\SkyX.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Release\OIS.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Release\OgreMain.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Release;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Release/$(Configuration);;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Debug;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Debug/$(Configuration);;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/boost/lib;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/boost/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/lib/MinSizeRel/SkyXDemo2.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/bin/MinSizeRel/SkyXDemo2.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE\Overlay;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyX\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\boost;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\..\SkyX\Include;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\include\OIS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\lib\RelWithDebInfo\SkyX.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Release\OIS.lib;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\lib\Release\OgreMain.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Release;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Release/$(Configuration);;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Debug;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/lib/Debug/$(Configuration);;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/boost/lib;C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/boost/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/lib/RelWithDebInfo/SkyXDemo2.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/bin/RelWithDebInfo/SkyXDemo2.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\SkyXDemo2\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/SkyXDemo2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4 -BC:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010 --check-stamp-file C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\SkyXDemo2\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/SkyXDemo2/CMakeLists.txt;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\CMakeLists.txt;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\SkyXDemo2\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/SkyXDemo2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4 -BC:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010 --check-stamp-file C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\SkyXDemo2\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/SkyXDemo2/CMakeLists.txt;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\CMakeLists.txt;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\SkyXDemo2\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/SkyXDemo2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4 -BC:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010 --check-stamp-file C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\SkyXDemo2\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/SkyXDemo2/CMakeLists.txt;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\CMakeLists.txt;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\SkyXDemo2\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/SkyXDemo2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4 -BC:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010 --check-stamp-file C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\SkyXDemo2\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/SkyXDemo2/CMakeLists.txt;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\CMakeLists.txt;C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\SkyXDemo2\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\uglyduck\Lib\OgreSDK_vc10_v1-9-0\addon\SkyX-v0.4\vs2010\SkyXDemo2\CMakeFiles\generate.stamp</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SkyXDemo2\Source\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/SkyX/SkyX.vcxproj">
+      <Project>53CD6C60-B1DC-44CD-B93E-BC9F69332190</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/uglyduck/Lib/OgreSDK_vc10_v1-9-0/addon/SkyX-v0.4/vs2010/ZERO_CHECK.vcxproj">
+      <Project>D2F87F0B-317F-442D-822E-50E08E849EEE</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

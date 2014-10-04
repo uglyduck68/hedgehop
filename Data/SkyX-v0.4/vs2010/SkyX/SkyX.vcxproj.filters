@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="Windows-1252"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\SkyX\Source\AtmosphereManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\BasicController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\CloudsManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\ColorGradient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\GPUManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\MeshManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\MoonManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\SkyX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\VCloudsManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\VClouds\DataManager.cpp">
+      <Filter>Source Files\VClouds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\VClouds\Ellipsoid.cpp">
+      <Filter>Source Files\VClouds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\VClouds\FastFakeRandom.cpp">
+      <Filter>Source Files\VClouds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\VClouds\GeometryBlock.cpp">
+      <Filter>Source Files\VClouds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\VClouds\GeometryManager.cpp">
+      <Filter>Source Files\VClouds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\VClouds\Lightning.cpp">
+      <Filter>Source Files\VClouds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\VClouds\LightningManager.cpp">
+      <Filter>Source Files\VClouds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SkyX\Source\VClouds\VClouds.cpp">
+      <Filter>Source Files\VClouds</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SkyX\Include\AtmosphereManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\BasicController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\CloudsManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\ColorGradient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\Controller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\GPUManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\MeshManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\MoonManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\Prerequisites.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\SkyX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\VCloudsManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\VClouds\DataManager.h">
+      <Filter>Header Files\VClouds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\VClouds\Ellipsoid.h">
+      <Filter>Header Files\VClouds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\VClouds\FastFakeRandom.h">
+      <Filter>Header Files\VClouds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\VClouds\GeometryBlock.h">
+      <Filter>Header Files\VClouds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\VClouds\GeometryManager.h">
+      <Filter>Header Files\VClouds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\VClouds\Lightning.h">
+      <Filter>Header Files\VClouds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\VClouds\LightningManager.h">
+      <Filter>Header Files\VClouds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SkyX\Include\VClouds\VClouds.h">
+      <Filter>Header Files\VClouds</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\SkyX\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files\VClouds">
+      <UniqueIdentifier>{5F44F95A-E823-4303-B6A1-BE45C763DCC3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\VClouds">
+      <UniqueIdentifier>{A2AC1C7F-15DE-4FDB-BBAF-2E1547C734BF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{88496F45-747D-48DA-8324-D7E89636535E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{D0E73439-08B0-4880-9E65-D317248FD148}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
