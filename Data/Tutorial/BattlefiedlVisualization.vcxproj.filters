@@ -30,6 +30,9 @@
     <ClInclude Include="include\IntermediateTutorial7.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="include\BasicTutorial3.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BattlefiedlVisualization.cpp">
@@ -42,6 +45,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\IntermediateTutorial7.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicTutorial3.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

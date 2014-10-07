@@ -1,3 +1,0 @@
-+ boost-thread: Used for threading support <http://boost.org>
-+ boost-date_time: Used for threading support <http://boost.org>
-+ Doxygen: Tool for building API documentation <http://doxygen.org>
