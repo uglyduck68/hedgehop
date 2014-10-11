@@ -79,14 +79,14 @@ struct SkyXSettings
 	Ogre::Real vcLightningsTM;
 };
 
-class Sky
+class CSky
 {
 protected:
    Ogre::SceneManager*         mSceneMgr;
 
 public:
-	Sky(Ogre::SceneManager*);
-	~Sky(void);
+	CSky(Ogre::SceneManager*);
+	~CSky(void);
 
 	/**
 	* create sky entity

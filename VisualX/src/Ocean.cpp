@@ -2,20 +2,20 @@
 #include "Ocean.h"
 #include "Debug.h"
 
-Ocean::Ocean(Ogre::SceneManager* pSceneMgr) :
+COcean::COcean(Ogre::SceneManager* pSceneMgr) :
 	m_pOceanEnt(NULL), mSceneMgr(pSceneMgr)
 {
 }
 
 
-Ocean::~Ocean(void)
+COcean::~COcean(void)
 {
 }
 
 /**
 * create ocean entity
 */
-void Ocean::createScene()
+void COcean::createScene()
 {
    // Define a plane mesh that will be used for the ocean surface
     Ogre::Plane oceanPlane;
@@ -26,7 +26,7 @@ void Ocean::createScene()
     Ogre::MeshManager::getSingleton().createPlane("OceanPlane",
         Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         oceanPlane,
-        MAX_WIDTH, MAX_HEIGHT, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
+        MAX_WIDTH, MAX_HEIGHT, XSEGMENT, YSEGMENT, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
 
     m_pOceanEnt = mSceneMgr->createEntity( "OceanTest", "OceanPlane" );
 

@@ -48,4 +48,7 @@
 #  include "OgreStaticPluginLoader.h"
 #endif
 
+#include <Terrain/OgreTerrain.h>
+#include <Terrain/OgreTerrainGroup.h>
+
 #include "Debug.h"

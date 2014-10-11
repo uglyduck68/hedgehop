@@ -98,7 +98,7 @@ void BaseApplication::createCamera(void)
     // Position it at 500 in Z direction
 	// Sean, in CS_ORBIT camera position is meaningless.
 	// because camera is always near target in SdkCamerMan class internally
-    mCamera->setPosition(Ogre::Vector3(0,0,800));
+    mCamera->setPosition(Ogre::Vector3(0,10000,8000));
     // Look back along -Z
     mCamera->lookAt(Ogre::Vector3(0,0,-300));
     mCamera->setNearClipDistance(5);

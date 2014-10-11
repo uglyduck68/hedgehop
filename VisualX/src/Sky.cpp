@@ -41,7 +41,8 @@ void setPreset(const SkyXSettings& preset)
 {
 	assert(mSkyX != NULL);
 
-	mSkyX->setTimeMultiplier(preset.timeMultiplier);
+	// prevent flow of time
+	mSkyX->setTimeMultiplier(0/*preset.timeMultiplier*/);
 	mBasicController->setTime(preset.time);
 	mBasicController->setMoonPhase(preset.moonPhase);
 	mSkyX->getAtmosphereManager()->setOptions(preset.atmosphereOpt);
@@ -105,20 +106,20 @@ void setPreset(const SkyXSettings& preset)
 	mSkyX->update(0);
 }
 
-Sky::Sky(Ogre::SceneManager* pSceneMgr) :
+CSky::CSky(Ogre::SceneManager* pSceneMgr) :
 	mSceneMgr(pSceneMgr)
 {
 }
 
 
-Sky::~Sky(void)
+CSky::~CSky(void)
 {
 }
 
 /**
 * create sky entity
 */
-void Sky::createScene()
+void CSky::createScene()
 {
 	// Create SkyX
 	mBasicController = new SkyX::BasicController();
