@@ -1,0 +1,46 @@
+vertex_program OceanTestVS cg
+{
+    source OceanTest.cg
+    entry_point main_vs
+    profiles vs_1_1 arbvp1
+
+
+    default_params
+    {
+        param_named_auto WorldViewProj worldviewproj_matrix
+        param_named_auto eyePosition camera_position_object_space
+    }
+}
+
+fragment_program OceanTestFS cg
+{
+    source OceanTest.cg
+    entry_point main_fs
+    profiles ps_2_0 arbfp1
+}
+
+material OceanTest_Cg
+{
+    technique
+    {
+        pass
+        {
+            vertex_program_ref OceanTestVS
+            {
+#                param_named_auto time time_0_x 100.0
+                param_named textureScale float2 1 1                
+            }
+
+            fragment_program_ref OceanTestFS
+            {
+            }
+
+            texture_unit
+            {
+                texture waves2.dds
+                tex_coord_set 0
+                filtering linear linear linear
+            }
+        }
+		}
+}
