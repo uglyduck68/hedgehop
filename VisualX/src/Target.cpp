@@ -32,3 +32,18 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 CTarget::~CTarget(void)
 {
 }
+
+bool CTarget::frameRenderingQueued( const FrameEvent &evt )
+{
+	/** to test interference of ocean wave simulation and vehicle */
+	m_pSceneNode->yaw(Ogre::Radian(evt.timeSinceLastFrame));
+
+	return true;
+}
+
+void CTarget::createFrameListener(void)
+{
+	Ogre::Root::getSingletonPtr()->addFrameListener(this);
+
+	return;
+}

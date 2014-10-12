@@ -98,8 +98,8 @@ void CTerrain::configureTerrainDefaults(Ogre::Light* light)
 
     // Configure default import settings for if we use imported image
     Ogre::Terrain::ImportData& defaultimp = mTerrainGroup->getDefaultImportSettings();
-    defaultimp.terrainSize = 513;
-    defaultimp.worldSize = 12000.0f;
+    defaultimp.terrainSize = 2049;
+    defaultimp.worldSize = 96000.0f;
     defaultimp.inputScale = 600;
     defaultimp.minBatchSize = 33;
     defaultimp.maxBatchSize = 65;
@@ -119,15 +119,18 @@ void CTerrain::configureTerrainDefaults(Ogre::Light* light)
 	*/
 	//oskim, initBlendMaps() 적용하지 않아야 아래 코드가 실행됨
 	defaultimp.layerList.resize(1);
-	defaultimp.layerList[0].worldSize = 48000.0f;
+	defaultimp.layerList[0].worldSize = 96000.0f;
 	defaultimp.layerList[0].textureNames.push_back("Colombia.jpg");
 
 }
 //-------------------------------------------------------------------------------------
 void CTerrain::createScene(void)
 {
-    mCamera->setPosition(Ogre::Vector3(1683, 50, 2116));
-    mCamera->lookAt(Ogre::Vector3(1963, 50, 1660));
+	/** NOTE 
+	* delete or relocate following camera related things
+	*/
+    mCamera->setPosition(Ogre::Vector3(1683, 2500, 2116));
+    mCamera->lookAt(Ogre::Vector3(0, 0, -10000));
     mCamera->setNearClipDistance(0.1);
     mCamera->setFarClipDistance(50000);
  
@@ -136,6 +139,11 @@ void CTerrain::createScene(void)
         mCamera->setFarClipDistance(0);   // enable infinite far clip distance if we can
     }
  
+#if	1
+	m_pTerrainEnt = mSceneMgr->createEntity("Terrain", "ColMESH.mesh");
+	mSceneMgr->getRootSceneNode()->createChildSceneNode("TerrainNode")->attachObject(m_pTerrainEnt);
+	mSceneMgr->getSceneNode("TerrainNode")->setScale(500, 20, 500);
+#else
     Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(Ogre::TFO_ANISOTROPIC);
     Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(7);
  
@@ -152,7 +160,7 @@ void CTerrain::createScene(void)
  
     mTerrainGlobals = OGRE_NEW Ogre::TerrainGlobalOptions();
  
-    mTerrainGroup = OGRE_NEW Ogre::TerrainGroup(mSceneMgr, Ogre::Terrain::ALIGN_X_Z, 513, 12000.0f);
+    mTerrainGroup = OGRE_NEW Ogre::TerrainGroup(mSceneMgr, Ogre::Terrain::ALIGN_X_Z, 2049, 96000.0f);
     mTerrainGroup->setFilenameConvention(Ogre::String("BasicTutorial3Terrain"), Ogre::String("dat"));
     mTerrainGroup->setOrigin(Ogre::Vector3::ZERO);
  
@@ -176,6 +184,7 @@ void CTerrain::createScene(void)
     }
  
     mTerrainGroup->freeTemporaryResources();
+#endif
  
 }
 //-------------------------------------------------------------------------------------

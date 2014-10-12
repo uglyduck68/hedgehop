@@ -76,7 +76,7 @@ material OceanHLSL_GLSL
 	technique HLSL
 	{
 		pass
-		{
+		{			
 			vertex_program_ref HLSL/OceanVS
 			{
 				param_named waveSpeed float2 0.0 0.168
@@ -271,6 +271,8 @@ material Ocean2_Cg
 	{
 		pass
 		{
+			lighting off
+
 			vertex_program_ref Cg/Ocean2VS
 			{
 				param_named BumpScale float 0.2

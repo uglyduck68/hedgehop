@@ -1,0 +1,23 @@
+- camera class 
+   . ogre sampleSDK 부분
+   . camera holder 기능
+   . terrain & target 충돌 회피
+   . chasing camera 기능
+   
+- terrain display
+   . 고도 값 0 이 y-value 0 보다 높아지는 현상 제거
+   . z-fighting과 같이 camera 고도가 높아 지는 경우 고도값 0 인 일부 지형에서 색상 이상 현상 제거
+   
+- ocean
+   . 현재 디폴트 바다 조명 변경
+   . 밤, 낮에 따라 조명 및 texture 동적 변경
+   
+- modularization
+   . ogre base application 구조 변경 및 각 기능별 클래스 추가
+      
+- 디버깅
+   . xyz-axis 넣기        
+   
+- terrain.cfg 분석
+
+- shader study   

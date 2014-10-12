@@ -1,5 +1,5 @@
 /**
- * @file    CTarget.h
+ * @file    Target.h
  *
  * This file is base class of ship, fighter, missile and so on.
  */
@@ -9,7 +9,7 @@
 using namespace	std;
 using namespace	Ogre;
 
-class CTarget
+class CTarget  : public Ogre::FrameListener
 {
 protected:
 	Ogre::SceneManager*         mSceneMgr;
@@ -32,5 +32,9 @@ public:
 
 		DebugPrintf("setPosition: %f, %f, %f\n", x, y, z);
 	}
+
+	virtual bool frameRenderingQueued( const FrameEvent &evt );
+    virtual void createFrameListener(void);
+
 };
 

@@ -52,3 +52,5 @@
 #include <Terrain/OgreTerrainGroup.h>
 
 #include "Debug.h"
+
+#define		DEL(p)	{if(p) delete p;}
