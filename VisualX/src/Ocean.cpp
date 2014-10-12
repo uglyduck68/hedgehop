@@ -29,7 +29,7 @@ void COcean::createScene()
     Ogre::Plane oceanPlane;
 
     oceanPlane.normal	= Ogre::Vector3::UNIT_Y;
-    oceanPlane.d		= -100;
+    oceanPlane.d		= 0;
 
     Ogre::MeshManager::getSingleton().createPlane("OceanPlane",
         Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,

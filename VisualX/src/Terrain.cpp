@@ -142,7 +142,7 @@ void CTerrain::createScene(void)
 #if	1
 	m_pTerrainEnt = mSceneMgr->createEntity("Terrain", "ColMESH.mesh");
 	mSceneMgr->getRootSceneNode()->createChildSceneNode("TerrainNode")->attachObject(m_pTerrainEnt);
-	mSceneMgr->getSceneNode("TerrainNode")->setScale(500, 20, 500);
+	mSceneMgr->getSceneNode("TerrainNode")->setScale(500, 200, 500);
 #else
     Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(Ogre::TFO_ANISOTROPIC);
     Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(7);
