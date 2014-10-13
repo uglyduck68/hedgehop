@@ -117,6 +117,8 @@
     <ClInclude Include="include\BaseApplication.h" />
     <ClInclude Include="include\BasicTutorial3.h" />
     <ClInclude Include="include\BattlefiedlVisualization.h" />
+    <ClInclude Include="include\Debug.h" />
+    <ClInclude Include="include\IntermediateTutorial2.h" />
     <ClInclude Include="include\IntermediateTutorial7.h" />
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="res\Resource.h" />
@@ -125,6 +127,8 @@
     <ClCompile Include="src\BaseApplication.cpp" />
     <ClCompile Include="src\BasicTutorial3.cpp" />
     <ClCompile Include="src\BattlefiedlVisualization.cpp" />
+    <ClCompile Include="src\Debug.cpp" />
+    <ClCompile Include="src\IntermediateTutorial2.cpp" />
     <ClCompile Include="src\IntermediateTutorial7.cpp" />
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -42,6 +42,7 @@ protected:
 
 	virtual bool frameStarted( const FrameEvent &evt );
     virtual void createFrameListener(void);
+    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
     virtual bool keyPressed(const OIS::KeyEvent &arg);
     virtual bool keyReleased(const OIS::KeyEvent &arg);
@@ -50,7 +51,8 @@ protected:
 	* @function		CheckCollision
 	* @return		true if camera is about to collide with any target
 	*/
-	bool CheckCollision(const Ogre::Vector3& position, const Ogre::Vector3& direction);
+	bool CheckCollision(const Ogre::Vector3& position, const Ogre::Vector3& direction, 
+		Ogre::Real& distToColl, Ogre::Vector3& hitPos);
 
 protected:
 	CSky*		m_pSky;

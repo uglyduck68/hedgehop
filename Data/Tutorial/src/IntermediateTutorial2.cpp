@@ -1,3 +1,4 @@
+#include "StdAfx.h"
 //SdkTray-version
  
 //Following includes are not needed since we are using SdkTrays
@@ -14,7 +15,9 @@ ITutorial02::ITutorial02(void)
 //-------------------------------------------------------------------------------------
 ITutorial02::~ITutorial02(void)
 {
-	mSceneMgr->destroyQuery(mRaySceneQuery);
+	if( mSceneMgr )
+		// mSceneMgr is already NULL. 
+		mSceneMgr->destroyQuery(mRaySceneQuery);
 }
  
 //-------------------------------------------------------------------------------------
@@ -25,6 +28,9 @@ void ITutorial02::createScene(void)
 	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
  
 	// World geometry
+	/**
+	* setWorldGeometry cause exception error in Ogre v1.9.
+	*/
 	mSceneMgr->setWorldGeometry("terrain.cfg");
  
 	// Set camera look point

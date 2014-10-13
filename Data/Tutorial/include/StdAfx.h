@@ -50,3 +50,5 @@
 #  endif
 #  include "OgreStaticPluginLoader.h"
 #endif
+
+#include "Debug.h"

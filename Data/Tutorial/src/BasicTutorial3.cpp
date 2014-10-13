@@ -173,6 +173,22 @@ void BasicTutorial3::createFrameListener(void)
     BaseApplication::createFrameListener();
  
     mInfoLabel = mTrayMgr->createLabel(OgreBites::TL_TOP, "TInfo", "", 350);
+	/** 
+	* get followings from Intermediate Tutorial 02 
+	*/
+	// Setup default variables
+	mCount = 0;
+	mCurrentObject = NULL;
+	mLMouseDown = false;
+	mRMouseDown = false;
+	// Reduce move speed
+	//mMoveSpeed = 50;
+	mRotateSpeed = .1;
+	// Create RaySceneQuery
+	mRaySceneQuery = mSceneMgr->createRayQuery(Ogre::Ray());
+ 
+	//SdkTray - version - to get the mouse cursor on the screen:
+	mTrayMgr->showCursor();
  
 }
 //-------------------------------------------------------------------------------------
@@ -202,6 +218,55 @@ bool BasicTutorial3::frameRenderingQueued(const Ogre::FrameEvent& evt)
             mTerrainsImported = false;
         }
     }
+	/** 
+	* get followings from Intermediate Tutorial 02 
+	*/
+	// Setup the scene query
+	Ogre::Vector3	camPos = mCamera->getPosition();
+	Ogre::Ray		cameraRay(Ogre::Vector3(camPos.x, 5000.0f, camPos.z), Ogre::Vector3::NEGATIVE_UNIT_Y);
+
+#if	1
+	/**
+	* Ogre v1.9에서 전반적으로 잘 동작한다.
+	* 하지만 지형과 camera가 거의 직각으로 만나는경우 지형을 뚫고 지나가는 버그가 있다 [solved].
+	*/
+	Ogre::TerrainGroup::RayResult	result	= mTerrainGroup->rayIntersects(cameraRay);
+
+
+	if(( result.position == camPos ) || ( result.position.y > camPos.y ))
+	{
+		// if camera meet the terrain or camera is under the terrain, 
+		// then move camera up to terrain
+		mCamera->setPosition(result.position.x, result.position.y + 10, result.position.z );
+	}
+	else if( result.hit && fabs(camPos.y - result.position.y) < 10 )
+	{
+		// if ray hit the terrain and the distance between hit position and camera is
+		// less than 100, make camera higher
+		mCamera->setPosition( camPos.x, result.position.y + 10, camPos.z );
+
+	}
+#else
+	/** 
+	* get followings from Intermediate Tutorial 02 
+	*/
+	mRaySceneQuery->setRay(cameraRay);
  
+	// Perform the scene query
+	Ogre::RaySceneQueryResult &result = mRaySceneQuery->execute();
+	Ogre::RaySceneQueryResult::iterator itr = result.begin();
+
+	// Get the results, set the camera height
+	if (itr != result.end() && itr->worldFragment)
+	{
+	    DebugPrintf("Debug: collision detected: cam pos(%f, %f, %f) terrain height: %f",
+			camPos.x, camPos.y, camPos.z, itr->worldFragment->singleIntersection.y);
+
+		Ogre::Real terrainHeight = itr->worldFragment->singleIntersection.y;
+
+		if ((terrainHeight + 100.0f) > camPos.y)
+			mCamera->setPosition( camPos.x, terrainHeight + 100.0f, camPos.z );
+	}
+#endif 
     return ret;
 }

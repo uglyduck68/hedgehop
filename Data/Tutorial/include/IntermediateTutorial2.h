@@ -1,8 +1,13 @@
 #ifndef __ITutorial02_h_
 #define __ITutorial02_h_
  
+///////////////////////////////////////////////////////////////////////////////////////////
 // source: http://www.ogre3d.org/tikiwiki/tiki-index.php?page=IntermediateTutorial2SdkTraysSource
 // - Basic tutorial 03 is terrain generation that camera being able to go through the part of terrain.
+//	IntermediateTutorial 03은 위의 지형을 뚫고 지나가는 문제점을 개선한 것이나, exception error로
+//	실행이 되지는 않는다.
+//	따라서 이 기능을 Basic Tutorial 03에 추가해 본다.
+///////////////////////////////////////////////////////////////////////////////////////////
 //SdkTray-version
  
 #include "BaseApplication.h"

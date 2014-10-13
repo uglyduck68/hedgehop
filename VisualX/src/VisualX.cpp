@@ -205,16 +205,53 @@ void CVisualX::createFrameListener(void)
 
 bool CVisualX::frameStarted( const FrameEvent &evt )
 {
-	if( CheckCollision( mCamera->getPosition(), mCamera->getDerivedDirection() ) == true )
+
+	return BaseApplication::frameStarted( evt );
+}
+    
+bool CVisualX::frameRenderingQueued(const Ogre::FrameEvent& evt)
+{
+	Ogre::Real		distToColl	= 0;
+	Ogre::Vector3	camPos		= mCamera->getPosition();
+	Ogre::Ray		camRay(Ogre::Vector3(camPos.x, 5000.0f, camPos.z), Ogre::Vector3::NEGATIVE_UNIT_Y);
+	Ogre::Vector3	hitPos		= Ogre::Vector3::ZERO;
+	Ogre::Entity*	pEntity		= NULL;
+
+	if( m_pCollisionTools->raycast( camRay, hitPos, pEntity, distToColl ))
 	{
-		// camera is about to collide with any thing
-		// stop the camera or move the camera to avoid the collision here
-		m_bCollision	= true;
+		DebugPrintf("Debug: collision detected: dist: %f, hit pos: (%f, %f, %f), cam pos: (%f, %f, %f)",
+			distToColl, hitPos.x, hitPos.y, hitPos.z, camPos.x, camPos.y, camPos.z );
+
+		if(( hitPos == camPos ) || hitPos.y > camPos.y )
+			mCamera->setPosition( camPos.x, hitPos.y + 100, camPos.z );
+		else
+		{
+			if( distToColl < 100.0f )
+				// camera is about to collide with any thing
+				// stop the camera or move the camera to avoid the collision here
+				mCamera->setPosition( camPos.x, camPos.y + 100, camPos.z );
+		}
 	}
 	else
-		m_bCollision	= false;
+	{
+		/** CheckCollision function do *NOT* work on the plane(ocean). */
+		if( camPos.y <= m_pOcean->GetSurface() )
+			mCamera->setPosition( camPos.x, m_pOcean->GetSurface() + 100, camPos.z );
+	}
 
-	return true;
+
+//	if( CheckCollision( camPos, Ogre::Vector3::NEGATIVE_UNIT_Y, distToColl, hitPos ) == true )
+	//{
+	//	DebugPrintf("Debug: collision detected: dist: %f, hit pos: (%f, %f, %f), cam pos: (%f, %f, %f)",
+	//		distToColl, hitPos.x, hitPos.y, hitPos.z, camPos.x, camPos.y, camPos.z );
+
+	//	if( distToColl < 100.0f )
+	//		// camera is about to collide with any thing
+	//		// stop the camera or move the camera to avoid the collision here
+	//		mCamera->setPosition( camPos.x, camPos.y + 100, camPos.z );
+	//}
+
+	return BaseApplication::frameRenderingQueued( evt );
 }
 
 bool CVisualX::keyPressed(const OIS::KeyEvent &arg)
@@ -234,37 +271,24 @@ bool CVisualX::keyPressed(const OIS::KeyEvent &arg)
 
 bool CVisualX::keyReleased(const OIS::KeyEvent &arg)
 {
-	switch(arg.key)
-	{
-	case OIS::KC_W:
-	case OIS::KC_UP:
-		if( m_bCollision )
-			return true;
-	default:
-		break;
-	}
-
 	return BaseApplication::keyReleased(arg);
 }
 
 /**
 * @function		CheckCollision
-* @return		true if camera is about to collide with any target
+* @return		true if camera is about to collide with any target except the plane (ocean).
 */
-bool  CVisualX::CheckCollision(const Ogre::Vector3& position, const Ogre::Vector3& direction)
+bool  CVisualX::CheckCollision(const Ogre::Vector3& position, const Ogre::Vector3& direction, 
+	Ogre::Real& distToColl, Ogre::Vector3& hitPos)
 {
 	if( m_pCollisionTools )
 	{
-		Ogre::Vector3	result	= Ogre::Vector3::ZERO;
-		Ogre::Real		distToColl	= 0;
 		Ogre::Entity*	target	= NULL;
 
 //		position + direction * Ogre::Vector3(3,3,3);
-		if( m_pCollisionTools->raycastFromPoint( position, direction, result, target, distToColl ))
+		if( m_pCollisionTools->raycastFromPoint( position, direction, hitPos, target, distToColl ))
 		{
-			DebugPrintf("distance: %#0x, %f", target, distToColl);
-			if( distToColl < 100 )
-				return true;
+			return true;
 		}
 
 		return false;
