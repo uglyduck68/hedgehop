@@ -20,6 +20,8 @@ private:
 	Ogre::Entity*				m_pTerrainEnt;
 	Ogre::SceneNode*			m_pTerrain;
 
+	MOC::CollisionTools*		m_pCollisionTools;
+
     void defineTerrain(long x, long y);
     void initBlendMaps(Ogre::Terrain* terrain);
     void configureTerrainDefaults(Ogre::Light* light);
@@ -38,9 +40,9 @@ public:
 		return mTerrainGroup;
 	}
 
-	bool IsTerrainLoad()
+	bool IsCollision( Ogre::Ray& ray, Ogre::Vector3& hitPos, Ogre::Entity*	pEntity, Ogre::Real& distToColl )
 	{
-		return mTerrainsImported;
+		return m_pCollisionTools->raycast( ray, hitPos, pEntity, distToColl );
 	}
 
 };

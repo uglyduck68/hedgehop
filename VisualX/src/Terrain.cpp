@@ -1,19 +1,23 @@
 #include "StdAfx.h"
+#include "CollisionTools.h"
 #include "..\include\Terrain.h"
 
 
 CTerrain::CTerrain(Ogre::SceneManager* pSceneMgr, Ogre::Camera* pCamera) :
 	mSceneMgr(pSceneMgr), mCamera(pCamera), mTerrainGlobals(NULL), mTerrainGroup(NULL),
-	mTerrainsImported(false)
+	mTerrainsImported(false),
+	m_pCollisionTools(NULL)
 {
 //	mInfoLabel	= NULL;
 
 	mRoot	= Ogre::Root::getSingletonPtr();
+
 }
 
 
 CTerrain::~CTerrain(void)
 {
+	DEL( m_pCollisionTools );
 }
 
 //-------------------------------------------------------------------------------------
@@ -188,6 +192,8 @@ void CTerrain::createScene(void)
     mTerrainGroup->freeTemporaryResources();
 #endif
  
+	m_pCollisionTools	= new MOC::CollisionTools( mSceneMgr );
+
 }
 //-------------------------------------------------------------------------------------
 void CTerrain::createFrameListener(void)
