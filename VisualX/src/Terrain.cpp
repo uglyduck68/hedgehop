@@ -3,7 +3,8 @@
 
 
 CTerrain::CTerrain(Ogre::SceneManager* pSceneMgr, Ogre::Camera* pCamera) :
-	mSceneMgr(pSceneMgr), mCamera(pCamera)
+	mSceneMgr(pSceneMgr), mCamera(pCamera), mTerrainGlobals(NULL), mTerrainGroup(NULL),
+	mTerrainsImported(false)
 {
 //	mInfoLabel	= NULL;
 
@@ -141,6 +142,7 @@ void CTerrain::createScene(void)
  
 #if	1
 	m_pTerrainEnt = mSceneMgr->createEntity("Terrain", "ColMESH.mesh");
+//	m_pTerrainEnt->setMaterialName("ColMESH");
 	mSceneMgr->getRootSceneNode()->createChildSceneNode("TerrainNode")->attachObject(m_pTerrainEnt);
 	mSceneMgr->getSceneNode("TerrainNode")->setScale(500, 200, 500);
 #else

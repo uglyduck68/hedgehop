@@ -30,7 +30,9 @@ public:
 
 		m_pSceneNode->setPosition(x, y, z);
 
+#if	0
 		DebugPrintf("setPosition: %f, %f, %f\n", x, y, z);
+#endif
 	}
 
 	virtual bool frameRenderingQueued( const FrameEvent &evt );

@@ -1,8 +1,10 @@
 - camera class 
    . ogre sampleSDK 부분
+      - freelook and orbit 테스트
    . camera holder 기능
    . terrain & target 충돌 회피
    . chasing camera 기능
+      - auto tracking 기능 테스트
    
 - terrain display
    . 고도 값 0 이 y-value 0 보다 높아지는 현상 제거
@@ -21,3 +23,7 @@
 - terrain.cfg 분석
 
 - shader study   
+
+- collision 처리
+   . ocean and terrain 아래로 카메라 가면 안됨.
+   . camera don't go through the object.

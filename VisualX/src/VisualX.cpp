@@ -110,18 +110,18 @@ void CVisualX::createScene(void)
 		m_pTerrain->createFrameListener();
 	}
 
-	////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 	// create ocean
-	////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 
 	m_pOcean	= new (nothrow) COcean(mSceneMgr);
 
 	if( m_pOcean )
 		m_pOcean->createScene();
 
-	/***************************************************
-	* create targets
-	***************************************************/
+	///////////////////////////////////////////////////////////////////////////
+	// create targets
+	///////////////////////////////////////////////////////////////////////////
 	srand( (unsigned)time( NULL ) );
 
 	for(int i = 0; i < MAX_TARGET; i++)
@@ -211,33 +211,88 @@ bool CVisualX::frameStarted( const FrameEvent &evt )
     
 bool CVisualX::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
+	/** 
+	* RAY_Y_ORG is bigger than camPos.y because check wether or not camera is under the ocean.
+	* distToColl is RAY_Y_ORG - m_pOcean->GetSurface() where camera is above ocean.
+	*/
+	const Ogre::Real RAY_Y_ORG			= 5000.0f;	
+	const Ogre::Real CAM_COLLISION_MIN	= 100.0f;
 	Ogre::Real		distToColl	= 0;
 	Ogre::Vector3	camPos		= mCamera->getPosition();
-	Ogre::Ray		camRay(Ogre::Vector3(camPos.x, 5000.0f, camPos.z), Ogre::Vector3::NEGATIVE_UNIT_Y);
+	Ogre::Ray		camRay(Ogre::Vector3(camPos.x, camPos.y + RAY_Y_ORG, camPos.z), Ogre::Vector3::NEGATIVE_UNIT_Y);
 	Ogre::Vector3	hitPos		= Ogre::Vector3::ZERO;
 	Ogre::Entity*	pEntity		= NULL;
+	bool			bCamPosMoved	= false;
 
-	if( m_pCollisionTools->raycast( camRay, hitPos, pEntity, distToColl ))
+	//////////////////////////////////////////////////////////////////////////////
+	// check the collision with terrain
+	//////////////////////////////////////////////////////////////////////////////
+	if( m_pTerrain->IsTerrainLoad() )
 	{
-		DebugPrintf("Debug: collision detected: dist: %f, hit pos: (%f, %f, %f), cam pos: (%f, %f, %f)",
-			distToColl, hitPos.x, hitPos.y, hitPos.z, camPos.x, camPos.y, camPos.z );
+		Ogre::TerrainGroup::RayResult	result	= m_pTerrain->GetTerrainGroup()->rayIntersects( camRay );
 
-		if(( hitPos == camPos ) || hitPos.y > camPos.y )
-			mCamera->setPosition( camPos.x, hitPos.y + 100, camPos.z );
-		else
+		if( result.hit )
 		{
-			if( distToColl < 100.0f )
-				// camera is about to collide with any thing
-				// stop the camera or move the camera to avoid the collision here
-				mCamera->setPosition( camPos.x, camPos.y + 100, camPos.z );
+			DebugPrintf("Debug: camRay intersect with terrain. hit pos: %f %f %f", 
+				result.position.x, result.position.y, result.position.z );
+
+			if(( result.position == camPos ) || ( result.position.y > camPos.y ))
+			{
+				// if camera meet the terrain or camera is under the terrain, 
+				// then move camera up to terrain
+				mCamera->setPosition(result.position.x, result.position.y + CAM_COLLISION_MIN, result.position.z );
+			}
+			else if( fabs(camPos.y - result.position.y) < CAM_COLLISION_MIN )
+			{
+				// if ray hit the terrain and the distance between hit position and camera is
+				// less than 100, make camera higher
+				mCamera->setPosition( camPos.x, result.position.y + CAM_COLLISION_MIN, camPos.z );
+			}
+
+			bCamPosMoved	= true;
 		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	// check the collision with ocean
+	//////////////////////////////////////////////////////////////////////////////
+	camRay.setOrigin( mCamera->getPosition( ));
+
+	if( bCamPosMoved == false && m_pOcean && m_pOcean->IsCollision( camRay, &distToColl ))
+	{
+		// cam is too low or cam is under the ocean, then make cam higher from ocean
+		if( distToColl < (CAM_COLLISION_MIN + COcean::GetSurface()))
+			mCamera->setPosition( camPos.x, CAM_COLLISION_MIN + COcean::GetSurface(), camPos.z );
+
+//		DebugPrintf("Debug: camRay intersect with ocean. dist: %f", distToColl );
 	}
 	else
 	{
-		/** CheckCollision function do *NOT* work on the plane(ocean). */
-		if( camPos.y <= m_pOcean->GetSurface() )
-			mCamera->setPosition( camPos.x, m_pOcean->GetSurface() + 100, camPos.z );
+		// camera is always on the ocean, so there is hit with ocean always.
+		// If no collision then camera is under the ocean.
+		mCamera->setPosition( camPos.x, CAM_COLLISION_MIN + COcean::GetSurface(), camPos.z );
 	}
+
+	//if( m_pCollisionTools->raycast( camRay, hitPos, pEntity, distToColl ))
+	//{
+	//	DebugPrintf("Debug: collision detected: dist: %f, hit pos: (%f, %f, %f), cam pos: (%f, %f, %f)",
+	//		distToColl, hitPos.x, hitPos.y, hitPos.z, camPos.x, camPos.y, camPos.z );
+
+	//	if( hitPos.y > camPos.y )
+	//	{
+	//		// camera is under the hit position. eg. camera under the ocean
+	//		mCamera->setPosition( camPos.x, hitPos.y + 1000, camPos.z );
+	//	}
+	//	else if( camPos.y - hitPos.y < 100 )
+	//	{
+	//		// is about to hit the entity
+	//		mCamera->setPosition( camPos.x, camPos.y + (100), camPos.z );
+	//	}
+	//}
+	//else
+	//{
+	//	DebugPrintf("Debug: cam pos: (%f, %f, %f)", camPos.x, camPos.y, camPos.z );
+	//}
 
 
 //	if( CheckCollision( camPos, Ogre::Vector3::NEGATIVE_UNIT_Y, distToColl, hitPos ) == true )

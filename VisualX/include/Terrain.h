@@ -10,7 +10,7 @@ public:
 
 private:
     Ogre::TerrainGlobalOptions* mTerrainGlobals;
-    Ogre::TerrainGroup* mTerrainGroup;
+    Ogre::TerrainGroup*			mTerrainGroup;
     bool mTerrainsImported;
 
 	Ogre::SceneManager*         mSceneMgr;
@@ -32,6 +32,16 @@ public:
     virtual void createFrameListener(void);
     virtual void destroyScene(void);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+
+	Ogre::TerrainGroup* GetTerrainGroup()
+	{
+		return mTerrainGroup;
+	}
+
+	bool IsTerrainLoad()
+	{
+		return mTerrainsImported;
+	}
 
 };
 

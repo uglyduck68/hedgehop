@@ -214,6 +214,11 @@ bool CollisionTools::raycastFromPoint(const Ogre::Vector3 &point,
 
 bool CollisionTools::raycast(const Ogre::Ray &ray, Ogre::Vector3 &result,Ogre::Entity* &target,float &closest_distance, const Ogre::uint32 queryMask) 
 {
+	/**
+	* Bug.
+	* [20141015] sean
+	* if (x < -20,000 or x > 20,000) or (z < -20,000 or z > 20,000) then no collistion against big plane that range is 1,000,000,x 1,000,000.
+	*/
 	return raycast(ray, result, (Ogre::MovableObject*&)target, closest_distance, queryMask);
 }
 

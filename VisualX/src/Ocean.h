@@ -1,13 +1,13 @@
 #pragma once
 
 /** surface elevation that is defined for preventing z-fighting with terrain */
-#define	MAX_MSL		100;
+#define	MAX_MSL		0;
 
 class COcean
 {
 protected:
 	Ogre::Entity*				m_pOceanEnt;
-	Ogre::MovablePlane*			m_pPlane;
+	Ogre::Plane					m_Plane;
 	Ogre::SceneNode*			m_pOcean;
     Ogre::SceneManager*         mSceneMgr;
 
@@ -25,8 +25,8 @@ public:
 	static const int	MAX_HEIGHT	= 1000000;
 
 	/** max planes tesselation is 65536. max SEGMENT is 255. */
-	static const int	XSEGMENT	= 255;
-	static const int	YSEGMENT	= 255;
+	static const int	XSEGMENT	= 1;
+	static const int	YSEGMENT	= 1;
 
 	
 	/**
@@ -47,9 +47,30 @@ public:
 		return MAX_HEIGHT;
 	}
 
-	Ogre::Real GetSurface()
+	static Ogre::Real GetSurface()
 	{
 		return MAX_MSL;
+	}
+
+	Ogre::Plane& GetPlane()
+	{
+		return m_Plane;
+	}
+
+	/**
+	* @function		isCollision
+	* check the collision of Ray and ocean plane
+	*/
+	bool IsCollision( Ogre::Ray& ray, Ogre::Real* CollDist )
+	{
+		std::pair<bool, Ogre::Real>	ret;
+
+		ret		= ray.intersects( GetPlane( ));
+
+		if( ret.first )
+			*CollDist	= ret.second;
+
+		return ret.first;
 	}
 };
 
