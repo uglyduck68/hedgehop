@@ -16,9 +16,9 @@ protected:
     //Ogre::Camera*               mCamera;
     //Ogre::Root*                 mRoot;
 
-	string					m_strName;
-	string					m_strMeshName;
-	SceneNode*				m_pSceneNode;
+	string					m_strName;		// character name
+	string					m_strMeshName;	// meshfile name
+	SceneNode*				m_pSceneNode;	// scene node
 
 public:
 	CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh);
