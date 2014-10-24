@@ -1,0 +1,83 @@
+	Running: TestTimeout...
+
+
+Time 	Thread 		[requested, remaining]  Condition Interrupted?
+======================================================================
+
+133	main 		pinging...
+184	Thread-4	[0, -145] woken.
+184	Thread-4	[0, -145] timed out.
+187	Thread-4	[0, 0]  		false	  false
+187	Thread-4 	exiting
+196	Thread-5	[500, 344] woken.
+197	Thread-5	[500, 344]  		false	  false
+199	Thread-6	[1500, 1342] woken.
+201	Thread-6	[1500, 1342]  		false	  false
+183	main 		finished pinging.
+
+
+313	main 		pinging...
+315	Thread-5	[500, 228] woken.
+316	Thread-5	[500, 228]  		false	  false
+318	Thread-6	[1500, 1226] woken.
+319	Thread-6	[1500, 1226]  		false	  false
+314	main 		finished pinging.
+
+
+423	main 		pinging...
+425	Thread-5	[500, 120] woken.
+426	Thread-5	[500, 120]  		false	  false
+428	Thread-6	[1500, 1119] woken.
+430	Thread-6	[1500, 1119]  		false	  false
+424	main 		finished pinging.
+
+437	Thread-5	interrupted. (Reinterrupting...)
+438	Thread-5	[500, 110] woken.
+440	Thread-5	[500, 110]  		false	  true
+442	Thread-6	interrupted. (Reinterrupting...)
+444	Thread-6	[1500, 1106] woken.
+445	Thread-6	[1500, 1106]  		false	  true
+
+543	main 		pinging...
+545	Thread-5	[500, 6] woken.
+546	Thread-5	[500, 6]  		false	  false
+548	Thread-6	[1500, 1005] woken.
+549	Thread-6	[1500, 1005]  		false	  false
+544	main 		finished pinging.
+
+563	Thread-5	[500, -10] woken.
+563	Thread-5	[500, -10] timed out.
+566	Thread-5	[500, 0]  		false	  false
+566	Thread-5 	exiting
+
+653	main 		pinging...
+655	Thread-6	[1500, 901] woken.
+656	Thread-6	[1500, 901]  		false	  false
+654	main 		finished pinging.
+
+
+763	main 		pinging...
+765	Thread-6	[1500, 793] woken.
+766	Thread-6	[1500, 793]  		false	  false
+764	main 		finished pinging.
+
+
+873	main 		pinging...
+875	Thread-6	[1500, 685] woken.
+876	Thread-6	[1500, 685]  		true	  false
+876	Thread-6 	exiting
+874	main 		finished pinging.
+
+
+983	main 		pinging...
+985	main 		finished pinging.
+
+
+1093	main 		pinging...
+1095	main 		finished pinging.
+
+
+1203	main 		pinging...
+1204	main 		finished pinging.
+
+Exiting.

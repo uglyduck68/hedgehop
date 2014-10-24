@@ -1,0 +1,15 @@
+sun.jws.version.2
+sun.jws.classname=Client
+sun.jws.useVisual=false
+sun.jws.type=standalone
+sun.jws.javaArguments=-DDEBU -DKILL
+sun.jws.options=-g
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList
+sun.jws.files=List
+Client.java
+EndOfList

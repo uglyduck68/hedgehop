@@ -1,0 +1,132 @@
+/*                test_constants.c                */
+
+#include <limits.h>
+#include <unistd.h>
+
+#define _POSIX_C_SOURCE 199506L
+
+main()
+{
+/*
+ * NOTE: You cannot assume these macros have non-null values (e.g., 0, 1,
+ * etc.) The standard requires only that they are DEFINED. (#define <name> is
+ * just fine, and your attempt to print a VALUE won't compile.)
+ */
+
+#ifdef _POSIX_THREAD_SAFE_FUNCTIONS
+ printf("_POSIX_THREAD_SAFE_FUNCTIONS\n");
+#endif
+printf("_SC_THREAD_SAFE_FUNCTIONS -> %d\n",
+       sysconf(_SC_THREAD_SAFE_FUNCTIONS));
+
+
+#ifdef _POSIX_THREADS
+ printf("_POSIX_THREADS\n");
+#endif
+printf("_SC_THREADS -> %d\n",
+       sysconf(_SC_THREADS));
+
+
+#ifdef _POSIX_THREAD_ATTR_STACKADDR
+ printf("_POSIX_THREAD_ATTR_STACKADDR\n");
+#endif
+printf("_SC_THREAD_ATTR_STACKADDR -> %d\n",
+       sysconf(_SC_THREAD_ATTR_STACKADDR));
+
+
+#ifdef _POSIX_THREAD_ATTR_STACKSIZE
+ printf("_POSIX_THREAD_ATTR_STACKSIZE\n");
+#endif
+printf("_SC_THREAD_ATTR_STACKSIZE -> %d\n",
+       sysconf(_SC_THREAD_ATTR_STACKSIZE));
+
+
+#ifdef _POSIX_THREAD_PROCESS_SHARED
+ printf("_POSIX_THREAD_PROCESS_SHARED\n");
+#endif
+printf("_SC_THREAD_PROCESS_SHARED -> %d\n",
+       sysconf(_SC_THREAD_PROCESS_SHARED));
+
+#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
+ printf("_POSIX_THREAD_PRIORITY_SCHEDULING\n");
+#endif
+printf("_SC_THREAD_PRIORITY_SCHEDULING -> %d\n",
+       sysconf(_SC_THREAD_PRIORITY_SCHEDULING));
+
+#ifdef _POSIX_THREAD_DESTRUCTOR_ITERATIONS
+ printf("_POSIX_THREAD_DESTRUCTOR_ITERATIONS = %d\n", _POSIX_THREAD_DESTRUCTOR_ITERATIONS);
+#endif
+printf("_SC_THREAD_DESTRUCTOR_ITERATIONS -> %d\n",
+       sysconf(_SC_THREAD_DESTRUCTOR_ITERATIONS));
+#ifdef PTHREAD_DESTRUCTOR_ITERATIONS
+ printf("PTHREAD_DESTRUCTOR_ITERATIONS = %d\n", PTHREAD_DESTRUCTOR_ITERATIONS);
+#endif
+
+
+#ifdef PTHREAD_STACK_MIN
+ printf("PTHREAD_STACK_MIN = %d\n", PTHREAD_STACK_MIN);
+#endif
+printf("_SC_THREAD_STACK_MIN -> %d\n",
+       sysconf(_SC_THREAD_STACK_MIN));
+
+#ifdef _POSIX_THREAD_PRIO_INHERIT
+ printf("_POSIX_THREAD_PRIO_INHERIT\n");
+#endif
+printf("_SC_THREAD_PRIO_INHERIT -> %d\n",
+       sysconf(_SC_THREAD_PRIO_INHERIT));
+
+
+#ifdef _POSIX_THREAD_PRIO_PROTECT
+ printf("_POSIX_THREAD_PRIO_PROTECT\n");
+#endif
+printf("_SC_THREAD_PRIO_PROTECT -> %d\n",
+       sysconf(_SC_THREAD_PRIO_PROTECT));
+
+
+#ifdef _POSIX_THREAD_KEYS_MAX
+ printf("_POSIX_THREAD_KEYS_MAX = %d\n", _POSIX_THREAD_KEYS_MAX);
+#endif
+#ifdef PTHREAD_KEYS_MAX
+ printf("PTHREAD_KEYS_MAX = %d\n", PTHREAD_KEYS_MAX);
+#endif
+printf("_SC_THREAD_KEYS_MAX -> %d\n",
+       sysconf(_SC_THREAD_KEYS_MAX));
+
+
+#ifdef _POSIX_THREAD_THREADS_MAX
+ printf("_POSIX_THREAD_THREADS_MAX = %d\n", _POSIX_THREAD_THREADS_MAX);
+#endif
+#ifdef PTHREAD_THREADS_MAX
+ printf("PTHREAD_THREADS_MAX = %d\n", PTHREAD_THREADS_MAX);
+#endif
+printf("_SC_THREAD_THREADS_MAX -> %d\n",
+       sysconf(_SC_THREAD_THREADS_MAX));
+}
+
+
+/*
+                Solaris 2.5.1
+
+_POSIX_THREAD_SAFE_FUNCTIONS = 1
+_SC_THREAD_SAFE_FUNCTIONS -> 1
+_POSIX_THREADS = 1
+_SC_THREADS -> 1
+_POSIX_THREAD_ATTR_STACKADDR = 1
+_SC_THREAD_ATTR_STACKADDR -> 1
+_POSIX_THREAD_ATTR_STACKSIZE = 1
+_SC_THREAD_ATTR_STACKADDR -> 1
+_POSIX_THREAD_PROCESS_SHARED = 1
+_SC_THREAD_PROCESS_SHARED -> 1
+_POSIX_THREAD_PRIORITY_SCHEDULING = 1
+_SC_THREAD_PRIORITY_SCHEDULING -> 1
+_POSIX_THREAD_DESTRUCTOR_INTERATION = 4
+_SC_THREAD_DESTRUCTOR_ITERATIONS -> -1
+_SC_THREAD_STACK_MIN -> 1016
+_SC_THREAD_PRIO_INHERIT -> -1
+_SC_THREAD_PRIO_PROTECT -> -1
+_POSIX_THREAD_KEYS_MAX = 128
+_SC_THREAD_KEYS_MAX -> -1
+_POSIX_THREAD_THREADS_MAX = 64
+_SC_THREAD_THREADS_MAX -> -1
+
+*/

@@ -1,0 +1,111 @@
+			THE THREADS CLASS PREPARATION
+
+
+    ================================================================
+
+   OBTAINING COPIES OF THE "Multithreaded Programming with Pthreads"
+
+  If Bil is not bringing the books himself, they can be ordered from
+Prentice Hall at (800) 922-0579, ISBN 0-13-680729-1.  March '00 price is $35
+(+ shipping, etc.  Discounts may be available.)  US delivery is about 10
+days (rush orders are possible).
+
+    ================================================================
+
+			PRINTING THE STUDENT MANUALS
+
+  For the student manuals (total of ~125 pages + front & back covers) in
+order:
+
+cover.ps	This is a single-sided cover page, to be reproduced on
+		heavy stock (back blank).
+seminar2x1.ps	These ~340 .ps pages are reduced to two .ps pages per
+		page side.  They are to be printed doubled-sided (giving four
+		.ps pages per printed page) = ~85 pages.
+POSIX_code2x1.ps These ~140 .ps pages to be printed doubled-sided
+		(giving four .ps pages per printed page) = ~35 pages.
+dss.ps		These two pages should be printed doubled-sided on the SAME
+		sheet.
+marc.ps			ditto
+nfs.ps			ditto
+photoshop.ps		ditto
+uniq.ps			ditto
+TAO.ps			ditto
+
+		Blank, heavy stock on the back.
+		Bind with wire or spiral binder.
+
+    ================================================================
+
+  If you are making the overhead slides (~500 pages), you will need the
+full-sized .ps files (included here). Print seminar.ps and code.ps onto
+overhead transparencies.
+
+    ================================================================
+
+broshure3.txt	This is the description of the course.  Not required.
+
+    ================================================================
+
+
+
+		INSTALLING AND TESTING THE CLASSROOM PROGRAMS
+
+  Install the files in ./programs_<date>.tar in the students' home
+directory:
+
+% cd student1
+% tar xf <path>/programs_<date>.tar
+
+Look at ./programs/PThreads/dot_cshrc (it's modified from the SunU classroom
+file from Jan '97) and either install that as ~/.cshrc or copy the relevant
+portions of it into the .cshrc file you use for students.
+
+o  All machines must be running Solaris 2.6 (or above) with the Solaris
+   developer bundle (i.e. all of the include files, etc.)
+o  The SPARCworks tools (version 3.1 or above) WITH LICENSES
+o  Solaris 2.5: TNFview (http://opcom.sun.ca/toolpages/tnftools.html -- 
+   just follow the instructions, it's easy.)
+o  Solaris 2.6: TNFview2 (http://www.sun.com/developers/driver/tools/toc.html 
+   just follow the instructions, it's easy.)
+o  proctool (get it from: http://sunsite.unc.edu/pub/sun-info/mde/proctool/
+   just follow the instructions, it's easy.)
+
+After you've gotten these bits together, **PLEASE VERIFY THE INSTALLATION**
+by running ./programs/PThreads/test_install.csh.  If that DOESN'T run
+correctly, fix it.  There are hints in test_install.csh that may help you
+find the problem if it isn't obvious.
+
+   ================================================================
+			Bil Lewis
+			
+			Bil@LambdaCS.com
+			
+			http://www.LambdaCS.com
+			Lambda Computer Science 
+			555 Bryant St. #194 
+			Palo Alto, CA,
+			94301 
+			
+			Phone/FAX: (650) 328-8952
+
+   ================================================================
+  /export/home/bil/lambda/seminar/POSIX_package:
+  total 16944
+  -rw-rw-r--   1 bil      other       4267 Mar 21 12:49 #README#
+  drwxrwxr-x   2 bil      other        512 Mar 21 12:51 .
+  drwxrwxr-x   6 bil      other        512 Oct 28 11:00 ..
+  -rw-rw-r--   1 bil      other       7411 Nov  4  1996 broshure3.txt
+  -rw-r--r--   1 bil      other     109491 Oct  5  1998 dss.ps
+  -rw-r--r--   1 bil      other     108958 Oct  5  1998 marc.ps
+  -rw-r--r--   1 bil      other     110280 Oct  5  1998 nfs.ps
+  -rw-r--r--   1 bil      other     111964 Oct  5  1998 photoshop.ps
+  -rw-rw-r--   1 bil      other     520999 Mar 21 12:51 POSIX_code.ps
+  -rw-rw-r--   1 bil      other     555585 Mar 21 12:50 POSIX_code1x2.ps
+  -rw-rw-r--   1 bil      other      52483 Mar 21 12:44 POSIX_cover.ps
+  -rw-rw-r--   1 bil      other     352502 Mar 21 12:45 programs_21_Mar_00.tar.gz
+  -rw-rw-r--   1 bil      other       4331 Oct 28 11:38 README
+  -rw-rw-r--   1 bil      other    2712828 Mar 21 12:44 seminar.ps
+  -rw-rw-r--   1 bil      other    2686722 Mar 21 12:50 seminar2x1.ps
+  -rw-rw-r--   1 bil      other    1082732 Oct  5  1998 TAO.ps
+  -rw-r--r--   1 bil      other     108927 Oct  5  1998 uniq.ps

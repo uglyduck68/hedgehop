@@ -1,0 +1,37 @@
+//                TimeTSDset.java2
+
+/*
+  This uses TSD, so it can only be compiled under Java 2
+*/
+
+
+import java.io.*;
+import Extensions.*;
+
+
+public class TimeTSDset extends Thread implements TimedObject {
+  static SingleBarrier barrier = new SingleBarrier(1);
+  static int n = 1000;
+  ThreadLocal tsd = new ThreadLocal();
+
+ 
+public void run() {
+  Integer I = new Integer(10);
+
+  for (int i=0; i<n; i++)
+    {tsd.set(I);}
+  barrier.barrierPost();
+}
+
+  
+
+public  void test (int n)  {
+
+  this.n = n; 
+  Thread t = new TimeTSDset();
+  t.start();
+  barrier.barrierWait(); 
+}
+ 
+
+}

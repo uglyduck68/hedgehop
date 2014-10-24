@@ -1,0 +1,57 @@
+time_disk(N_THREADS 1 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 105.75/sec, Standard Deviation: 4.67
+time_disk(N_THREADS 1 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 112.75/sec, Standard Deviation: 4.48
+bil@cloudbase[60]: time_disk(N_THREADS 2 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 131.36/sec, Standard Deviation: 1.44
+time_disk(N_THREADS 2 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 129.81/sec, Standard Deviation: 4.64
+time_disk(N_THREADS 4 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 155.22/sec, Standard Deviation: 3.59
+time_disk(N_THREADS 4 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 154.59/sec, Standard Deviation: 3.42
+bil@cloudbase[61]: time_disk(N_THREADS 8 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 189.96/sec, Standard Deviation: 4.68
+time_disk(N_THREADS 8 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 190.91/sec, Standard Deviation: 3.76
+time_disk(N_THREADS 16 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 219.51/sec, Standard Deviation: 3.97
+time_disk(N_THREADS 16 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 222.16/sec, Standard Deviation: 5.09
+bil@cloudbase[62]: time_disk(N_THREADS 32 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 241.83/sec, Standard Deviation: 6.65
+time_disk(N_THREADS 32 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 250.80/sec, Standard Deviation: 7.16
+time_disk(N_THREADS 64 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 233.10/sec, Standard Deviation: 13.27
+time_disk(N_THREADS 64 SPIN_TIME 0ms RUNTIME 10s ITERATIONS 10)
+Mean rate: 225.80/sec, Standard Deviation: 7.69
+
+
+
+Test(nThreads: 1 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 94.32276674011575/sec, Standard Deviation: 1.6893419684161108
+Test(nThreads: 1 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 96.93050684598994/sec, Standard Deviation: 2.091551750203595
+Test(nThreads: 2 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 111.5954496868103/sec, Standard Deviation: 2.5246598520427406
+Test(nThreads: 2 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 112.35759764860848/sec, Standard Deviation: 3.0693942307052433
+Test(nThreads: 4 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 128.82003671330634/sec, Standard Deviation: 2.5445981228129315
+Test(nThreads: 4 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 129.85246011484458/sec, Standard Deviation: 3.8353091052833297
+Test(nThreads: 8 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 163.0277577147385/sec, Standard Deviation: 3.740499612762774
+Test(nThreads: 8 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 161.88865637766327/sec, Standard Deviation: 7.748230170792214
+Test(nThreads: 16 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 189.15479722328814/sec, Standard Deviation: 6.654468444539861
+Test(nThreads: 16 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 189.54100566701868/sec, Standard Deviation: 4.460057360438003
+Test(nThreads: 32 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 206.06468168646128/sec, Standard Deviation: 7.484353262377507
+Test(nThreads: 32 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 211.77972940401204/sec, Standard Deviation: 5.394967877471921
+Test(nThreads: 64 spinTime: 0ms runtime: 10s iterations 10 setConcurrency: true)
+Mean rate: 189.13474343119864/sec, Standard Deviation: 11.882135009283134
