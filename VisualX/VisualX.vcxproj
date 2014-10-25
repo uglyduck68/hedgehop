@@ -108,6 +108,7 @@
   <ItemGroup>
     <ClInclude Include="include\BaseApplication.h" />
     <ClInclude Include="include\CollisionTools.h" />
+    <ClInclude Include="include\Fighter.h" />
     <ClInclude Include="include\InputController.h" />
     <ClInclude Include="include\Target.h" />
     <ClInclude Include="include\Terrain.h" />
@@ -128,6 +129,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Fighter.cpp" />
     <ClCompile Include="src\InputController.cpp" />
     <ClCompile Include="src\Ocean.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>

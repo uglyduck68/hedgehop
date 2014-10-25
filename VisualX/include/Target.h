@@ -24,16 +24,30 @@ public:
 	CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh);
 	~CTarget(void);
 
-	void setPosition(float x, float y, float z)
+	SceneNode*	GetSceneNode()
 	{
-		assert(m_pSceneNode);
-
-		m_pSceneNode->setPosition(x, y, z);
-
-#if	0
-		DebugPrintf("setPosition: %f, %f, %f\n", x, y, z);
-#endif
+		return m_pSceneNode;
 	}
+
+	/*
+	* @function		MoveTo that translate mesh to @Dest and set mesh's
+	* orientation to @Dest
+	* @param		Src	that is mesh's current position
+	* @param		Dest that is mesh's destination position
+	* @return		1 if success
+	*/
+	int		MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest );
+	//void setPosition( Ogre::Vector3 pos )
+	//{
+	//	m_pSceneNode->setPosition( pos );
+	//}
+
+	//void setPosition(float x, float y, float z)
+	//{
+	//	assert(m_pSceneNode);
+
+	//	m_pSceneNode->setPosition(x, y, z);
+	//}
 
 	virtual bool frameRenderingQueued( const FrameEvent &evt );
     virtual void createFrameListener(void);

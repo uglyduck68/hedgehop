@@ -134,7 +134,7 @@ void CTerrain::createScene(void)
 	/** NOTE 
 	* delete or relocate following camera related things
 	*/
-    mCamera->setPosition(Ogre::Vector3(1683, 2500, 2116));
+    mCamera->setPosition(Ogre::Vector3(1683, 2800, 2116));
     mCamera->lookAt(Ogre::Vector3(0, 0, -10000));
     mCamera->setNearClipDistance(0.1);
     mCamera->setFarClipDistance(50000);
@@ -145,7 +145,7 @@ void CTerrain::createScene(void)
     }
  
 #if	1
-	m_pTerrainEnt = mSceneMgr->createEntity("Terrain", "ColMESH.mesh");
+	m_pTerrainEnt = mSceneMgr->createEntity("Terrain", "ColMESH3.mesh");
 //	m_pTerrainEnt->setMaterialName("ColMESH");
 	mSceneMgr->getRootSceneNode()->createChildSceneNode("TerrainNode")->attachObject(m_pTerrainEnt);
 	mSceneMgr->getSceneNode("TerrainNode")->setScale(500, 200, 500);

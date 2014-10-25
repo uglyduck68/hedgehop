@@ -102,7 +102,7 @@ void CVisualX::createScene(void)
 	////////////////////////////////////////////////
 	// create terrain
 	////////////////////////////////////////////////
-	m_pTerrain		= new (nothrow) CTerrain(mSceneMgr, mCamera);
+//	m_pTerrain		= new (nothrow) CTerrain(mSceneMgr, mCamera);
 
 	if( m_pTerrain )
 	{
@@ -122,6 +122,20 @@ void CVisualX::createScene(void)
 	///////////////////////////////////////////////////////////////////////////
 	// create targets
 	///////////////////////////////////////////////////////////////////////////
+	CFighter*	pFighter	= new (nothrow) CFighter(mSceneMgr, 1, "razor.mesh");
+
+	// set fighter positino below camera position
+	pFighter->GetSceneNode()->setPosition( mCamera->getPosition().x, 
+		mCamera->getPosition().y - 100,
+		mCamera->getPosition().z );
+
+	pFighter->createFrameListener();
+
+	m_listTarget.push_back( pFighter );
+#if	0
+	///
+	// create sample targets for performance test
+	///
 	srand( (unsigned)time( NULL ) );
 
 	for(int i = 0; i < MAX_TARGET; i++)
@@ -138,7 +152,7 @@ void CVisualX::createScene(void)
 		int				nRangeMax	= 1000;
 
 		pTarget->setPosition((float)rand() / (RAND_MAX + 1) * (nRangeMax - nRangeMin) + position.x, 
-#if	0
+#if	1
 			(float)rand() / (RAND_MAX + 1) * (nRangeMax - nRangeMin) + position.y, 
 #else
 			/* for interference test with ocean */
@@ -151,6 +165,7 @@ void CVisualX::createScene(void)
 		/* add frame listener */
 		pTarget->createFrameListener();
 	}
+#endif
 
 //	m_pInputController	= new (nothrow) CInputController(mRoot, mKeyboard, mMouse);
 	if( m_pInputController )
@@ -215,7 +230,7 @@ bool CVisualX::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	* RAY_Y_ORG is bigger than camPos.y because check wether or not camera is under the ocean.
 	* distToColl is RAY_Y_ORG - m_pOcean->GetSurface() where camera is above ocean.
 	*/
-	const Ogre::Real RAY_Y_ORG			= 5000.0f;	
+	const Ogre::Real RAY_Y_ORG			= 50000.0f;	
 	const Ogre::Real CAM_COLLISION_MIN	= 100.0f;
 	Ogre::Real		distToColl	= 0;
 	Ogre::Vector3	camPos		= mCamera->getPosition();
@@ -227,10 +242,12 @@ bool CVisualX::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	//////////////////////////////////////////////////////////////////////////////
 	// check the collision with terrain
 	//////////////////////////////////////////////////////////////////////////////
-	if( m_pTerrain->IsCollision( camRay, hitPos, pEntity, distToColl ))
+
+	// IsCollision do *NOT* work for ColMESH3.mesh
+	if( m_pTerrain && m_pTerrain->IsCollision( camRay, hitPos, pEntity, distToColl ))
 	{
-		DebugPrintf("Debug: camRay intersect with terrain. dist: %f hit pos: (%f, %f, %f), cam pos: (%f, %f, %f)", 
-			distToColl, hitPos.x, hitPos.y, hitPos.z, camPos.x, camPos.y, camPos.z );
+//		DebugPrintf("Debug: camRay intersect with terrain. dist: %f hit pos: (%f, %f, %f), cam pos: (%f, %f, %f)", 
+//			distToColl, hitPos.x, hitPos.y, hitPos.z, camPos.x, camPos.y, camPos.z );
 
 		if(( hitPos == camPos ) || ( hitPos.y > camPos.y ))
 		{

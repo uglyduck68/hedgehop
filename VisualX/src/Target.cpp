@@ -47,3 +47,34 @@ void CTarget::createFrameListener(void)
 
 	return;
 }
+
+/*
+* @function		MoveTo that translate mesh to @Dest and set mesh's
+* orientation to @Dest
+* @param		Src	that is mesh's current position
+* @param		Dest that is mesh's destination position
+* @return		1 always
+* @note			if you want to turn target smoothly, 
+* then use slerp (spherical linear interpolation) function and 
+* rotating time (timeSinceLastFrame)
+*/
+int		CTarget::MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest )
+{
+	// get the direction vector from source to destination
+	Vector3			Dir				= Dest - Src;
+
+	// normalize the direction vector
+	Ogre::Real		Dist			= Dir.normalise();
+
+	// get the orientation quaternion based on Z-axis
+	// because the orientation of all models are Z-axis on XZ plane.
+	Quaternion		quat			= Vector3(Vector3::UNIT_Z).getRotationTo( Dir );
+
+	// set target's orientation to destination
+	GetSceneNode()->setOrientation( quat );
+
+	// move target to destination
+	GetSceneNode()->setPosition( Dest );
+
+	return true;
+}

@@ -45,7 +45,7 @@ void COcean::createScene()
 
 		// axis is "axis.png" in "./resource" folder.
 		// if not call you get "Expression: pRep" in 1.9v.
-		m_pOceanEnt->setMaterialName("Ocean2_Cg");		// "OceanCg"
+		m_pOceanEnt->setMaterialName("OceanTest_Cg");		// "OceanCg" -> "Ocean2_Cg" -> "OceanTest_Cg"
 		m_pOceanEnt->setCastShadows(false);
 //		m_pOceanEnt->setQueryFlags(1);	// if QueryFlag is 0xffffffff then this is useless
 

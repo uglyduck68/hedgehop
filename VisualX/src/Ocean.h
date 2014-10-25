@@ -1,7 +1,7 @@
 #pragma once
 
 /** surface elevation that is defined for preventing z-fighting with terrain */
-#define	MAX_MSL		0;
+#define	MAX_MSL		20;
 
 class COcean
 {
