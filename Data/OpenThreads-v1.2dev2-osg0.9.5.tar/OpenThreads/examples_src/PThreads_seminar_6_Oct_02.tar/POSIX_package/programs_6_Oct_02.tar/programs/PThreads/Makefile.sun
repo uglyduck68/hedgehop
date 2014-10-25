@@ -1,0 +1,35 @@
+#			Makefile for Solaris 2
+
+# WHICH_OS$(WHICH_OS):sh=/usr/bin/uname -r | /usr/bin/cut -f1 -d.
+WHICH_OS = 2
+WHICH_OS_EXT$(WHICH_OS_EXT):sh=/usr/bin/uname -r | /usr/bin/cut -f2 -d.
+OS_VERSION = __sun$(WHICH_OS)_$(WHICH_OS_EXT)
+
+CC =		CC
+cc = 		cc
+CPP = 		CC
+OPP = 
+DEBUG = 	-g
+LOCAL =  	-L. -R. -D__sun -D$(OS_VERSION)
+PTHRLIB = 	-lpthread -lposix4
+EXTENSIONS =  	-lthread_extensions
+MOTIF = 	-I/usr/dt/include -I/usr/openwin/include -L/usr/openwin/lib     \
+        	-L/usr/dt/lib -R/usr/openwin/lib -R/usr/dt/lib -lXm -lXt -lX11 -lm
+SOCKETS = 	-lnsl -lsocket
+SHARED = 	-G
+
+# We used to include -lthread, (hence libthread.so) because the old Sun debugger
+# didn't know about libpthread.so. We've dropped it now.
+
+
+
+dynamic_libraries = libthread_extensions.so libcallout.so
+include Makefile_files
+
+all = $(common_files) rt_thr ipc ThreadWin timings
+all : $(all)
+
+include Makefile_compiles
+
+timings: time_create.c
+	make -f Makefile_timings

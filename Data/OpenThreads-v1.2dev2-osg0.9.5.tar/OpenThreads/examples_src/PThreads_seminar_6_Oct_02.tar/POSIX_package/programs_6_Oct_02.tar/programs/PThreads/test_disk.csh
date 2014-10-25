@@ -1,0 +1,54 @@
+time_disk 0 0 2 1 0 1 5 10000 1
+time_disk 0 0 2 1 0 1 5 10000 2
+time_disk 0 2 2 1 0 1 5 10000 1
+time_disk 0 2 2 1 0 1 5 10000 2
+time_disk 0 4 2 1 0 1 5 10000 1
+time_disk 0 4 2 1 0 1 5 10000 2
+time_disk 0 8 2 1 0 1 5 10000 1
+time_disk 0 8 2 1 0 1 5 10000 2
+time_disk 0 16 2 1 0 1 5 10000 1
+time_disk 0 16 2 1 0 1 5 10000 2
+
+time_disk 0 0 2 2 0 1 5 10000 1
+time_disk 0 0 2 2 0 1 5 10000 2
+time_disk 0 2 2 2 0 1 5 10000 1
+time_disk 0 2 2 2 0 1 5 10000 2
+time_disk 0 4 2 2 0 1 5 10000 1
+time_disk 0 4 2 2 0 1 5 10000 2
+time_disk 0 8 2 2 0 1 5 10000 1
+time_disk 0 8 2 2 0 1 5 10000 2
+time_disk 0 16 2 2 0 1 5 10000 1
+time_disk 0 16 2 2 0 1 5 10000 2
+
+time_disk 0 0 2 4 0 1 5 10000 1
+time_disk 0 0 2 4 0 1 5 10000 2
+time_disk 0 2 2 4 0 1 5 10000 1
+time_disk 0 2 2 4 0 1 5 10000 2
+time_disk 0 4 2 4 0 1 5 10000 1
+time_disk 0 4 2 4 0 1 5 10000 2
+time_disk 0 8 2 4 0 1 5 10000 1
+time_disk 0 8 2 4 0 1 5 10000 2
+time_disk 0 16 2 4 0 1 5 10000 1
+time_disk 0 16 2 4 0 1 5 10000 2
+
+time_disk 0 0 2 8 0 1 5 10000 1
+time_disk 0 0 2 8 0 1 5 10000 2
+time_disk 0 2 2 8 0 1 5 10000 1
+time_disk 0 2 2 8 0 1 5 10000 2
+time_disk 0 4 2 8 0 1 5 10000 1
+time_disk 0 4 2 8 0 1 5 10000 2
+time_disk 0 8 2 8 0 1 5 10000 1
+time_disk 0 8 2 8 0 1 5 10000 2
+time_disk 0 16 2 8 0 1 5 10000 1
+time_disk 0 16 2 8 0 1 5 10000 2
+
+time_disk 0 0 2 16 0 1 5 10000 1
+time_disk 0 0 2 16 0 1 5 10000 2
+time_disk 0 2 2 16 0 1 5 10000 1
+time_disk 0 2 2 16 0 1 5 10000 2
+time_disk 0 4 2 16 0 1 5 10000 1
+time_disk 0 4 2 16 0 1 5 10000 2
+time_disk 0 8 2 16 0 1 5 10000 1
+time_disk 0 8 2 16 0 1 5 10000 2
+time_disk 0 16 2 16 0 1 5 10000 1
+time_disk 0 16 2 16 0 1 5 10000 2

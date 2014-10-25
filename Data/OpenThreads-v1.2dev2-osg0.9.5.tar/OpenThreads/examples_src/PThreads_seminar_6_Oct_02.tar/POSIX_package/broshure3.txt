@@ -1,0 +1,171 @@
+"What's so great about threads, anyway?"
+
+Well...
+
+Threads radically simplify the design of complex programs.  For example:
+     o	You can write simple, synchronous signal handling routines which 
+	perform complex operations.
+     o	One thread can be devoted to handle just the real time aspects of
+	your program while the rest of your program is simple.
+     o You can write shared-memory type programs without the complexity of
+	actual cross-process shared memory.
+     o  You can focus your efforts on executing your tasks, not on
+	coordinating them.
+Multithreading is the gateway to multiple processor performance:
+     o	You can write a parallel program without hassling with IPC.
+     o	You can write a single binary, confident that your
+	program will run on any number of CPUs.
+     o	You can handle fine-grained parallel tasks which are impossible to 
+	handle with other mechanisms.
+Multithreading optimizes throughput, even on uniprocessors
+     o	You get the advantages of asynchronous I/O in a synchronous program.
+     o	Taking a page fault will not stop your other threads from running.
+     o	GUIs can remain active while one thread executes a long computation.
+Threads work!  All major operating systems support threads:
+     o 	All versions of UNIX, Windows NT, Windows 95, OS/2, VMS, the coming
+	release	of Mac OS support threads.
+     o	All major DBMS vendors use threads, as do Adobe Photoshop, NFS, MARC
+	Analysis, Scitex, Dakota Scientific, Java, Rogue Wave, DOE, etc., etc.
+
+Threads are here, they are living up to their hype.  The only question is
+"Will you be able to use them when the time comes?"
+
+
+
+This Multithreading Seminar gives the programmer or technical manager a
+solid, broad understanding of threads -- what they are, how they work, why
+they are useful, and the programming issues surrounding their use. It is
+designed with the experienced C programmer in mind. Anyone working with any
+of the multithreading libraries will find a full explanation of the
+foundations in this course, and should have little trouble when dealing with
+the different APIs.
+
+The actual code examples will be in POSIX Pthreads, with detailed
+comparisions to how the UNIX International (aka "Solaris Threads"), OS/2 and
+Windows NT APIs are used. At the end of this seminar, the skillful
+programmer will be able to evaluate the applicability of MT to specific
+projects, and have the background to begin writing threaded code.
+
+This seminar covers virtually all aspects of writing MT programs, including
+hardware considerations, the status of MT for the various OS vendors,
+detailed analylses of classic program designs, performance results drawn
+from shipping programs, and common misconceptions and typical programming
+mistakes.  The seminar is very demanding of the student, as it covers a
+great deal of material, including detailed analyses of sophisticated
+programs.  In addition to simply describing the operation of the libraries,
+the motivations for design choices and recommendations for means of dealing
+with the various issues are discussed.
+
+The seminar covers these areas:
+
+				Scheduling
+
+It describes the various possible scheduling designs and algorithms for both
+processes and threads.  We weigh the tradeoffs and examine the actual
+choices made by the different libraries.  Real time issues are considered
+and techniques for dealing with realtime are shown.  Descriptions of actual,
+shipping programs by their designers are included.  Interactions between
+kernel scheduling and local threads scheduling are examined.
+
+				Synchronization
+
+The need for critical sections is introduced and different means of creating
+them are described.  The basic low-level operation of the machine
+instruction is shown and the impact of different bus designs is explored,
+along with the tradeoffs of sleeping, spinning, and optimized spin
+techniques.
+
+The different synchronization primatives in the libraries are described and
+analysed.  Means of "finessing" locking are proposed and many of the common
+mistakes in using them are shown.  The hardware issues behind these are
+described, including bus architecture, multiple CPU issues, and memory
+consistancy techniques.
+
+				Signals
+
+We look at how signals are used traditionally and how threads can obviate
+the need for the most complex signal handlers.  We look at, and work with,
+thread signal handlers, sigwait(), and timer interrupts.  We consider what 
+it means to be Async-safe, cancel-safe, fork-safe, and MT-safe.
+
+				Libraries
+
+We look at what has been done to the UNIX libraries to make them MT-safe,
+consider issues of efficency, and look at several alternative methods of
+making different functions "MT-hot."  We examine methods of dealing with
+unsafe libraries, including window toolkits, and how to deal with ERRNO.
+
+				Performance
+
+We look at the broad issues of high performance code, taking MT as one of
+many possible methods of improving performance.  Then we look at specific
+locking issues, potential conflict situations, and methods of dealing with
+them, including spin locks, FIFO mutexes, and priority-inheritance mutexes.
+The impact of hardware design decisions is explored, and different methods
+of dealing with them are presented.
+
+				Tools
+
+We work with the SPARCworks toolset a great deal, using the debugger, the
+threads analyzer, and also TNFview (an elaborate freeware performance
+monitoring tool).  Other toolsets and auxiliary libraries from are
+referenced, including those from: Rogue Wave, Pure Software, Great Circle,
+ObjectSpace, Dakota Scientific, and Centerline.
+
+				Information
+
+Pointers to the newsgroup, many WWW pages, all MT books in publication,
+mailing lists, FAQs, articles, demo source code for examples, etc. are
+given.
+
+
+
+Four different versions of the seminar are offered:
+
+			One-Day Introduction to Threads
+
+For the programmer or manager new to MT, this lecture-only seminar presents
+the motivation, concepts, and techniques of MT.  It does not cover the
+complex performance issues, many of the finer details, nor does it go though
+the code examples in depth.
+
+			Two-Day Introduction to Threads
+
+For the programmer or manager new to MT, this lecture-only seminar begins
+at the beginning, and covers all of the major MT topics in depth, including
+detailed review of sample code and demonstrations of the SunSoft toolset.
+
+			One-Day Advanced Threads Seminar
+
+For the experienced MT programmer, this lecture-only seminar begins with an
+assumption of the basics, and covers the advanced MT topics in depth,
+including detailed review of sample code and demonstrations of the SunSoft
+toolset.
+
+			Three-Day Threads Class
+
+For the programmer new to MT, this hands-on class begins at the
+beginning, and covers all of the major MT topics in depth.  At numerous
+junctures, example code is presented, and the student explores and modifies
+it.  The SunSoft toolset is used extensively and personalized assistance is
+available during the exercises.
+
+
+
+				Availability
+
+The lecture-only seminars are presented publically around the country at
+different times (see schedule on WWW), and are also available as in-house
+presentations.  The hands-on class is available via SunEd or in-house for
+locations with equipped classrooms.
+
+
+				Prices
+
+The public seminars cost:
+
+$500 for the one-day seminars
+$750 for the two-day seminars
+Ask about group discounts.
+
+In-house training costs $2000/day + expenses.

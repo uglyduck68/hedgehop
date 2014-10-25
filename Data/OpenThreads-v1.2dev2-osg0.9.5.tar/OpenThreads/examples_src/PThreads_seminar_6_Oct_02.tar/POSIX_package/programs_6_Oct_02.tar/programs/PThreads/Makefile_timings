@@ -1,0 +1,65 @@
+#			Makefile for Solaris 2.5
+
+CC =		CC
+cc = 		cc
+CPP = 		CC
+OPP = 
+LOCAL =  	-L. -R. -D__sun -fast
+PTHRLIB = 	-lpthread -lthread -lposix4
+EXTENSIONS =  	-lthread_extensions
+SHARED = 	-G
+
+
+all = 	libthread_extensions.so						\
+ 	time_cancel_enable time_getspecific time_create time_sigmask	\
+	time_global time_cs_process time_testcancel time_cs_bound	\
+	time_lock time_trylock  time_sema time_create_process		\
+	time_writer time_cs_unbound time_reader time_once        	\
+ 	clear_memory
+
+
+all : $(all)
+
+
+libthread_extensions.so : thread_extensions.c
+	$(cc)  $(SHARED) -o $@ $?  $(PTHRLIB)
+
+time_cancel_enable : time_cancel_enable.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_getspecific : time_getspecific.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_create : time_create.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_create_process : time_create_process.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_sigmask : time_sigmask.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_global : time_global.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_cs_process : time_cs_process.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_testcancel : time_testcancel.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_cs_bound : time_cs_bound.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_cs_unbound : time_cs_unbound.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_lock : time_lock.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_trylock : time_trylock.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_writer : time_writer.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_reader : time_reader.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_sema : time_sema.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+time_once : time_once.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+clear_memory : clear_memory.c
+	$(cc) -o $@ $? $(LOCAL) $(DEBUG) $(PTHRLIB) $(EXTENSIONS)
+
+
+clean :
+	rm -f $(all) core
+

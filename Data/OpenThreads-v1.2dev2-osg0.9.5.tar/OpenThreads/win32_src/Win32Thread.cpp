@@ -27,6 +27,7 @@
 #include <memory>
 #include <string>
 #include <process.h>	// for _beginthreadex
+#include <csignal>
 
 using std::size_t;
 
@@ -61,11 +62,16 @@ namespace OpenThreads {
 		//
 		friend class Thread;
 	private:
-
+		static void InterruptHandler(int sigInt) 
+		{ 
+			throw InterruptedException("Thread interrupted");     
+		} 
 		//-------------------------------------------------------------------------
 		// Win32Threads standard start routine.
 		//
 		static unsigned int/*long*/ __stdcall StartThread(void *data) {	// _beginthreadex return unsigned int
+
+			signal(SIGINT/*SIGUSR1*/, InterruptHandler); 
 
 			Thread *thread = static_cast<Thread *>(data);
 			Win32ThreadPrivateData *pd =
@@ -81,8 +87,16 @@ namespace OpenThreads {
 			pd->isCanceled = false;
 
 			try{
-				thread->run();
+				thread->Run();
 			}
+			// [NOTE] Why don't catch InterruptedException.
+			// Thread of X1 package can catch InterruptedException well.
+			// Thread of X1 package send SIGINT by using pthread_kill API.
+			// If change pthread_kill to raise, then Thread of X1 don't catch it.
+			catch (InterruptedException&) 
+			{ 
+				pd->m_isInterrupted = true; 
+			} 
 			catch(...)
 			{
 				// abnormal termination but must be caught in win32 anyway
@@ -135,6 +149,7 @@ namespace OpenThreads {
 			return status!=0;
 		};
 	};
+
 };
 
 Thread* Thread::CurrentThread()
@@ -197,6 +212,8 @@ Thread::Thread() {
 
     _prvData = static_cast<void *>(pd);
 
+	pd->m_isInterrupted	= false;
+
 }
 
 
@@ -257,6 +274,18 @@ bool Thread::isRunning() {
     Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
     return pd->isRunning;
 }
+
+bool Thread::IsInterrupted()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+    return pd->m_isInterrupted;
+}
+
+int Thread::Interrupt()
+{
+	return raise(SIGINT);
+}
+
 //-----------------------------------------------------------------------------
 //
 // Description: Start the thread.
@@ -313,7 +342,22 @@ int Thread::join() {
 	return 0;
 }
 
+//-----------------------------------------------------------------------------
+//
+// Description: Join the thread.
+//
+// Use: public
+//
+int Thread::Join(int msec) {
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+	if( pd->detached ) 
+		return -1; // cannot wait for detached ;
 
+	if( WaitForSingleObject(pd->tid, static_cast<DWORD>(msec)) != WAIT_OBJECT_0)
+		return -1 ;
+
+	return 0;
+}
 
 int Thread::detach()
 {
@@ -516,7 +560,7 @@ int Thread::Yield()
 }
 
 /********************************************************************
- * define ThreadMQ class that have Message Queue
+ * define ThreadMQ class
  ********************************************************************/
 template<typename T, typename L>
 ThreadMQ<T, L>::ThreadMQ()
@@ -526,8 +570,6 @@ ThreadMQ<T, L>::ThreadMQ()
 template<typename T, typename L>
 ThreadMQ<T, L>::~ThreadMQ()
 {
-	/// clear Message Queue
-	m_MsgQ.ClearAll();
 }
 
 template<typename T, typename L>

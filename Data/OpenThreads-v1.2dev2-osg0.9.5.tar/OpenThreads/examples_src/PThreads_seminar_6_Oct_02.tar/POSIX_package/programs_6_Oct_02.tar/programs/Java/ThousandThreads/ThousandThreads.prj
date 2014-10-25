@@ -1,0 +1,15 @@
+sun.jws.version.2
+sun.jws.classname=ThousandThreads
+sun.jws.useVisual=false
+sun.jws.javaArguments=-DDEBU -DKILL
+sun.jws.type=standalone
+sun.jws.options=-g
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList
+sun.jws.files=List
+ThousandThreads.java
+EndOfList

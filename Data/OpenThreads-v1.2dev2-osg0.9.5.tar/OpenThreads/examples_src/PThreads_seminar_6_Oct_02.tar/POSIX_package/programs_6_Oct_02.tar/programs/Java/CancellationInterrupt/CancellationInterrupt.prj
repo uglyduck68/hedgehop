@@ -1,0 +1,17 @@
+sun.jws.version.2
+sun.jws.classname=Cancellation
+sun.jws.useVisual=false
+sun.jws.javaArguments=-DDEBU -DKILL
+sun.jws.type=standalone
+sun.jws.options=-g
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList
+sun.jws.files=List
+Cancellation.java
+Searcher.java
+TSDThread.java
+EndOfList

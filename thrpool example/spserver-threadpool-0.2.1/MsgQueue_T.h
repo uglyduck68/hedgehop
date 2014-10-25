@@ -3,7 +3,7 @@
  *
  * @author	Kim Young Hwan <uglyduck68@gmail.com>
  *
- * This is thread-safe message queueu. This class was tested by TestMessageQ project.
+ * This is thread-safe message queue. This class was tested by TestMessageQ project.
  */
 
 #pragma once

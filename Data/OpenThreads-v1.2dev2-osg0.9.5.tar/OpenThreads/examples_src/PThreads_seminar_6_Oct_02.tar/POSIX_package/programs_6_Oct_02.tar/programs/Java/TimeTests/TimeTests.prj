@@ -1,0 +1,27 @@
+sun.jws.version.2
+sun.jws.classname=Test
+sun.jws.useVisual=false
+sun.jws.type=standalone
+sun.jws.javaArguments=-DDEBU -DKILL
+sun.jws.options=-g
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList
+sun.jws.files=List
+Test.java
+TimeContext.java
+TimeCreate.java
+TimeEnableDisableInterruption.java
+TimeFakeTSD.java
+TimeGlobal.java
+TimeInterrupt.java
+TimeMutex.java
+TimeRWLock.java
+TimeSem.java
+TimeSyncFun.java
+TimeSyncLocal.java
+TimedObject.java
+EndOfList

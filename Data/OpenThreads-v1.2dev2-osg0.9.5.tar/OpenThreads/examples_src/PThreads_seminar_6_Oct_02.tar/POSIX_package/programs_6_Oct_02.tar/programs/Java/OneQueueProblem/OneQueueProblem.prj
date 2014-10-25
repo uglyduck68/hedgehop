@@ -1,0 +1,23 @@
+sun.jws.version.2
+sun.jws.javaArguments=-DDEBU -DKIL
+sun.jws.useVisual=false
+sun.jws.run.jdk.version=1.2
+sun.jws.projectroot=.
+sun.jws.classdir=classes
+sun.jws.options=-g
+sun.jws.classname=Server
+sun.jws.type=standalone
+sun.jws.files=List
+Client.java
+Consumer.java
+Producer.java
+Request.java
+Server.java
+Workpile.java
+EndOfList
+sun.jws.sourcepath=List
+../Java/Extensions
+EndOfList
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList

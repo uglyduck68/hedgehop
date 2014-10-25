@@ -1,0 +1,31 @@
+bil@cloudbase[264]: java Multi
+
+Time	Thread		Event
+====	======		=====
+1000	threadMain	Started 
+1001	threadMain	Created threadA
+1001	threadA		Starting...
+1002	threadMain	Created threadC
+1002	threadC		Starting... 
+1002	threadA		Created threadD
+1002	threadD		Starting... 
+1003	threadD		Created threadE
+1003	threadE		Starting... 
+1004	threadMain	Cancelling threadD
+1004	threadD		Interrupted. Exiting
+1004	threadC		Joining threadMain
+1005	threadMain	Exiting
+1005	threadC		Joined threadMain
+1005	threadA		Exiting 
+1006	threadC		Created threadB
+1006	threadB		Starting... 
+1006	threadE		Joining threadA
+1006	threadE		Joined threadA
+1008	threadE		Joining threadC
+1010	threadC		Exiting 
+1010	threadE		Joined threadC
+1010	threadB		Exiting 
+1012	threadE		Joining threadD
+1012	threadE		Joined threadD
+1013	threadE		Exiting 
+bil@cloudbase[265]: 

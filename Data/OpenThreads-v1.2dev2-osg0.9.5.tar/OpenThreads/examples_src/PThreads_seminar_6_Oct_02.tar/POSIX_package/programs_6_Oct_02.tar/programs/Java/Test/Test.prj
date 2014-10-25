@@ -1,0 +1,16 @@
+sun.jws.version.2
+sun.jws.classname=Test
+sun.jws.useVisual=false
+sun.jws.javaArguments=-DDEBU -DKILL
+sun.jws.type=standalone
+sun.jws.options=-g
+sun.jws.classpath=List
+../Extensions/classes
+EndOfList
+sun.jws.files=List
+InterruptMutex.java
+Test.java
+TestCV.java
+TestSub.java
+TestTimeout.java
+EndOfList

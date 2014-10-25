@@ -1,0 +1,1223 @@
+$ uname -a
+SunOS ca-lab1 5.5.1 Generic sun4u sparc SUNW,Ultra-1
+
+
+Sun Ultra 1 SBus (UltraSPARC 167MHz)
+
+ca-lab1% !sh
+sh test_timings.csh
+
+
+			Making all programs ...
+
+
+Running time_lock for 10m iterations
+
+real        6.9
+user        6.8
+sys         0.0
+
+
+Running time_trylock for 10m iterations
+
+real        2.6
+user        2.5
+sys         0.0
+
+
+Running time_reader for 1m iterations
+
+real        2.3
+user        2.3
+sys         0.0
+
+
+Running time_writer for 1m iterations
+
+real        2.5
+user        2.5
+sys         0.0
+
+
+Running time_sema for 1m iterations
+
+real        3.7
+user        3.6
+sys         0.0
+
+
+Running time_cs_bound for 100k iterations
+
+real        2.0
+user        0.9
+sys         1.1
+
+
+Running time_cs_unbound for 100k iterations
+
+real        2.1
+user        2.1
+sys         0.0
+
+
+Running time_cs_process for 100k iterations
+
+real        2.3
+user        0.4
+sys         0.6
+
+
+Running time_sigmask for 1m iterations
+
+real        4.2
+user        4.0
+sys         0.0
+
+
+Running time_cancel_enable for 10m iterations
+
+real        6.4
+user        6.4
+sys         0.0
+
+
+Running time_testcancel for 10m iterations
+
+real        1.5
+user        1.5
+sys         0.0
+
+
+Running time_create (unbound) for 10k iterations
+
+real        0.8
+user        0.7
+sys         0.0
+
+
+Running time_create (bound) for 10k iterations
+
+real        1.7
+user        0.8
+sys         0.8
+
+
+Running time_create_process for 100 iterations
+
+real        1.0
+user        0.0
+sys         0.7
+
+
+Running time_global for 100m iterations
+
+real        0.6
+user        0.6
+sys         0.0
+
+
+Running time_getspecific for 1m iterations
+
+real        0.5
+user        0.4
+sys         0.0
+ca-lab1% !sh
+
+
+
+			Making all programs ...
+
+
+Running time_lock for 10m iterations
+
+real        6.9
+user        6.8
+sys         0.0
+
+
+Running time_trylock for 10m iterations
+
+real        2.6
+user        2.6
+sys         0.0
+
+
+Running time_reader for 1m iterations
+
+real        2.3
+user        2.3
+sys         0.0
+
+
+Running time_writer for 1m iterations
+
+real        2.5
+user        2.5
+sys         0.0
+
+
+Running time_sema for 1m iterations
+
+real        3.7
+user        3.6
+sys         0.0
+
+
+Running time_cs_bound for 100k iterations
+
+real        1.8
+user        0.8
+sys         0.9
+
+
+Running time_cs_unbound for 100k iterations
+
+real        2.2
+user        2.1
+sys         0.0
+
+
+Running time_cs_process for 100k iterations
+
+real        2.0
+user        0.5
+sys         0.5
+
+
+Running time_sigmask for 1m iterations
+
+real        4.1
+user        4.0
+sys         0.0
+
+
+Running time_cancel_enable for 10m iterations
+
+real        7.3
+user        6.4
+sys         0.0
+
+
+Running time_testcancel for 100m iterations
+
+real       15.6
+user       15.1
+sys         0.0
+
+
+Running time_create (unbound) for 100k iterations
+
+real        7.8
+user        7.6
+sys         0.1
+
+
+Running time_create (bound) for 100k iterations
+
+real       16.4
+user        7.2
+sys         8.6
+
+
+Running time_create_process for 1k iterations
+
+real        9.7
+user        1.2
+sys         6.8
+
+
+Running time_global for 1g iterations
+
+real        6.2
+user        6.0
+sys         0.0
+
+
+Running time_getspecific for 10m iterations
+
+real        4.5
+user        4.5
+sys         0.0
+ca-lab1% cc -o time_once time_once.c -L. -R. -lpthread -lthread -lthread_extensions -lposix4 -fast
+ca-lab1% time_once 1000
+
+
+Running time_once for 1m iterations
+ca-lab1% !!000
+time_once 1000000
+
+
+Running time_once for 1g iterations
+ca-lab1% time time_once 10000
+
+
+Running time_once for 10m iterations
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% !!0
+
+
+
+Running time_once for 100m iterations
+8.0u 0.0s 0:08 93% 0+0k 0+0io 0pf+0w
+ca-lab1% !cc
+cc -o time_once time_once.c -L. -R. -lpthread -lthread -lthread_extensions -lposix4 -fast
+ca-lab1% time time_once 100000 1
+
+
+Running time_once for 100k iterations
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% !cc
+cc -o time_once time_once.c -L. -R. -lpthread -lthread -lthread_extensions -lposix4 -fast
+ca-lab1% !time
+time time_once 100000 1
+Segmentation Fault (core dumped)
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% !cc
+cc -o time_once time_once.c -L. -R. -lpthread -lthread -lthread_extensions -lposix4 -fast
+ca-lab1% !ti
+time time_once 100000 1
+Segmentation Fault (core dumped)
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% !cc
+cc -o time_once time_once.c -L. -R. -lpthread -lthread -lthread_extensions -lposix4 -fast
+ca-lab1% !tim
+time time_once 100000 1
+Segmentation Fault (core dumped)
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% !cc -g
+
+cc: Warning: -g conflicts with auto-inlining, auto-inlining turned off
+ca-lab1% cc -o time_once time_once.c -L. -R. -lpthread -lthread -lthread_extensions -lposix4   -g
+ca-lab1% !c
+cc -o time_once time_once.c -L. -R. -lpthread -lthread -lthread_extensions -lposix4 -g
+ca-lab1% !tim
+
+
+
+Running time_once (with done) for 100k iterations
+1.0u 0.0s 0:01 91% 0+0k 0+0io 0pf+0w
+ca-lab1% time time_once 1000000 1
+
+
+Running time_once (with done) for 1m iterations
+11.0u 0.0s 0:11 99% 0+0k 0+0io 0pf+0w
+ca-lab1% time time_once 1000
+
+
+Running time_once (without done) for 1k iterations
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% !!0
+time time_once 10000
+
+
+Running time_once (without done) for 10k iterations
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% !!0
+time time_once 100000
+
+
+Running time_once (without done) for 100k iterations
+9.0u 0.0s 0:09 98% 0+0k 0+0io 0pf+0w
+ca-lab1% !cc
+cc -o time_once time_once.c -L. -R. -lpthread -lthread -lthread_extensions -lposix4 -g
+ca-lab1% !time
+time time_once 100000
+
+
+Running time_once (without done) for 100k iterations
+Initializing...
+9.0u 0.0s 0:09 98% 0+0k 0+0io 0pf+0w
+ca-lab1% !cc
+cc -o time_once time_once.c -L. -R. -lpthread -lthread -lthread_extensions -lposix4 -g
+ca-lab1% !tim
+time time_once 100000
+
+
+Running time_once (without done) for 100k iterations
+Initializing...
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% time time_once 100000 1
+
+
+Running time_once (with done) for 100k iterations
+Initializing...
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% time time_once 1000000
+
+
+Running time_once (without done) for 1m iterations
+Initializing...
+0.0u 0.0s 0:00 0% 0+0k 0+0io 0pf+0w
+ca-lab1% time time_once 10000000
+
+
+Running time_once (without done) for 10m iterations
+Initializing...
+9.0u 0.0s 0:09 98% 0+0k 0+0io 0pf+0w
+ca-lab1% !! 1
+
+
+
+Running time_once (with done) for 10m iterations
+Initializing...
+1.0u 0.0s 0:01 87% 0+0k 0+0io 0pf+0w
+ca-lab1% time time_once 100000000 1
+
+
+Running time_once (with done) for 100m iterations
+Initializing...
+11.0u 0.0s 0:11 95% 0+0k 0+0io 0pf+0w
+ca-lab1% sh
+$ time time_once 100000 1
+
+
+Running time_once (with done) for 100k iterations
+Initializing...
+
+real        0.0
+user        0.0
+sys         0.0
+$ time time_once 1000000 1
+
+
+Running time_once (with done) for 1m iterations
+Initializing...
+
+real        0.1
+user        0.1
+sys         0.0
+$ time time_once 10000000 1
+
+
+Running time_once (with done) for 10m iterations
+Initializing...
+
+real        1.2
+user        1.1
+sys         0.0
+$ time time_once 1000000
+
+
+Running time_once (without done) for 1m iterations
+Initializing...
+
+real        0.9
+user        0.9
+sys         0.0
+$ time time_once 10000000 
+
+
+Running time_once (without done) for 10m iterations
+Initializing...
+
+real        9.1
+user        9.1
+sys         0.0
+$ !sh
+!sh: not found
+$ sh test_timings.csh
+
+
+			Making all programs ...
+
+
+Running time_lock for 10m iterations
+time: command terminated abnormally.
+
+real        4.6
+user        4.5
+sys         0.0
+$ rm time_once
+$ sh test_timings.csh
+
+
+			Making all programs ...
+cc -o time_once time_once.c -L. -R. -D__sun -fast  -lpthread -lthread -lposix4 -lthread_extensions
+
+
+Running time_lock for 10m iterations
+
+real        7.0
+user        6.9
+sys         0.0
+
+
+Running time_trylock for 10m iterations
+
+real        2.7
+user        2.6
+sys         0.0
+
+
+Running time_reader for 1m iterations
+
+real        2.4
+user        2.3
+sys         0.0
+
+
+Running time_writer for 1m iterations
+
+real        2.7
+user        2.5
+sys         0.0
+
+
+Running time_sema for 1m iterations
+
+real        3.7
+user        3.7
+sys         0.0
+
+
+Running time_cs_bound for 100k iterations
+
+real        1.8
+user        0.8
+sys         1.0
+
+
+Running time_cs_unbound for 100k iterations
+
+real        2.3
+user        2.2
+sys         0.0
+
+
+Running time_cs_process for 100k iterations
+
+real        2.4
+user        0.4
+sys         0.7
+
+
+Running time_sigmask for 1m iterations
+
+real        4.1
+user        4.0
+sys         0.0
+
+
+Running time_cancel_enable for 10m iterations
+
+real        6.4
+user        6.4
+sys         0.0
+
+
+Running time_testcancel for 100m iterations
+
+real       15.3
+user       15.2
+sys         0.0
+
+
+Running time_create (unbound) for 100k iterations
+
+real        7.8
+user        7.6
+sys         0.1
+
+
+Running time_create (bound) for 100k iterations
+
+real       16.8
+user        7.1
+sys         9.0
+
+
+Running time_create_process for 1k iterations
+
+real       10.1
+user        1.2
+sys         7.4
+
+
+Running time_global for 1g iterations
+
+real        6.3
+user        6.1
+sys         0.0
+
+
+Running time_getspecific for 10m iterations
+
+real        4.6
+user        4.5
+sys         0.0
+
+
+Running time_once (without done) for 10m iterations
+Initializing...
+
+real        8.9
+user        8.7
+sys         0.0
+
+
+Running time_once (with done) for 10m iterations
+Initializing...
+
+real        0.3
+user        0.3
+sys         0.0
+$ sh test_timings.csh
+
+
+			Making all programs ...
+
+
+Running time_lock for 10m iterations
+
+real        6.9
+user        6.9
+sys         0.0
+
+
+Running time_trylock for 10m iterations
+
+real        2.7
+user        2.6
+sys         0.0
+
+
+Running time_reader for 1m iterations
+
+real        2.3
+user        2.3
+sys         0.0
+
+
+Running time_writer for 1m iterations
+
+real        2.6
+user        2.5
+sys         0.0
+
+
+Running time_sema for 1m iterations
+
+real        3.7
+user        3.7
+sys         0.0
+
+
+Running time_cs_bound for 100k iterations
+
+real        1.8
+user        0.7
+sys         1.0
+
+
+Running time_cs_unbound for 100k iterations
+
+real        2.1
+user        2.1
+sys         0.0
+
+
+Running time_cs_process for 100k iterations
+
+real        2.3
+user        0.4
+sys         0.7
+
+
+Running time_sigmask for 1m iterations
+
+real        4.1
+user        4.1
+sys         0.0
+
+
+Running time_cancel_enable for 10m iterations
+
+real        6.4
+user        6.4
+sys         0.0
+
+
+Running time_testcancel for 100m iterations
+
+real       15.2
+user       15.2
+sys         0.0
+
+
+Running time_create (unbound) for 100k iterations
+
+real        7.9
+user        7.7
+sys         0.1
+
+
+Running time_create (bound) for 100k iterations
+
+real       16.8
+user        7.4
+sys         8.8
+
+
+Running time_create_process for 1k iterations
+
+real        9.9
+user        1.1
+sys         7.2
+
+
+Running time_global for 1g iterations
+
+real        6.1
+user        6.1
+sys         0.0
+
+
+Running time_getspecific for 10m iterations
+
+real        4.5
+user        4.5
+sys         0.0
+
+
+Running time_once (without done) for 10m iterations
+Initializing...
+
+real        8.8
+user        8.7
+sys         0.0
+
+
+Running time_once (with done) for 100m iterations
+Initializing...
+
+real        3.0
+user        3.0
+sys         0.0
+$ time time_lock			10000000; time time_lock			10000000; time time_lock			10000000; time time_lock			10000000; 
+
+
+Running time_lock for 10m iterations
+
+real        7.0
+user        6.9
+sys         0.0
+
+
+Running time_lock for 10m iterations
+
+real        6.9
+user        6.8
+sys         0.0
+
+
+Running time_lock for 10m iterations
+
+real        6.9
+user        6.8
+sys         0.0
+
+
+Running time_lock for 10m iterations
+
+real        6.9
+user        6.9
+sys         0.0
+$ time time_trylock 		10000000; time time_trylock 		10000000; time time_trylock 		10000000; time time_trylock 		10000000; 
+
+
+Running time_trylock for 10m iterations
+
+real        2.6
+user        2.5
+sys         0.0
+
+
+Running time_trylock for 10m iterations
+
+real        2.7
+user        2.6
+sys         0.0
+
+
+Running time_trylock for 10m iterations
+
+real        2.7
+user        2.7
+sys         0.0
+
+
+Running time_trylock for 10m iterations
+
+real        2.5
+user        2.5
+sys         0.0
+$ time time_reader 		1000000;time time_reader 		1000000;time time_reader 		1000000;time time_reader 		1000000;
+
+
+Running time_reader for 1m iterations
+
+real        2.3
+user        2.3
+sys         0.0
+
+
+Running time_reader for 1m iterations
+
+real        2.3
+user        2.3
+sys         0.0
+
+
+Running time_reader for 1m iterations
+
+real        2.3
+user        2.3
+sys         0.0
+
+
+Running time_reader for 1m iterations
+
+real        2.3
+user        2.3
+sys         0.0
+$ time time_writer 		1000000; time time_writer 		1000000; time time_writer 		1000000; time time_writer 		1000000; 
+
+
+Running time_writer for 1m iterations
+
+real        2.6
+user        2.5
+sys         0.0
+
+
+Running time_writer for 1m iterations
+
+real        2.6
+user        2.5
+sys         0.0
+
+
+Running time_writer for 1m iterations
+
+real        2.6
+user        2.6
+sys         0.0
+
+
+Running time_writer for 1m iterations
+
+real        2.6
+user        2.5
+sys         0.0
+$ time time_sema 			1000000;time time_sema 			1000000;time time_sema 			1000000;time time_sema 			1000000;
+
+
+Running time_sema for 1m iterations
+
+real        3.7
+user        3.6
+sys         0.0
+
+
+Running time_sema for 1m iterations
+
+real        3.7
+user        3.6
+sys         0.0
+
+
+Running time_sema for 1m iterations
+
+real        3.7
+user        3.6
+sys         0.0
+
+
+Running time_sema for 1m iterations
+
+real        3.8
+user        3.7
+sys         0.0
+$ time time_cs_bound		100000;time time_cs_bound		100000;time time_cs_bound		100000;time time_cs_bound		100000;
+
+
+Running time_cs_bound for 100k iterations
+
+real        2.0
+user        0.8
+sys         1.1
+
+
+Running time_cs_bound for 100k iterations
+
+real        1.9
+user        0.7
+sys         1.1
+
+
+Running time_cs_bound for 100k iterations
+
+real        1.9
+user        0.7
+sys         1.1
+
+
+Running time_cs_bound for 100k iterations
+
+real        2.0
+user        0.8
+sys         1.0
+$ time time_cs_unbound 		100000; time time_cs_unbound 		100000; time time_cs_unbound 		100000; time time_cs_unbound 		100000; 
+
+
+Running time_cs_unbound for 100k iterations
+
+real        2.1
+user        2.1
+sys         0.0
+
+
+Running time_cs_unbound for 100k iterations
+
+real        2.1
+user        2.1
+sys         0.0
+
+
+Running time_cs_unbound for 100k iterations
+
+real        2.2
+user        2.2
+sys         0.0
+
+
+Running time_cs_unbound for 100k iterations
+
+real        2.2
+user        2.2
+sys         0.0
+$ time time_cs_process 		100000; time time_cs_process 		100000; time time_cs_process 		100000; time time_cs_process 		100000; 
+
+
+Running time_cs_process for 100k iterations
+
+real        2.3
+user        0.3
+sys         0.7
+
+
+Running time_cs_process for 100k iterations
+
+real        2.1
+user        0.3
+sys         0.8
+
+
+Running time_cs_process for 100k iterations
+
+real        2.1
+user        0.3
+sys         0.6
+
+
+Running time_cs_process for 100k iterations
+
+real        2.2
+user        0.4
+sys         0.6
+$ time time_sigmask		1000000;time time_sigmask		1000000;time time_sigmask		1000000;time time_sigmask		1000000;
+
+
+Running time_sigmask for 1m iterations
+
+real        4.1
+user        4.0
+sys         0.0
+
+
+Running time_sigmask for 1m iterations
+
+real        4.1
+user        4.0
+sys         0.0
+
+
+Running time_sigmask for 1m iterations
+
+real        4.1
+user        4.0
+sys         0.0
+
+
+Running time_sigmask for 1m iterations
+
+real        4.1
+user        4.0
+sys         0.0
+$ time time_cancel_enable 	10000000;time time_cancel_enable 	10000000;time time_cancel_enable 	10000000;time time_cancel_enable 	10000000;
+
+
+Running time_cancel_enable for 10m iterations
+
+real        6.4
+user        6.4
+sys         0.0
+
+
+Running time_cancel_enable for 10m iterations
+
+real        6.5
+user        6.4
+sys         0.0
+
+
+Running time_cancel_enable for 10m iterations
+
+real        6.5
+user        6.4
+sys         0.0
+
+
+Running time_cancel_enable for 10m iterations
+
+real        6.5
+user        6.4
+sys         0.0
+$ time time_testcancel 		100000000;time time_testcancel 		100000000;time time_testcancel 		100000000;time time_testcancel 		100000000;
+
+
+Running time_testcancel for 100m iterations
+
+real       15.5
+user       15.3
+sys         0.0
+
+
+Running time_testcancel for 100m iterations
+
+real       15.3
+user       15.2
+sys         0.0
+
+
+Running time_testcancel for 100m iterations
+
+real       15.3
+user       15.2
+sys         0.0
+
+
+Running time_testcancel for 100m iterations
+
+real       15.3
+user       15.3
+sys         0.0
+$ time time_create 		100000;time time_create 		100000;time time_create 		100000;time time_create 		100000;
+
+
+Running time_create (unbound) for 100k iterations
+
+real        7.9
+user        7.7
+sys         0.1
+
+
+Running time_create (unbound) for 100k iterations
+
+real        7.9
+user        7.7
+sys         0.1
+
+
+Running time_create (unbound) for 100k iterations
+
+real        8.1
+user        7.9
+sys         0.1
+
+
+Running time_create (unbound) for 100k iterations
+
+real        7.9
+user        7.7
+sys         0.1
+$ time time_create 		100000 		1;time time_create 		100000 		1;time time_create 		100000 		1;time time_create 		100000 		1;
+
+
+Running time_create (bound) for 100k iterations
+
+real       16.8
+user        8.3
+sys         7.8
+
+
+Running time_create (bound) for 100k iterations
+
+real       16.5
+user        7.6
+sys         8.4
+
+
+Running time_create (bound) for 100k iterations
+
+real       16.6
+user        7.2
+sys         8.8
+
+
+Running time_create (bound) for 100k iterations
+
+real       16.7
+user        7.6
+sys         8.6
+$ time time_create_process 	1000 		1;time time_create_process 	1000 		1;time time_create_process 	1000 		1;time time_create_process 	1000 		1;
+
+
+Running time_create_process for 1k iterations
+
+real        9.3
+user        1.1
+sys         6.6
+
+
+Running time_create_process for 1k iterations
+
+real        9.5
+user        1.2
+sys         6.5
+
+
+Running time_create_process for 1k iterations
+
+real        9.6
+user        1.1
+sys         6.8
+
+
+Running time_create_process for 1k iterations
+
+real        9.6
+user        1.0
+sys         6.9
+$ time time_global 		1000000;time time_global 		1000000;time time_global 		1000000;time time_global 		1000000;time time_getspecific 		10000000;time time_getspecific 		10000000;time time_getspecific 		10000000;time time_getspecific 		10000000;time time_once 			10000000;time time_once 			10000000;time time_once 			10000000;time time_once 			10000000;time time_once 			100000000 1;time time_once 			100000000 1;time time_once 			100000000 1;time time_once 			100000000 1
+
+
+Running time_global for 1g iterations
+
+real        6.1
+user        6.0
+sys         0.0
+
+
+Running time_global for 1g iterations
+
+real        6.1
+user        6.1
+sys         0.0
+
+
+Running time_global for 1g iterations
+
+real        6.1
+user        6.0
+sys         0.0
+
+
+Running time_global for 1g iterations
+
+real        6.1
+user        6.0
+sys         0.0
+
+
+Running time_getspecific for 10m iterations
+
+real        4.5
+user        4.5
+sys         0.0
+
+
+Running time_getspecific for 10m iterations
+
+real        4.5
+user        4.5
+sys         0.0
+
+
+Running time_getspecific for 10m iterations
+
+real        4.5
+user        4.5
+sys         0.0
+
+
+Running time_getspecific for 10m iterations
+
+real        4.5
+user        4.5
+sys         0.0
+
+
+Running time_once (without done) for 10m iterations
+Initializing...
+
+real        8.8
+user        8.7
+sys         0.0
+
+
+Running time_once (without done) for 10m iterations
+Initializing...
+
+real        8.7
+user        8.7
+sys         0.0
+
+
+Running time_once (without done) for 10m iterations
+Initializing...
+
+real        8.8
+user        8.7
+sys         0.0
+
+
+Running time_once (without done) for 10m iterations
+Initializing...
+
+real        8.8
+user        8.7
+sys         0.0
+
+
+Running time_once (with done) for 100m iterations
+Initializing...
+
+real        3.0
+user        3.0
+sys         0.0
+
+
+Running time_once (with done) for 100m iterations
+Initializing...
+
+real        3.1
+user        3.0
+sys         0.0
+
+
+Running time_once (with done) for 100m iterations
+Initializing...
+
+real        3.1
+user        3.0
+sys         0.0
+
+
+Running time_once (with done) for 100m iterations
+Initializing...
+
+real        3.0
+user        3.0
+sys         0.0
+$ 

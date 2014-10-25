@@ -1,0 +1,24 @@
+#			Makefile for Irix 6.2
+
+CC = 		CC
+cc = 		cc
+CPP = 		CC
+OPP = 
+DEBUG = 	-g3 -xansi  -woff 1116 -n32
+LOCAL =   	-L. -I. -rpath.
+PTHRLIB = 	-lpthread
+EXTENSIONS =  	-lthread_extensions
+MOTIF = 	-lXm -lXt -lX11 -lm
+SOCKETS = 
+SHARED =	-shared
+
+# Irix does not implement cross-process mutexes or CVs, so ipc doesn't work.
+# The real-time system is also different, hence no rt_thr
+
+include Makefile_files
+
+all = $(common_files)
+all : $(all)
+
+
+include Makefile_compiles
