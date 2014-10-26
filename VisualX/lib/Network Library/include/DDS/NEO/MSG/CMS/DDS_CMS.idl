@@ -1,0 +1,2099 @@
+
+//////////////////////////////////////////////////////////////////////////
+// DDS MESSAGE, 전투체계 내부 DDS Msg
+//
+// Updated : 2012.10.03  : Lee-SooJung
+//
+//	 < 메시지토픽: 통신종류(UDP통신orDDS통신)/보내는CSCI/메시지명 
+//		ex:DMSG_HMISUB_HLTCTRL / 잠수함HMI가 DDS로 보내는 수평발사관통제정보>
+//
+//          0. 기본 데이터 타입
+//			2. Message From TM 
+//			3. Message From TEWA 
+//			4. Message From EC 
+//			5. Message From TFC
+//			6. Message From MFC
+//			7. Message From DFC
+//			8. Message From GFC
+//			9. Message From OSM
+//		   10. 기타
+//
+//////////////////////////////////////////////////////////////////////////
+
+//------------------------------------------------------------------------
+// 기본 데이터 타입
+//------------------------------------------------------------------------
+//	1.  TrkNoSys		표적번호					
+//	2.  stDate			날짜
+//  3.  stTime			시간
+//	4.  stTime1			시간1
+//  5.  stTime2			시간2
+//  6.  coordiSys		좌표체계
+//  7.  coordiHSys		좌표체계 및 고도
+//  8.  coordiRSys		좌표체계 및 반경
+//  9.  rectSys			직교 좌표체계
+// 10.  rectHSys		직교 좌표 체계 및 고도
+// 11.  rectRSys		직교 좌표 체계 및 반경
+// 12.  velocity3D		3D 속도
+// 13.  SonarTrack		소나소스정보
+// 14.	stWake			표적항적정보
+// 15.  stSubSysTrackID	잠수함 표적정보
+// 16.  stFullTime		시간
+//------------------------------------------------------------------------
+
+// 1. 시스템 트랙 번호
+struct TrkNoSys
+{
+	unsigned short  trkNo;			// 시스템 트랙 번호 (함포사격지점 표적은 L901)
+	unsigned short  trkNoLINK;		// 링크번호 (127DEC : BroadCast)
+	unsigned short  trkNoTDSR;		// 탐색레이더 번호
+	char			trkNoTRR;		// 추적레이더 번호
+	char			trkNoEOTS;		// 전자광학추적장치 번호
+	char			trkNoEW;		// 전자전장비 번호
+	char			trkNoPERI;		// Periscope 번호
+	char			trkNoOMS;		// OMS 번호
+	char			trkNoNAVR;		// 항해레이더 번호
+	char			trkNoSONAR;		// 소나번호
+	char			trkNoMAN;		// 수동생성표적번호
+};
+
+//	2.  날짜
+struct stDate
+{
+	unsigned short	yy;		// year
+	char			mm;		// month
+	char			dd;		// day
+};
+
+//  3.  시간 (시분)
+struct stTime
+{
+	char		hh;
+	char		mm;
+};
+
+//	4.  시간1 (시분초)
+struct time1
+{
+	char		hh;
+	char		mm;
+	char		ss;
+};
+
+//  5.  시간2 (시분초밀리초)
+struct time2
+{
+	char		 hh;
+	char		 mm;
+	char		 ss;
+	char		 ms;
+};
+
+//  6.  좌표체계
+struct coordiSys
+{
+	double		 latitude;			// degree 양수는 북위 음수는 남위
+	double		 longitude;			// degree 양수는 동경 음수는 서경
+};
+
+
+//  7.  좌표체계 및 고도
+struct coordiHSys
+{
+	double		latitude;			// degree 양수는 북위 음수는 남위
+	double		longitude;			// degree 양수는 동경 음수는 서경
+	double		hgt;				// m 
+};
+
+//  8.  좌표체계 및 반경
+struct coordiRSys
+{
+	double			latitude;			// degree 양수는 북위 음수는 남위
+	double			longitude;			// degree 양수는 동경 음수는 서경
+	unsigned short  radius;				// km 
+};
+
+//  9.  직교 좌표체계
+struct rectSys
+{
+	double		x;			// m
+	double		z;			// m
+};
+
+// 10.  직교 좌표 체계 및 고도
+struct rectHSys
+{
+	double		x;
+	double		y;			// 고도 meter
+	double		z;
+};
+
+// 11.  직교 좌표 체계 및 반경
+struct rectRSys
+{
+	double				x;
+	double				z;
+	unsigned short		radius;		// 반경 km
+};
+
+// 12.  3D 속도
+struct velocity3D
+{
+	double		hh;
+	double		mm;
+};
+
+
+// 13. 소나소스정보
+struct SonarTrack
+{
+	char	cSensor;				//센서종류( 0 : CAS BDT, 1 : CAS DEM, 2 : FAS BDT, 3 : FAS DEM, 4 : FAS LOF, 5 : PRS BDT)
+	char	cTargetState;			//표적상태( 0: 삭제, 1: 생성, 2: 갱신, 3: 소실)
+	char	cTrackingMode;			//추적모드( 0: Auto, 1: Predict, 2: Manual)
+	float	fBearing;				//표적 방위
+	float	fBearingRate;			//방위변화율(deg/min)
+	float	fSignalToNoiseRation;	//신호세기(dB)
+	float	fRange;					//표적거리(sensor 5인 경우에만 유효)
+	float	fCourse;				//표적침로(sensor 5인 경우에만 유효)
+	float	fSpeed;					//표적속도(sensor 5인 경우에만 유효)
+};
+
+// 14. 표적항적정보
+struct stWake
+{
+	double	dLat[30];
+	double	dLon[30];
+	long	nLatIndex;
+	long	nLonIndex;
+};
+
+
+// 15. 잠수함 표적정보
+struct stSubSysTrackID
+{
+	unsigned long		nTrkNo;			// 시스템 표적 번호
+	unsigned long		nPrsTrkNo;		// PRS - TRACK ID
+	unsigned long		nCasBdtTrkNo;	// CAS - BDT TRACK ID
+	unsigned long		nFasBdtTrkNo;	// FAS - BDT TRACK ID
+	unsigned long		nCasDemTrkNo;	// CAS - DEMON TRACK ID
+	unsigned long		nFasLdtTrkNo;	// FAS - LOFAR TRACK ID
+	unsigned long		nFasDemTrkNo;	// FAS - DEMON TRACK ID
+	unsigned long		nNavrTrkNo;		// NAVR - TRACK ID
+	unsigned long		nPeriTrkNo;		// PERISCOPE - TRACK ID
+	unsigned long		nOmsTrkNo;		// Optroni Mast System - TRACK ID
+	unsigned long		nManTrkNo;		// MANUAL TRACK ID
+	unsigned long		nTorpTrkNo;		// Torpedo sonar TRACK ID
+	unsigned long		nIpsTrkNo;		// IPS - TRACK ID
+	unsigned long		nEsmTrkNo;		// ESM - TRACK ID
+	unsigned long		nLinkTrkNo;		// LINK - TRACK ID
+};
+
+// 16. 시간
+struct stFullTime
+{
+	unsigned short		year;
+	char				month;
+	char				day;
+	char				hour;
+	char				minute;
+	char				sec;
+	char				msec;
+};
+
+
+
+//------------------------------------------------------------------------
+//   Message OSM & HMI 
+//------------------------------------------------------------------------
+//	1.  DMSG_OSM_SENSORSTATE					센서상태정보							
+//	2.  DMSG_OSM_WEAPONSTATE					무기상태정보
+//  3.  DMSG_HMI_REQMISSILEENGAGEPLAN			교전계획승인요청
+//------------------------------------------------------------------------
+
+
+//  1. 센서상태정보
+struct DMSG_OSM_SENSORSTATE
+{
+    long		nTrackRadarID;
+    boolean		bInterFaceInfo;
+    boolean		bAvailable;
+    boolean		bCh1_available;
+    boolean		bCh2_available;
+};
+
+
+//  2. 무기상태정보
+struct DMSG_OSM_WEAPONSTATE 
+{
+    long		nWeaponID;
+    boolean		bInterFace;
+    boolean		bAvailable;
+};
+
+// 3. 교전계획승인요청
+struct DMSG_HMI_REQMISSILEENGAGEPLAN
+{
+	char			cConsoleID;
+	char			cTubeID;
+	TrkNoSys		trkNo;		//표적번호
+};
+
+
+
+//------------------------------------------------------------------------
+// Message HMI
+//------------------------------------------------------------------------
+// 1. DMSG_SUBHMI_SYSCTRLMODE
+//------------------------------------------------------------------------
+
+// 1. DMSG_SUBHMI_SYSCTRLMODE
+struct DMSG_SUBHMI_SYSCTRLMODE
+{
+	unsigned long consoleID;
+	unsigned long mode;
+};
+
+
+//------------------------------------------------------------------------
+// Message HMI -> TM
+//------------------------------------------------------------------------
+//	1. DMSG_HMI_WEAPONLIMITSET			무장사용제한설정
+//  2. DMSG_HMI_CREATEMANUALTRACK		수동표적생성
+//  3. DMSG_HMI_TARGETIDENTITYSET		표적식별설정
+//  4. DMSG_HMI_TARGETCATEGORYSET		표적분류설정
+//  5. DMSG_HMI_TARGETNAMESET			표적명설정
+//  6. DMSG_HMI_ENGAGESET				표적교전상태설정
+//  7. DMSG_HMI_MANUALSELECTSET			표적수동선택상태설정
+//  8. DMSG_HMI_IDENTITYDETAILSET		식별상세정보설정
+//  9. DMSG_HMI_WEAPONCAPABILITYSET		무장능력설정
+// 10. DMSG_HMI_DATUMSET				데이텀정보설정
+// 12. DMSG_HMI_SYSTRACKDEL				시스템 트랙 삭제 설정
+// 14. DMSG_HMI_PAIRINGSET				Pairing 설정
+// 15. DMSG_HMI_ASSOCIATIONSET			Association 설정
+// 16. DMSG_HMI_CORRELATIONSET			Correlation 설정
+// 17. DMSG_HMI_CORRELATIONCLEAR		Correlation 해제 설정
+// 18. DMSG_HMI_TRACECHANGE				추적책임변경
+// 24. DMSG_HMI_TRACKWEAPONRANGE		표적 무장 사거리 설정
+// 25. DMSG_HMI_TRACKSENSORRANGE		표적 센서 사거리 설정
+// 26. DMSG_HMI_ANTIWEAPONWEIGHT		대응무장체계 가중치
+// 27. DMSG_HMI_TAGSET					태그 설정
+// 28. DMSG_HMI_SONARSET				표적의 소나정보 설정
+// 29. DMSG_HMI_WEAPONSET				표적의 무장정보 설정
+// 30. DMSG_HMI_SUBCORRELATIONSET		잠수함 Correlation 설정
+// 31. DMSG_HMI_SUBCORRELATIONCLEAR		잠수함 Correlation 해제 설정
+//------------------------------------------------------------------------
+
+//	1. 무장사용제한설정
+struct DMSG_HMI_WEAPONLIMITSET
+{
+	unsigned long	trkNo;				// 시스템트랙번호
+	char		cWeaponLimit;		// 0:open fire, 1: Hold Fire
+};
+
+
+//  2. 수동표적생성
+struct DMSG_HMI_CREATEMANUALTRACK
+{
+	char			cTrackForm;						//모의표적, 실표적여부(0 : None, 1 : Realtime, 2 : Non Realtime, 3 : 모의)
+	char			cTrackType;						//표적종류(0 : No Form, 1 : 점표적, 2 : 참조점)
+	char			cTrackIdentity;					//식별 정보(0 : None, 1 : Pending, 2 : Unknown, 3 : AssumedFriend, 4 : Friend, 5 : AssumedHostile, 6 : Hostile, 7 : Neutral, 8 : Joker, 9 : Faker)
+	char			cTrackCategory;					//표적 분류(0 : None, 1 : 공중, 2 : 수상, 3 : 수중, 4 : 지상)
+	unsigned short	sIdentificationDetailType;		//식별상세정보 타입
+	unsigned short	sIdentificationDetailMajor;		//주식별상세정보
+	unsigned short	sIdentificationDetailMinor;		//부식별상세정보
+	float			fCourse;						//표적의 침로(단위 : degree)
+	float			fSpeed;							//표적의 속력(단위 : knots)
+	coordiHSys		positionCHSys;					//표적의 절대좌표
+
+};
+
+
+//  3. 표적식별설정
+struct DMSG_HMI_TARGETIDENTITYSET
+{
+	unsigned long	trkNo;					//시스템트랙번호
+	char		cTrackIdentity;		//식별 정보(0 : None, 1 : Pending, 2 : Unknown, 3 : AssumedFriend, 4 : Friend, 5 : AssumedHostile, 6 : Hostile, 7 : Neutral, 8 : Joker, 9 : Faker)
+};
+
+
+
+//  4. 표적분류설정
+struct DMSG_HMI_TARGETCATEGORYSET
+{
+	unsigned long	trkNo;				//시스템트랙번호
+	char		cTrackCategory;	//표적 분류(0 : None, 1 : 공중, 2 : 수상, 3 : 수중, 4 : 지상)
+};
+
+
+
+//  5. 표적명설정
+struct DMSG_HMI_TARGETNAMESET
+{
+	unsigned long	trkNo;				//시스템트랙번호
+	char		cTrackName[30];	 //표적 이름
+};
+
+
+//  6. 	표적교전상태설정
+struct DMSG_HMI_ENGAGESET
+{
+	unsigned long	trkNo;				//시스템트랙번호
+	char		cEngageState;		//교전상태(0: 비교전, 1: 교전, 2: 표적지시)
+
+};
+
+
+//  7. 	표적수동선택상태설정
+struct DMSG_HMI_MANUALSELECTSET
+{
+	unsigned long	trkNo;				//시스템트랙번호
+	char		cThreatEvaluation;	//수동선택상태  0: 기본 - 표적선택조건에 따라 자동으로 위협평가
+									//1: 제외 - 선택조건과 관계없이 위협평가에서 제외
+									//2: 선택 - 선택조건과 관계없이 위협평가 수행
+
+};
+
+
+//  8. 식별상세정보설정
+struct DMSG_HMI_IDENTITYDETAILSET
+{
+	unsigned long	trkNo;				//시스템트랙번호
+	unsigned short	sIdentificationDetailType;		//식별상세정보 타입
+	unsigned short	sIdentificationDetailMajor;		//주식별상세정보
+	unsigned short	sIdentificationDetailMinor;		//부식별상세정보
+};
+
+
+//  9. 	무장능력설정
+struct DMSG_HMI_WEAPONCAPABILITYSET
+{
+	unsigned long	trkNo;					//시스템트랙번호
+	unsigned short	sWeaponCapability;		//표적의 무장능력(1~5)값
+	float			fWeaponMaxRange;		//표적의 무장최대사거리 값
+
+};
+
+
+// 10. 데이텀정보설정
+struct DMSG_HMI_DATUMSET
+{
+	unsigned long	trkNo;				//시스템트랙번호
+	float		fDatumSpd;		//데이텀속도 (단위 : Knots)
+	float		fDatumErr;		//데이텀오차 (단위 : nm)
+
+};
+
+
+
+// 12. 시스템 트랙 삭제 설정
+struct DMSG_HMI_SYSTRACKDEL
+{
+	unsigned long	DelTrkNo;				//삭제할 시스템트랙번호
+};
+
+
+// 14. Pairing 설정
+struct DMSG_HMI_PAIRINGSET
+{
+	char		cPairingType;	// 0 : 페어링, 1 : 페어링 해제
+	TrkNoSys	PairingTrkNo;	// pairing 트랙
+	TrkNoSys	NetTrkNo;		// 네트워크 트랙
+
+};
+
+
+// 15. Association 설정
+struct DMSG_HMI_ASSOCIATIONSET
+{
+	char		cAssociationType;	// 0 : 연관, 1 :연관 해제
+	TrkNoSys	MainTrkNo;			// association 주체 트랙
+	TrkNoSys	MinortrkNo;			// association 될 트랙
+};
+
+
+
+// 16. Correlation 설정
+struct DMSG_HMI_CORRELATIONSET
+{
+	TrkNoSys	KeeptrkNo;		//유지될 트랙
+	TrkNoSys	DeltrkNo;		//삭제될 트랙
+};
+
+
+// 17. Correlation 해제 설정
+struct DMSG_HMI_CORRELATIONCLEAR
+{
+	TrkNoSys	trkNo;			// correlation 해제될 트랙
+};
+
+
+// 18. 추적책임변경
+struct DMSG_HMI_TRACECHANGE
+{
+	unsigned long	trkNo;				//시스템트랙번호
+	unsigned long	nSensorType;
+};
+
+// 24. 	표적 무장 사거리 설정
+struct DMSG_HMI_TRACKWEAPONRANGE
+{
+	TrkNoSys	trkNo;			//설정할 표적 번호
+	float		fRange;			//무장 사거리값
+};
+
+// 25. 	표적 센서 사거리 설정
+struct DMSG_HMI_TRACKSENSORRANGE
+{
+	TrkNoSys	trkNo;			//설정할 표적 번호
+	float		fRange;			//센서 사거리값	
+};
+
+// 26. 대응 무장체계 가중치
+struct DMSG_HMI_ANTIWEAPONWEIGHT
+{
+	TrkNoSys	trkNo;			// 표적번호
+	long		nWeight;		// 가중치
+};
+
+// 27. 태그 설정
+struct DMSG_HMI_TAGSET
+{
+	unsigned long	trkNo;		// 시스템트랙번호
+	char			cTagSet[6];	// 태그 설정
+};
+
+// 28. 표적의 소나정보 설정
+struct DMSG_HMI_SONARSET				
+{
+	unsigned long	trkNo;		// 시스템트랙번호
+	char			cValid;		// 소나 탑재 여부 ( 0=NONE, 1=Valid )
+	float			fRange;		// Sonar range
+};
+
+// 29. 표적의 무장정보 설정
+struct DMSG_HMI_WEAPONSET				
+{
+	unsigned long	trkNo;		// 시스템트랙번호
+	char			cValid;		// 무장 탑재 여부 ( 0=NONE, 1=Valid )
+	float			fRange;		// Weapon range
+};
+
+// 30. 잠수함 Correlation 설정
+struct DMSG_HMI_SUBCORRELATIONSET
+{
+	unsigned long	KeeptrkNo;
+	unsigned long	DeltrkNo;
+};
+
+
+// 31. 잠수함 Correlation 해제 설정
+struct DMSG_HMI_SUBCORRELATIONCLEAR
+{
+	stSubSysTrackID		sSysTrkID;
+};
+
+//------------------------------------------------------------------------
+//	Message From TM
+//------------------------------------------------------------------------
+//  1. DMSG_TM_SYSTRACKDEL			시스템트랙삭제정보
+//  2. DMSG_TM_SYSTRACK				시스템트랙정보
+//  8. DMSG_TM_SWSTATE				소프트웨어 상태정보
+//	12.DMSG_TM_SUBSYSTEMTRACK		잠수함 시스템 트랙
+//	13.DMSG_TM_SUBSYSTRACKDEL		잠수함 시스템 트랙 삭제
+//------------------------------------------------------------------------
+
+//  1. 시스템트랙삭제정보
+struct DMSG_TM_SYSTRACKDEL
+{
+	TrkNoSys	trkNo;	 //삭제된 시스템트랙번호
+};
+
+
+//  2. 	시스템트랙정보
+struct DMSG_TM_SYSTRACK
+{
+	TrkNoSys			trkNo;						//시스템트랙번호
+	char				cWeaponLimit;				//무장사용제한(0:open fire, 1: Hold Fire(초기값))
+	char				cEngageState;				//교전상태(0: 비교전, 1: 교전, 2: 표적지시)
+	char				cThreatEvaluation;			//수동선택상태 0:기본 - 표적선택조건에 따라 자동으로 위협평가
+													//1: 제외 - 선택조건과 관계없이 위협평가에서 제외 2: 선택 - 선택조건과 관계없이 위협평가 수행"
+	char				cEngageResult;				//교전결과(0: 미확인, 1: 명중, 2: 실패)
+	unsigned long		nCreatedTimeTag;			//정보의 생성시간(Local Time)
+	unsigned long		nUpdatedTimeTag;			//정보의 갱신시간(Local Time)
+	char				cTrackType;					//표적종류(0 : No Form, 1 : 점표적, 2 : 참조점)
+	char				cTrackCategory;				//표적의 분류(0 : None, 1 : 공중, 2 : 수상, 3 : 수중, 4 : 지상)
+	char				cTrackIdentity;				//식별 정보(0 : None, 1 : Pending, 2 : Unknown, 3 : AssumedFriend, 4 : Friend, 5 : Suspect, 6 : Hostile, 7 : Neutral, 8 : Joker, 9 : Faker)
+	char				cIFFMode1;					//피아식별응답코드
+	unsigned short		sIFFMode2;					//피아식별응답코드
+	unsigned short		sIFFMode3;					//피아식별응답코드
+	unsigned short		sIFFModeC;					//피아식별응답코드
+	char				cIFFMode4;					//피아식별응답코드
+	char				cTrackName[30];				//표적의이름
+	unsigned short		sTrackNationality;			//표적의국적(우측 Enumeration참조)
+	char				cTrackForm;					//모의표적, 실표적여부(0 : None, 1 : Realtime, 2 : Non Realtime, 3 : 모의)
+	rectHSys			position;					//트랙위치 
+	coordiHSys			positionCHSys;				//트랙위치 절대좌표
+	char				cTrackQuality;				//표적접촉신뢰도 정보(0~7 : scan된 숫자)
+													//추적레이더 : 8 / 전자광학추적장비 : 8 / 탐색레이더(TWS) : 6 / 탐색레이더 : 5 / 적아식별기 : 4 / 전자전장비 : 3 / 운용자(참조점) : 0
+	char				cWeaponCapability;			//표적의 무장능력(1~5)값
+	float				fWeaponMaxRange;			//표적의 무장최대사거리 값
+	float				fDatumSpd;					//데이텀속도(단위 : Knots)
+	float				fDatumErr;					//데이텀오차(단위 : nm)
+	unsigned short		sIdentificationDetailType;	//식별상세정보 타입
+	unsigned short		sIdentificationDetailMajor;	//주식별상세정보
+	unsigned short		sIdentificationDetailMinor;	//부식별상세정보
+	float				fBearing;					//자함중심 방위(단위 : degree)
+	float				fRange;						//표적거리(단위 : nm항속거리)
+	float				fCourse;					//표적의 침로(단위 : degree)
+	float				fSpeed;						//표적의 속력(단위 : knots)
+	char				ctag[6];					//태그설정(영문3자리와 숫자3자리 구성)
+	char				cLinkAlert;					//데이터링크 경고
+	char				cMissleCheck;				//유도탄 탑재여부
+	float				fElevation;					//표적의 고각(단위 : degree, -90~90)
+	float				fBearingRate;				//방위변화율
+	char				cSensorType;				//탐지센서타입
+	float				fROC;						//Range Of Confidence
+	char				cLinkState;					//링크상태정보	0: NONE 1: 수신 2: 융합 3: 충돌
+	TrkNoSys			pairingTrk[4];				// Pairing 된 시스템 트랙 정보
+													// pairing표적 없는 경우 표적번호 0으로 설정, 표적 하나 당 연관 가능한 개수 4개
+	TrkNoSys			associationTrk[4];			// Association 된 시스템 트랙 정보
+};
+
+
+//  8. 	소프트웨어 상태정보
+struct DMSG_TM_SWSTATE
+{
+	char	cSoftwareState;		//소프트웨어상태(0:None, 1:정상, 2:비정상)
+};
+
+
+// 12. 잠수함 시스템 트랙
+struct DMSG_TM_SUBSYSTEMTRACK
+{
+	stSubSysTrackID		sSysTrkID;						//시스템 표적 번호
+	long				nRepresentativeSensor;			//대표 센서( 0.NONE, 1.PRS 2.BDT CAS 3.BDT FAS 4.DEM CAS 5.LDT FAS 6.DEM FAS 7.NAVR 8.LINK 9.PERI 10.OMS 11.MANUAL 12.TORP 13.IPS 14.ESM )
+	char				cLinkState;						// link state ( 0: NONE 1: 수신 2: 융합 3: 충돌 )
+	stFullTime			sCreatedTime;					//표적정보 생성 시간
+	stFullTime			sUpdatedTime;					//표적정보 갱신 시간
+	char				nTrackSource;					//표적 분류 (센서) : 0=NONE, 1=ATT표적, 2=TPM표적, 3=DRT표적, 4=LRO표적
+	char				nTrackType;						//표적 종류(0 : No Form, 1 : 점표적, 2 : 방위표적, 3 참조점)
+	char				cTrackCategory;					//표적의 분류(0 : None, 1 : 공중, 2 : 수상, 3 : 수중, 4 : 지상)
+	char				cTrackIdentity;					//"식별 정보0 : None, 1 : Pending, 2 : Unknown, 3 : AssumedFriend, 4 : Friend, 5 : Suspect, 6 : Hostile, 7 : Neutral, 8 : Joker, 9 : Faker"
+								
+	char				cTrackName[30];					//표적의 이름
+	unsigned short		sIdentificationDetailType;		//식별정보	0=NONE 1=TYPE1 2=TYPE2 3=TYPE3"
+	unsigned short		sIdentificationDetailMajor;		//주상세정보 "0=NONE, 1=탐색, 2=음향부표, 3=수중"
+	unsigned short		sIdentificationDetailMinor;		//부상세정보 "0=NONE, 1=대잠 스테이션, 2=대잠 수중 스테이션, 3=해저, 4=잠시접촉, 5=접촉소실, 6=침선, 7=잠수지점,
+														//				8=추정위치, 9=음향부표 킹핀, 10=음향부표 패턴 센터 11=탐색영역, 12탐색 중심, 13=기뢰추, 14=대잠 공격 금지구역"
+	char				cTag[6];						//태그설정(영문3자리와 숫자3자리 구성)
+	float				fBearing;						//자함중심 방위 (단위 : degree)
+	float				fBearingRate;					//자함중신 방위 변화율 (단위: d/m ?)
+	float				fRange;							//표적거리 (단위 : m)
+	float				fCourse;						//표적의 침로 (단위 : degree)
+	float				fSpeed;							//표적의 속력 (단위 : m/s)
+	coordiHSys			positionCHSys;					//표적의 절대좌표
+	char				cSNRatio;						// S/N Ratio
+	char				cPulseLv;						// Pulse level
+	float				fAOB;							// 표적의 침로 기준 자함의 방위각
+	char				cSonarValid;					// 소나 탑재 여부 ( 0=NONE, 1=Valid )
+	float				fSonarRange;					// Sonar range
+	char				cWeaponValid;					// 무장 탑재 여부 ( 0=NONE, 1=Valid )
+	float				fWeaponRange;					// Weapon range
+
+
+};
+
+// 13. 잠수함 시스템 트랙 삭제
+struct DMSG_TM_SUBSYSTRACKDEL
+{
+    stSubSysTrackID	sSysTrkID;
+};
+
+
+//------------------------------------------------------------------------
+// Message From HMI to TEWA / EC
+//------------------------------------------------------------------------
+//	1. DMSG_HMI_WEAPONCTRL					무장통제명령설정
+//  2. DMSG_HMI_FASTRESPONSEMODE			신속대응교전모드
+//  3. DMSG_HMI_WEAPONUSELIMIT				무장사용제한설정
+//  4. DMSG_HMI_ENGAGEMODESET				교전모드 설정
+//  5. DMSG_HMI_ENGAGEADVICEREQ				교전채널 권고목록 요청
+//  6. DMSG_HMI_THREATDICISION				위협여부 판단정보
+//  7. DMSG_HMI_WEAPONRANGE					무장교전 가능영역
+//  8. DMSG_HMI_SENSORRANGE					센서교전 가능영역
+//  9. DMSG_HMI_ENGAGEADVICEMODIFY			교전채널 권고목록 수정
+// 10. DMSG_HMI_CLEARENGAGEASSIGN			교전채널 할당 해제 
+// 11. DMSG_HMI_THREATWEIGHT				위협평가 가중치 설정
+// 12. DMSG_HMI_DEFENSEMODE					위협평가 방어 모드 설정
+// 14. DMSG_HMI_FIREPERMIT					발사승인
+// 15. DMSG_HMI_ENGAGECANCEL				교전취소명령
+// 16. DMSG_HMI_HITEVALUATIONSET			명중평가 설정
+// 17. DMSG_HMI_ASSIGNCONSOLE				무장통제콘솔 할당
+// 18. DMSG_HMI_GUIDEDWEAPONPERMIT			유도무기 승인정보
+// 19. DMSG_HMI_ASSIGNTUBE					발사관 (무장) 할당
+// 20. DMSG_HMI_ENGAGEPLANSET				예비교전설정정보
+// 21. DMSG_HMI_FIREPERMITKEYSTATE			발사허가키 상태
+// 22. DMSG_HMI_FIREPERMITBTNSTATE			발사인가버튼상태
+// 23. DMSG_HMI_FIRECMD						발사통제
+// 24. DMSG_HMI_ENGAGEASSIGNCMD				교전할당명령  (HMI -> EC)	
+// 25. DMSG_HMI_FIRINGCMD					무장발사명령(HMI -> EC)
+// 26. DMSG_EC_ENGAGEDEL					교전목록 삭제
+// 27. DMSG_HMI_MANUALENGAGEASSIGN			교전할당 (수동) (HMI -> EC) 
+// 28. DMSG_HMI_EMERGENCYFIRE				비상폭파명령
+// 29. DMSG_HMI_SAMTARGETDESIG				SAM 표적지정 (HMI -> EC)
+// 30. DMSG_EC_GUIDEDWEAPONPERMIT			유도무기승인정보
+// 31. DMSG_HMI_TRRTRACKINGCMD				TRR 추적설정
+// 32. DMSG_HMI_EOTSSUBTRACKINGSET			종속추적 설정
+// 33. DMSG_HMI_TDSRTWSTARGETDESIG			TWS표적지정
+// 34. DMSG_HMISUB_ENGAGECANCEL				교전취소 명령(HMI_SUB)
+// 35. DMSG_EC_SUBENGAGEDEL					잠수함 교전 종료
+// 36. DMSG_HMI_FIREMODE					발사 모드
+// 37. DMSG_HMI_ASSIGNSLTSTUBE				경어뢰 발사관 할당
+//------------------------------------------------------------------------
+
+//	1. 무장통제명령설정
+struct DMSG_HMI_WEAPONCTRL
+{
+	char	cWeaponCtrl;	//무장통제명령 0: weapon free, 1: weapon tight, 2: weapon hold"
+
+};
+
+
+
+//  2. 	신속대응교전모드
+struct DMSG_HMI_FASTRESPONSEMODE
+{
+	char	cFastResponseMode;	//신속대응교전모드 0: 자동, 1: 반자동, 2:수동
+};
+
+
+
+//  3. 무장사용제한설정
+struct DMSG_HMI_WEAPONUSELIMIT
+{
+	TrkNoSys	trkNo;			//시스템트랙번호
+	char		cWeaponLimit;	//무장사용제한 설정 0:open fire, 1: Hold Fire
+};
+
+
+
+//  4. 교전모드 설정
+struct DMSG_HMI_ENGAGEMODESET
+{
+	char	cMode;	// 변경하고자 하는 대공 교전채널 할당 운용 모드 정보( 0 : 자동, 1 : 반자동, 2 : 수동)
+};
+
+
+
+//  5. 교전채널 권고목록 요청
+struct DMSG_HMI_ENGAGEADVICEREQ
+{
+	char		cEngageType;	//교전타입(0 : 대공, 1 : 대함, 2 : 대잠)
+	TrkNoSys	trkNo;			//시스템트랙번호
+};
+
+
+
+//  6. 위협여부 판단정보
+struct DMSG_HMI_THREATDICISION
+{
+	char	cEngageType;		//위협구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	char	cTrackIdentity;		//피아식별 정보(0x00: None, 0x01:Pending, 0x02:Unkown, 0x04: Suspect, 0x08: Hostile )
+	float	fMinRange;			//최소거리
+	float	fMaxRange;			//최대거리
+	float	fMinBearing;		//최소방위
+	float	fMaxBearing;		//최대방위
+	float	fMinSpd;			//최소속력 (위협구분이 대공인 경우에만 유효함)
+	float	fMaxSpd;			//최대속력 (위협구분이 대공인 경우에만 유효함)
+	float	fElevation;			//경사각 (위협구분이 대공인 경우에만 유효함)
+};
+
+
+
+//  7. 무장교전 가능영역
+struct DMSG_HMI_WEAPONRANGE
+{
+	char			cWeaponID;		//0: 함포, 1: SSM
+	unsigned short	sAirMinRange;	//최소 대공 거리
+	unsigned short	sAirMaxRange;	//최대 대공 거리
+	unsigned short	sMinRange;		//최소 비대공 거리
+	unsigned short	sMaxRange;		//최대 비대공 거리
+	unsigned short	sMaxFireRate;	//최대 발사율
+	unsigned short	sMaxInventory;	//연발 최대 유도탄 수
+};
+
+
+
+//  8. 센서교전 가능영역
+struct DMSG_HMI_SENSORRANGE
+{
+	char			cSensorID;		//0: TDSR, 1: TRR, 2: EOTS
+	unsigned short	sAirMinRange;	//최소 대공 탐지거리
+	unsigned short	sAirMaxRange;	//최대 대공 탐지거리
+	unsigned short	sMinRange;		//최소 비대공 탐지거리
+	unsigned short	sMaxRange;		//최대 비대공 탐지거리
+	unsigned short	sAntenna;		//안테나 회전수 
+	unsigned short	sFrequency;		//주파수
+	unsigned short	sPulsePeriod;	//펄스 반복 주기
+	unsigned short	sPulseWidth;	//펄스 폭
+};
+
+
+
+//  9. 	교전채널 권고목록 수정
+struct DMSG_HMI_ENGAGEADVICEMODIFY
+{
+	TrkNoSys	trkNo;			//시스템트랙번호
+	char		cEngageType;	//교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	char		cTrackRdrID;	//선정된 추적레이더 id (추적:TRR, 탐색:TDSR, 전자광학:EOTS, 전자전장비:EW)
+	char		cRdrType;		//레이더의 종류 구분(1:탐색 레이더, 2:추적 레이더)
+	char		cChannelID;		//탐색레이더의 채널 번호(예 - TWS1, TWS2)
+	char		cWeaponID;		//선정된 무장 id
+	char		cConsoleID;		//선정된 콘솔 id
+};
+
+
+
+// 10. 	교전채널 할당 해제 
+struct DMSG_HMI_CLEARENGAGEASSIGN
+{
+	char		cEngageType;	//교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	TrkNoSys	trkNo;			//시스템트랙번호
+	char		cReleaseType;	//할당해제할 대상(0 : None, 1 : 센서, 2: 무장, 3 : 콘솔, 4 : All)
+	char		cTrackRdrID;	//할당해제할 추적레이더 id (추적:TRR, 탐색:TDSR, 전자광학:EOTS, 전자전장비:EW)
+	char		cRdrType;		//레이더의 종류 구분(1:탐색 레이더, 2:추적 레이더)
+	char		cChannelID;		//탐색레이더의 채널 번호(예 - TWS1, TWS2)
+	char		cWeaponID;		//할당해제할 무장 id
+	char		cConsoleID;		//할당해제할 콘솔 id
+	boolean		bUnit;			//함대선정여부(0 : No, 1 : 선정)
+	char		cUnitID;		//할당해제할 함대 id
+};
+
+
+
+// 11. 위협평가 가중치 설정
+struct DMSG_HMI_THREATWEIGHT
+{
+	TrkNoSys	trkNo;		//시스템트랙번호
+	char		cWeight;	//대공 위협평가 가중치(-999~999)
+};
+
+
+
+// 12. 위협평가 방어 모드 설정
+struct DMSG_HMI_DEFENSEMODE
+{
+	char	cDefenseMode;	//위협평가 방어모드(0 : None, 1 : 자함방어, 2 : 세력방어)
+};
+
+
+// 14. 발사승인
+struct DMSG_HMI_FIREPERMIT
+{
+	char		cWeaponID;	//무장 0: 함포 1: 어뢰음향대항체계 2: 대함유도탄방어유도탄 3: 경어뢰체계
+	char		cFire;		//0: 발사승인 1: 발사금지
+
+};
+
+
+
+// 15. 교전취소명령
+struct DMSG_HMI_ENGAGECANCEL
+{
+	unsigned short	AssignNum;	//취소할 할당 번호
+};
+
+
+
+// 16. 	명중평가 설정
+struct DMSG_HMI_HITEVALUATIONSET
+{
+	TrkNoSys		trkNo;			//시스템트랙번호
+	unsigned short	AssignNum;		//명중 처리할 할당 번호
+	char			cKillResult;	//명중평가결과( 0 : 명중실패, 1 : 명중성공)
+};
+
+
+// 17. 무장통제콘솔 할당
+struct DMSG_HMI_ASSIGNCONSOLE
+{
+	char	cConsoleID;		//콘솔 번호
+	char	byTube;			//발사관종류
+	char	byTubeNum;		//발사관번호
+};
+
+
+//  18.  	유도무기 승인정보
+struct DMSG_HMI_GUIDEDWEAPONPERMIT
+{
+	char		cConsoleID;	//콘솔ID
+	char		cTubeID;	//튜브ID
+	char		byFireOk;	// 0: 교전계획승인 1: 교전계획승인거부
+};
+
+
+// 19. 발사관 (무장) 할당
+struct DMSG_HMI_ASSIGNTUBE
+{
+	char		cConsoleID;	//콘솔ID
+	TrkNoSys	trkNo;		//표적번호
+	char		byTube;		//발사관종류
+	char		byTubeNum;	//발사관번호
+};
+
+
+
+// 20. 예비교전설정정보
+struct DMSG_HMI_ENGAGEPLANSET
+{
+	char		cEngagePlanCtrl;	//예비교전계획 (0:시작/1:종료)
+	TrkNoSys	trkNo;				//표적번호
+};
+
+
+
+// 21.발사허가키 상태
+struct DMSG_HMI_FIREPERMITKEYSTATE
+{
+	char	cFirePermitKey;		//0: 정상 1: 오류
+};
+
+
+
+// 22. 	발사인가버튼상태
+struct DMSG_HMI_FIREPERMITBTNSTATE
+{
+	char	cFirePermitBtn; 	//발사인가
+};
+
+
+// 23. 	발사통제
+struct DMSG_HMI_FIRECMD
+{
+	char	byConsoleID;	// 콘솔번호
+	char	byTubeNum;		// 발사관번호
+	char	byLinkTubeNum;	// 링크어뢰 발사관번호
+	char	byTubeType;		// 
+	char	byFirectrl;		// 발사 통제 ( 0 : 발사/1 :발사취소)
+};
+
+// 24. 교전할당명령  (HMI -> EC)
+struct DMSG_HMI_ENGAGEASSIGNCMD
+{
+	TrkNoSys	trkNo;				//표적번호
+	long		nAssignmentPlanID;	//무장할당 계획ID
+};
+
+//  25. 사격실행명령 (HMI -> EC)
+struct DMSG_HMI_FIRINGCMD
+{
+	unsigned long	trkNo;				// 표적번호
+	char			cWeaponID;
+	char			cFireCommand;		// 함포명령, 1: Fire, 2: Hold, 3: Resume, 4: Terminate
+};
+
+
+//  26. 교전목록 삭제
+struct DMSG_EC_ENGAGEDEL
+{
+	TrkNoSys	trkNo;			//표적번호
+	unsigned short AssignNum;	//할당번호
+};
+
+
+
+// 27.  교전할당 (수동)
+struct DMSG_HMI_MANUALENGAGEASSIGN
+{
+	char		cEngageType;	//교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	TrkNoSys	trkNo;			//시스템트랙번호
+	char		cTrackRdrID;	//선정된 추적레이더 id (추적:TRR, 탐색:TDSR, 전자광학:EOTS, 전자전장비:EW)
+	char		cRdrType;		//레이더의 종류 구분(1:탐색 레이더, 2:추적 레이더)"
+	char		cChannelID;		//탐색레이더의 채널 번호 (예 - TWS1, TWS2)"
+	char		cWeaponID;		//선정된 무장 id
+	char		cConsoleID;		//선정된 콘솔 id
+	time1		EngageTime[6];	//무장대응시간 (TTA, TTFF, TTIZ, TTLF, TTEZ,reserved)"
+};
+
+
+// 28. 비상폭파명령
+struct DMSG_HMI_EMERGENCYFIRE
+{
+	TrkNoSys	trkNo;			// 표적번호
+	char		weapon_id;		// 선정된 무장 id [message.h의 enum WEAPON_TYPE 참고]
+
+};
+
+// 29. SAM  표적지정 (HMI -> EC)
+struct DMSG_HMI_SAMTARGETDESIG
+{
+	long	nSysTrackNum;			// 시스템트랙번호
+	char	byMissileCnt;			// 공격탄수 (1-4)
+	char	byAttackMode;			// 공격모드 0: Not Available 1: 자동고도(Sea Skim) 2: 경사(Pop-Up) 3: 회피기동(Evasive Maneunver) 4: 자동고도하 강 (Sea Skim and Dive) 5: 지정고도(Fixed Altitude Sea Skim)
+	char	byLaunchMode;			// 발사모드, 0: Not Available, 1: BOL, 2: RBL
+	char	byAttackType;			// 공격유형, 0: Not Available, 1: STOT, 2: DTOT,  3: Ripple Fire
+	char	byAttackTimeType;		// 지정시간공격-시간유형, 0: 표준시간(GMT), 1: 현지시간
+	char	byAttackTimeHour;		// 지정시간공격-시
+	char	byAttackTimeMin;		// 지정시간공격-분
+	char	byEngagementMode;		// 교전모드(TBD), 0: 비정상, 1: 정상
+	char	byEngagementCommand;	// 교전명령 종류, 0: 교전취소(Engagement Cancel) 1: 교전명령(Engagement Start), 2: 발사중지(Launch Cancel)
+	char	byPositionValid;		// 0: Invalid, 1: Valid
+	double	dLat;					// 자함위치 (위도) (-90~90 degree)
+	double	dLon;					// 자함위치 (경도) (-90~90 degree)
+	char	byBearingValid;			// 0: Invalid, 1: Valid
+	float	fBearing;				// 방위 (-180~180 degree)
+	char	byRangeValid;			// 0: Invalid, 1: Valid
+	float	fRange;					// 거리 (0~250000)
+	char	byCourseValid;			// 0: Invalid, 1: Valid
+	float	fCourse;				// 침로 (-180 ~ 180 degree)
+	char	bySpeedValid;			// 0: Invalid, 1: Valid
+	float	fSpeed;					// 속력 (-3000~3000 m/s)
+	char	byTargetForm;			// 표적형태, 0: None, 1: Real Track(실표적) 2: Simulated Track(모의표적)
+	char	byTargetType;			// 표적종류, 0: None, 1: Point Track(점표적) 2: Bearing Track(방위표적), 3: Reference Point(참조점)
+	char	byDetectSource;			// 탐지원(TBD), 0: None, 1: Ownship, 2: Link
+	char	byPlatform[10];			// 플랫폼
+};
+
+// 30. 유도무기 승인정보
+struct DMSG_EC_GUIDEDWEAPONPERMIT
+{
+	char	byTubeNum;	// 발사관번호
+	char	byFireOk;	// 0: 교전계획승인 1: 교전계획승인거부
+};
+
+// 31. TRR 추적설정
+struct DMSG_HMI_TRRTRACKINGCMD
+{
+	TrkNoSys	trkNo;						// 표적번호
+	char		byTrackingStatus;			// 0: Start Tracking, 1: Stop Tracking
+	double		dBearing;					// 방위
+	double		dElevation;					// 고각
+	double		dDistance;					// 거리
+};
+
+
+// 32. EOTS 종속추적 설정
+struct DMSG_HMI_EOTSSUBTRACKINGSET					
+{
+	TrkNoSys	trkNo;						// 표적번호
+	char		bySubTracking;				// 종속추적, 0: OFF, 1: ON
+	double		dBearing;					// 지리좌표의 방위각
+	double		dAltitude;					// 지리좌표의 고각
+	char		bySubTrackingSensor;		// 1: FC1, 2: FC2, 3: FC3
+};
+
+
+// 33. TWS표적지정
+struct DMSG_HMI_TDSRTWSTARGETDESIG			
+{
+	TrkNoSys	trkNo;						// 표적번호
+	char		byTrackingStatus;			// 0: Start Tracking, 1: Stop Tracking
+	char		TrackingChannel;			// 추적채널 , 1: TWS-1, 2: TWS-2
+	double		dPosX;						// 위치
+	double		dPosY;
+	double		dPosZ;
+};
+
+// 34. 교전취소 명령(HMI_SUB)
+struct DMSG_HMISUB_ENGAGECANCEL
+{
+	TrkNoSys	trkNo;		//시스템트랙번호
+	char		byTubeID;	//발사관번호
+	char		byTube;		//발사관종류 (0: 수평 /1 : 수직)
+};
+
+// 35. 잠수함 교전 종료
+struct DMSG_EC_SUBENGAGEDEL
+{
+	TrkNoSys	trkNo;		//시스템트랙번호
+	char		byTubeID;	//발사관번호
+	char		byTube;		//발사관종류 (0: 수평 /1 : 수직)
+};
+
+// 36. 발사 모드
+struct DMSG_HMI_FIREMODE
+{
+	char	cMode;		// 발사모드 0 : 자동 1 : 반자동
+};
+
+// 37. 경어뢰 발사관 할당
+struct DMSG_HMI_ASSIGNSLTSTUBE				
+{
+	char	cTubeID;
+	char	cTubeDirection;
+};
+
+//------------------------------------------------------------------------
+//	Message From TEWA
+//------------------------------------------------------------------------
+//  1. DMSG_TEWA_ENGAGEADVICEDEL			교전채널권고목록삭제
+//  2. DMSG_TEWA_FASTRESPONSECHANNEL		신속대응 교전채널 정보
+//	3. DMSG_TEWA_ENGAGEADVICE				교전채널권고목록
+//  4. DMSG_TEWA_THREATDEL					위협평가목록 삭제
+//	5. DMSG_TEWA_AIRTHREATEVALUATION		위협평가목록(대공)
+//  6. DMSG_TEWA_SHIPTHREATEVALUATION		위협평가목록(대함)
+//  7. DMSG_TEWA_SUBTHREATEVALUATION		위협평가목록(대잠)
+//  8. DMSG_TEWA_ENGAGEPOSSIBILITY			교전가능성 분석결과
+//  9. DMSG_TEWA_SWSTATE					소프트웨어 상태정보
+// 10. DMSG_TEWA_TORPEDOALERT				어뢰경보
+// 11. DMSG_TEWA_DIRECTENGAGEADVICE			직접사격교전권고목록
+// 12. DMSG_TEWA_SENSORWEAPONREQ			센서무장가용여부요청 (TEWA -> OSM)
+//------------------------------------------------------------------------
+
+//  1. 교전채널권고목록삭제
+struct DMSG_TEWA_ENGAGEADVICEDEL
+{
+	TrkNoSys	trkNo;	//트랙번호
+};
+
+
+
+//  2. 신속대응 교전채널 정보
+struct DMSG_TEWA_FASTRESPONSECHANNEL
+{
+	char		cEngageType;	//교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	TrkNoSys	trkNo;			//시스템트랙번호
+	char		cTrackRdrID;	//선정된 추적레이더 id (추적:TRR, 탐색:TDSR, 전자광학:EOTS, 전자전장비:EW)
+	char		cChannelID;		// TrackRdrID = 2(TDSR) 인 경우 유효함 탐색레이더의 채널 번호 (1: TWS1, 2: TWS2)"
+	char		cWeaponID;		//선정된 무장 id
+	char		cConsoleID;		//선정된 콘솔 id
+};
+
+
+
+//	3. 	교전채널권고목록
+struct DMSG_TEWA_ENGAGEADVICE
+{
+	char		cEngageType;			// 교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	TrkNoSys	trkNo;					// 시스템트랙번호
+	char		cEngageAvailability;	// 교전가능성(0 : None, 1 : 교전가능, 2 : 교전대기, 3 : 교전불가)
+	char		cTrackRdrID;			// 선정된 추적레이더 id (추적:TRR, 탐색:TDSR, 전자광학:EOTS, 전자전장비:EW)
+	char		cChannelID;				// TrackRdrID = 2(TDSR) 인 경우 유효함 탐색레이더의 채널 번호 (1: TWS1, 2: TWS2)"
+	char		cWeaponID;				// 선정된 무장 id
+	char		cConsoleID;				// 선정된 콘솔 id
+	char		cPriority;				// 우선순위
+	time1		EngageTime[6];			// 무장대응시간 (TTA, TTFF, TTIZ, TTLF, TTEZ,reserved)"
+};
+
+
+
+//  4. 위협평가목록 삭제
+struct DMSG_TEWA_THREATDEL
+{
+	TrkNoSys	trkNo;					//시스템트랙번호
+
+};
+
+
+
+//	5. 위협평가목록(대공)
+struct DMSG_TEWA_AIRTHREATEVALUATION
+{
+	TrkNoSys		trkNo;					//시스템트랙번호
+	char			cEngageType;			//교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	char			cPriority;				//우선순위
+	unsigned short	sScore;					//위협지수
+	unsigned short	sWeight;				//가중치
+	unsigned short	sTimeToGo;				//도달시간(단위 : sec)
+	char			cEngageAvailability;	//교전가능성(0 : None, 1 : 교전가능, 2 : 교전대기, 3 : 교전불가)
+};
+
+
+
+//  6. 위협평가목록(대함)
+struct DMSG_TEWA_SHIPTHREATEVALUATION
+{
+	TrkNoSys		trkNo;					//시스템트랙번호
+	char			cEngageType;			//교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	char			cPriority;				//우선순위
+	float			fMaxEffectiveRange;		//최대사거리
+	unsigned short	sWeaponCapability[10];	//무장능력
+	float			fRange;					//거리(단위 : nm)
+	char			cEngageAvailability	;	//교전가능성(0 : None, 1 : 교전가능, 2 : 교전대기, 3 : 교전불가)
+};
+
+
+
+//  7. 위협평가목록(대잠)
+struct DMSG_TEWA_SUBTHREATEVALUATION
+{
+	TrkNoSys		trkNo;					//시스템트랙번호
+	char			cEngageType;			//교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	char			cPriority;				//우선순위
+	char			cThreatType;			//위협종류(대잠, 어뢰)
+	float			fRange;					//거리
+	float			fDoppler;				//도플러
+	unsigned short	sIdentity;				//식별
+	char			cEngageAvailability;	//교전가능성(0 : None, 1 : 교전가능, 2 : 교전대기, 3 : 교전불가)
+	float			fBearing;				//방위
+	unsigned long	nFirstOccurenceTime;	//최초발생시간s
+};
+
+
+
+//  8. 교전가능성 분석결과
+struct DMSG_TEWA_ENGAGEPOSSIBILITY
+{
+	char		TBD;
+};
+
+
+
+//  9. 소프트웨어 상태정보
+struct DMSG_TEWA_SWSTATE
+{
+	char	cSoftwareState;	//소프트웨어상태(0:None, 1:정상, 2:비정상)
+};
+
+
+
+// 10. 	어뢰경보
+struct DMSG_TEWA_TORPEDOALERT
+{
+	TrkNoSys	trkNo;		//시스템트랙번호
+	boolean		bAlert;		//0: None, 1: 경고
+};
+
+
+// 11. 직접사격교전권고목록
+struct DMSG_TEWA_DIRECTENGAGEADVICE
+{
+	long				nWeaponID;					//선정된 무장ID	
+	long				nTrackRadarID;				//선정된 추적레이더ID(TRR,TDSR,EOTS,ESM)		
+	short				sRadarType;					//레이더의 종류 구분(1:탐색레이더, 2:추적레이더)
+	long				nChannelID;					//탐색레이더의 채널번호
+	double				dLat;
+	double				dLong;
+	double				dAlt;
+	unsigned short		wEngagement_Availability;	//교전가능성(0:None, 1:교전가능, 2:교전대기,3:교전불가)
+};
+
+// 12. 센서무장가용여부요청 (TEWA -> OSM)
+
+struct DMSG_TEWA_SENSORWEAPONREQ
+{
+	long				nWeaponID;				// 무장ID		
+	long				nSensorID;				// 센서ID (TRR,TDSR,EOTS,ESM)
+};
+
+
+
+
+//------------------------------------------------------------------------
+//	Message From EC
+//------------------------------------------------------------------------
+//	1.  DMSG_EC_FIRINGCMD						함포발사
+//  2.  DMSG_EC_HITEVALUATIONSRESULT			명중평가설정결과
+//  3.  DMSG_EC_ENGAGEINFO						교전목록	
+//  4.  DMSG_EC_ENGAGEASSIGN					교전할당
+//  5.  DMSG_EC_ENGAGEPLANSET					예비교전 설정정보
+//  6.  DMSG_EC_FIREPERMITKEYSTATE				발사허가키 상태
+//  7.  DMSG_EC_ENGAGESTATE						교전상태정보
+//  8.  DMSG_EC_SWSTATE							소프트웨어 상태정보
+//  9.  DMSG_EC_WEAPONCTRLMODE					무장통제 모드정보
+// 10.  DMSG_EC_HORTUBEASSIGN					수평발사관 무장할당
+// 11.  DMSG_EC_VERTUBEASSIGN					수직발사관 무장할당
+// 12.  DMSG_EC_WEAPONFIRESTATE					타무장 발사정보
+// 13.  DMSG_EC_FIRECMD							발사통제 정보
+//------------------------------------------------------------------------
+
+//	1.  함포명령 (GUN한테있음)
+
+
+//  2.  명중평가설정결과
+struct DMSG_EC_HITEVALUATIONSRESULT
+{
+	TrkNoSys	trkNo;			//시스템트랙번호
+	char		cKillResult;	//명중평가결과( 0 : 명중실패, 1 : 명중성공)
+};
+
+
+
+//  3.  교전목록	
+struct DMSG_EC_ENGAGEINFO
+{
+	char		cEngageType;		//교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	TrkNoSys	trkNo;				//시스템트랙번호
+	unsigned short assignNum;	//할당 번호
+	char		cTrackRdrID;		//선정된 추적레이더 id (추적:TRR, 탐색:TDSR, 전자광학:EOTS, 전자전장비:EW)
+	char		cRdrType;			//레이더의 종류 구분(1:탐색 레이더, 2:추적 레이더)
+	char		cChannelID;			//탐색레이더의 채널 번호(예 - TWS1, TWS2)
+	char		cWeaponID;			//선정된 무장 id
+	char		cConsoleID;			//선정된 콘솔 id
+	char		cEngageInfo;		//교전정보( 0 : None, 1 : 획득, 2:추적, 3:발사준비, 4:발사, 5:준비중, 6:할당, 7:교전, 8:발사준비, 9:발사, 10:발사중지, 11:교전취소)
+	time1		EngageTime[6];		//무장대응시간(TTA, TTFF, TTIZ, TTLF, TTEZ,reserved)
+
+};
+
+
+
+//  4.  교전할당
+struct DMSG_EC_ENGAGEASSIGN
+{
+	char		cEngageType;	//교전구분(0 : None, 1 : 대공, 2 : 대함, 3 : 대잠)
+	TrkNoSys	trkNo;			//시스템트랙번호
+	unsigned short assignNum;	//할당 번호
+	char		cTrackRdrID;	//선정된 추적레이더 id (추적:TRR, 탐색:TDSR, 전자광학:EOTS, 전자전장비:EW)
+	char		cRdrType;		//레이더의 종류 구분(1:탐색 레이더, 2:추적 레이더)"
+	char		cChannelID;		//탐색레이더의 채널 번호 (예 - TWS1, TWS2)"
+	char		cWeaponID;		//선정된 무장 id
+	char		cConsoleID;		//선정된 콘솔 id
+	time1		EngageTime[6];	//무장대응시간 (TTA, TTFF, TTIZ, TTLF, TTEZ,reserved)"
+	double	dLatitude;						//표적의 위치(위도)
+	double	dLongitude;						//표적의 위치(경도)
+	double	dAltitude;						//표적의 위치(고도)
+	float		fRange;							//표적의 거리(단위:nm)
+	float		fBearing;						//표적의 방위각(단위:degree)
+};
+
+
+
+//  6. 예비교전 설정정보
+struct DMSG_EC_ENGAGEPLANSET
+{
+	char		cEngagePlanCtrl;	//예비교전계획 (0:시작/1:종료)
+	TrkNoSys	trkNo;				//표적번호
+};
+
+
+
+//  7.  	발사허가키 상태
+struct DMSG_EC_FIREPERMITKEYSTATE
+{
+	char	cFirePermitKey;	 //0: 정상  1: 오류
+};
+
+
+
+//  8.  교전상태정보
+struct DMSG_EC_ENGAGESTATE
+{
+	TrkNoSys	trkNo;			//표적번호
+	char		byTube;			//발사관종류
+	char		byTubeNum;		//발사관번호
+	char		byEngageState;	//교전상태
+};
+
+
+
+//  9.  	소프트웨어 상태정보
+struct DMSG_EC_SWSTATE
+{
+	char	cSoftwareState;	//소프트웨어상태(0:None, 1:정상, 2:비정상)
+};
+
+
+
+// 10. 무장통제 모드정보
+struct DMSG_EC_WEAPONCTRLMODE
+{
+	char	cControlMode;	//무장통제모드 (0 : 원격모드/1 :독립모드)
+};
+
+
+
+// 11. 수평발사관 무장할당
+struct DMSG_EC_HORTUBEASSIGN
+{
+	char		cConsoleID;	//콘솔ID
+	TrkNoSys	trkNo;		//표적번호
+	char		byTubeNum;	//발사관번호
+};
+
+
+
+// 12. 수직발사관 무장할당
+struct DMSG_EC_VERTUBEASSIGN
+{
+	char		cConsoleID;		//콘솔ID
+	TrkNoSys	trkNo;			//표적번호
+	char		byLauncherNum;	//발사관 번호
+};
+
+
+
+// 13. 타무장 발사정보
+struct DMSG_EC_WEAPONFIRESTATE
+{
+	char	cWeaponID;	//무장종류(0:중어뢰, 1:유도탄)
+	char	cFireState;	//0:None, 1:발사중, 2:발사준비, 3:발사중지, 4: 발사취소
+};
+
+
+
+// 14.  	발사통제 정보
+struct DMSG_EC_FIRECMD
+{
+	char	cConsoleID;		//콘솔 번호
+	char	cLauncherNum;	//발사관번호
+	char	cLinkLauncherNum;	//링크 어뢰 발사관 번호
+	char	cFireCmd;		//발사명령0: 발사취소 1: 발사
+};
+
+
+
+
+//------------------------------------------------------------------------
+//	Message From HMI to TFC / MFC / DFC / GFC
+//------------------------------------------------------------------------
+// 	1. DMSG_HMI_TACTICORDER  			사전기만전술 선택 명령
+// 	2. DMSG_HMI_DCOYLAUNCHMODE  		기만기발사통제모드 설정 명령
+//  3. DMSG_HMI_DCOYTUBESET				발사통제명령(수동)/ 기만전술확인취소(반자동)
+//  4. DMSG_HMI_MISSILECTRL				유도탄 통제명령
+//  5. DMSG_HMI_MISSILEENGAGEPLAN		미사일 교전 / 예비교전 계획 설정 명령
+//  6. DMSG_HMI_TORPEDOENGAGEPLAN		교전계획설정정보
+//  7. DMSG_HMI_RESERVEDENGAGEPLAN		예비교전계획설정정보
+//  8. DMSG_HMI_TORPCTRL				어뢰통제정보
+//  9. DMSG_HMI_SHOOTMODIFY				탄착수정정보
+// 10. DMSG_HMI_CORRECT					함포교정정보
+// 11. DMSG_HMI_SENSORWEAPONPOS			센서무장배치정보
+// 12. DMSG_HMI_BLINDNESSFIRE			함포맹목사격
+// 13. DMSG_HMI_DIRECTFIRE				함포직접사격
+// 14. DMSG_HMI_TORPMANUALWAYPOINT		어뢰 경로 설정
+// 15. DMSG_HMI_TORPBREAKENGAGE			어뢰 명중 회피
+// 16. DMSG_HMI_RESERVEDCOPY			예비교전계획 복사
+//------------------------------------------------------------------------
+
+// 	1.   사전기만전술 선택 명령
+struct DMSG_HMI_TACTICORDER
+{
+	long	nTacticOrder;		//사전기만전술번호
+};
+
+
+
+// 	2.  기만기발사통제모드 설정 명령
+struct DMSG_HMI_DCOYLAUNCHMODE
+{
+	long	nDecoyLaunchMode;	// 0 : MODE_INVALID, 1 :MODE_MANUAL , 2 :MODE_AUTO , 3 :MODE_SEMI_AUTO , 4 : MODE_MAINTENANCE , 5 : MODE_MONITOR
+
+};
+
+
+
+//  3. 	발사통제명령(수동)/ 기만전술확인취소(반자동)
+struct DMSG_HMI_DCOYTUBESET
+{
+	char	cLauncherID;		//발사대 종류 (0 : Invalid, 1 : 함수좌현, 2 : 함수우현, 3 : 함미좌현, 4 : 함미우현)
+	char	cTubeID;			//발사관 번호 (0 : Invalid, 1~9 : 발사관 번호)
+
+};
+
+
+
+//  4. 	유도탄 통제명령
+struct DMSG_HMI_MISSILECTRL
+{
+	char	byLauncherNum;	//발사관 번호
+	char	byCtrlCmd;		//통제명령(끔/켬)   연동문서 : 발사제어명령 전달
+};
+
+
+
+//  5.미사일 교전 / 예비교전 계획 설정 명령
+struct DMSG_HMI_MISSILEENGAGEPLAN
+{
+	char		cConsoleID;
+	char		byMissileNum;			//미사일번호
+	char		cTubeID;
+	long		nWpCnt;					//경로점개수
+	TrkNoSys	trkNo;					//표적번호
+	double		dWP1Lat;
+	double		dWP1Lon;	
+	double		dWP2Lat;	
+	double		dWP2Lon;	
+	double		dWP3Lat;	
+	double		dWP3Lon;	
+	double		dWP4Lat;	
+	double		dWP4Lon;	
+	double		dWP5Lat;	
+	double		dWP5Lon;	
+	double		dWP6Lat;	
+	double		dWP6Lon;	
+	double		dWP7Lat;	
+	double		dWP7Lon;	
+	double		dWP8Lat;	
+	double		dWP8Lon;
+	long		nStaccatoVolley;		// 연속발사정보
+	long		nAttackMissileCnt;		// 공격탄수 (1~6)
+	long		nAttackMode;			// 공격모드 (1 : 자동고도, 2 : 경사, 3 : 회피기동, 4 : 자동고도하강, 5 : 지정고도)
+	long		nSearchType;			// 탐색방법 (1 : BOL, Bearing Only Launch, 2 : RBL, Range Bearing Launch)
+	long		nAttackType;			// 공격유형 (1 : STOT, Simultaneous time on target, 2 : DTOT, Designated time on target, 3 : Ripple)
+};
+
+
+
+//  6. 교전계획설정정보
+struct DMSG_HMI_TORPEDOENGAGEPLAN
+{
+	TrkNoSys	trkNo;					//표적 번호
+	char		cTargetType;			//표적 형태 (수상함 / 잠수함)
+	char		cInductionMode;			//유도모드
+	char		cGuidanceMode;			//가이던스모드
+	long		nRouteNum;				//경로개수
+	float		fRouteLat; 				//경로점, 위도
+	float		fRouteLon;				//경로점, 경도
+	float		fRouteDepth;			//경로점, 심도
+	float		fRouteSpeed;			//경로점, 속도
+	float		fTorpDepth;				//어뢰 심도
+	float		fDounLimitDepth;		//하부제한 심도
+	float		fUpLimitDepth;			//상부제한 심도
+	float		fRunDepth;				//주행심도
+	float		fPreOderSpeed;			//명령 속도 저속, 중속, 고속
+	float		fDetectionRange;		//어뢰 소나 탐지거리 
+	float		fDefaultRange;			//어뢰 소나 Default 거리
+	float		fSearchSector;			//소나 각도
+	float		fLinkDetectionRange;	//링크 어뢰 소나 탐지거리 
+	float		fLinkDefaultRange;		//링크어뢰 소나 Default 거리	
+	float		fLinkSearchSector;		//링크어뢰 소나 각도
+	boolean		bSonarOder;				//소나통제 명령, (0:Passive 1:Active)
+	boolean		bRouteSensorOder;		//항적센서 통제 명령 (0:Off 1:On)
+	boolean		bHitEvasionSet;			//명중회피 설정 (0:설정 / 1:미설정)
+	boolean		bTropLinkFire;			//링크 발사 상태 (0:미설정 1:설정)
+	float		fHorLinkOffset;			//수평 오프셋, 링크 발사시
+	float		fVerLinkOffset;			//수직 오프셋, 링크 발사시
+	long		nTorpExpectFiretimeMin;	//발사예정시간 (분)
+	long		nTorpExpectFiretimeSec;	//발사예정시간 (초)
+	long		nTorpRuntimeMin;		//어뢰 총 주행 시간 (분)
+	long		nTorpRuntimeSec;		//어뢰 총 주행 시간 (초)
+	char		cTubeID;				//할당 튜브번호
+	char		cConsoleID;				//선정 콘솔ID
+	boolean		bLinkedLaunch;			//링크 설정 여부
+	long		nLinkedDistance;		//기존 어뢰와 링크어뢰 간격설정
+	long		nLinkedTime;			//기존 어뢰 발사 후 링크어뢰 발사 시간 간격
+	long		n2ndTubeNum;			//링크 어뢰 발사관 ID
+};
+
+// 7. 예비교전계획설정정보
+struct DMSG_HMI_RESERVEDENGAGEPLAN
+{
+	TrkNoSys	trkNo;					//표적 번호
+	char		cTargetType;			//표적 형태 (수상함 / 잠수함)
+	char		cInductionMode;			//유도모드
+	char		cGuidanceMode;			//가이던스모드
+	long		nRouteNum;				//경로개수
+	float		fRouteLat; 				//경로점, 위도
+	float		fRouteLon;				//경로점, 경도
+	float		fRouteDepth;			//경로점, 심도
+	float		fRouteSpeed;			//경로점, 속도
+	float		fTorpDepth;				//어뢰 심도
+	float		fDounLimitDepth;		//하부제한 심도
+	float		fUpLimitDepth;			//상부제한 심도
+	float		fRunDepth;				//주행심도
+	float		fPreOderSpeed;			//명령 속도 저속, 중속, 고속
+	float		fDetectionRange;		//어뢰 소나 탐지거리 
+	float		fDefaultRange;			//어뢰 소나 Default 거리
+	float		fSearchSector;			//소나 각도
+	float		fLinkDetectionRange;	//링크 어뢰 소나 탐지거리 
+	float		fLinkDefaultRange;		//링크어뢰 소나 Default 거리	
+	float		fLinkSearchSector;		//링크어뢰 소나 각도
+	boolean		bSonarOder;				//소나통제 명령, (0:Passive 1:Active)
+	boolean		bRouteSensorOder;		//항적센서 통제 명령 (0:Off 1:On)
+	boolean		bHitEvasionSet;			//명중회피 설정 (0:설정 / 1:미설정)
+	boolean		bTropLinkFire;			//링크 발사 상태 (0:미설정 1:설정)
+	float		fHorLinkOffset;			//수평 오프셋, 링크 발사시
+	float		fVerLinkOffset;			//수직 오프셋, 링크 발사시
+	long		nTorpExpectFiretimeMin;	//발사예정시간 (분)
+	long		nTorpExpectFiretimeSec;	//발사예정시간 (초)
+	long		nTorpRuntimeMin;		//어뢰 총 주행 시간 (분)
+	long		nTorpRuntimeSec;		//어뢰 총 주행 시간 (초)
+	char		cTubeID;				//할당 튜브번호
+	char		cConsoleID;				//선정 콘솔ID
+	boolean		bLinkedLaunch;			//링크 설정 여부
+	long		nLinkedDistance;		//기존 어뢰와 링크어뢰 간격설정
+	long		nLinkedTime;			//기존 어뢰 발사 후 링크어뢰 발사 시간 간격
+	long		n2ndTubeNum;			//링크 어뢰 발사관 ID
+};
+
+
+//  8. 	어뢰통제정보
+struct DMSG_HMI_TORPCTRL
+{
+	char	cTubeID;
+	char	cTorpCtrl;		//어뢰통제 정보 (0 : 끔/1 :켬)    연동문서 : 발사제어명령으로 어뢰 전달됨
+};
+
+
+// 9. 탄착수정정보
+struct DMSG_HMI_SHOOTMODIFY
+{
+	double		dBearingError;				// 방위각오차 
+	long		nDistanceError;				// 거리오차
+};
+
+
+// 10. 함포교정정보
+struct DMSG_HMI_CORRECT 
+{
+	double			dBearing;				// 방위각
+	double			dAltitude;				// 고각
+};
+
+
+// 11. 센서무장배치정보
+struct DMSG_HMI_SENSORWEAPONPOS	
+{
+	char	bySensorCategory;				// 센서종류
+	char	bySensorPos;					// 센서위치
+	char	byWeaponPos;					// 무장위치
+
+};
+
+// 12. 함포맹목사격
+struct DMSG_HMI_BLINDNESSFIRE		
+{
+	double			dPosX;
+	double			dPosY;
+	double			dPosZ;
+};
+
+// 13. 함포직접사격
+struct DMSG_HMI_DIRECTFIRE
+{
+	double		dLat;
+	double		dLong;
+	double		dAlt;
+};
+
+
+// 14. 어뢰 변침점 설정
+struct DMSG_HMI_TORPMANUALWAYPOINT
+{
+	char		byTorpNum;				//어뢰번호
+	long		nWpCnt;					//경로점개수
+	TrkNoSys	trkNo;					//표적번호
+	double		dWP1Lat;
+	double		dWP1Lon;	
+	double		dWP2Lat;	
+	double		dWP2Lon;	
+	double		dWP3Lat;	
+	double		dWP3Lon;	
+	double		dWP4Lat;	
+	double		dWP4Lon;	
+	double		dWP5Lat;	
+	double		dWP5Lon;	
+	double		dWP6Lat;	
+	double		dWP6Lon;	
+	double		dWP7Lat;	
+	double		dWP7Lon;	
+	double		dWP8Lat;	
+	double		dWP8Lon;
+	long		nStaccatoVolley;		//연속발사정보
+	char		cTubeID;
+	char		cConsoleID;
+};
+
+
+// 15.어뢰 명중 회피
+struct DMSG_HMI_TORPBREAKENGAGE
+{
+	char		byTorpNum;		// 어뢰 번호
+	char		byAction;		// 0: No Statement, 1: 지정표적에 대한 교전종료, 2: 모든 표적에 대한 교전종료
+};
+
+
+// 16. 예비교전계획 복사
+struct DMSG_HMI_RESERVEDCOPY			
+{
+	char	cConsoleID;		// 콘솔ID
+	char	cTubeID;		// 튜브ID
+	char	cCopy;			// 0 : Reserve to Plan 1 : Plan to Reserve
+};
+
+
+//------------------------------------------------------------------------
+//	Message From TFC
+//------------------------------------------------------------------------
+// 	1. DMSG_TFC_FIRINGDATA  		사격제원산출결과
+// 	2. DMSG_TFC_TORPSTATE  			어뢰상태정보
+//  3. DMSG_TFC_TORPMANEUVER		어뢰 위치/ 기동 정보
+//  4. DMSG_TFC_CHECKRESULT			발사 전 검사결과
+//  5. DMSG_TFC_INTERLOCK			인터록 정보
+//  6. DMSG_TFC_TORPSONAR			어뢰 소나 신호 처리 결과
+//  7. DMSG_TFC_TORPTARGET			어뢰 표적 접촉 정보
+//  8. DMSG_TFC_TORPEDOAVAILABILITY	어뢰 무장 가용성 정보
+//  9. DMSG_TFC_ENGAGESTATE			어뢰교전상태 정보
+// 10. DMSG_TFC_SWSTATE				소프트웨어 상태 정보
+// 11. DMSG_TFC_HLTCTRL				발사 통제 정보
+//------------------------------------------------------------------------
+
+// 	1.  사격제원산출결과
+struct DMSG_TFC_FIRINGDATA
+{
+	unsigned short	nConsoleID;					//콘솔ID
+	char			byTorpNum;					//어뢰 번호
+	boolean			bLinkedLaunch;				//링크 가이던스 여부
+	float			fTorpCommLine;				//어뢰 통신선 잔여 길이 정보
+	float			fShipCommLine;				//자함 통신선 잔여 길이 정보
+	float			fTorpCommLineMax;			//어뢰 통신선 최대 길이 정보
+	float			fShipCommLineMax;			//자함 통신선 최대 길이 정보
+	long			nBattery;					//배터리 잔량(%)
+	float			fBatteryDistance;			//배터리 최대 주행 거리
+	long			nTropFireMin;				//발사시간 (분)
+	long			nTropFireSec;				//발사시간 (초)
+	char			TBD;						//도그 박스 (이게뭐징..)
+	long			nReAttackNum;				//재 공격 횟수	
+	float			fAdviceCrs;					//자함 권고 침로
+	float			fHitRange;					//자함에서 명중점까지 거리
+	long			nHitTime;					//명중 시간
+	float			fTgtObtainProbability;		//표적 획득확
+	coordiHSys 		HitPt;						//명중지점 (위도,경도,심도)
+	coordiHSys		AQPt;						//AQ 포인트
+	float			fAQDistance;				//자함에서 AQ포인트까지 거리
+	float			fTorpDistance;				//자함에서 어뢰까지 거리
+	float			fExpcLat[4]; 				//표적 예상 구역 위도	ExpcArea
+	float			fExpcLon[4];				//표적 예상 구역 경도
+	float			fExpcDepth[4];				//표적 예상 구역 심도
+	long			nPtCount;					//경로점 개수
+	float			fTorpRouteLat[1000]; 		//어뢰 경로점, 위도		TorpRoutePt
+	float			fTorpRouteLon[1000];		//어뢰 경로점, 경도
+	float			fTorpRouteDepth[1000];		//어뢰 경로점, 심도
+	long			nBatteryTime;				// 잔여배터리로 갈 수 있는 시간
+	long			nOwnShipWireTime;			// 자함 유도선 남은 시간
+	long			nTorpWireTime;				// 어뢰 유도선 남은 시간
+	float			fRemainHitRange;			// 어뢰에서 명중점까지의 거리
+	boolean			bReservedPlan;				// 예비교전계획 여부
+	unsigned long	nRunningTime;				// 어뢰 주행시간
+};
+
+
+
+// 	2.  어뢰상태정보
+struct DMSG_TFC_TORPSTATE
+{
+	char	byImpressedPower;	//전원인가 상태 0: N/A 1: 전원인가 2: 전원차단
+	char	byFireSignal;		//발사신호 상태 0: N/A 1: 신호인가됨 2: 신호차단됨
+	char	cTorpConnect;		//차기중어뢰 물리적연결상태
+	char	cTorpSetState;		//어뢰설정상태
+	float	fTropCeiling;		//어뢰 Ceiling 정보
+	float	fTropFloor;			//어뢰 Floor 정보
+};
+
+
+
+//  3.어뢰 위치/ 기동 정보
+struct DMSG_TFC_TORPMANEUVER
+{
+	float fLat;	//발사지점 기준 어뢰의 위치(X)
+	float fLon;	//발사지점 기준 어뢰의 위치(Y)
+	float fCourse;	//어뢰 침로
+	float fDepth;	//어뢰 심도
+	float fSpeed;	//어뢰 속력
+};
+
+
+
+//  4.	발사 전 검사결과
+struct DMSG_TFC_CHECKRESULT
+{
+	char byErr;				//0: 정상 1: 오류
+	char byPartState[16];	//각 구성부 상태, TBD
+};
+
+
+
+//  5.	인터록 정보
+struct DMSG_TFC_INTERLOCK
+{
+	char	cDiscreteSig_Err;			//이산신호 상태 오류
+	char	cTargetAssignInfo_Err;		//표적 할장 정보 없음
+	char	cBattlePlan_Data_Err;		//교전계획 설정값 오류
+	char	cLimitDepth_Err;			//제한심도설정오류-초기유도불가
+	char	cBattleSolution_Err;		//교전솔류션 없음
+	char	cWeaponControl_Err;			//무장통제상태 별경 필요
+	char	cCommunication_Err;			//통신 오류
+	char	cPower_Err;					//전원인가검사 비정상
+	char	cPreFire_Err;				//발사전검사 비정상
+	char	cHorizonStatus_Err;			//수평발사관 상태오류
+	char	cHorizonControlStatus_Err;	//수평발사관통제기 상태오류
+	char	cOwnshipSafe_Err;			//자함안전조건 위반
+	char	cFirePermit_Key_Err;		//발사허가키 상태
+	char	cOtherWeapon_Fire;			//타 무장 발사 중
+	char	cLinkWeapon_FireRady_Err;	//링크 무장 발사 준비 미완료
+	char	cFireStep_Err;				//발사절차 오류
+	char	cOverride;					//오버라이드 설정 유무
+};
+
+
+
+//  6.	어뢰 소나 신호 처리 결과
+struct DMSG_TFC_TORPSONAR
+{
+	char	cTropedoSonarState;	//어뢰 소나 정보(능동/수동)
+	char	cSonarSignal[16];	// TBD
+
+
+};
+
+
+
+//  7.	어뢰 표적 접촉 정보
+struct DMSG_TFC_TORPTARGET
+{
+	char	byTargetID;					//원시 표적 ID
+	char	byTargetType;				//표적 종류,  0: N/A 1: 음향표적 2: ACM
+	float	fTargetAltitude;			//어뢰 기준 표적의 고각
+	float	fTargetBearing;				//어뢰 침로 기준 표적의 방위
+	char	bySonarBeam[16];			//소나의 각 빔 별 탐지 신호 세기
+};
+
+
+
+//  8. 	어뢰 무장 가용성 정보
+struct DMSG_TFC_TORPEDOAVAILABILITY
+{
+	char	cState;		// 0: 가용  (발사준비완료이면 ) 1: 비가용 (발사준비완료인데 but 인터록발생)"
+	char	cTubeNum;	// 발사관번호
+};
+
+
+
+//  9.	어뢰교전상태 정보
+struct DMSG_TFC_ENGAGESTATE
+{
+	TrkNoSys	trkNo;			//시스템트랙번호
+	char		cTubeNum;		//발사관번호
+	char		cEngageState;	//교전상태 [꺼짐(Off) / 자동꺼짐(Auto Off)/ 전원인가검사(Power On Check) 
+										// 켜짐(On) / 발사전검사(Pre-Launch Check) /발사준비완료(Ready to Launch)/
+										// 발사(Launch)/ 발사취소(Aborted) /  발사완료(Post Launch)]
+};
+
+
+
+// 10.소프트웨어 상태 정보
+struct DMSG_TFC_SWSTATE
+{
+	char	cSoftwareState;	 //소프트웨어 상태 (0: 가용, 1: 비가용)
+
+};
+
+
+
+// 11. 발사 통제 정보
+struct DMSG_TFC_HLTCTRL
+{
+	char byTubeNum;		//발사관번호
+	char byCtrlCmd;		//통제명령	0: 충수 1: 외부문 Open 2: 외부문 Close 3: Inlet Valve Open (유니텍) 4: Inlet Valve Close (유니텍)
+};
+
+
+//------------------------------------------------------------------------
+//	Message From MFC
+//------------------------------------------------------------------------
+// 	1. DMSG_MFC_SUMSTATE  				유도탄 상태정보
+// 	2. DMSG_MFC_FIRINGDATA  			사격제원 산출결과
+//  3. DMSG_MFC_INTERLOCK				인터록 정보
+//  4. DMSG_MFC_SAFETYSWITCHSTATE		안전스위치 상태
+//  5. DMSG_MFC_SUMTESTRESULT			발사 전 검사 결과
+//  6. DMSG_MFC_ENGAGESTATE				유도탄 교전 상태 정보
+//  7. DMSG_MFC_MISSILEAVAILABILITY		유도탄 무장 가용성 정보
+//  8. DMSG_MFC_SWSTATE					소프트웨어 상태정보
+//	9. DMSG_MFC_COUNTDOWNSTATE			임무진행상태 (초읽기절차)
+//------------------------------------------------------------------------
+
+// 	1. 유도탄 상태정보
+struct DMSG_MFC_SUMSTATE
+{
+	char byPower;			// 전원인가상태 0: N/A 1: 전원인가, 2: 전원차단
+	char byFireSig;			// 발사신호상태 0 : N/A 1: 발사신호 인가, 2: 발사신호 차단
+	char byFire;			// 발사진행상태 발사신호 인가 후, 15부터 9까지 카운트다운 후 발사
+};
+
+
+
+// 	2.  사격제원 산출결과
+struct DMSG_MFC_FIRINGDATA
+{
+	double	dTgtLat;			//표적 위치 정보 위도
+	double	dTgtLon;			//표적 위치 정보 경도
+	long	nFlightTime;		//예상비행시간
+	double	dFireAvailableLat;	//발사가능 위도
+	double	dFireAvailableLon;	//발사가능 경도
+	double	dAdvicedCrs;		//권고침로 
+	double	dExpectFlightLat;	//예상비행위치 위도
+	double	dExpectFlightLon;	//예상비행위치 경도
+	double	dFlightLat;			//비행경로점 위도
+	double	dFlightLon;			//비행경로점 경도
+
+
+};
+
+
+
+//  3.	인터록 정보
+struct DMSG_MFC_INTERLOCK
+{
+	char	cOverRideSet;				//오버라이드 설정유무 
+	char	cDiscreteSig_Err;			//이산신호 상태 비정상
+	char	cMissionPermit;				//임무 승인 상태 비정상
+	char	cSwitch_Err;				//안전스위치 상태 
+	char	cPower_Err;					//전원인가검사 비정상
+	char	cFlightCrs_Err;				//비행 경로 비정상
+	char	cPreFire_Err;				//발사 전 검사 비정상
+	char	cVLTStatus_Err;				//수중 발사장치상태 비정상
+	char	cFirePassWord_Err;			//발사비밀번호 상태 비정상
+	char	cShipSafeCondition_Err;		//자함안전조건 위반
+	char	cFirePermit_Key_Err;		//발사허가키 상태
+	char	cFireStep_Err;				//발사절차 비정상
+	char	cLauncherNum;				//발사관 번호
+};
+
+
+
+//  4.안전스위치 상태
+struct DMSG_MFC_SAFETYSWITCHSTATE
+{
+	char	cLauncherNum;	// 발사관 번호
+	char	cSwitchState;	// 안전스위치상태(초기값: 안전 ) 적재정보 확인 후 적재됨이면 장전, 비어있으면 안전 유도탄전원인가전에 장전으로 변경. 
+							// 0 : 안전, 1 : 장전
+};
+
+
+
+//  5.	발사 전 검사 결과
+struct DMSG_MFC_SUMTESTRESULT
+{
+	char	cErr;	//0: 정상 1: 오류
+};
+
+
+
+//  6.	유도탄 교전 상태 정보
+struct DMSG_MFC_ENGAGESTATE
+{
+	TrkNoSys	trkNo;			//시스템트랙번호
+	char		cTubeNum;		//발사관번호
+	char		cEngageState;	//교전상태 [ 꺼짐(Off) / 자동꺼짐(Auto Off)/ 전원인가검사(Power On Check) /  켜짐(On) / 유도탄검사(MSL Check) 
+											// 발사준비완료(Ready to Launch)/ 발사(Launch)/ 발사취소(Aborted)/ 발사거부(Deny)/ 발사완료(Post Launch) ]"
+};
+
+
+
+//  7.유도탄 무장 가용성 정보
+struct DMSG_MFC_MISSILEAVAILABILITY
+{
+	char	cTubeNum;		//발사관번호
+	char	cTubeState;	//상태 (0 : 가용, 1 : 비가용)
+};
+
+
+
+//  8.	소프트웨어 상태정보
+struct DMSG_MFC_SWSTATE
+{
+	char	cSoftwareState;	//소프트웨어 상태 (0: 가용, 1: 비가용)
+
+};
+
+
+// 9. 임무진행상태 (초읽기절차)
+struct DMSG_MFC_COUNTDOWNSTATE
+{
+	char	cConsoleID;
+	char	cTubeNum;			//발사관번호
+	char	byCountdown1;		// 초읽기 절차 1 ( 0 : N/A 1 : 성공 2 : 실패 )
+	char	byCountdown2;		// 초읽기 절차 2 ( 0 : N/A 1 : 성공 2 : 실패 )  
+	char	byCountdown3;		// 초읽기 절차 3 ( 0 : N/A 1 : 성공 2 : 실패 )
+	char	byCountdown4;		// 초읽기 절차 4 ( 0 : N/A 1 : 성공 2 : 실패 )
+	char	byCountdown5;		// 초읽기 절차 5 ( 0 : N/A 1 : 성공 2 : 실패 )
+	char	byCountdown6;		// 초읽기 절차 6 ( 0 : N/A 1 : 성공 2 : 실패 )
+	char	byCountdown7;		// 초읽기 절차 7 ( 0 : N/A 1 : 성공 2 : 실패 )
+	char	byCountdown8;		// 초읽기 절차 8 ( 0 : N/A 1 : 성공 2 : 실패 )
+};
+
+
+//------------------------------------------------------------------------
+//	Message From DFC
+//------------------------------------------------------------------------
+// 	1. DMSG_DFC_MANOEUVRE			어뢰기만전술산출결과
+// 	2. DMSG_DFC_TACTICINFO  		사전기만전술목록
+//  3. DMSG_DFC_LOADING				기만기적재표
+//  4. DMSG_DFC_PREDICTPOS			기만기예상발사위치
+//  5. DMSG_DFC_PERFORM				기만기 성능예측값
+//  6. DMSG_DFC_EXPECTROUTE			기만기 침강 및 기만기 예상주행경로
+//  7. DMSG_DFC_SUBDCOYFIREPLAN		대체기만기 발사계획
+//  8. DMSG_DFC_ENGAGESTATE			기만기 교전상태 정보
+//------------------------------------------------------------------------
+
+// 	1. 	어뢰기만전술산출결과
+struct DMSG_DFC_MANOEUVRE
+{
+	double	dManoeuvreTime[5];		//1~5 자함 회피기동 구간  이동 시간 (Manoeuvre Leg 1 ~ 5, s) 
+	double	dManoeuvreHeading[5];	//1~5 자함 회피기동 구간  이동 방위각 (Manoeuvre Leg 1 ~ 5, deg) 
+	double	dManoeuvreSpd[5];		//1~5 자함 회피기동 구간  이동 속도 (Manoeuvre Leg 1 ~ 5, kts) 
+	double	dManoeuvreDepth[5];		//1~5 자함 회피기동 구간  이동 수심 (Manoeuvre Leg 1 ~ 5, m) 
+};
+
+
+
+// 	2.  사전기만전술목록
+struct DMSG_DFC_TACTICINFO
+{
+	long		nTacticListID;		//사전 기만전술 아이디
+	char		chTacticName[20];	//사전 기만전술명
+};
+
+
+
+//  3.	기만기적재표
+struct DMSG_DFC_LOADING
+{
+	char	cLauncherID[4][9];		//발사대 종류 (0 : Invalid, 1 : 함수좌현, 2 : 함수우현, 3 : 함미좌현, 4 : 함미우현)
+	char	cTubeID[4][9];			//발사관 번호 (0 : Invalid, 1~9 : 발사관 번호)
+	char	cDecoyType[4][9];		//기만기 종류 (0 : Invalid, 1 : 부유식 기만기, 2 : 자항식 기만기)
+	char	cTubeState[4][9];		//발사관 상태 (0 : Invalid, 1 : 비었음, 2 : 탑재, 3 : 발사, 4 : 발사실패, 5 : NOT_OP)
+	char	cAcouMode[4][9];		//음향모드 (0 : Invalid, 1 : 능동, 2 : 수동, 3 : 능수동)
+	long	nDecoySetDepth[4][9];	//기만기 설정 심도 (m)
+	char	cMDMobileType[4][9];	//자항식 기만기 자항 모드 ( 0 : Invalid, 1~9 = A~I)
+	long	nDecoyLifeTime[4][9];	//기만기 수명 (s)
+};
+
+
+
+//  4. 	기만기예상발사위치
+struct DMSG_DFC_PREDICTPOS
+{
+	long	nLaunchNum;			//발사 번호 (순서대로 1~)
+	char	cLcDecoyType;		//기만기 종류 (0 : Invalid, 1 : 부유식 기만기, 2 : 자항식 기만기)
+	double	dLcPredictPosLat;	//기만기 발사 예상위치 (위도)
+	double	dLcPredictPosLon;	//기만기 발사 예상위치 (경도)
+	long	nLcPredictDepth;	//기만기 발사 예상수심 (m)
+};
+
+
+
+//  5. 	기만기 성능예측값
+struct DMSG_DFC_PERFORM
+{
+	double	dPerformLBound[8];	//8개로 나눈 360도 방위 내 작은 각도 (0~359.99 deg)
+	double	dPerformUBound[8];	//8개로 나눈 360도 방위 내 큰 각도 (0~359.99 deg)
+	char	cPerformLv[8];		//360도 방위 내 성능 레벨 (0 : Invalid, 1 : Poor, 2 : Restricted, 3 : Full)
+	long	nPerformEff[8];		//8개로 나눈 360도 방위 내 기만확률 (%)
+};
+
+
+
+//  6. 	기만기 침강 및 기만기 예상주행경로
+struct DMSG_DFC_EXPECTROUTE
+{
+	long	nLauncherID;		//발사대 종류 (0 : Invalid, 1 : 함수좌현, 2 : 함수우현, 3 : 함미좌현, 4 : 함미우현)
+	long	nTubeID;			//발사관 번호 (0 : Invalid, 1~9 : 발사관 번호)
+	float	fExpecLat[100];		//기만기 예상 변침점 위치 (위도)
+	float	fExpecLon[100];		//기만기 예상 변침점 위치 (경도)
+	float	fExpecDepth[100];	//기만기 예상 변침점 수심 (m)
+};
+
+
+
+//  7. 	대체기만기 발사계획
+struct DMSG_DFC_SUBDCOYFIREPLAN
+{
+	char	cLauncherID;	//발사대 종류 (0 : Invalid, 1 : 함수좌현, 2 : 함수우현, 3 : 함미좌현, 4 : 함미우현)
+	char	cTubeID;		//발사관 번호 (0 : Invalid, 1~9 : 발사관 번호)
+	char	cDecoyType;		//기만기 종류 (0 : Invalid, 1 : 부유식 기만기, 2 : 자항식 기만기)
+
+};
+
+
+
+//  8. 	기만기 교전상태 정보
+struct DMSG_DFC_ENGAGESTATE
+{
+	char	cLaunchDecoy;	//기만기 발사 여부 (0 : 미발사, 1 : 발사)
+};
+
+
+//------------------------------------------------------------------------
+//	Message From HMI to PA
+//------------------------------------------------------------------------
+// 1. DMSG_HMI_SELECTEDSENSOR				센서탐지범위요청
+// 2. DMSG_HMI_SELECTEDWEAPON				무장사거리요청
+//------------------------------------------------------------------------
+
+// 1. 센서탐지범위 요청
+struct DMSG_HMI_SELECTEDSENSOR
+{
+	char cConsoleID;
+	char cSensorNum;		// 0: N/A 1: 추적레이더 2: 항해레이더 3: 3차원탐색레이더 4: 전자광학추적장치 5: FAS 6: CAS 7: IPS 8: PRS 9 : HMS
+};
+
+
+// 2. 무장사거리 요청
+struct DMSG_HMI_SELECTEDWEAPON
+{
+	char cConsoleID;
+	char cWeaponNum;		// 0: N/A 1: 함포 2:  경어뢰 3: 기만기 4: 대함유도탄 5: 대공유도탄
+};
+
+
+
+//------------------------------------------------------------------------
+//	Message From PA to HMI
+//------------------------------------------------------------------------
+// 1. DMSG_PA_SENSORRANGERESULT		선택 된 센서의 탐지범위 결과값
+// 2. DMSG_PA_WEAPONRANGERESULT		선택 된 무장 사거리 결과값
+//------------------------------------------------------------------------
+
+// 1. 센서탐지범위 결과
+struct DMSG_PA_SENSORRANGERESULT
+{
+	char cConsoleID;
+	char cSensorNum;		// 0: N/A 1: 추적레이더 2: 항해레이더 3: 3차원탐색레이더 4: 전자광학추적장치 5: FAS 6: CAS 7: IPS 8: PRS 9 : HMS
+	long nResult;			// 센서탐지범위의 결과값
+};
+
+
+// 2. 무장사거리 결과
+struct DMSG_PA_WEAPONRANGERESULT
+{
+	char cConsoleID;
+	char cWeaponNum;		// 0: N/A 1: 함포 2:  경어뢰 3: 기만기 4: 대함유도탄 5: 대공유도탄 
+	long nResult;			// 무장사거리의 결과값
+};
+
+
+//------------------------------------------------------------------------
+//   ** 기타 TEST용 **
+//------------------------------------------------------------------------
+//  1. DMSG_SMS_CONNECT				연동단 시작 종료
+//  2. DMSG_MMI_CONNECTREPLY		연동 응답
+//  3. DMSG_SMS_INIT				시스템 초기화
+//  4. DMSG_SMS_DDSTEST				DDS 점검 Msg
+//  5. DMSG_HMI_SAVECYCLESET		DB 저장주기 설정
+//------------------------------------------------------------------------
+
+//  1. 연동단 시작 종료
+struct DMSG_SMS_CONNECT
+{
+	long		nID;				// 연동단 ID
+	char		cIsConnect;			// 연동 시작 및 종료 여부 (0 : Connection Start, 1 : Connection Stop)
+
+};
+
+//  2. 연동 응답
+struct DMSG_MMI_CONNECTREPLY
+{
+	long		nID;				// 연동단 ID
+	char		cConnectReply;		// 연동요청 응답  (0 : Start Complete, 1 : Stop Complete, 2 : Can't process)
+};
+
+//  3. 전투체계 시스템 초기화
+struct DMSG_SMS_INIT
+{
+	boolean		bInit;				// 0 : NONE  1: 초기화 
+};
+
+//  4. DDS 점검 MSG
+struct DMSG_SMS_DDSTEST
+{
+	long		nRecvID;			// 받는 ID
+	long		nSendID;			// 보내는 ID
+	boolean		bcheck;				
+};
+
+
+//  5. DB 저장주기 설정
+struct DMSG_HMI_SAVECYCLESET		
+{
+	unsigned long	nSec;	// OSM-BLC에서 자함정보를 저장하는 주기 (타 CSCI에서도 사용할 수 있음)
+};

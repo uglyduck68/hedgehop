@@ -1,0 +1,124 @@
+
+template <> 
+class CDDSCommand<1,DMSG_TM_SYSTRACK,DMSG_TM_SYSTRACK,SUBPUB> :public CCommand<DMSG_TM_SYSTRACK>
+{
+private:
+	CDDSCommand(const CDDSCommand&);
+	CDDSCommand& operator=(const CDDSCommand&);
+public:
+	static std::shared_ptr<ICommandInterface>& CreateCommand(const std::function<void(DMSG_TM_SYSTRACK*)>& Func,const std::string& _SUBQOS="Reliable",const std::string& _PUBQOS="Reliable",unsigned char CSCI=0,unsigned char CSC=0,unsigned short TopicID=0)
+	{
+		if(GetCommand() == NULL){
+			CDDSCommand<1,DMSG_TM_SYSTRACK,DMSG_TM_SYSTRACK,SUBPUB>* Command = new CDDSCommand<1,DMSG_TM_SYSTRACK,DMSG_TM_SYSTRACK,SUBPUB>(_SUBQOS,_PUBQOS);
+			if(Func!=NULL)Command->SetFunc(Func);
+			CommandMgr::GetCommandMgr().AddCommand(typeid(DMSG_TM_SYSTRACK).hash_code(),Command);
+		}
+		return GetCommand();
+	}
+	CDDSCommand(const std::string& _SUBQOS="Reliable",const std::string& _PUBQOS="Reliable") : SUBQOS(_SUBQOS),PUBQOS(_PUBQOS)
+	{
+		Create();
+	}
+	virtual ~CDDSCommand()
+	{
+	}
+
+	int Send(DMSG_TM_SYSTRACK* msg){
+		if(LDDS_ISSETWRITE(1,DMSG_TM_SYSTRACK)){
+			int nRetCode = LDDS_WRITE(1,DMSG_TM_SYSTRACK,msg);
+			return nRetCode;
+		}
+		return -1;
+	}
+
+	void Create(){
+		LDDS_CREATE_TOPIC(1,DMSG_TM_SYSTRACK,SUBQOS.c_str(),true,false,NULL);
+		LDDS_CREATE_TOPIC(1,DMSG_TM_SYSTRACK,SUBQOS.c_str(),false,true,(CALLBACK_FUNC)Callback<DMSG_TM_SYSTRACK>);
+	}
+
+private:
+	std::string SUBQOS;
+	std::string PUBQOS;
+	std::function<void(DMSG_TM_SYSTRACK*)> m_Func;
+};
+template <> 
+class CDDSCommand<1,DMSG_TM_SYSTRACK,DMSG_TM_SYSTRACK,PUBMode> :public CCommand<DMSG_TM_SYSTRACK>
+{
+private:
+	CDDSCommand(const CDDSCommand&);
+	CDDSCommand& operator=(const CDDSCommand&);
+public:
+	static std::shared_ptr<ICommandInterface>& CreateCommand(const std::function<void(DMSG_TM_SYSTRACK*)>& Func,const std::string& _SUBQOS="Reliable",const std::string& _PUBQOS="Reliable",unsigned char CSCI=0,unsigned char CSC=0,unsigned short TopicID=0)
+	{
+		if(GetCommand() == NULL){
+			CDDSCommand<1,DMSG_TM_SYSTRACK,DMSG_TM_SYSTRACK,PUBMode>* Command = new CDDSCommand<1,DMSG_TM_SYSTRACK,DMSG_TM_SYSTRACK,PUBMode>(_SUBQOS,_PUBQOS);
+			CommandMgr::GetCommandMgr().AddCommand(typeid(DMSG_TM_SYSTRACK).hash_code(),Command);
+		}
+		return GetCommand();
+	}
+
+	CDDSCommand(const std::string& _SUBQOS="Reliable",const std::string& _PUBQOS="Reliable") : SUBQOS(_SUBQOS),PUBQOS(_PUBQOS)
+	{
+		Create();
+	}
+	virtual ~CDDSCommand()
+	{
+	}
+
+	int Send(DMSG_TM_SYSTRACK* msg){
+		if(LDDS_ISSETWRITE(1,DMSG_TM_SYSTRACK)){
+			int nRetCode = LDDS_WRITE(1,DMSG_TM_SYSTRACK,msg);
+			return nRetCode;
+		}
+		return -1;
+	}
+
+	void Create(){
+		LDDS_CREATE_TOPIC(1,DMSG_TM_SYSTRACK,SUBQOS.c_str(),true,false,NULL);
+	}
+
+private:
+	std::string SUBQOS;
+	std::string PUBQOS;
+};
+template <> 
+class CDDSCommand<1,DMSG_TM_SYSTRACK,DMSG_TM_SYSTRACK,SUBMode> :public CCommand<DMSG_TM_SYSTRACK>
+{
+private:
+	CDDSCommand(const CDDSCommand&);
+	CDDSCommand& operator=(const CDDSCommand&);
+public:
+	static std::shared_ptr<ICommandInterface>& CreateCommand(const std::function<void(DMSG_TM_SYSTRACK*)>& Func,const std::string& _SUBQOS="Reliable",const std::string& _PUBQOS="Reliable",unsigned char CSCI=0,unsigned char CSC=0,unsigned short TopicID=0)
+	{
+		if(GetCommand() == NULL){
+			CDDSCommand<1,DMSG_TM_SYSTRACK,DMSG_TM_SYSTRACK,SUBMode>* Command = new CDDSCommand<1,DMSG_TM_SYSTRACK,DMSG_TM_SYSTRACK,SUBMode>(_SUBQOS,_PUBQOS);
+			if(Func!=NULL)Command->SetFunc(Func);
+			CommandMgr::GetCommandMgr().AddCommand(typeid(DMSG_TM_SYSTRACK).hash_code(),Command);
+		}
+		return GetCommand();
+	}
+	CDDSCommand(const std::string& _SUBQOS="Reliable",const std::string& _PUBQOS="Reliable") : SUBQOS(_SUBQOS),PUBQOS(_PUBQOS)
+	{
+		Create();
+	}
+	virtual ~CDDSCommand()
+	{
+	}
+
+	int Send(DMSG_TM_SYSTRACK* msg){
+		if(LDDS_ISSETWRITE(1,DMSG_TM_SYSTRACK)){
+			int nRetCode = LDDS_WRITE(1,DMSG_TM_SYSTRACK,msg);
+			return nRetCode;
+		}
+		return -1;
+	}
+
+	void Create(){
+		LDDS_CREATE_TOPIC(1,DMSG_TM_SYSTRACK,SUBQOS.c_str(),false,true,(CALLBACK_FUNC)Callback<DMSG_TM_SYSTRACK>);
+	}
+
+private:
+	std::string SUBQOS;
+	std::string PUBQOS;
+	std::function<void(DMSG_TM_SYSTRACK*)> m_Func;
+};

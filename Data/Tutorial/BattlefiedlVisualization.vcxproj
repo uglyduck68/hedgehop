@@ -120,6 +120,7 @@
     <ClInclude Include="include\Debug.h" />
     <ClInclude Include="include\IntermediateTutorial2.h" />
     <ClInclude Include="include\IntermediateTutorial7.h" />
+    <ClInclude Include="include\ParticleTutorial.h" />
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="res\Resource.h" />
   </ItemGroup>
@@ -130,6 +131,7 @@
     <ClCompile Include="src\Debug.cpp" />
     <ClCompile Include="src\IntermediateTutorial2.cpp" />
     <ClCompile Include="src\IntermediateTutorial7.cpp" />
+    <ClCompile Include="src\ParticleTutorial.cpp" />
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
