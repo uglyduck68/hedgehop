@@ -85,11 +85,11 @@ void ParticleTutorial::createScene(void)
     ps->fastForward(5);   // fast-forward the rain so it looks more natural
     mSceneMgr->getRootSceneNode()->createChildSceneNode(Vector3(100, 1000, 100))->attachObject(ps);
 
+    // create aureola around ogre head perpendicular to the ground
+#if		0	
 	///////////////
 	// cause exception. But ogre sample works well.
 	///////////////
-    // create aureola around ogre head perpendicular to the ground
-#if		0	
     ps = mSceneMgr->createParticleSystem("Aureola", "Examples/Aureola");
     mSceneMgr->getRootSceneNode()->attachObject(ps);
 #endif
