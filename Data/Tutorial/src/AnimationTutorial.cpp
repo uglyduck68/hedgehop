@@ -19,6 +19,7 @@ void AnimationTutorial::createScene()
 	//
 	//////////////////////////////////////////////////////////////////////////////
 	createSceneNode("razor.mesh");
+	GetSceneNode()->setPosition( Vector3(0, 0, 500) );
 
 	//////////////////////////////////////////////////////////////////////////////
 	//
@@ -27,7 +28,7 @@ void AnimationTutorial::createScene()
 
 	// get the distance from origin to this scene node
 	Vector3		ScenePos		= GetSceneNode()->getPosition();
-	Real		Radius		= ScenePos.distance( Vector3::ZERO );
+	Real		Radius			= ScenePos.distance( Vector3::ZERO );
 
 	if( Radius == 0 )
 		Radius		= 500;
@@ -94,6 +95,8 @@ bool  AnimationTutorial::frameRenderingQueued(const Ogre::FrameEvent& evt)
 */
 bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 {
+	MoveTo(m_aCirclePos[ 0 ], m_aCirclePos[ 1 ], evt);
+
 	return BaseApplication::frameStarted( evt );
 }
 
@@ -105,7 +108,7 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 * @param		Dest that is mesh's destination position
 * @return		1 if success
 */
-int		AnimationTutorial::MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest )
+int		AnimationTutorial::MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest, const Ogre::FrameEvent& evt )
 {
 	// get the direction vector from source to destination
 	Vector3			Dir				= Dest - Src;
@@ -119,6 +122,9 @@ int		AnimationTutorial::MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest )
 
 	// set target's orientation to destination
 	GetSceneNode()->setOrientation( quat );
+
+	if( evt.timeSinceLastFrame != 0 )
+		Dest	*= evt.timeSinceLastFrame;
 
 	// move target to destination
 	GetSceneNode()->setPosition( Dest );

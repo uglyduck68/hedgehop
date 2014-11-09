@@ -55,6 +55,17 @@ protected:
 
 		return 1;
 	}
+
+	void createCamera(void)
+	{
+		BaseApplication::createCamera();
+
+		//< 
+		mCamera->setPosition(1000, 1000, 1000);
+
+		mCamera->lookAt(0, 0, 0);
+	}
+
 	/**
 	* @function		createScene
 	* @remarks		create character entity and node
@@ -80,6 +91,6 @@ protected:
 	* @param		Dest that is mesh's destination position
 	* @return		1 if success
 	*/
-	int		MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest );
+	int		MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest, const Ogre::FrameEvent& evt );
 };
 
