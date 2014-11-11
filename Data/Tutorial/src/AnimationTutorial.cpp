@@ -4,13 +4,36 @@
 using namespace	Ogre;
 
 AnimationTutorial::AnimationTutorial(void) :
-	m_pSceneNode(NULL)
+	m_pSceneNode(NULL), mDirection(Vector3::ZERO)
 {
 }
 
 
 AnimationTutorial::~AnimationTutorial(void)
 {
+}
+	
+void AnimationTutorial::createFrameListener(void)
+{
+	BaseApplication::createFrameListener();
+
+//	mRoot->addFrameListener(this);
+}
+
+bool AnimationTutorial::nextLocation(void)
+{
+	if(m_WalkList.empty())
+	{
+		return false;
+	}
+
+	mDestination = m_WalkList.front();
+	m_WalkList.pop_front();
+		
+	mDirection = mDestination - GetSceneNode()->getPosition();
+	mDistance = mDirection.normalise();
+
+	return true;	return true;
 }
 
 void AnimationTutorial::createScene()
@@ -39,17 +62,22 @@ void AnimationTutorial::createScene()
 	m_pCircle->begin("BaseWhiteNoLighting", RenderOperation::OT_LINE_STRIP );
 
 	unsigned	nPointIndex	= 0;
+	Vector3		vPos;
 
+	// make waypoints
 	for( Ogre::Real theta = 0; theta <= 2 * Math::PI; theta += Math::PI / Accurary )
 	{
-		m_aCirclePos[ nPointIndex ].x	= Radius * cos( theta );
-		m_aCirclePos[ nPointIndex ].y	= ScenePos.y;
-		m_aCirclePos[ nPointIndex ].z	= Radius * sin( theta );
+		vPos.x	= Radius * cos( theta );
+		vPos.y	= ScenePos.y;
+		vPos.z	= Radius * sin( theta );
+
+		m_WalkList.push_back( vPos );
 
 		if( nPointIndex == 0 )
 		{
 			// set initial position
-			m_pSceneNode->setPosition( m_aCirclePos[ 0 ]);
+			GetSceneNode()->setPosition( m_WalkList.front() );
+			m_WalkList.pop_front();
 		}
 		else
 		{
@@ -59,7 +87,7 @@ void AnimationTutorial::createScene()
 			//m_paTrack[ nPointIndex ]->MoveTo( m_aCirclePos[ nPointIndex - 1 ], m_aCirclePos[ nPointIndex ]);
 		}
 
-		m_pCircle->position( m_aCirclePos[ nPointIndex ] );
+		m_pCircle->position( vPos );
 		m_pCircle->index( nPointIndex++ );
 	}
 
@@ -95,9 +123,55 @@ bool  AnimationTutorial::frameRenderingQueued(const Ogre::FrameEvent& evt)
 */
 bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 {
-	MoveTo(m_aCirclePos[ 0 ], m_aCirclePos[ 1 ], evt);
+//	MoveTo(m_aCirclePos[ 0 ], m_aCirclePos[ 1 ], evt);
 
-	return BaseApplication::frameStarted( evt );
+	if(mDirection == Vector3::ZERO)
+	{
+		// set direction and distance to move for character
+		if(nextLocation())
+		{
+		}
+	}
+	else
+	{
+		// calculate the distance to go
+		Real move	= m_WalkSpeed * evt.timeSinceLastFrame;
+
+		// calculate the remaining distance
+		mDistance	-= move;
+
+		if(mDistance <= 0.0f)
+		{
+			// if character reaches the waypoint
+			// the remaining distance is less then zero
+			GetSceneNode()->setPosition(mDestination);
+
+			// clear direction to set the next waypoins
+			mDirection = Vector3::ZERO;
+
+			if(nextLocation())
+			{
+				Vector3 src = GetSceneNode()->getOrientation() * Vector3::UNIT_Z;
+
+				// if angle of two vector is 180, then dot product is -1.
+				if(1.0f + src.dotProduct(mDirection) < 0.0001f)
+				{
+					GetSceneNode()->yaw(Degree(180));
+				}
+				else
+				{
+					Ogre::Quaternion quat = src.getRotationTo(mDirection);
+					GetSceneNode()->rotate(quat);
+				}
+			}
+		}
+		else
+		{
+			GetSceneNode()->translate(mDirection * move);
+		}
+	}
+
+	return true;
 }
 
 
@@ -122,9 +196,6 @@ int		AnimationTutorial::MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest, const Ogr
 
 	// set target's orientation to destination
 	GetSceneNode()->setOrientation( quat );
-
-	if( evt.timeSinceLastFrame != 0 )
-		Dest	*= evt.timeSinceLastFrame;
 
 	// move target to destination
 	GetSceneNode()->setPosition( Dest );

@@ -31,10 +31,15 @@ protected:
 		return m_pSceneNode;
 	}
 
-	static const int	MAX_INDEX	= 100;
+	static const int	MAX_INDEX	= 100;	// # of points that make up circle
 
 	//< coordinate of 3D circle
-	Vector3			m_aCirclePos[ MAX_INDEX ];
+	std::deque<Vector3> m_WalkList;		// set of waypoint
+	Real				mDistance;		// 다음 지점까지 남은 거리
+	Vector3				mDirection;		// 객체가 움직이고 있는 방향
+	Vector3				mDestination;	// 객체가 가고 있는 목표점
+	static const int	m_WalkSpeed		= 100;	// character speed
+
 
 	//< object to display 3D circle that is orbit of fighter
 	ManualObject*	m_pCircle;
@@ -60,11 +65,13 @@ protected:
 	{
 		BaseApplication::createCamera();
 
-		//< 
+		//< relocate the camera for good looking
 		mCamera->setPosition(1000, 1000, 1000);
 
 		mCamera->lookAt(0, 0, 0);
 	}
+    
+	void createFrameListener(void);
 
 	/**
 	* @function		createScene
@@ -92,5 +99,7 @@ protected:
 	* @return		1 if success
 	*/
 	int		MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest, const Ogre::FrameEvent& evt );
+
+	bool nextLocation();
 };
 

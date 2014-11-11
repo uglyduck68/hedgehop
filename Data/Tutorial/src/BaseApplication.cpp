@@ -146,7 +146,7 @@ void BaseApplication::createFrameListener(void)
 
 	// comment out Ogre logo
 //    mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
-    mTrayMgr->hideCursor();
+//    mTrayMgr->hideCursor();
 
     // Create a params panel for displaying sample details
     Ogre::StringVector items;
