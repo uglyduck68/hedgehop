@@ -108,11 +108,8 @@
   <ItemGroup>
     <ClInclude Include="include\BaseApplication.h" />
     <ClInclude Include="include\CollisionTools.h" />
-<<<<<<< HEAD
     <ClInclude Include="include\Fighter.h" />
-=======
     <ClInclude Include="include\Config.h" />
->>>>>>> f75e13563975dfadea442679ae8aaf1a4b4af88b
     <ClInclude Include="include\InputController.h" />
     <ClInclude Include="include\Target.h" />
     <ClInclude Include="include\Terrain.h" />
