@@ -1,0 +1,75 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// DDS MESSAGE, GUN-MMI
+//
+// Created	: 2012.06.10 Lee-Jiwoong
+// Updated  : 2012.06.21
+// Author   : Lee-Soojung
+//////////////////////////////////////////////////////////////////////////
+
+
+//------------------------------------------------------------------------
+//	CMS -> GUN MMI -> GUN SIM
+//------------------------------------------------------------------------
+//	1. DMSG_GFC_FIREDATA				사격제원정보 (GFC->GUNMMI->GUNSIM)
+//  3. DMSG_EC_FIRINGCMD				함포명령
+//  4. DMSG_GFC_HITEXPECT				예상명중점
+//------------------------------------------------------------------------
+
+
+//	1. 사격제원정보
+struct DMSG_GFC_FIREDATA
+{
+	double		dAoS;		  // 시선각 (추가 필요?)
+	double		dEle;	      // 초고각
+	double		dAzi;
+	double		dToF;		  // 탄 비행시간
+};
+
+
+//	3. 함포명령
+struct DMSG_EC_FIRINGCMD
+{
+	char		command;			// 함포명령, 1: Fire, 2: Terminate
+};
+
+//  4. 예상명중점
+struct DMSG_GFC_HITEXPECT
+{
+	double		dPosX;
+	double		dPosY;
+	double		dPosZ;
+};
+
+
+//------------------------------------------------------------------------
+//	GUN SIM -> GUN MMI -> CMS
+//------------------------------------------------------------------------
+//	1. DMSG_GUN_STATE		함포상태
+//------------------------------------------------------------------------
+
+//	1. 함포상태정보
+struct DMSG_GUN_STATE
+{
+	char			bMotorState;				// 0: 구동중지, 1: 모터구동
+	char			bControlMode;				// 0: 원격모드, 1: 로컬모드
+	char			bGunState;					// 0: 함포미준비, 1: 함포준비
+	char			bServerState;				// 0: 서버유압장치 끔, 1: 서버유압장치 켬
+	char			bAngleModeState;			// 1: 제한각, 2: 정상각
+	char			bAlignedState;				// 1: 오배열, 2: 정상배열
+	char			bFireAuthorizedState;		// 0: 함포발사금지, 1: 함포발사승인
+	char			bAssignedState;				// 0: 함포발사불가, 1: 함포발사준비
+	char			bFiringState;				// 0: 비사격, 1: 사격
+	char			byAimingMode;				// 조준모드, 1: 포제자리, 2: 조준점, 3: 표적점, 4: 운영자입력위치, 5: 벤치마크, 6: 외부수평점
+	char			bFuzeSetter;				// 1: 근접 신관, 2: 충격신관
+	unsigned long	nInventoryInfo;				// 누적발사탄수
+	double			dAngle;						// 함포사격제원의 방위각
+	double			dElevation;					// 함포사격제원의 고각
+	float			fTimeOfFlight;				// 함포사격제원의 비과시간 (탄비행시간)
+	double			dTellbackMuzzleVelocity;	// 포구초속	
+	double			dTellbackPropellantsTemp;	// 장약온도
+	double			dTellbackRatateAngle;		// 포선회각
+	double			dTellbackElevation;			// 포고각
+};
+
+

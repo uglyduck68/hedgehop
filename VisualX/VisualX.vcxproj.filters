@@ -1,109 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\VisualX.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="include\BaseApplication.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="res\Resource.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="src\StdAfx.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Debug.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ocean.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Sky.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Terrain.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Target.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="include\InputController.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CollisionTools.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="include\Fighter.h">
-=======
-    <ClInclude Include="include\Config.h">
->>>>>>> f75e13563975dfadea442679ae8aaf1a4b4af88b
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\VisualX.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\BaseApplication.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\StdAfx.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Debug.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ocean.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sky.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Terrain.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Target.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\InputController.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\CollisionTools.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="src\Fighter.cpp">
-=======
     <ClCompile Include="src\Config.cpp">
->>>>>>> f75e13563975dfadea442679ae8aaf1a4b4af88b
-      <Filter>소스 파일</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\Debug.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Fighter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputController.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sky.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Target.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terrain.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VisualX.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ocean.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StdAfx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\BaseApplication.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CollisionTools.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Config.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fighter.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InputController.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ocean.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="res\Resource.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StdAfx.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Target.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sky.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Terrain.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VisualX.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\ReadMe.txt" />
     <None Include="res\VisualX.ico">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resource</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Filter Include="Include">
+      <UniqueIdentifier>{5fdff23d-49e5-4757-bd32-7398385fd30d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{309224ce-1260-4fcd-94bf-f943a1f878e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{7ad0020b-60b0-4b71-8092-37daa7c1f868}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
     <ResourceCompile Include="res\VisualX.rc">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resource</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -66,6 +66,11 @@ CVisualX::~CVisualX(void)
 */
 bool CVisualX::configure(void)
 {
+	// call ogre configuration setting from ogre dialog
+	if( BaseApplication::configure() == false)
+		return false;
+
+	// load visualx configuration settings
 	m_Config.Load( VISUALX_CONFIG_FILE );
 
 	return true;
@@ -76,8 +81,14 @@ bool CVisualX::configure(void)
 */
 void CVisualX::createCamera(void)
 {
+	assert(mSceneMgr != NULL);
+
+//	BaseApplication::createCamera();
+
     // Create the camera
     mCamera = mSceneMgr->createCamera("PlayerCam");
+
+	assert(mCamera != NULL);
 
     // Position it at 500 in Z direction
 	// Sean, in CS_ORBIT camera position is meaningless.
@@ -203,10 +214,12 @@ void CVisualX::createScene(void)
 	}
 #endif
 
+#if		0
 	m_pInputController	= new (nothrow) CInputController(mRoot, mKeyboard, mMouse);
 	if( m_pInputController )
 		/* add frame listener */
 		m_pInputController->createFrameListener();
+#endif
 
 	///////////////////////////////////////////////////////////////////////////
 	// create CollisionTools

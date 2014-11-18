@@ -1,0 +1,201 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// DDS MESSAGE
+//
+// Created	: 2012.06.10 Lee-Jiwoong
+// Updated  : 2012.06.21 Lee-Soojung
+//
+//////////////////////////////////////////////////////////////////////////
+
+
+//------------------------------------------------------------------------
+//	TRR MMI -> CMS 
+//------------------------------------------------------------------------
+//	1. DMSG_TRR_TARGET				표적정보
+//	2. DMSG_TRR_DIRECTOR			디렉터 자세정보
+//	3. DMSG_TRR_TRACKING			추적상태정보
+//	4. DMSG_TRR_SHOOTDOWNRESULT		격추결과
+//	5. DMSG_TRR_SETRESULT			설정결과
+//	6. DMSG_TRR_ASCOPE				A-Scope 데이터
+//	7. DMSG_TRR_STATE				TRR 상태정보
+//------------------------------------------------------------------------
+
+
+//	1. 표적정보
+struct DMSG_TRR_TARGET
+{
+	unsigned long		nTargetNum;					// 표적 정보
+	char				byTargetCategory;			// 표적분류
+	double				dPosX;						// 위치
+	double				dPosY;
+	double				dPosZ;
+	double				dVelocityX;					// 속력
+	double				dVelocityY;
+	double				dVelocityZ;
+	char				byIsValidTarget;			// 표적정보 유효여부
+};
+
+
+//	2. 디렉터 자세정보
+struct DMSG_TRR_DIRECTOR
+{
+	double		dDirectorTraverse;		// 디렉터 선회각	
+	double		dDirectorBearing;		// 디렉터 방위각
+	double		dDirectorElevation;		// 디렉터 고각
+};
+
+
+//	3. 추적상태정보
+struct DMSG_TRR_TRACKING
+{
+	long		nTargetNum;						// 표적번호
+	char	byTrackingStatus;				// 추적 상태, 1: 방사준비완료상태, 2: 표적지정상태, 3: 표적획득상태, 4: 표적추적 상태
+	char	bySourceTrack;					// 표적소스, 1: Direct, 2: FCS Track
+	char	byKillAssessment;				// 격추평가여부, 0: FALSE, 1: TRUE (미심쩍음)
+	char	byRadiationAuthority;			// 방사권한여부, 0: FALSE, 1: TRUE (미심쩍음)
+};
+
+
+//	4. 격추결과
+struct DMSG_TRR_SHOOTDOWNRESULT
+{
+	unsigned long	nTargetNum;				// 표적번호
+	char			byshootdownResult;		// 격추결과, 1: Kill, 2: Miss
+};
+
+
+//	5. 설정결과
+struct DMSG_TRR_SETRESULT
+{
+	char	bySettingCategory;		// 설정명령 종류, 1: 레이더설정, 2: 비디오설정, 3: 운용설정, 4: 경고설정, 5: 장비통제설정, 6: 추적통제 설정
+	char	bySettingResult;		// 설정 결과, 0: 설정 완료, 1: 설정 불가
+};
+
+
+//	6. A-Scope 데이터
+struct  DMSG_TRR_ASCOPE
+{
+	long		nSamplingNum;			// Sampling 개수
+	long		nSignalPower[100];		// 신호 크기
+	long		nScaleX;				// 가로
+	long		nScaleY;				// 세로 (-1.0~1.0)
+};
+
+
+// 7. TRR 상태정보
+struct DMSG_TRR_STATE
+{
+	char		byInterlockState;			// 연동상태, 0: 연동, 1: 종료
+	char		byAvailableState;			// 가용여부, 1: 가용, 2: 기능저하, 3: 비가용
+};
+
+
+//------------------------------------------------------------------------
+//	CMS -> TRR MMI
+//------------------------------------------------------------------------
+//	 1. DMSG_HMI_TRRRDRCHECKREQ				레이더 상태 점검 요청
+//	 2. DMSG_EC_TRRTRACKINGCMD				추적 명령
+//	 3. DMSG_HMI_TRRSHOOTDOWNRESULTREQ		격추결과요청
+//	 4. DMSG_HMI_TRRRDRSET					레이더 설정
+//	 5. DMSG_HMI_TRRVIDEOSET				비디오 설정
+//	 6. DMSG_HMI_TRRMANAGESET				운용 설정
+//	 7. DMSG_HMI_TRRCAUTIONSET				경고 설정
+//	 8. DMSG_HMI_TRREQUIPMENTSET			장비통제 설정
+//	 9. DMSG_HMI_TRRTRACKINGSET				추적통제 설정
+//	10. DMSG_HMI_TRRVIDEOREQ				영상요청
+//------------------------------------------------------------------------
+
+
+//	 1. 레이더 상태 점검 요청
+struct DMSG_HMI_TRRRDRCHECKREQ
+{
+	char    cRadarTest;	// 0 : Test Request
+};
+
+
+//	 2. 추적 명령
+struct DMSG_EC_TRRTRACKINGCMD
+{
+	char				byTrackingStatus;	// 0: Start Tracking, 1: Stop Tracking
+	unsigned long		nTargetNum;			// 표적번호
+	double				dBearing;			// 방위
+	double				dElevation;			// 고각
+	double				dDistance;			// 거리
+};
+
+//	 3. 격추결과요청
+struct DMSG_HMI_TRRSHOOTDOWNRESULTREQ
+{
+	unsigned long		nTargetNum;					// 표적번호
+	char				byRequestStatus;			// 0: Request
+};
+
+//	 4. 레이더 설정
+struct DMSG_HMI_TRRRDRSET
+{
+	char	byTWTConfig;				// TWT설정, 1: 급속예열, 2: TWT 재조절(레이더 TWT 초기화)
+	char	byTransmitMode;				// 송신모드, 1: FA, 2: MTI, 3: PD, 4: RAIN, 5: FAIR
+	char	byDecreaseMode;				// 감쇄모드, 1: 강우감쇄, 2: 해면감쇄
+};
+
+
+//	 5. 비디오 설정
+struct DMSG_HMI_TRRVIDEOSET
+{
+	char	byAScopeSTC;			// 1: STC1, 2: STC2, 3: STC3, 4: STC4
+	char	byAScopeVideo;			// 1: 일반, 2: 포락선, 3: PD 스펙트럼, 4: 끔
+	char	byNoiseThreshold;		// 잡음임계치
+	char	byDisplayThreshold;		// 전시임계치
+};
+
+
+//	 6. 운용 설정
+struct DMSG_HMI_TRRMANAGESET
+{
+	long		nInitAltitude;			// 초기 고정 고도
+	long		nShipTrackAltitude;		// 대함 추적 고도
+	char	bySeaState;				// 해상 상태
+	long		nMaxAltitude;			// 최대 고도
+};
+
+
+//	 7. 경고 설정
+struct DMSG_HMI_TRRCAUTIONSET
+{
+	boolean		bMissileCaution;		// 미사일 경고,	On / Off
+	boolean		bJammerTracking;		// 재머 추적,	On / Off
+};
+
+
+//	 8. 장비통제 설정
+struct DMSG_HMI_TRREQUIPMENTSET
+{
+	char	byTWTPower;					// TWT전원, 0: 끔, 1: 켬
+	char	byEmergencyManageMode;		// 비상운용모드, 0: 중지, 1: 작동
+	char	byRadiationControl;			// 방사통제, 0: 송신차단, 1: 송신승인
+	char	byRadarSilence;				// 레이더침묵, 0: 해제, 1: 설정
+	char	byDirector;					// 디렉터, 0: 대기, 1: 잠금
+	char	byJoystick;					// 조이스틱, 0: 할당, 1: 해제
+};
+
+
+//	 9. 추적통제 설정
+struct DMSG_HMI_TRRTRACKINGSET
+{
+	char byHandTracking;		// 수동지향추적, 1: 디렉터 구동, 2: 수동거리 추적개시
+	char byHandRegulation;		// 수동조절, 1: 각도추적지원, 2: 수동각도추적, 3: 거리추적지원, 4: 수동거리 추적
+	char bySecondaryTarget;		// 2차 표적, 1: 1차표적 거리조정, 2: 2차표적 거리조정, 3: 2차표적 탐지, 4: 표적변경
+	long nRangeGateMoveCtr;		// 거리게이트 이동통제
+	char byRangeGateCtr;		// 거리게이트통제, 1: 자동, 2: 단거리, 3: 장거리
+	char byLowAltitudeTracking;	// 저고도 추적, 0: 해제, 1: 설정
+	char byFlightTarget;		// 기동 표적, 1: 항공기, 2: 유도탄, 3: 함정, 4: 등속
+	char byFilter;				// 필터, 1: 추적레이더(방위고각), 2: 추적레이더(거리), 3: 외부거리, 4: 기억추적
+};
+
+
+//	10. 영상요청
+struct DMSG_HMI_TRRVIDEOREQ
+{
+	char	cRequestVideo;		// 1: 영상요청, 2: 영상중지
+};
+
