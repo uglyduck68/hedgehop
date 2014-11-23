@@ -58,7 +58,8 @@ void BasicTutorial05::createScene(void)
 		mDirection = Ogre::Vector3::ZERO;
  
 }
-	bool BasicTutorial05::frameRenderingQueued(const Ogre::FrameEvent& evt){
+	bool BasicTutorial05::frameRenderingQueued(const Ogre::FrameEvent& evt)
+	{
 		    if(mWindow->isClosed())
         return false;
  
@@ -71,10 +72,12 @@ void BasicTutorial05::createScene(void)
  
 		mTrayMgr->frameRenderingQueued(evt);
 		mCamNode->translate(mDirection * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
-		return true;}
+		return true;
+	}
  
 		// OIS::KeyListener
-		bool BasicTutorial05::keyPressed( const OIS::KeyEvent &arg ){
+		bool BasicTutorial05::keyPressed( const OIS::KeyEvent &arg )
+		{
 		    switch (arg.key)
 			{
 				case OIS::KC_1:
@@ -127,7 +130,8 @@ void BasicTutorial05::createScene(void)
 			return true;
 		}
  
-		bool BasicTutorial05::keyReleased( const OIS::KeyEvent &arg ){
+		bool BasicTutorial05::keyReleased( const OIS::KeyEvent &arg )
+		{
  
 			switch (arg.key)
 			{
@@ -167,7 +171,8 @@ void BasicTutorial05::createScene(void)
 				return true;
 		}
 		// OIS::MouseListener
-		bool BasicTutorial05::mouseMoved( const OIS::MouseEvent &arg ){
+		bool BasicTutorial05::mouseMoved( const OIS::MouseEvent &arg )
+		{
 			if (arg.state.buttonDown(OIS::MB_Right))
 				{
 					mCamNode->yaw(Ogre::Degree(-mRotate * arg.state.X.rel), Ogre::Node::TS_WORLD);
@@ -175,6 +180,7 @@ void BasicTutorial05::createScene(void)
 				}
 			return true;
 		}
+		
 		bool BasicTutorial05::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id ){
 			Ogre::Light *light = mSceneMgr->getLight("Light1");
 			switch (id)
