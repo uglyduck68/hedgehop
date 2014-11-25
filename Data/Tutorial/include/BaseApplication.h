@@ -35,6 +35,15 @@ protected:
     virtual bool configure(void);
     virtual void chooseSceneManager(void);
     virtual void createCamera(void);
+	/**
+	 * @function		setupCameraPosition
+	 * @remarks			createCamera create camer and locate the camera default position,
+	 *					and call setupCameraPosion to control the camera position
+	 */
+	virtual void setupCameraPosition()
+	{
+		// do nothing and just give the chance derived class to control camera position
+	}
     virtual void createFrameListener(void);
     virtual void createScene(void) = 0; // Override me!
     virtual void destroyScene(void);

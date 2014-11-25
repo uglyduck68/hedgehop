@@ -35,7 +35,14 @@ const int	MAX_Z		= COcean::MAX_HEIGHT;	/** height */
 //-------------------------------------------------------------------------------------
 CVisualX::CVisualX(void) :
 	m_pOcean(NULL), m_pSky(NULL), m_pTerrain(NULL), m_pInputController(NULL),
-	m_bCollision(false), m_pCollisionTools(NULL)
+	m_bCollision(false), m_pCollisionTools(NULL),
+	///////////////////////////////////////////////////////////////////////////
+	// intro initialization
+	///////////////////////////////////////////////////////////////////////////
+	m_IsIntro(true),
+	m_snIntroTarget(NULL),
+	m_RotTime(ROT_TIME)
+
 {
 }
 //-------------------------------------------------------------------------------------
@@ -50,15 +57,24 @@ CVisualX::~CVisualX(void)
 	// delete all targets
 	std::list<CTarget*>::iterator	it;
 
-	while( !m_listTarget.empty() )
+	while( !m_TargetList.empty() )
 	{
-		CTarget*	pTarget	= m_listTarget.front();
-		m_listTarget.pop_front();
+		CTarget*	pTarget	= m_listTarget.front(); m_listTarget.pop_front();
 
 		DEL(pTarget);
 	}
 
 	DEL( m_pCollisionTools );
+}
+
+void CVisualX::setupCameraPosition()
+{
+	//
+	// setup camera for iso viewing
+	//
+    mCamera->setPosition(Ogre::Vector3(0,10000,8000));
+    // Look back along -Z
+    mCamera->lookAt(Ogre::Vector3(0,0,-300));
 }
 
 /**
@@ -75,6 +91,39 @@ bool CVisualX::configure(void)
 
 	return true;
 }
+/**
+* @function		createViewport
+* @remarks			BaseApplication 클래스에서 생성하는 
+*					전체 스크린에 해당하는 main viewport 외에
+*					인트로에 사용될 viewport를 생성한다.
+*/
+void CVisualX::createViewports(void)
+{
+	// create the main viewport
+	BaseApplication::createViewports();
+
+	//
+	// create intro viewport
+	//
+
+	m_IntroCamera		= mSceneMgr->createCamera("IntroCamera");
+
+	if( m_IntroCamera )
+	{
+		m_IntroCamera->setPosition(100, 100, 100);
+		m_IntroCamera->lookAt(0, 0, 0);
+	}
+
+	m_IntroViewport		= mWindow->addViewport(m_IntroCamera, 1, 0.2, 0.2, 0.6, 0.6);
+
+	if( m_IntroViewport )
+	{
+		m_IntroViewport->setBackgroundColour(Ogre::ColourValue(0.2, 0.2, 0.2));
+		m_IntroCamera->setAspectRatio( Real(m_IntroViewport->getActualWidth()) / 
+			Real(m_IntroViewport->getActualHeight()));
+	}
+}
+
 
 /**
 * @function		createCamera that create input controller
@@ -83,27 +132,7 @@ void CVisualX::createCamera(void)
 {
 	assert(mSceneMgr != NULL);
 
-//	BaseApplication::createCamera();
-
-    // Create the camera
-    mCamera = mSceneMgr->createCamera("PlayerCam");
-
-	assert(mCamera != NULL);
-
-    // Position it at 500 in Z direction
-	// Sean, in CS_ORBIT camera position is meaningless.
-	// because camera is always near target in SdkCamerMan class internally
-    mCamera->setPosition(Ogre::Vector3(0,10000,8000));
-    // Look back along -Z
-    mCamera->lookAt(Ogre::Vector3(0,0,-300));
-    mCamera->setNearClipDistance(5);
-
-    mCameraMan = new OgreBites::SdkCameraMan(mCamera);   // Create a default camera controller
-
-	// Sean, add, change the style of cameraman from default CS_FREELOOK to CS_ORBIT
-	// In case of CS_ORBIT, There is some wrong movement according to Y-axis
-	if( mCameraMan )
-		mCameraMan->setStyle(OgreBites::CS_FREELOOK/*CS_ORBIT*/);
+	BaseApplication::createCamera();
 }
 
 //-------------------------------------------------------------------------------------
@@ -179,6 +208,10 @@ void CVisualX::createScene(void)
 	pFighter->createFrameListener();
 
 	m_listTarget.push_back( pFighter );
+
+	
+	m_TargetList.push_back ( *pFighter );
+
 #if	0
 	///
 	// create sample targets for performance test
@@ -237,6 +270,9 @@ void CVisualX::createScene(void)
 	mSceneMgr->getRootSceneNode()->createChildSceneNode("AxesNode",Ogre::Vector3(0,0,0))->attachObject(mAxesEntity);
 	mSceneMgr->getSceneNode("AxesNode")->setScale(50, 50, 50);
 //#endif
+
+	// set intro taget initially
+	SetNextIntroTarget();
 }
 
 void CVisualX::setupResources(void)
@@ -275,6 +311,18 @@ bool CVisualX::frameStarted( const FrameEvent &evt )
     
 bool CVisualX::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
+	if( m_IsIntro && m_snIntroTarget)
+	{
+		m_snIntroTarget->yaw(Degree(evt.timeSinceLastFrame * 30));
+
+		m_RotTime		-= evt.timeSinceLastFrame;
+
+		if( m_RotTime < 0 )
+		{
+			SetNextIntroTarget();
+		}
+	}
+
 	/** 
 	* RAY_Y_ORG is bigger than camPos.y because check wether or not camera is under the ocean.
 	* distToColl is RAY_Y_ORG - m_pOcean->GetSurface() where camera is above ocean.
@@ -377,6 +425,21 @@ bool CVisualX::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 bool CVisualX::keyPressed(const OIS::KeyEvent &arg)
 {
+	if( m_IsIntro && arg.key == OIS::KC_SPACE )
+	{
+		SetNextIntroTarget();
+
+		if( m_snIntroTarget == NULL )
+		{
+			///////////////////////////////////////////////////////////////////
+			// end the intro mode
+			///////////////////////////////////////////////////////////////////
+			SetIntroEnd();
+		}
+	
+		return BaseApplication::keyPressed(arg);
+	}
+
 	switch(arg.key)
 	{
 	case OIS::KC_W:
@@ -452,6 +515,29 @@ bool  CVisualX::CheckCollision(const Ogre::Vector3& position, const Ogre::Vector
 
 	return false;
 }
+
+bool CVisualX::mouseMoved(const OIS::MouseEvent &arg)
+{
+	if (m_IsIntro)
+		return true;
+
+	return BaseApplication::mouseMoved( arg );
+}
+
+bool CVisualX::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
+{
+	if (m_IsIntro)
+		return true;
+	return BaseApplication::mousePressed( arg, id );
+}
+
+bool CVisualX::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
+{
+	if (m_IsIntro)
+		return true;
+	return BaseApplication::mouseReleased( arg, id );
+}
+
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN

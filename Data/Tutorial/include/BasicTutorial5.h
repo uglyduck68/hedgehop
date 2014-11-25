@@ -1,3 +1,12 @@
+/**
+ * @file		BasicTutorial5
+ * @remarks		닌자 하나 나오고, WSAD 마우스 오른쪽 버튼으로 조명 키고/끄기, 
+ *				마우스 왼쪽 버튼으로 회전.
+ *				숫자 1/2로 각기 만든 카메라를 카메라 노드에 설정하여 시점 변환, 
+ *				화살표 4방향 키.
+ *				단지 buffered input 샘플 프로그램임.
+ */
+
 #pragma once
 
 #include "BaseApplication.h"

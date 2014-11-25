@@ -109,6 +109,9 @@ void BaseApplication::createCamera(void)
 	// In case of CS_ORBIT, There is some wrong movement according to Y-axis
 	if( mCameraMan )
 		mCameraMan->setStyle(OgreBites::CS_FREELOOK/*CS_ORBIT*/);
+
+	// give the chance the derived class to control the initial position of camera
+	setupCameraPosition();
 }
 //---------------------------------------------------------------------------
 void BaseApplication::createFrameListener(void)

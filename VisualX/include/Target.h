@@ -29,6 +29,10 @@ public:
 		return m_pSceneNode;
 	}
 
+	operator SceneNode*()
+	{
+		return m_pSceneNode;
+	}
 	/*
 	* @function		MoveTo that translate mesh to @Dest and set mesh's
 	* orientation to @Dest

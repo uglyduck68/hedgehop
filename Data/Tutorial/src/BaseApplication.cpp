@@ -109,6 +109,9 @@ void BaseApplication::createCamera(void)
 	// In case of CS_ORBIT, There is some wrong movement according to Y-axis
 	if( mCameraMan )
 		mCameraMan->setStyle(OgreBites::CS_FREELOOK/*CS_ORBIT*/);
+
+	// give the chance the derived class to control the initial position of camera
+	setupCameraPosition();
 }
 //---------------------------------------------------------------------------
 void BaseApplication::createFrameListener(void)
@@ -142,10 +145,10 @@ void BaseApplication::createFrameListener(void)
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
 
 	// sean, add, I don't need anythings
-	mTrayMgr->hideAll();
+//	mTrayMgr->hideAll();
 
 	// comment out Ogre logo
-//    mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
+    mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
 //    mTrayMgr->hideCursor();
 
     // Create a params panel for displaying sample details
