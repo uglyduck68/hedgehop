@@ -1,7 +1,15 @@
 #pragma once
 
+#include "MaterialControls.h"
+
 /** surface elevation that is defined for preventing z-fighting with terrain */
 #define	MAX_MSL		20;
+
+using namespace Ogre;
+using namespace OgreBites;
+
+#define		WAVEFX_INC		0
+#define		WAVEFX_DEC		1
 
 class COcean
 {
@@ -12,6 +20,31 @@ protected:
     Ogre::SceneManager*         mSceneMgr;
 
 	Ogre::Real					m_MSL;
+
+	///////////////////////////////////////////////////////////////////////////
+	// wave Fx
+	///////////////////////////////////////////////////////////////////////////
+	Ogre::MaterialPtr	  mActiveMaterial;
+	Ogre::Pass*			  mActivePass;
+	Ogre::GpuProgramPtr	  mActiveFragmentProgram;
+	Ogre::GpuProgramPtr	  mActiveVertexProgram;
+	Ogre::GpuProgramParametersSharedPtr mActiveFragmentParameters;
+	Ogre::GpuProgramParametersSharedPtr mActiveVertexParameters;
+	Real				  mRotateSpeed;
+	
+	ShaderControlsContainer    mShaderControlContainer;
+    MaterialControlsContainer mMaterialControlsContainer;
+
+	size_t					mCurrentMaterial;
+
+	Real					m_fWaveFreq;	// 0 ~ 0.05
+	Real					m_fWaveAmp;		// 0 ~ 25
+
+public:
+	int ChangeFragmentVertexValue(int nIndex, Real& TargetValue, Real Value);
+	int ControlWaveFreq( int nInc, Real MultiConst );
+	int ControlWaveAmp( int nInc, Real MultiConst );
+
 public:
 	COcean(Ogre::SceneManager*);
 	~COcean(void);

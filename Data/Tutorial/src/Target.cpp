@@ -3,12 +3,12 @@
 
 const char*	TARGET_NAME_PREFIX	= "Target_";
 
-CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int nID, string mesh) :
+CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 	mSceneMgr(pSceneMgr)
 {
 	char	temp[20];
 
-	itoa(nID, temp, 10);
+	itoa(name, temp, 10);
 
 	// set target name
 	m_strName		= TARGET_NAME_PREFIX;
@@ -23,9 +23,32 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int nID, string mesh) :
 
 	Any			any(pEntity);
 
-	m_pSceneNode->setUserAny(any);
+	GetSceneNode()->setUserAny(any);
 
-	m_pSceneNode->attachObject(pEntity);
+	GetSceneNode()->attachObject(pEntity);
+
+	///////////////////////////////////////////////////////////////////////////
+	// create my own resources for particle system
+	///////////////////////////////////////////////////////////////////////////
+	ParticleSystem* ps;
+
+	ps = mSceneMgr->createParticleSystem("JenEngine1", "Examples/JetEngine1");  // create a rainstorm
+    ps->fastForward(5);   // fast-forward the rain so it looks more natural
+
+	// change -y-axis direction to -z-axis like fighter's jet engine flare
+	ps->getEmitter(0)->setDirection( Vector3(0, 0, -1) );
+
+	// attache particle to scene node
+	GetSceneNode()->attachObject(ps);
+
+	///////////////////////////////////////////////////////////////////////////
+	// create my own sounds
+	///////////////////////////////////////////////////////////////////////////
+	m_pSound	= OgreOggSoundManager::getSingletonPtr()->createSound(m_strName, "jet_exhaust.wav");
+
+	// start to play sound
+	if( m_pSound )
+		m_pSound->play();
 }
 
 

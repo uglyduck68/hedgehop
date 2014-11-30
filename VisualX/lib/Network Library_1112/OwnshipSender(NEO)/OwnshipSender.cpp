@@ -28,6 +28,8 @@ void SendGPS(int no,bool flag=false)
 	msg.fCourse = 35;
 	msg.fRange = 40;
 	msg.fSpeed = Speed;
+
+	// send the message
 	EnLibrary::Send(&msg);
 }
 void Send3000(){
@@ -59,13 +61,19 @@ int _tmain(int argc, _TCHAR* argv[])
 		printf("OK! Platform Req Cnt : %d!\n",++cnt);
 	});
 	EnLibrary::Resume();
+
 	char c;
 	srand((unsigned int)time(NULL));
 	int i=0,j=0;
 	bool isRun=true;	//요것 isRun 반드시 변수 처리해야 함
 	Sleep(2000);
-	while(1){
+
+	while(1)
+	{
+		printf("enter the command ('q': quit, 's': send, 'i' and loop_count : send loop to loop_count) : ");
+
 		c = getchar();
+
 		switch(c)
 		{
 		case 'q':
@@ -81,15 +89,21 @@ int _tmain(int argc, _TCHAR* argv[])
 // 				Send3000();
 // 			},1500,true);
 // 			break;
+
+			// refer to http://itguru.tistory.com/196 for lambda function
 			EnLibrary::AddTask([&](){
+
+				// pub DMSG_TM_SYSTRACK 
 				Send3000();
 			},1500,isRun);
-		case 'l':
+		case 'i':
 			scanf("%d",&j);
-			for(int i=0; i<j; ++i)Send3000();
+			for(int i=0; i<j; ++i)
+				Send3000();
 			break;
-
 		}
 	}
+
+	return 1;
 }
 

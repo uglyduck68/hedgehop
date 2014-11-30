@@ -60,7 +60,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;include\OpenThreads;include\endcs;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost;$(OGRE_HOME)\addon\SkyX-v0.4\SkyX\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;include\OpenThreads;include\endcs;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost;$(OGRE_HOME)\addon\SkyX-v0.4\SkyX\Include;$(OGREOGGSOUND_HOME)\include;$(OPENAL_SDK)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm150 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -69,8 +69,8 @@
       <ProgramDatabaseFile>$(OutDir)/VisualX.pdb</ProgramDatabaseFile>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>lib;$(OGRE_HOME)\lib\debug;$(OGRE_HOME)\boost\lib;$(OGRE_HOME)\addon\SkyX-v0.4\vs2010\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;SkyX_d.lib;OgreTerrain_d.lib;OpenThreadsWin32d.lib;EnLib2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib;$(OGRE_HOME)\lib\debug;$(OGRE_HOME)\boost\lib;$(OGRE_HOME)\addon\SkyX-v0.4\vs2010\lib\$(Configuration);$(OGREOGGSOUND_HOME)\lib(Win32);$(OGREOGGSOUND_HOME)\dependencies;$(OPENAL_SDK)\libs\win32;$(OPENAL_SDK)\libs\Win32\EFX-Util_MT;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;SkyX_d.lib;OgreTerrain_d.lib;OpenThreadsWin32d.lib;EnLib2d.lib;OgreOggSound_d.lib;efx-util.lib;OpenAL32.lib;libvorbis_static_d.lib;libvorbisfile_static_d.lib;libogg_static_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
@@ -98,7 +98,7 @@
       <StringPooling>true</StringPooling>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>include;include\OpenThreads;include\endcs;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost;$(OGRE_HOME)\addon\SkyX-v0.4\SkyX\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;include\OpenThreads;include\endcs;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost;$(OGRE_HOME)\addon\SkyX-v0.4\SkyX\Include;$(OGREOGGSOUND_HOME)\include;$(OPENAL_SDK)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm150 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -107,8 +107,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>lib;$(OGRE_HOME)\lib\release;$(OGRE_HOME)\boost\lib;$(OGRE_HOME)\addon\SkyX-v0.4\vs2010\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain.lib;OgreOverlay.lib;OIS.lib;SkyX.lib;OgreTerrain.lib;OpenThreadsWin32.lib;EnLib2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib;$(OGRE_HOME)\lib\release;$(OGRE_HOME)\boost\lib;$(OGRE_HOME)\addon\SkyX-v0.4\vs2010\lib\$(Configuration);$(OGREOGGSOUND_HOME)\lib(Win32);$(OGREOGGSOUND_HOME)\dependencies;$(OPENAL_SDK)\libs\win32;$(OPENAL_SDK)\libs\Win32\EFX-Util_MT;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain.lib;OgreOverlay.lib;OIS.lib;SkyX.lib;OgreTerrain.lib;OpenThreadsWin32.lib;EnLib2.lib;OgreOggSound.lib;efx-util.lib;OpenAL32.lib;libvorbis_static.lib;libvorbisfile_static.lib;libogg_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
@@ -121,6 +121,7 @@
     <ClInclude Include="include\Fighter.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\InputController.h" />
+    <ClInclude Include="include\MaterialControls.h" />
     <ClInclude Include="include\Target.h" />
     <ClInclude Include="include\Terrain.h" />
     <ClInclude Include="include\VisualX.h" />
@@ -143,6 +144,7 @@
     </ClCompile>
     <ClCompile Include="src\Fighter.cpp" />
     <ClCompile Include="src\InputController.cpp" />
+    <ClCompile Include="src\MaterialControls.cpp" />
     <ClCompile Include="src\Ocean.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>

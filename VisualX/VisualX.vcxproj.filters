@@ -37,6 +37,7 @@
     <ClCompile Include="src\StdAfx.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\MaterialControls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BaseApplication.h">
@@ -78,6 +79,7 @@
     <ClInclude Include="include\VisualX.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="include\MaterialControls.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\ReadMe.txt" />

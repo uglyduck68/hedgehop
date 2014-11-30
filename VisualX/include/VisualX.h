@@ -83,8 +83,14 @@ protected:
 
 	/**
 	* target container
+	*
+	* FIXME: 
+	*	아마도 타겟은 아이디와 종류를 시뮬레이터로부터 
+	*	받을 것 같다. 따라서 vector가 아니라 아이디를 키로 갖는 map 으로
+	*	작성되어야 편리하다.
 	*/
-	std::list<CTarget*>	m_listTarget;
+	typedef std::vector<CTarget*>	TARGET_LIST;
+	TARGET_LIST		m_listTarget;
 
 	Ogre::RaySceneQuery *mRaySceneQuery;
 	MOC::CollisionTools*		m_pCollisionTools;
@@ -92,19 +98,46 @@ protected:
 
 	CConfig		m_Config;
 
+	void DeleteTargets();
+
+	/**
+	* @function		CallCreatePostprocess
+	* @remarks		call CreatePostprocess of CTarget to 
+	*				post processinf according to characteristic of each target
+	*/
+	void CallCreatePostprocess();
+
+	///////////////////////////////////////////////////////////////////////////
+	// ocean wave FX
+	//////////////////////////////////////////////////////////////////////////////
+	Ogre::GpuProgramPtr	  mActiveVertexProgram;
+	Ogre::GpuProgramParametersSharedPtr mActiveVertexParameters;
+	Ogre::MaterialPtr	  mActiveMaterial;
+	Ogre::Pass*			  mActivePass;
+	Ogre::GpuProgramPtr	  mActiveFragmentProgram;
+	Ogre::GpuProgramParametersSharedPtr mActiveFragmentParameters;
+
+	void controlWaveFreq(int nKey);
 	///////////////////////////////////////////////////////////////////////////
 	// intro
 	///////////////////////////////////////////////////////////////////////////
 	SceneNode*		m_snIntroTarget;
 
-	std::deque<SceneNode*>	m_TargetList;
+//	std::deque<SceneNode*>	m_IntroTargetList;
 
 	Ogre::Camera*			m_IntroCamera;
 	Ogre::Viewport*			m_IntroViewport;
 	bool					m_IsIntro;	//< initial value is true.
 	Real					m_RotTime;
+	int						m_nIntroCurIndex;
 
 	static const int		ROT_TIME	= 10;	//< rotate for 10 sec.
+
+
+	void CreateIntroViewport();
+
+
+
 
 	// derived from FrameListener via BaseApplication
 	virtual void setupCameraPosition();
@@ -194,9 +227,12 @@ protected:
 			m_snIntroTarget->setVisible( false );
 
 		// get next target and set visible
-		if( m_TargetList.size() > 0 )
+		if( m_listTarget.size() > 0 && m_nIntroCurIndex < m_listTarget.size() )
 		{
-			m_snIntroTarget		= m_TargetList.front(); m_TargetList.pop_front();
+			CTarget*	pSC	= m_listTarget[m_nIntroCurIndex];
+
+			if( pSC )
+				m_snIntroTarget		= pSC->GetSceneNode();
 
 			////////////////////////////////////////////////////////////////////////////
 			// check the target size and control the distance between the camera and target
@@ -206,6 +242,8 @@ protected:
 			ControlCameraDistance(m_IntroCamera, pTemp);
 
 			m_snIntroTarget->setVisible( true );
+
+			m_nIntroCurIndex++;
 		}
 		else
 		{
@@ -225,11 +263,14 @@ protected:
 	*/
 	void SetIntroEnd()
 	{
+		// delete intro viewport
+		mWindow->removeViewport( 1 );
+
 		// set flag to false
 		m_IsIntro	= false;
 
-		// delete intro viewport
-		mWindow->removeViewport( 1 );
+		// keep creating other characters (ocean, sky, ans so on)
+		createScene();
 	}
 
 

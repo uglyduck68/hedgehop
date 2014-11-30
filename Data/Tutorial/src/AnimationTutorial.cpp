@@ -1,7 +1,10 @@
 #include "StdAfx.h"
 #include "..\include\AnimationTutorial.h"
+#include "OgreOggSound.h"
+
 
 using namespace	Ogre;
+using namespace	OgreOggSound;
 
 AnimationTutorial::AnimationTutorial(void) :
 	m_pSceneNode(NULL), mDirection(Vector3::ZERO)
@@ -11,6 +14,21 @@ AnimationTutorial::AnimationTutorial(void) :
 
 AnimationTutorial::~AnimationTutorial(void)
 {
+	// delete all targets
+	for( std::vector<CTarget*>::iterator itr = m_vecTarget.begin(); itr != m_vecTarget.end(); itr++ )
+	{
+		if( *itr )
+		{
+			DEL(*itr);
+		}
+	}
+
+	//while( !m_lstTarget.empty() )
+	//{
+	//	CTarget*	pTarget	= m_lstTarget.front(); m_lstTarget.pop_front();
+
+	//	DEL(pTarget);
+	//}
 }
 	
 void AnimationTutorial::createFrameListener(void)
@@ -27,19 +45,44 @@ bool AnimationTutorial::nextLocation(void)
 		return false;
 	}
 
-	mDestination = m_WalkList.front();
+	mDestination = m_WalkList.front(); 
 	m_WalkList.pop_front();
+
+#if	1
+	// loop indefinitely
+	m_WalkList.push_back( mDestination );
+#else
+#endif
 		
 	mDirection = mDestination - GetSceneNode()->getPosition();
 	mDistance = mDirection.normalise();
 
-	return true;	return true;
+	return true;
 }
 
 void AnimationTutorial::createScene()
 {
 	//////////////////////////////////////////////////////////////////////////////
-	//
+	// initialize particle system setting
+	//////////////////////////////////////////////////////////////////////////////
+	ParticleSystem::setDefaultNonVisibleUpdateTimeout(5);  // set nonvisible timeout
+
+	//////////////////////////////////////////////////////////////////////////////
+	// initialize ogg sound
+	//////////////////////////////////////////////////////////////////////////////
+	OgreOggSound::OgreOggSoundManager *mSoundManager	= OgreOggSoundManager::getSingletonPtr();
+	
+	if( mSoundManager )
+		mSoundManager->init();
+
+	// mCamera->getParentSceneNode() return NULL
+	if( mCamera->getParentSceneNode() )
+		mCamera->getParentSceneNode()->attachObject(mSoundManager->getListener());
+
+	Ogre::Root::getSingleton().addFrameListener(this);
+
+	//////////////////////////////////////////////////////////////////////////////
+	// from here create targets
 	//////////////////////////////////////////////////////////////////////////////
 	createSceneNode("razor.mesh");
 	GetSceneNode()->setPosition( Vector3(0, 0, 500) );
@@ -97,7 +140,7 @@ void AnimationTutorial::createScene()
 	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject( m_pCircle );
 
 	//////////////////////////////////////////////////////////////////////////////
-	//
+	// create lights
 	//////////////////////////////////////////////////////////////////////////////
     // Set ambient light
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
@@ -105,7 +148,6 @@ void AnimationTutorial::createScene()
     // Create a light
     Ogre::Light* l = mSceneMgr->createLight("MainLight");
     l->setPosition(20,80,50);
-
 }
 
 /**

@@ -11,11 +11,15 @@
 #pragma once
 
 #include "baseapplication.h"
+#include "Target.h"
+
 #include <OgreManualObject.h>
 #include <string>
 
 using namespace	Ogre;
 using namespace	std;
+
+#define		DEL(p)	if(p) {delete p; p=NULL;}
 
 class AnimationTutorial :
 	public BaseApplication
@@ -26,9 +30,19 @@ public:
 protected:
 	SceneNode*				m_pSceneNode;	// scene node
 
-	SceneNode*	GetSceneNode()
+	std::vector<CTarget*>	m_vecTarget;
+
+	SceneNode*	GetSceneNode(int nIndex = 0)
 	{
-		return m_pSceneNode;
+		if( m_vecTarget.size() > 0 )
+			return *m_vecTarget[nIndex];
+
+		// error case
+		assert(m_vecTarget.size() > 0);
+
+		return NULL;
+
+//		return m_pSceneNode;
 	}
 
 	static const int	MAX_INDEX	= 100;	// # of points that make up circle
@@ -49,22 +63,24 @@ protected:
 	int		createSceneNode(string MeshName)
 	{
 		// create target entity
-		m_pSceneNode		= mSceneMgr->getRootSceneNode()->createChildSceneNode();
-		Entity*	pEntity		= mSceneMgr->createEntity(MeshName);
+		//m_pSceneNode		= mSceneMgr->getRootSceneNode()->createChildSceneNode();
+		//Entity*	pEntity		= mSceneMgr->createEntity(MeshName);
 
-		Any			any(pEntity);
+		//Any			any(pEntity);
 
-		m_pSceneNode->setUserAny(any);
+		//m_pSceneNode->setUserAny(any);
 
-		m_pSceneNode->attachObject(pEntity);
+		//m_pSceneNode->attachObject(pEntity);
+
+		CTarget*	pTemp	= new CTarget( mSceneMgr, m_vecTarget.size(), MeshName );
+
+		m_vecTarget.push_back( pTemp );
 
 		return 1;
 	}
 
-	void createCamera(void)
+	void setupCameraPosition(void)
 	{
-		BaseApplication::createCamera();
-
 		//< relocate the camera for good looking
 		mCamera->setPosition(1000, 1000, 1000);
 

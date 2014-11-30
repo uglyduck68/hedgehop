@@ -42,7 +42,12 @@ void setPreset(const SkyXSettings& preset)
 	assert(mSkyX != NULL);
 
 	// prevent flow of time
+#if	1
+	// demo mode
+	mSkyX->setTimeMultiplier(preset.timeMultiplier);
+#else
 	mSkyX->setTimeMultiplier(0/*preset.timeMultiplier*/);
+#endif
 	mBasicController->setTime(preset.time);
 	mBasicController->setMoonPhase(preset.moonPhase);
 	mSkyX->getAtmosphereManager()->setOptions(preset.atmosphereOpt);

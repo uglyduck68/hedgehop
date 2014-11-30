@@ -127,6 +127,7 @@
     <ClInclude Include="include\ParticleTutorial.h" />
     <ClInclude Include="include\SoundTutorial.h" />
     <ClInclude Include="include\StdAfx.h" />
+    <ClInclude Include="include\Target.h" />
     <ClInclude Include="res\Resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Target.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\ReadMe.txt" />

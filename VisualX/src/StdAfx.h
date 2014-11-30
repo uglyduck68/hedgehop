@@ -54,3 +54,6 @@
 #include "Debug.h"
 
 #define		DEL(p)	{if(p) delete p;}
+
+#define		VX_SUCCESS	0
+#define		VX_FAIL		1

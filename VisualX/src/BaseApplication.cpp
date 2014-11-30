@@ -137,11 +137,9 @@ void BaseApplication::createFrameListener(void)
     mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject(OIS::OISKeyboard, true));
     mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject(OIS::OISMouse, true));
 
-	/** VisualX handle the keyboard and mouse event
-	*
     mMouse->setEventCallback(this);
     mKeyboard->setEventCallback(this);
-	*/
+
 
     // Set initial mouse clipping size
     windowResized(mWindow);

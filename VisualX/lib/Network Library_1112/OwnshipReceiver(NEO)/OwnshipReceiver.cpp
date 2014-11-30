@@ -30,16 +30,67 @@ void writeLog()
 	dwTime = 0;
 }
 
+bool	bIsRun	= true;	//< flag to control the execution of Timer function
+
+/**
+ * @function		Timer
+ * @remarks			this timer is executed by separated thread
+ */
+void Timer()
+{
+	static int		loop	= 0;
+	SYSTEMTIME		t;
+
+	GetSystemTime( &t );
+
+	printf("loop: %d, Curr time: %d:%d:%d.%d\n", loop, t.wHour, t.wMinute, t.wSecond, t.wMilliseconds);
+
+	if( loop++ > 10 )
+	{
+		// send signal to stop timer
+		printf("reset timer\n");
+
+		bIsRun	= false;
+	}
+};
+
+
+/**
+ * @function		ThreadSample
+ * @remarks			thread function sample
+ */
+void ThreadSample()
+{
+	while(1)
+	{
+		printf("%s is called\n", __FUNCTION__);
+
+		Sleep(1500);
+	};
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	bool isLog = false;
 	dwTime = 0;
+
+	//////////////////////////////////////////////////////////////////////////////
+	// Step 1:
+	//	- initialize DDS library
+	//////////////////////////////////////////////////////////////////////////////
 	EnLibrary::InitializeLibrary<1,1>("*.*.*.*","Reliable");
 
 	g_vList.reserve(3000);
-	/// SUB
-	EnLibrary::Initialize<1,DMSG_OSSMMI_PLATFORMREQ>();
-	/// PUB
+	//////////////////////////////////////////////////////////////////////////////
+	// Step 2-1:
+	//	- declare the DMSG_OSSMMI_PLATFORMREQ for PUB
+	//////////////////////////////////////////////////////////////////////////////
+	EnLibrary::Initialize<1, DMSG_OSSMMI_PLATFORMREQ>();
+
+	//////////////////////////////////////////////////////////////////////////////
+	// Step 2-1:
+	//	- declare sub callback for DMSG_TM_SYSTRACK using lambda function
+	//////////////////////////////////////////////////////////////////////////////
 	EnLibrary::Initialize<1,DMSG_TM_SYSTRACK>([&](DMSG_TM_SYSTRACK* msg)
 	{		
 		if(msg == NULL) return;
@@ -53,15 +104,46 @@ int _tmain(int argc, _TCHAR* argv[])
 		printf("[%d,%d]TM_SYSTRACK Lon : %f Lat : %f TargetNo : %d \n",g_count[0],g_count[1],msg->positionCHSys.longitude,msg->positionCHSys.latitude,g_count[2]);
 		if(msg->trkNo.trkNo != 0 && isLog)
 		g_vList.push_back(g_count);
-		/// echo! 
+
+		///////////////////////////////////////////////////////////////////////
+		// Pub DMSG_OSSMMI_PLATFORMREQ for echo
+		///////////////////////////////////////////////////////////////////////
 		DMSG_OSSMMI_PLATFORMREQ req;
 		memset(&req,0,sizeof(DMSG_OSSMMI_PLATFORMREQ));
 		EnLibrary::Send(&req);
 
 	});
-	/// 내부 스레드 활성화 PUB할경우 필요
+
+	//////////////////////////////////////////////////////////////////////////////
+	// Step 3:
+	//	- activate internal threads for PUB
+	//////////////////////////////////////////////////////////////////////////////
 	EnLibrary::Resume();
+
+
+	///////////////////////////////////////////////////////////////////////////
+	// Library Sample Code Snippet
+	//	- register timer with 1500 ms periodic
+	///////////////////////////////////////////////////////////////////////////
+	EnLibrary::AddTask([&]()
+	{
+		// How can I send the parameters to TImer function?
+		Timer();
+	}, 1500, bIsRun);
+
+	///////////////////////////////////////////////////////////////////////////
+	// Library Sample Code Snippet
+	//	- register thread function that AddTask has internal threadpool
+	///////////////////////////////////////////////////////////////////////////
+	EnLibrary::AddTask([&]()
+	{
+		ThreadSample();
+	});
+
 	char c;
+
+	printf("enter command('s', 'e', 'q', 'i') : ");
+
 	while(1)
 	{
 		c = getchar();
@@ -76,10 +158,15 @@ int _tmain(int argc, _TCHAR* argv[])
 		case 'q':
 			writeLog();
 			return 0;
-		case 'l':
+		case 'i':
 			writeLog();
 			break;
 		}
 	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	// Step 4:
+	//	- finalize DDS library
+	//////////////////////////////////////////////////////////////////////////////
 	EnLibrary::ReleaseLibrary();
 }

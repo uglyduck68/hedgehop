@@ -41,11 +41,25 @@ CVisualX::CVisualX(void) :
 	///////////////////////////////////////////////////////////////////////////
 	m_IsIntro(true),
 	m_snIntroTarget(NULL),
+	m_nIntroCurIndex(0),
 	m_RotTime(ROT_TIME)
-
 {
+	///////////////////////////////////////////////////////////////////////////
+	// ocean wave Fx
+	///////////////////////////////////////////////////////////////////////////
+	mActiveVertexProgram.setNull();
+	mActiveVertexParameters.setNull();
 }
 //-------------------------------------------------------------------------------------
+void CVisualX::DeleteTargets()
+{
+	for( TARGET_LIST::iterator itr = m_listTarget.begin(); itr != m_listTarget.end(); itr++ )
+	{
+//		CTarget*	pTarget	= m_listTarget.front();
+
+		DEL(*itr);
+	}
+}
 CVisualX::~CVisualX(void)
 {
 	DEL(m_pOcean);
@@ -55,14 +69,7 @@ CVisualX::~CVisualX(void)
 
 	
 	// delete all targets
-	std::list<CTarget*>::iterator	it;
-
-	while( !m_TargetList.empty() )
-	{
-		CTarget*	pTarget	= m_listTarget.front(); m_listTarget.pop_front();
-
-		DEL(pTarget);
-	}
+	DeleteTargets();
 
 	DEL( m_pCollisionTools );
 }
@@ -91,21 +98,9 @@ bool CVisualX::configure(void)
 
 	return true;
 }
-/**
-* @function		createViewport
-* @remarks			BaseApplication 클래스에서 생성하는 
-*					전체 스크린에 해당하는 main viewport 외에
-*					인트로에 사용될 viewport를 생성한다.
-*/
-void CVisualX::createViewports(void)
+
+void CVisualX::CreateIntroViewport()
 {
-	// create the main viewport
-	BaseApplication::createViewports();
-
-	//
-	// create intro viewport
-	//
-
 	m_IntroCamera		= mSceneMgr->createCamera("IntroCamera");
 
 	if( m_IntroCamera )
@@ -124,6 +119,23 @@ void CVisualX::createViewports(void)
 	}
 }
 
+/**
+* @function		createViewport
+* @remarks			BaseApplication 클래스에서 생성하는 
+*					전체 스크린에 해당하는 main viewport 외에
+*					인트로에 사용될 viewport를 생성한다.
+*/
+void CVisualX::createViewports(void)
+{
+	// create the main viewport
+	BaseApplication::createViewports();
+
+	///////////////
+	// create intro viewport
+	///////////////
+	CreateIntroViewport();
+}
+
 
 /**
 * @function		createCamera that create input controller
@@ -135,25 +147,101 @@ void CVisualX::createCamera(void)
 	BaseApplication::createCamera();
 }
 
+/**
+* @function		CallCreatePostprocess
+* @remarks		call CreatePostprocess of CTarget to 
+*				post processinf according to characteristic of each target.
+* FIXME: 
+*	이렇게 후처리를 하면 같은 종류는 같은 후처리를 하게된다. 예를 들어,
+*	같은 종류의 전투기는 같은 소리, 엔진 특수 효과 를 갖데된다. 이렇게 되지
+*	않으려면 많은 CFighter를 만들면 된다.
+*/
+void CVisualX::CallCreatePostprocess()
+{
+	for( TARGET_LIST::iterator itr = m_listTarget.begin(); itr != m_listTarget.end(); itr++ )
+	{
+		(*itr)->GetSceneNode()->setVisible( true );
+		(*itr)->CreatePostprocess();
+	}
+
+	setupCameraPosition();
+}
+
+
 //-------------------------------------------------------------------------------------
 void CVisualX::createScene(void)
 {
-    Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "ogrehead.mesh");
+	///////////////////////////////////////////////////////////////////////////
+	// create target for intro
+	///////////////////////////////////////////////////////////////////////////
+	if( m_IsIntro == true )
+	{
+		///////////////////////////////////////////////////////////////////////////
+		// create lights
+		///////////////////////////////////////////////////////////////////////////
 
-    Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-    headNode->attachObject(ogreHead);
+		// Set ambient light
+		mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
 
-    // Set ambient light
-    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+		// Create a light
+		Ogre::Light* l = mSceneMgr->createLight("MainLight");
 
-    // Create a light
-    Ogre::Light* l = mSceneMgr->createLight("MainLight");
+		l->setPosition(20,80,50);
 
-    l->setPosition(20,80,50);
+		///////////////////////////////////////////////////////////////////////////
+		// create targets
+		///////////////////////////////////////////////////////////////////////////
 
-	/**
-	* create entities for battlefield
+		///////////
+		// create fighter
+		///////////
+		CFighter*	pFighter	= new (nothrow) CFighter(mSceneMgr, 1, "razor.mesh");
+
+		assert( pFighter != NULL);
+
+		pFighter->GetSceneNode()->setVisible( false );
+		m_listTarget.push_back( pFighter );
+
+		CTarget*	pTarget		= new (nothrow) CTarget(mSceneMgr, 2, "ogrehead.mesh");
+		pTarget->GetSceneNode()->setVisible( false );
+		m_listTarget.push_back( pTarget );
+
+		// Let's start intro
+		SetNextIntroTarget();
+
+		return;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	// initialize particle system setting
+	//////////////////////////////////////////////////////////////////////////////
+	ParticleSystem::setDefaultNonVisibleUpdateTimeout(5);  // set nonvisible timeout
+
+	//////////////////////////////////////////////////////////////////////////////
+	// initialize ogg sound
+	//////////////////////////////////////////////////////////////////////////////
+	OgreOggSound::OgreOggSoundManager *mSoundManager	= OgreOggSoundManager::getSingletonPtr();
+	
+	if( mSoundManager )
+		mSoundManager->init();
+
+	if( mCamera->getParentSceneNode() )
+		mCamera->getParentSceneNode()->attachObject(mSoundManager->getListener());
+
+	CallCreatePostprocess();
+
+	/*
+	// set fighter positino below camera position
+	pFighter->GetSceneNode()->setPosition( mCamera->getPosition().x, 
+		mCamera->getPosition().y - 100,
+		mCamera->getPosition().z );
+
+	pFighter->createFrameListener();
 	*/
+
+	///////////////////////////////////////////////////////////////////////////
+	// create entities for battlefield
+	///////////////////////////////////////////////////////////////////////////
 
 
 	/************ NOTE *********
@@ -195,22 +283,6 @@ void CVisualX::createScene(void)
 	if( m_pOcean )
 		m_pOcean->createScene();
 
-	///////////////////////////////////////////////////////////////////////////
-	// create targets
-	///////////////////////////////////////////////////////////////////////////
-	CFighter*	pFighter	= new (nothrow) CFighter(mSceneMgr, 1, "razor.mesh");
-
-	// set fighter positino below camera position
-	pFighter->GetSceneNode()->setPosition( mCamera->getPosition().x, 
-		mCamera->getPosition().y - 100,
-		mCamera->getPosition().z );
-
-	pFighter->createFrameListener();
-
-	m_listTarget.push_back( pFighter );
-
-	
-	m_TargetList.push_back ( *pFighter );
 
 #if	0
 	///
@@ -271,8 +343,7 @@ void CVisualX::createScene(void)
 	mSceneMgr->getSceneNode("AxesNode")->setScale(50, 50, 50);
 //#endif
 
-	// set intro taget initially
-	SetNextIntroTarget();
+
 }
 
 void CVisualX::setupResources(void)
@@ -295,9 +366,6 @@ void CVisualX::createFrameListener(void)
 	BaseApplication::createFrameListener();
 	// Add frame listener
 //	mRoot->addFrameListener(new SkyXDemoFrameListener(mWindow, mCamera, mSceneMgr));
-
-	mMouse->setEventCallback(this);
-    mKeyboard->setEventCallback(this);
 
 	// create ray scene query for collision detection
 	mRaySceneQuery = mSceneMgr->createRayQuery(Ogre::Ray());
@@ -423,25 +491,84 @@ bool CVisualX::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	return BaseApplication::frameRenderingQueued( evt );
 }
 
+void CVisualX::controlWaveFreq(int nKey)
+{
+	static Real	waveFreq	= 0.028f;
+	static Real waveAmp		= 1.8f;
+
+	mActiveMaterial = Ogre::MaterialManager::getSingleton().getByName( "Ocean2_Cg" );
+	mActiveMaterial->load();
+	Ogre::Technique* currentTechnique = mActiveMaterial->getSupportedTechnique(0);
+
+	if(currentTechnique)
+	{
+		mActivePass = currentTechnique->getPass(0);
+
+		if(mActivePass)
+		{
+			if (mActivePass->hasFragmentProgram())
+			{
+				mActiveFragmentProgram = mActivePass->getFragmentProgram();
+				mActiveFragmentParameters = mActivePass->getFragmentProgramParameters();
+			}
+			if (mActivePass->hasVertexProgram())
+			{
+				mActiveVertexProgram = mActivePass->getVertexProgram();
+				mActiveVertexParameters = mActivePass->getVertexProgramParameters();
+
+				waveFreq	*= 2;
+				waveAmp		*= 2;
+
+				mActiveVertexParameters->setNamedConstant("waveFreq", waveFreq);
+				mActiveVertexParameters->setNamedConstant("waveAmp", waveAmp);
+			}
+
+			GpuProgramParametersSharedPtr activeParameters = mActiveVertexParameters;
+
+			if(!activeParameters.isNull())
+			{
+				activeParameters->_writeRawConstant(
+					6, waveFreq);
+			}		}
+	}
+
+}
+
 bool CVisualX::keyPressed(const OIS::KeyEvent &arg)
 {
 	if( m_IsIntro && arg.key == OIS::KC_SPACE )
 	{
 		SetNextIntroTarget();
 
-		if( m_snIntroTarget == NULL )
-		{
-			///////////////////////////////////////////////////////////////////
-			// end the intro mode
-			///////////////////////////////////////////////////////////////////
-			SetIntroEnd();
-		}
+		//if( m_snIntroTarget == NULL )
+		//{
+		//	///////////////////////////////////////////////////////////////////
+		//	// end the intro mode
+		//	///////////////////////////////////////////////////////////////////
+		//	SetIntroEnd();
+		//}
 	
 		return BaseApplication::keyPressed(arg);
 	}
 
 	switch(arg.key)
 	{
+	case OIS::KC_1:
+		// increase waveFreq by multiplying 2
+		m_pOcean->ControlWaveFreq( WAVEFX_INC, 0.01 );
+		break;
+	case OIS::KC_2:
+		// increase waveFreq by multiplying 2
+		m_pOcean->ControlWaveFreq( WAVEFX_INC, -0.01 );
+		break;
+	case OIS::KC_3:
+		// increase waveFreq by multiplying 2
+		m_pOcean->ControlWaveAmp( WAVEFX_INC, 2 );
+		break;
+	case OIS::KC_4:
+		// increase waveFreq by multiplying 2
+		m_pOcean->ControlWaveAmp( WAVEFX_INC, -2 );
+		break;
 	case OIS::KC_W:
 	case OIS::KC_UP:
 		if( m_bCollision )

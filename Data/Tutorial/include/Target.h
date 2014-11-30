@@ -5,9 +5,11 @@
  */
 
 #pragma once
+#include "OgreOggSound.h"
 
 using namespace	std;
 using namespace	Ogre;
+using namespace	OgreOggSound;
 
 class CTarget  : public Ogre::FrameListener
 {
@@ -19,6 +21,8 @@ protected:
 	string					m_strName;		// character name
 	string					m_strMeshName;	// meshfile name
 	SceneNode*				m_pSceneNode;	// scene node
+
+	OgreOggISound*			m_pSound;
 
 public:
 	CTarget(Ogre::SceneManager* pSceneMgr, int nID, string mesh);
@@ -33,14 +37,7 @@ public:
 	{
 		return m_pSceneNode;
 	}
-
-	/**
-	 * @function	PostCreate
-	 * @remarks		post processinf according to characteristic of each target
-	 */
-	virtual void CreatePostprocess() {}
-
-	/**
+	/*
 	* @function		MoveTo that translate mesh to @Dest and set mesh's
 	* orientation to @Dest
 	* @param		Src	that is mesh's current position
