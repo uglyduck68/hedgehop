@@ -108,7 +108,7 @@ void BaseApplication::createCamera(void)
 	// Sean, add, change the style of cameraman from default CS_FREELOOK to CS_ORBIT
 	// In case of CS_ORBIT, There is some wrong movement according to Y-axis
 	if( mCameraMan )
-		mCameraMan->setStyle(OgreBites::CS_FREELOOK/*CS_ORBIT*/);
+		mCameraMan->setStyle(/*OgreBites::CS_FREELOOK*/OgreBites::CS_ORBIT);
 
 	// give the chance the derived class to control the initial position of camera
 	setupCameraPosition();
@@ -289,6 +289,11 @@ bool BaseApplication::setup(void)
 
     createFrameListener();
 
+#ifdef	_DEBUG
+	Ogre::Entity* mAxesEntity = mSceneMgr->createEntity("Axes", "axes.mesh");
+	mSceneMgr->getRootSceneNode()->createChildSceneNode("AxesNode",Ogre::Vector3(0,0,0))->attachObject(mAxesEntity);
+	mSceneMgr->getSceneNode("AxesNode")->setScale(50, 50, 50);
+#endif
     return true;
 };
 //---------------------------------------------------------------------------

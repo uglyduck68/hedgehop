@@ -7,7 +7,8 @@ using namespace	Ogre;
 using namespace	OgreOggSound;
 
 AnimationTutorial::AnimationTutorial(void) :
-	m_pSceneNode(NULL), mDirection(Vector3::ZERO)
+	m_pSceneNode(NULL), mDirection(Vector3::ZERO), 
+	m_CamMode(CAM_MANUAL), m_pCamNode(NULL)
 {
 }
 
@@ -76,10 +77,10 @@ void AnimationTutorial::createScene()
 		mSoundManager->init();
 
 	// mCamera->getParentSceneNode() return NULL
+
+	// move codes to below for chase camera
 	if( mCamera->getParentSceneNode() )
 		mCamera->getParentSceneNode()->attachObject(mSoundManager->getListener());
-
-	Ogre::Root::getSingleton().addFrameListener(this);
 
 	//////////////////////////////////////////////////////////////////////////////
 	// from here create targets
@@ -87,8 +88,17 @@ void AnimationTutorial::createScene()
 	createSceneNode("razor.mesh");
 	GetSceneNode()->setPosition( Vector3(0, 0, 500) );
 
+	//////
+	// add camera to scene node for chase camera
+	//////
+	m_pCamNode	= GetSceneNode()->createChildSceneNode();
+	//m_pCamNode->attachObject( mCamera );
+
+	//if( mCamera->getParentSceneNode() )
+	//	mCamera->getParentSceneNode()->attachObject(mSoundManager->getListener());
+
 	//////////////////////////////////////////////////////////////////////////////
-	//
+	// create 3D circle
 	//////////////////////////////////////////////////////////////////////////////
 	m_pCircle	= mSceneMgr->createManualObject("3D circle");
 

@@ -1,7 +1,10 @@
 /**
 * @file		TestCamera.h
 * @remarks	for testing 3rd person camera(fixed, chasing), 1st person camera.
-*			refer to http://www.ogre3d.org/tikiwiki/tiki-index.php?page=3rd+person+camera+system+tutorial
+*			refer to http://www.ogre3d.org/tikiwiki/tiki-index.php?page=3rd+person+camera+system+tutorial .
+*			But this example is *NOT* perfect.
+*			I will use camera control system (http://ogre-ccs.sourceforge.net/?q=node/13) that has
+*			what I want.
 */
 #pragma once
 
@@ -25,6 +28,7 @@ using namespace	Ogre;
      public:
          // Updates the character (movement...)
          virtual void update (Real elapsedTime, OIS::Keyboard *input) = 0;
+
          // The three methods below returns the two camera-related nodes, 
          // and the current position of the character (for the 1st person camera)
          SceneNode *getSightNode () {
@@ -54,27 +58,36 @@ using namespace	Ogre;
  
              // Setup basic node structure to handle 3rd person cameras
              mMainNode = mSceneMgr->getRootSceneNode ()->createChildSceneNode (mName);
+
+			 // is located at 100 unit in front of character
              mSightNode = mMainNode->createChildSceneNode (mName + "_sight", Vector3 (0, 0, 100));
+
+			 // character의 -100 단위 뒤, 50 단위 위에 위치 
+			 // But not yet there is no CAMERA!!!
              mCameraNode = mMainNode->createChildSceneNode (mName + "_camera", Vector3 (0, 50, -100));
  
              // Give this character a shape :)
              mEntity = mSceneMgr->createEntity (mName, "OgreHead.mesh");
              mMainNode->attachObject (mEntity);
          }
-         ~OgreCharacter () {
+
+		 ~OgreCharacter () {
              mMainNode->detachAllObjects ();
              delete mEntity;
              mMainNode->removeAndDestroyAllChildren ();
              mSceneMgr->destroySceneNode (mName);
          }
  
+		 //////////////////////////////////////////////////////////////////////
+		 // 아래 코드를 보면 character node의 위치와 방향만 키 입력에 따라 바꾼다.
+		 /////////////////////////////////////////////////////////////////////
          void update (Real elapsedTime, OIS::Keyboard *input) {
              // Handle movement
              if (input->isKeyDown (OIS::KC_W)) {
                  mMainNode->translate (mMainNode->getOrientation () * Vector3 (0, 0, 100 * elapsedTime));
              }
              if (input->isKeyDown (OIS::KC_S)) {
-                 mMainNode->translate (mMainNode->getOrientation () * Vector3 (0, 0, -50 * elapsedTime));
+                 mMainNode->translate (mMainNode->getOrientation () * Vector3 (0, 0, -100 * elapsedTime));
              }
              if (input->isKeyDown (OIS::KC_A)) {
                  mMainNode->yaw (Radian (2 * elapsedTime));
@@ -116,6 +129,10 @@ using namespace	Ogre;
              // Create the camera's node structure
              mCameraNode = mSceneMgr->getRootSceneNode ()->createChildSceneNode (mName);
              mTargetNode = mSceneMgr->getRootSceneNode ()->createChildSceneNode (mName + "_target");
+
+			 //////
+			 // camera class also has following 2 APIs
+			 //////
              mCameraNode->setAutoTracking (true, mTargetNode); // The camera will always look at the camera target
              mCameraNode->setFixedYawAxis (true); // Needed because of auto tracking
  
@@ -126,11 +143,12 @@ using namespace	Ogre;
              }
              else {
                  mCamera = camera;
-                                 // just to make sure that mCamera is set to 'origin' (same position as the mCameraNode)
-                                 mCamera->setPosition(0.0,0.0,0.0);
+                 // just to make sure that mCamera is set to 'origin' (same position as the mCameraNode)
+                 mCamera->setPosition(0.0,0.0,0.0);
                  mOwnCamera = false;
              }
              // ... and attach the Ogre camera to the camera node
+			 // Camera 조차도 MovableObject 구만...
              mCameraNode->attachObject (mCamera);
  
              // Default tightness
@@ -156,12 +174,20 @@ using namespace	Ogre;
              return mCameraNode->getPosition ();
          }
  
-         void instantUpdate (Vector3 cameraPosition, Vector3 targetPosition) {
+		 //////////////////////////////////////////////////////////////////////
+		 //
+		 //////////////////////////////////////////////////////////////////////
+         void instantUpdate (Vector3 cameraPosition, Vector3 targetPosition) 
+		 {
              mCameraNode->setPosition (cameraPosition);
              mTargetNode->setPosition (targetPosition);
          }
  
-         void update (Real elapsedTime, Vector3 cameraPosition, Vector3 targetPosition) {
+		 //////////////////////////////////////////////////////////////////////
+		 //
+		 //////////////////////////////////////////////////////////////////////
+         void update (Real elapsedTime, Vector3 cameraPosition, Vector3 targetPosition) 
+		 {
              // Handle movement
              Vector3 displacement;
  
@@ -179,7 +205,7 @@ class TestCamera :
 {
  protected:
      // References to the main character and the camera
-     Character *mChar;
+     Character *mOgreChar;
      ExtendedCamera *mExCamera;
  
      // Camera mode - Now supports 1st person, 3rd person (chasing) and 3rd person (fixed)
@@ -188,13 +214,13 @@ class TestCamera :
  public:
      TestCamera()
      {
-         mChar = 0;
+         mOgreChar = 0;
          mExCamera = 0;
          mMode = 0;
      }
  
      void setCharacter (Character *character) {
-         mChar = character;
+         mOgreChar = character;
      }
  
      void setExtendedCamera (ExtendedCamera *cam) {
@@ -205,25 +231,29 @@ class TestCamera :
      {
          mKeyboard->capture();
  
-         if (mChar) {
-             mChar->update (evt.timeSinceLastFrame, mKeyboard);
+         if (mOgreChar) {
+
+			 //////
+			 // move ogre character acoording to key input (WSAD)
+			 //////
+             mOgreChar->update (evt.timeSinceLastFrame, mKeyboard);
  
              if (mExCamera) {
                  switch (mMode) {
                      case 0: // 3rd person chase
                          mExCamera->update (evt.timeSinceLastFrame, 
-                                             mChar->getCameraNode ()->_getDerivedPosition (), 
-                                             mChar->getSightNode ()->_getDerivedPosition ());
+                                             mOgreChar->getCameraNode ()->_getDerivedPosition (), 
+                                             mOgreChar->getSightNode ()->_getDerivedPosition ());
                          break;
                      case 1: // 3rd person fixed
                          mExCamera->update (evt.timeSinceLastFrame, 
                                              Vector3 (0, 200, 0), 
-                                             mChar->getSightNode ()->_getDerivedPosition ());
+                                             mOgreChar->getSightNode ()->_getDerivedPosition ());
                          break;
                      case 2: // 1st person
                          mExCamera->update (evt.timeSinceLastFrame, 
-                                             mChar->getWorldPosition (), 
-                                             mChar->getSightNode ()->_getDerivedPosition ());
+                                             mOgreChar->getWorldPosition (), 
+                                             mOgreChar->getSightNode ()->_getDerivedPosition ());
                          break;
                  }
              }
@@ -232,33 +262,35 @@ class TestCamera :
          // 3rd Person - Chase Camera
          if (mKeyboard->isKeyDown (OIS::KC_F1)) {
              mMode = 0;
-             if (mChar)
-                 static_cast<OgreCharacter *>(mChar)->setVisible (true);
+             if (mOgreChar)
+                 static_cast<OgreCharacter *>(mOgreChar)->setVisible (true);
              if (mExCamera) {
-                 if (mChar)
-                     mExCamera->instantUpdate (mChar->getCameraNode ()->_getDerivedPosition (), mChar->getSightNode ()->_getDerivedPosition ());
+                 if (mOgreChar)
+                     mExCamera->instantUpdate (mOgreChar->getCameraNode ()->_getDerivedPosition (), 
+						mOgreChar->getSightNode ()->_getDerivedPosition ());
+
                  mExCamera->setTightness (0.01f);
              }
           }
          // 3rd Person - Fixed Camera
          if (mKeyboard->isKeyDown (OIS::KC_F2)) {
              mMode = 1;
-             if (mChar)
-                 static_cast<OgreCharacter *>(mChar)->setVisible (true);
+             if (mOgreChar)
+                 static_cast<OgreCharacter *>(mOgreChar)->setVisible (true);
              if (mExCamera) {
-                 if (mChar)
-                     mExCamera->instantUpdate (Vector3 (0, 200, 0), mChar->getSightNode ()->_getDerivedPosition ());
+                 if (mOgreChar)
+                     mExCamera->instantUpdate (Vector3 (0, 200, 0), mOgreChar->getSightNode ()->_getDerivedPosition ());
                  mExCamera->setTightness (0.01f);
              }
          }
          // 1st Person
          if (mKeyboard->isKeyDown (OIS::KC_F3))  {
              mMode = 2;
-             if (mChar)
-                 static_cast<OgreCharacter *>(mChar)->setVisible (false);
+             if (mOgreChar)
+                 static_cast<OgreCharacter *>(mOgreChar)->setVisible (false);
              if (mExCamera) {
-                 if (mChar)
-                     mExCamera->instantUpdate (mChar->getCameraNode()->_getDerivedPosition (), mChar->getSightNode ()->_getDerivedPosition ());
+                 if (mOgreChar)
+                     mExCamera->instantUpdate (mOgreChar->getCameraNode()->_getDerivedPosition (), mOgreChar->getSightNode ()->_getDerivedPosition ());
                  mExCamera->setTightness (1.0f);
              }
          }
@@ -299,7 +331,7 @@ class TestCamera :
              razorNode->attachObject (razorEntity);
          }
  
-         // Main character
+         // Main character is located at (0, 0, 0)
          OgreCharacter *ogre = new OgreCharacter ("Ogre 1", mSceneMgr);
          ExtendedCamera *exCamera = new ExtendedCamera ("Extended Camera", mSceneMgr, mCamera);
  

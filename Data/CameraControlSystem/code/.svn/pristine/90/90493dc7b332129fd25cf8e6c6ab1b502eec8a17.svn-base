@@ -1,0 +1,7 @@
+0.5.0 ==============================================================
+- Added methods for resetting Orbital and Free camera modes. 
+- Added three switching methods for Free camera mode: initial, current and last camera states. 
+- Added a spheric camera mode (Zelda-like camera). 
+- Default collision delegate revised. 
+- Added margin for collidable cameras.
+- Added a changelog :-)

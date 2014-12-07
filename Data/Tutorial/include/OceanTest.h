@@ -1,3 +1,10 @@
+/**
+* @file		OceanTest.h
+* @remarks		바다 특수효과를 테스트하기 위함.
+*				MAX_WIDTH, MAX_HEIGHT, XSEGMENT, YSEGMENT 값에 따라
+*				특수 효과가 이상하게 적용된다.
+*/
+
 #pragma once
 #include "baseapplication.h"
 #include "MaterialControls.h"

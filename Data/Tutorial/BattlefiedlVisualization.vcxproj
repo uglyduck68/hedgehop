@@ -60,7 +60,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost;$(OGREOGGSOUND_HOME)\include;$(OPENAL_SDK)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost;$(OGREOGGSOUND_HOME)\include;$(OPENAL_SDK)\include;$(OGRE_HOME)\addon\CameraControlSystem\code\CameraControlSystem\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -69,8 +69,8 @@
       <ProgramDatabaseFile>$(OutDir)/BattlefiedlVisualization.pdb</ProgramDatabaseFile>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>$(OGRE_HOME)\lib\debug;$(OGRE_HOME)\boost\lib;$(OGREOGGSOUND_HOME)\lib(Win32);$(OGREOGGSOUND_HOME)\dependencies;$(OPENAL_SDK)\libs\win32;$(OPENAL_SDK)\libs\Win32\EFX-Util_MT;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;OgreTerrain_d.lib;OgreOggSound_d.lib;efx-util.lib;OpenAL32.lib;libvorbis_static_d.lib;libvorbisfile_static_d.lib;libogg_static_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OGRE_HOME)\lib\debug;$(OGRE_HOME)\boost\lib;$(OGREOGGSOUND_HOME)\lib(Win32);$(OGREOGGSOUND_HOME)\dependencies;$(OPENAL_SDK)\libs\win32;$(OPENAL_SDK)\libs\Win32\EFX-Util_MT;$(OGRE_HOME)\addon\CameraControlSystem\code\CameraControlSystem\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;OgreTerrain_d.lib;OgreOggSound_d.lib;efx-util.lib;OpenAL32.lib;libvorbis_static_d.lib;libvorbisfile_static_d.lib;libogg_static_d.lib;CameraControlSystem_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Message>Copying exe to samples bin directory ...</Message>
@@ -97,7 +97,7 @@
       <StringPooling>true</StringPooling>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>include;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost;$(OGREOGGSOUND_HOME)\include;$(OPENAL_SDK)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost;$(OGREOGGSOUND_HOME)\include;$(OPENAL_SDK)\include;$(OGRE_HOME)\addon\CameraControlSystem\ccs-precompiled-0.5.0\CameraControlSystem\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,8 +105,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(OGRE_HOME)\lib\release;$(OGRE_HOME)\boost\lib;$(OGREOGGSOUND_HOME)\lib(Win32);$(OGREOGGSOUND_HOME)\dependencies;$(OPENAL_SDK)\libs\win32;$(OPENAL_SDK)\libs\Win32\EFX-Util_MT;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain.lib;OIS.lib;OgreOverlay.lib;OgreTerrain.lib;OgreOggSound.lib;efx-util.lib;OpenAL32.lib;libvorbis_static.lib;libvorbisfile_static.lib;libogg_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OGRE_HOME)\lib\release;$(OGRE_HOME)\boost\lib;$(OGREOGGSOUND_HOME)\lib(Win32);$(OGREOGGSOUND_HOME)\dependencies;$(OPENAL_SDK)\libs\win32;$(OPENAL_SDK)\libs\Win32\EFX-Util_MT;$(OGRE_HOME)\addon\CameraControlSystem\code\CameraControlSystem\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain.lib;OIS.lib;OgreOverlay.lib;OgreTerrain.lib;OgreOggSound.lib;efx-util.lib;OpenAL32.lib;libvorbis_static.lib;libvorbisfile_static.lib;libogg_static.lib;CameraControlSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Message>Copying exe to samples bin directory ...</Message>
@@ -121,6 +121,7 @@
     <ClInclude Include="include\BasicTutorial5.h" />
     <ClInclude Include="include\BattlefiedlVisualization.h" />
     <ClInclude Include="include\Debug.h" />
+    <ClInclude Include="include\DummyCameraMode.h" />
     <ClInclude Include="include\IntermediateTutorial2.h" />
     <ClInclude Include="include\IntermediateTutorial7.h" />
     <ClInclude Include="include\MaterialControls.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="include\Target.h" />
     <ClInclude Include="include\TestCamera.h" />
+    <ClInclude Include="include\TestCameraControlSystem.h" />
     <ClInclude Include="res\Resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +155,7 @@
     </ClCompile>
     <ClCompile Include="src\Target.cpp" />
     <ClCompile Include="src\TestCamera.cpp" />
+    <ClCompile Include="src\TestCameraControlSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\ReadMe.txt" />
