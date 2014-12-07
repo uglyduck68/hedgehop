@@ -217,7 +217,9 @@ public:
 	*/
 	void		Push(void* pData, int nLen)
 	{
-		Guard<L>	scopeLock(m_Mutex);
+		//
+		// gcc 4.x compiler complain about 'scopeLock(m_Mutex)'
+		Guard<L>	scopeLock(this->m_Mutex);
 
 		if( pData == NULL || nLen <= 0 )
 			return;
@@ -242,12 +244,12 @@ public:
 	*/
 	void*	Front(int* pnLen)
 	{
-		Guard<L>	scopeLock(m_Mutex);
+		Guard<L>	scopeLock(this->m_Mutex);
 
-		MsgQueueItem	qi	= m_Queue.front();
-
-		if( qi != NULL && qi.nLen > 0 )
+		if( m_Queue.size() > 0)
 		{
+			MsgQueueItem	qi	= m_Queue.front();
+
 			*pnLen		= qi.nLen;
 
 			return qi.pUsrData;
@@ -258,17 +260,17 @@ public:
 
 	void*	WaitFront(int* pnLen)
 	{
-		Guard<L>	scopeLock(m_Mutex);
+		Guard<L>	scopeLock(this->m_Mutex);
 
 		while( m_Queue.empty() )
 		{
 			m_Cond.wait(&m_Mutex);
 		}
 
-		MsgQueueItem	qi	= m_Queue.front();
-
-		if( qi != NULL && qi.nLen > 0 )
+		if( m_Queue.size() > 0)
 		{
+			MsgQueueItem	qi	= m_Queue.front();
+
 			*pnLen		= qi.nLen;
 
 			return qi.pUsrData;
@@ -286,12 +288,12 @@ public:
 	*/
 	void*	Front(void* pData, int* pnLen)
 	{
-		Guard<L>	scopeLock(m_Mutex);
+		Guard<L>	scopeLock(this->m_Mutex);
 
-		MsgQueueItem	qi	= m_Queue.front();
-
-		if( qi != NULL && qi.nLen > 0 )
+		if( m_Queue.size() > 0)
 		{
+			MsgQueueItem	qi	= m_Queue.front();
+
 			*pnLen		= qi.nLen;
 
 			memcpy( pData, qi.pUsrData, qi.nLen );
@@ -309,17 +311,17 @@ public:
 
 	void*	WaitFront(void* pData, int* pnLen)
 	{
-		Guard<L>	scopeLock(m_Mutex);
+		Guard<L>	scopeLock(this->m_Mutex);
 
 		while( m_Queue.empty() )
 		{
 			m_Cond.wait(&m_Mutex);
 		}
 
-		MsgQueueItem	qi	= m_Queue.front();
-
-		if( qi.pUsrData != NULL && qi.nLen > 0 )
+		if( m_Queue.size() > 0)
 		{
+			MsgQueueItem	qi	= m_Queue.front();
+
 			*pnLen		= qi.nLen;
 
 			memcpy( pData, qi.pUsrData, qi.nLen );
@@ -343,14 +345,17 @@ public:
 	*/
 	void			Pop()
 	{
-		Guard<L>	scopeLock(m_Mutex);
+		Guard<L>	scopeLock(this->m_Mutex);
 
-		MsgQueueItem	qi	= m_Queue.front();
+		if( m_Queue.size() > 0)
+		{
+			MsgQueueItem	qi	= m_Queue.front();
 
-		// free memory
-		qi.Clear();
+			// free memory
+			qi.Clear();
 
-		m_Queue.pop();
+			m_Queue.pop();
+		}
 
 		return;
 	}
