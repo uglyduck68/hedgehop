@@ -1,37 +1,19 @@
 #include "StdAfx.h"
-#include "Ocean.h"
-#include "Debug.h"
-
-using namespace	std;
-
-COcean::COcean(Ogre::SceneManager* pSceneMgr) :
-	m_pOceanEnt(NULL), mSceneMgr(pSceneMgr),
-	m_pOcean(NULL)
-{
-	///////////////////////////////////////////////////////////////////////////
-	// initialize wave Fx
-	///////////////////////////////////////////////////////////////////////////
-    //mActiveFragmentProgram.setNull();
-    //mActiveFragmentParameters.setNull();
-    //mActiveVertexProgram.setNull();
-    //mActiveVertexParameters.setNull();
-    //mActiveMaterial.setNull();
-
-	//< initial value from Ocean.material
-	m_fWaveFreq		= 0.028;
-	m_fWaveAmp		= 1.8;
-
-}
+#include "..\include\OceanTest.h"
 
 
-COcean::~COcean(void)
+OceanTest::OceanTest(void) :
+	m_fWaveAmp(0.0f),
+	m_fWaveFreq(0.0f)
 {
 }
 
-/**
-* create ocean entity
-*/
-void COcean::createScene()
+
+OceanTest::~OceanTest(void)
+{
+}
+
+void OceanTest::createScene(void)
 {
    // Define a plane mesh that will be used for the ocean surface
 	//m_pPlane	= new /*(nothrow)*/ Ogre::MovablePlane("OceanPlane");
@@ -80,7 +62,7 @@ void COcean::createScene()
 
 }
 
-int COcean::ChangeFragmentVertexValue(int nIndex, Real& TargetValue, Real Value)
+int OceanTest::ChangeFragmentVertexValue(int nIndex, Real& TargetValue, Real Value)
 {
 	//////////////////////////////////////////////////////////////////////////////
 	// HERE control wave Fx
@@ -151,15 +133,26 @@ int COcean::ChangeFragmentVertexValue(int nIndex, Real& TargetValue, Real Value)
 		}
 	}
 
-	return VX_SUCCESS;
+	return 0;
 }
 
-int COcean::ControlWaveFreq( int nInc, Real MultiConst )
+
+bool OceanTest::keyPressed(const OIS::KeyEvent &arg)
 {
-	return ChangeFragmentVertexValue( 5, m_fWaveFreq, MultiConst );
+
+	if( arg.key == OIS::KC_1 )
+		ChangeFragmentVertexValue( 5, m_fWaveFreq, 0.01 );
+	else if( arg.key == OIS::KC_2 )
+		ChangeFragmentVertexValue( 5, m_fWaveFreq, -0.01 );
+	else if( arg.key == OIS::KC_3 )
+		ChangeFragmentVertexValue( 6, m_fWaveAmp, 1 );
+	else if( arg.key == OIS::KC_4 )
+		ChangeFragmentVertexValue( 6, m_fWaveAmp, -1 );
+	return BaseApplication::keyPressed( arg );
 }
 
-int COcean::ControlWaveAmp( int nInc, Real MultiConst )
+bool OceanTest::keyReleased(const OIS::KeyEvent &arg)
 {
-	return ChangeFragmentVertexValue( 6, m_fWaveAmp, MultiConst );
+	return BaseApplication::keyReleased( arg );
 }
+

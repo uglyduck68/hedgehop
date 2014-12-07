@@ -49,7 +49,9 @@ void CFighter::CreatePostprocess()
 	///////////////////////////////////////////////////////////////////////////
 	// create my own sounds
 	///////////////////////////////////////////////////////////////////////////
-	m_pSound	= OgreOggSoundManager::getSingletonPtr()->createSound(m_strName, "jet_exhaust.wav");
+
+	// create sound that loop flag is true
+	m_pSound	= OgreOggSoundManager::getSingletonPtr()->createSound(m_strName, "jet_exhaust.wav", false, true);
 
 	// start to play sound
 	if( m_pSound )
