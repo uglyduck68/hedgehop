@@ -28,7 +28,7 @@ void OceanTest::createScene(void)
     Ogre::MeshManager::getSingleton().createPlane("OceanPlane",
         Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         m_Plane,
-        MAX_WIDTH, MAX_HEIGHT, XSEGMENT, YSEGMENT, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
+        MAX_WIDTH, MAX_HEIGHT, XSEGMENT, YSEGMENT, true, 1, 100, 100, Ogre::Vector3::UNIT_Z);
 
     m_pOceanEnt = mSceneMgr->createEntity( "OceanTest", "OceanPlane" );
 

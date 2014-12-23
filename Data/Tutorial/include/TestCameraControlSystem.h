@@ -48,7 +48,7 @@ public:
     int mAniso;
     bool mStatsOn;
     TextureFilterOptions mFiltering;
-    Overlay* mDebugOverlay;
+//    Overlay* mDebugOverlay;
 
      Ogre::String getInfo()
     {
@@ -81,8 +81,11 @@ public:
             mKeyBuffer = 0.25f;
         }
 
-		mTextArea->setCaption(getInfo());
+		printMsgToDebugOverlay(getInfo());
 
+		/////////
+		// Here control the animation time
+		/////////
         mAnimState->addTime(e.timeSinceLastFrame);
 
 		mCameraCS->update(e.timeSinceLastFrame);
@@ -90,17 +93,6 @@ public:
 		mKeyBuffer -= e.timeSinceLastFrame;
 
         return true;
-    }
-
-    virtual void showDebugOverlay(bool show)
-    {
-        if (mDebugOverlay)
-        {
-            if (show)
-                mDebugOverlay->show();
-            else
-                mDebugOverlay->hide();
-        }
     }
 
 	void processCamaraKeyInput()
@@ -177,13 +169,15 @@ public:
 	
 	bool keyPressed(const OIS::KeyEvent &arg)
 	{
+		mKeyboard->capture();
+
 		processCamaraKeyInput();
 
 
        	if( mKeyboard->isKeyDown(OIS::KC_F) && mTimeUntilNextToggle <= 0 )
 		{
 			mStatsOn = !mStatsOn;
-			showDebugOverlay(mStatsOn);
+
 			mTimeUntilNextToggle = 1;
 		}
 
@@ -216,6 +210,8 @@ public:
 
     bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 	{
+		mMouse->capture();
+
 		const OIS::MouseState &ms = mMouse->getMouseState();
 		if( ms.buttonDown( OIS::MB_Right ) )
 		{
@@ -264,7 +260,14 @@ public:
         // Put in a bit of fog for the hell of it
         mSceneMgr->setFog(FOG_EXP, ColourValue::White, 0.0001, 0.5);
 
+		///////////////////////////////////////////////////////////////////////
 		// Define a floor plane mesh
+		///////////////////////////////////////////////////////////////////////
+		// d value is 180 that is located at 180 unit above XZ-plane
+		// 아래 아데나는 XZ-plane 아래로 -100 단위에 위치한다.
+		// 하지만 실제 영상을 보면 이 평면이 원점 아래에 생성되는 것처럼 보인다.
+		// d value를 110 으로 바꿔 보면 아데나가 허리 정도가 평면의 아래로 내려가는 것을 
+		// 확인할 수 있다.
         Plane p;
         p.normal = Vector3::UNIT_Y;
         p.d = 180;
@@ -305,7 +308,7 @@ public:
         SceneNode* lightNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("lightSceneNode");
 		lightNode->attachObject(l);
 
-        createTextArea();
+        createDebugOverlay();
 
 /*        // set up spline animation of node
         Animation* anim = mSceneMgr->createAnimation("HeadTrack", 100);
@@ -320,55 +323,67 @@ public:
         key = track->createNodeKeyFrame(100);
         key->setTranslate(Vector3(0,0,10000));
 */
+		/////////////////////////////////////////////////////////////////////////////
         // set up spline animation of node
+		/////////////////////////////////////////////////////////////////////////////
+
+		///< getAnimation or hasAnimation API
         Animation* anim = mSceneMgr->createAnimation("HeadTrack", 20);
-        // Spline it for nice curves
+        
+		// Spline it for nice curves
         anim->setInterpolationMode(Animation::IM_SPLINE);
+
         // Create a track to animate the camera's node
         NodeAnimationTrack* track = anim->createNodeTrack(0, headNode);
-        // Setup keyframes
-        TransformKeyFrame* key = track->createNodeKeyFrame(0); // startposition
+        
+		// Setup keyframes
+        TransformKeyFrame* key = track->createNodeKeyFrame(0); // startposition (1)
         key->setTranslate(Vector3(0,0,0));
         key->setRotation(Ogre::Quaternion::IDENTITY);
-        key = track->createNodeKeyFrame(2.5);
+
+        key = track->createNodeKeyFrame(2.5);	// (2)
         key->setTranslate(Vector3(0,0,1000));
         key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(1000,0,1000)));
-        key = track->createNodeKeyFrame(5);
+
+        key = track->createNodeKeyFrame(5);	// (3)
         key->setTranslate(Vector3(1000,0,1000));
         key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(1000,0,0)));
-        key = track->createNodeKeyFrame(7.5);
+
+        key = track->createNodeKeyFrame(7.5);	// (4)
         key->setTranslate(Vector3(1000,0,0));
         key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3::NEGATIVE_UNIT_X));
-        key = track->createNodeKeyFrame(10);
+
+        key = track->createNodeKeyFrame(10);	// (5)
         key->setTranslate(Vector3(0,0,0));
 
         // Second round
-        key = track->createNodeKeyFrame(11);
+        key = track->createNodeKeyFrame(11);	// (6)
         key->setTranslate(Vector3(0,0,400));
         key->setRotation(Quaternion(Radian(3.14/4.0),Vector3::UNIT_Z));
-        key = track->createNodeKeyFrame(11.5);
+        key = track->createNodeKeyFrame(11.5);	// (7)
         key->setTranslate(Vector3(0,0,600));
         key->setRotation(Quaternion(Radian(-3.14/4.0),Vector3::UNIT_Z));
-        key = track->createNodeKeyFrame(12.5);
+        key = track->createNodeKeyFrame(12.5);	// (8)
         key->setTranslate(Vector3(0,0,1000));
         key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(500,500,1000)));
-        key = track->createNodeKeyFrame(13.25);
+        key = track->createNodeKeyFrame(13.25);	// (9)
         key->setTranslate(Vector3(500,500,1000));
         key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(1000,-500,1000)));
-        key = track->createNodeKeyFrame(15);
+        key = track->createNodeKeyFrame(15);	// (10)
         key->setTranslate(Vector3(1000,0,1000));
         key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(1000,0,-500)));
-        key = track->createNodeKeyFrame(16);
+        key = track->createNodeKeyFrame(16);	// (11)
         key->setTranslate(Vector3(1000,0,500));
         key = track->createNodeKeyFrame(16.5);
         key->setTranslate(Vector3(1000,0,600));
         key = track->createNodeKeyFrame(17.5);
         key->setTranslate(Vector3(1000,0,0));
         key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(-500,500,0)));
-        key = track->createNodeKeyFrame(118.25);
+        key = track->createNodeKeyFrame(18.25);	// (12) 118.25? 왜 얘만 값이 20 보다 크지? 오타?
+												// 118.25를 18.25로 바꿔도 뭐가 달라지는지는 잘 모르겠음.
         key->setTranslate(Vector3(500,500,0));
         key->setRotation(Quaternion(Radian(3.14),Vector3::UNIT_X) * Vector3::UNIT_Z.getRotationTo(Vector3(-500,-500,0)));
-        key = track->createNodeKeyFrame(20);
+        key = track->createNodeKeyFrame(20);	// (13)
         key->setTranslate(Vector3(0,0,0));
 
         // Create a new animation state to track this
@@ -593,37 +608,41 @@ public:
         mCameraCS->setCurrentCameraMode(camMode1);
     }
 
-	void createTextArea()
-	{
-		// Create a panel
-		Ogre::OverlayContainer* panel = static_cast<Ogre::OverlayContainer*>(
-			OverlayManager::getSingleton().createOverlayElement("Panel", "CameraControlSystemParametersPanel"));
-		panel->setMetricsMode(Ogre::GMM_PIXELS);
-		panel->setPosition(10, 10);
-		panel->setDimensions(400, 400);
+	///**
+	// * @function		createTextArea
+	// * @remarks			create text area for display helps
+	// */
+	//void createTextArea()
+	//{
+	//	// Create a panel
+	//	Ogre::OverlayContainer* panel = static_cast<Ogre::OverlayContainer*>(
+	//		OverlayManager::getSingleton().createOverlayElement("Panel", "CameraControlSystemParametersPanel"));
+	//	panel->setMetricsMode(Ogre::GMM_PIXELS);
+	//	panel->setPosition(10, 10);
+	//	panel->setDimensions(400, 400);
 
-		// Create a text area
-		mTextArea = static_cast<Ogre::TextAreaOverlayElement*>(
-			OverlayManager::getSingleton().createOverlayElement("TextArea", "CameraControlSystemParametersTextArea"));
-		mTextArea->setMetricsMode(Ogre::GMM_PIXELS);
-		mTextArea->setPosition(0, 0);
-		mTextArea->setDimensions(100, 100);
-		mTextArea->setCaption("CameraControlSystem demo");
-		mTextArea->setCharHeight(20);
-		mTextArea->setFontName("BlueHighway");
-		mTextArea->setColourBottom(ColourValue(0.3, 0.5, 0.3));
-		mTextArea->setColourTop(ColourValue(0.5, 0.7, 0.5));
+	//	// Create a text area
+	//	mTextArea = static_cast<Ogre::TextAreaOverlayElement*>(
+	//		OverlayManager::getSingleton().createOverlayElement("TextArea", "CameraControlSystemParametersTextArea"));
+	//	mTextArea->setMetricsMode(Ogre::GMM_PIXELS);
+	//	mTextArea->setPosition(0, 0);
+	//	mTextArea->setDimensions(100, 100);
+	//	mTextArea->setCaption("CameraControlSystem demo");
+	//	mTextArea->setCharHeight(20);
+	//	mTextArea->setFontName("BlueHighway");
+	//	mTextArea->setColourBottom(ColourValue(0.3, 0.5, 0.3));
+	//	mTextArea->setColourTop(ColourValue(0.5, 0.7, 0.5));
 
-		// Create an overlay, and add the panel
-		Ogre::Overlay* overlay = OverlayManager::getSingleton().create("OverlayName");
-		overlay->add2D(panel);
+	//	// Create an overlay, and add the panel
+	//	Ogre::Overlay* overlay = OverlayManager::getSingleton().create("OverlayName");
+	//	overlay->add2D(panel);
 
-		// Add the text area to the panel
-		panel->addChild(mTextArea);
+	//	// Add the text area to the panel
+	//	panel->addChild(mTextArea);
 
-		// Show the overlay
-		overlay->show();
-	}
+	//	// Show the overlay
+	//	overlay->show();
+	//}
 
 	void destroyScene()
 	{

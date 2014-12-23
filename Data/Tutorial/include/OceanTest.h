@@ -16,8 +16,8 @@ using namespace	Ogre;
 // WIDTH & HEIGHT, SEGMENT 값이 wave Fx 효과에 영향을 많이 미친다.
 ///////////////////////////////////////////////////////////////////////////////
 
-#define	MAX_WIDTH		1000
-#define	MAX_HEIGHT		1000
+#define	MAX_WIDTH		1000000
+#define	MAX_HEIGHT		1000000
 
 // SEGMENT 값이 높을 수록 너울이 부드럽게 디스플레이된다
 #define	XSEGMENT		255		

@@ -18,7 +18,9 @@ http://www.ogre3d.org/wiki/
 #ifndef __BaseApplication_h_
 #define __BaseApplication_h_
 
-#include "StdAfx.h"
+//#include "StdAfx.h"
+
+using namespace	Ogre;
 
 //---------------------------------------------------------------------------
 
@@ -72,6 +74,32 @@ protected:
     Ogre::String                mPluginsCfg;
 
     Ogre::OverlaySystem*        mOverlaySystem;
+
+	// Sean
+	Ogre::TextAreaOverlayElement*	mTextArea;
+	Ogre::Overlay*					mDebugOverlay;
+
+	/**
+	 * @function		createTextArea
+	 * @remarks			create text area for displaying debug message or helps
+	 */
+	void createDebugOverlay();
+
+	void printMsgToDebugOverlay( Ogre::String& strMsg )
+	{
+		mTextArea->setCaption( strMsg );
+	}
+
+	void showDebugOverlay(bool show)
+    {
+        if (mDebugOverlay)
+        {
+            if (show)
+                mDebugOverlay->show();
+            else
+                mDebugOverlay->hide();
+        }
+    }
 
     // OgreBites
     OgreBites::InputContext     mInputContext;

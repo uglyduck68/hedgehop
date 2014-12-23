@@ -6,6 +6,8 @@
  *				animation 기법으로 전시됨을 테스트 한다.
  *				오브젝트의 움직임을 시뮬레이션하기 위하여
  *				오브젝트를 중심을 기준으로 원형 운동을 하도록 한다.
+ *				refer to http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Intermediate+Tutorial+1.
+ *				
  * @author		sean kim<uglyduck68@gmail.com>
  * @history
  *	[20141207] try to add chasing camera test codes to check the
@@ -30,6 +32,7 @@ using namespace	Ogre;
 using namespace	std;
 
 #define		DEL(p)	if(p) {delete p; p=NULL;}
+#define		TIME_INTERVAL		(1.0)		// 1 second
 
 class AnimationTutorial :
 	public BaseApplication
@@ -73,6 +76,8 @@ protected:
 
 	CAM_MODE				m_CamMode;
 
+	// 두 지점 사이의 이동 시 m_ElapseTime 시간내에 이루어져야 한다.
+	Real					m_ElapsedTime;
 
 protected:
 
@@ -132,7 +137,7 @@ protected:
 	*/
 	int		MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest, const Ogre::FrameEvent& evt );
 
-	bool nextLocation();
+	bool nextLocation(Real& distance);
 
 	bool keyPressed(const OIS::KeyEvent &arg)
 	{
@@ -189,5 +194,55 @@ protected:
 
 		return BaseApplication::keyPressed(arg);
 	}
+
+
+	/**
+	*@function		initCameraAnimation
+	*@remarks		refer to TestCameraControlSystem and http://www.ogre3d.org/forums/viewtopic.php?f=21&t=66840.
+	*				일일이 좌표를 계산하고 translate 시키지 않아도 이 함수와 같이 animation 시킬 수 있다.
+	*				아래 함수는 위 링크의 샘플이다. 하지만 아마도 동작하지 않을 듯 하다.
+	*/
+
+	SceneNode*			mCamNode;
+	AnimationState*		mCamAnimState;
+
+	void InitCameraAnimations()
+	{
+
+		mCamNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("camera node");
+		mCamNode->attachObject(mCamera);
+
+		Ogre::Animation* mCamAnim = mSceneMgr->createAnimation( "Camera Animation", 10 );
+		mCamAnim ->setInterpolationMode( Ogre::Animation::IM_SPLINE );
+	   // mCamAnim->setRotationInterpolationMode(Animation::RIM_SPHERICAL);
+
+		Ogre::NodeAnimationTrack* mCamTrack = mCamAnim->createNodeTrack( 0, mCamNode );
+
+	   // mCamTrack->setUseShortestRotationPath( true );
+
+		Ogre::TransformKeyFrame* mCamKey;
+   
+		mCamKey= mCamTrack->createNodeKeyFrame( 0 );
+		mCamKey->setTranslate( Ogre::Vector3(0, 0, 100) );
+  
+	   mCamKey= mCamTrack->createNodeKeyFrame( 10 );
+	   mCamKey->setTranslate( Ogre::Vector3(0, 0, 150) );
+
+		//mCamKey->setRotation( Ogre::Quaternion(0.1,0.1,0.1,0.1) );
+
+		mCamAnimState = mSceneMgr->createAnimationState( "Camera Animation" );
+
+		/////////
+		// If you want to start animation, then just call setEnable.
+		/////////
+		mCamAnimState->setEnabled( true );
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	// Other Animation Test
+	//	- DDS로 부터 받은 좌표 2 점 (이 두 점을 받는 시간 간격은 보통 1초로 가정한다)
+	//		사이를 별도의 좌표 계산 없이 NodeAnimationTrack 방법으로 수행 가능한지 테스트.
+	//////////////////////////////////////////////////////////////////////////////
+	AnimationState*		mAnimState;
 };
 

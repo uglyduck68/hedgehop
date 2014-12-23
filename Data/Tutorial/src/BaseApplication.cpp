@@ -38,7 +38,8 @@ BaseApplication::BaseApplication(void)
     mInputManager(0),
     mMouse(0),
     mKeyboard(0),
-    mOverlaySystem(0)
+    mOverlaySystem(0),
+	mTextArea(NULL), mDebugOverlay(NULL)
 {
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
     m_ResourcePath = Ogre::macBundlePath() + "/Contents/Resources/";
@@ -480,3 +481,38 @@ void BaseApplication::windowClosed(Ogre::RenderWindow* rw)
     }
 }
 //---------------------------------------------------------------------------
+/**
+* @function		createTextArea
+* @remarks		create text area for displaying debug message or helps
+*/
+void BaseApplication::createDebugOverlay()
+{
+	// Create a panel
+	Ogre::OverlayContainer* panel = static_cast<Ogre::OverlayContainer*>(
+		OverlayManager::getSingleton().createOverlayElement("Panel", "CameraControlSystemParametersPanel"));
+	panel->setMetricsMode(Ogre::GMM_PIXELS);
+	panel->setPosition(10, 10);
+	panel->setDimensions(400, 400);
+
+	// Create a text area
+	mTextArea = static_cast<Ogre::TextAreaOverlayElement*>(
+		OverlayManager::getSingleton().createOverlayElement("TextArea", "CameraControlSystemParametersTextArea"));
+	mTextArea->setMetricsMode(Ogre::GMM_PIXELS);
+	mTextArea->setPosition(0, 0);
+	mTextArea->setDimensions(100, 100);
+	mTextArea->setCaption("CameraControlSystem demo");
+	mTextArea->setCharHeight(20);
+	mTextArea->setFontName("BlueHighway");
+	mTextArea->setColourBottom(ColourValue(0.3, 0.5, 0.3));
+	mTextArea->setColourTop(ColourValue(0.5, 0.7, 0.5));
+
+	// Create an overlay, and add the panel
+	mDebugOverlay = OverlayManager::getSingleton().create("OverlayName");
+	mDebugOverlay->add2D(panel);
+
+	// Add the text area to the panel
+	panel->addChild(mTextArea);
+
+	// Show the overlay
+	mDebugOverlay->show();
+}

@@ -8,7 +8,8 @@ using namespace	OgreOggSound;
 
 AnimationTutorial::AnimationTutorial(void) :
 	m_pSceneNode(NULL), mDirection(Vector3::ZERO), 
-	m_CamMode(CAM_MANUAL), m_pCamNode(NULL)
+	m_CamMode(CAM_MANUAL), m_pCamNode(NULL),
+	m_ElapsedTime(TIME_INTERVAL)
 {
 }
 
@@ -39,7 +40,7 @@ void AnimationTutorial::createFrameListener(void)
 //	mRoot->addFrameListener(this);
 }
 
-bool AnimationTutorial::nextLocation(void)
+bool AnimationTutorial::nextLocation(Real& distance)
 {
 	if(m_WalkList.empty())
 	{
@@ -55,8 +56,10 @@ bool AnimationTutorial::nextLocation(void)
 #else
 #endif
 		
-	mDirection = mDestination - GetSceneNode()->getPosition();
-	mDistance = mDirection.normalise();
+	mDirection	= mDestination - GetSceneNode()->getPosition();
+	mDistance	= mDirection.normalise();
+
+	distance	= mDirection.length();
 
 	return true;
 }
@@ -158,6 +161,11 @@ void AnimationTutorial::createScene()
     // Create a light
     Ogre::Light* l = mSceneMgr->createLight("MainLight");
     l->setPosition(20,80,50);
+
+	//////////////////////////////////////////////////////////////////////////////
+	// create debug overlay
+	//////////////////////////////////////////////////////////////////////////////
+	createDebugOverlay();
 }
 
 /**
@@ -176,16 +184,25 @@ bool  AnimationTutorial::frameRenderingQueued(const Ogre::FrameEvent& evt)
 bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 {
 //	MoveTo(m_aCirclePos[ 0 ], m_aCirclePos[ 1 ], evt);
+	Real	waypointDistance;
 
 	if(mDirection == Vector3::ZERO)
 	{
 		// set direction and distance to move for character
-		if(nextLocation())
+		if(nextLocation(waypointDistance))
 		{
 		}
+
+		// In the future move this into nextLocation
+		m_ElapsedTime	= TIME_INTERVAL;
 	}
 	else
 	{
+		/////////////////////////////////////////////////////////////////////////////
+		// FIX
+		//	- 
+		/////////////////////////////////////////////////////////////////////////////
+
 		// calculate the distance to go
 		Real move	= m_WalkSpeed * evt.timeSinceLastFrame;
 
@@ -201,7 +218,7 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 			// clear direction to set the next waypoins
 			mDirection = Vector3::ZERO;
 
-			if(nextLocation())
+			if(nextLocation(waypointDistance))
 			{
 				Vector3 src = GetSceneNode()->getOrientation() * Vector3::UNIT_Z;
 
@@ -216,12 +233,21 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 					GetSceneNode()->rotate(quat);
 				}
 			}
+
+			// print amount time taken to move between two way points
+			printMsgToDebugOverlay( "waypoint distance: " + StringConverter::toString(mDistance) + ", elapsed time is " + StringConverter::toString(TIME_INTERVAL - m_ElapsedTime));
+	
+			// In the future move this into nextLocation
+			m_ElapsedTime	= TIME_INTERVAL;
 		}
 		else
 		{
 			GetSceneNode()->translate(mDirection * move);
 		}
 	}
+
+	m_ElapsedTime	-= evt.timeSinceLastFrame;
+
 
 	return true;
 }
