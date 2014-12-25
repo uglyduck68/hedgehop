@@ -95,7 +95,26 @@ public:
         return true;
     }
 
+<<<<<<< HEAD
 	void processCamaraKeyInput()
+=======
+    virtual void showDebugOverlay(bool show)
+    {
+        if (mDebugOverlay)
+        {
+            if (show)
+                mDebugOverlay->show();
+            else
+                mDebugOverlay->hide();
+        }
+    }
+
+	/**
+	*@function		processCameraKeyInput
+	*@remarks		process key for Camera Control System
+	*/
+	void processCameraKeyInput()
+>>>>>>> 91a628748077c569ce2fc0a112666fb76d1c30d5
 	{
 		if(mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Free")
         {
@@ -171,7 +190,11 @@ public:
 	{
 		mKeyboard->capture();
 
+<<<<<<< HEAD
 		processCamaraKeyInput();
+=======
+		processCameraKeyInput();
+>>>>>>> 91a628748077c569ce2fc0a112666fb76d1c30d5
 
 
        	if( mKeyboard->isKeyDown(OIS::KC_F) && mTimeUntilNextToggle <= 0 )
@@ -182,10 +205,12 @@ public:
 		}
 
 		static bool displayCameraDetails = false;
+
 		if(mKeyboard->isKeyDown(OIS::KC_P) && mTimeUntilNextToggle <= 0)
 		{
 			displayCameraDetails = !displayCameraDetails;
 			mTimeUntilNextToggle = 0.5;
+
 			if (!displayCameraDetails)
 				mDebugText = "";
 		}
@@ -213,6 +238,7 @@ public:
 		mMouse->capture();
 
 		const OIS::MouseState &ms = mMouse->getMouseState();
+
 		if( ms.buttonDown( OIS::MB_Right ) )
 		{
 			//mTranslateVector.x += ms.X.rel * 0.13;
@@ -234,6 +260,7 @@ public:
 
 		return BaseApplication::mousePressed( arg, id );
 	}
+
     bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 	{
 		return BaseApplication::mouseReleased( arg, id );
