@@ -1,3 +1,13 @@
+/**
+* @file		OceanTest.cpp
+* @remarks		바다 특수효과를 테스트하기 위함.
+*				MAX_WIDTH, MAX_HEIGHT, XSEGMENT, YSEGMENT 값에 따라
+*				특수 효과가 이상하게 적용된다.
+* @Fixme
+*	- Ocean2_Cg 에서 바다물이 너무 빠르게 흐른다.
+*	- Plane.d 값의 의미가 잘 적용이 안되는 듯 하다. - 값인 경우에도 원점보다 높이 있다.
+*		반대로 + 값인 경우에는 원점보다 낮게 위치한다.
+*/
 #include "StdAfx.h"
 #include "..\include\OceanTest.h"
 
@@ -28,7 +38,7 @@ void OceanTest::createScene(void)
     Ogre::MeshManager::getSingleton().createPlane("OceanPlane",
         Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         m_Plane,
-        MAX_WIDTH, MAX_HEIGHT, XSEGMENT, YSEGMENT, true, 1, 100, 100, Ogre::Vector3::UNIT_Z);
+        MAX_WIDTH, MAX_HEIGHT, XSEGMENT, YSEGMENT, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
 
     m_pOceanEnt = mSceneMgr->createEntity( "OceanTest", "OceanPlane" );
 
@@ -36,9 +46,7 @@ void OceanTest::createScene(void)
 	{
 		m_pOcean	= mSceneMgr->getRootSceneNode()->createChildSceneNode("Ocean"/*, Ogre::Vector3(0, GetSurface(), 0)*/);
 		m_pOcean->attachObject(m_pOceanEnt);
-//		m_pOcean->translate(0, 1000, 0);
 
-		// axis is "axis.png" in "./resource" folder.
 		m_pOceanEnt->setMaterialName("Ocean2_Cg");		// "OceanCg" -> "Ocean2_Cg" -> "OceanTest_Cg"
 		m_pOceanEnt->setCastShadows(false);
 //		m_pOceanEnt->setQueryFlags(1);	// if QueryFlag is 0xffffffff then this is useless

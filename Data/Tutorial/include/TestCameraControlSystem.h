@@ -95,9 +95,6 @@ public:
         return true;
     }
 
-<<<<<<< HEAD
-	void processCamaraKeyInput()
-=======
     virtual void showDebugOverlay(bool show)
     {
         if (mDebugOverlay)
@@ -114,7 +111,6 @@ public:
 	*@remarks		process key for Camera Control System
 	*/
 	void processCameraKeyInput()
->>>>>>> 91a628748077c569ce2fc0a112666fb76d1c30d5
 	{
 		if(mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Free")
         {
@@ -190,11 +186,7 @@ public:
 	{
 		mKeyboard->capture();
 
-<<<<<<< HEAD
-		processCamaraKeyInput();
-=======
 		processCameraKeyInput();
->>>>>>> 91a628748077c569ce2fc0a112666fb76d1c30d5
 
 
        	if( mKeyboard->isKeyDown(OIS::KC_F) && mTimeUntilNextToggle <= 0 )

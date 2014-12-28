@@ -12,7 +12,10 @@
  * @history
  *	[20141207] try to add chasing camera test codes to check the
  *		functionality of mCameraMan->setTarget() API that is different with
- *		chasing camera. 
+ *		chasing camera. -> is replaced with CameraControlSystem.
+ * @Fixme
+ *	- 현재의 항공기 궤적은 사전에 만들어 지므로 포탄의 궤적으로 사용되지 못 함.
+ *		따라서 동적으로 생성 가능한 궤적 테스트가 필요함.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -24,6 +27,7 @@
 
 #include "baseapplication.h"
 #include "Target.h"
+#include "DynamicLines.h"
 
 #include <OgreManualObject.h>
 #include <string>
@@ -71,6 +75,9 @@ protected:
 
 	//< object to display 3D circle that is orbit of fighter
 	ManualObject*	m_pCircle;
+
+	//< object for trajetory of fighter
+	DynamicLines*		m_Trajectory;
 
 	typedef enum { CAM_AUTOTRACKING, CAM_CHASING, CAM_MANUAL } CAM_MODE;
 

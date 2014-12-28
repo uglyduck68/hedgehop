@@ -75,6 +75,12 @@
     <ClInclude Include="include\DummyCameraMode.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="include\DynamicLines.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DynamicRenderable.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BattlefiedlVisualization.cpp">
@@ -129,6 +135,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\TestCameraControlSystem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DynamicLines.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DynamicRenderable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

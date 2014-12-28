@@ -18,6 +18,9 @@ protected:
 protected:
 	OgreOggSound::OgreOggSoundManager *mSoundManager;
 	OgreOggSound::OgreOggISound* sound;
+	OgreOggSound::OgreOggISound* sound1;
+	OgreOggSound::OgreOggISound* sound2;
+
 
 };
 

@@ -2,6 +2,8 @@
 #include "..\include\AnimationTutorial.h"
 #include "OgreOggSound.h"
 
+#include <new>
+
 
 using namespace	Ogre;
 using namespace	OgreOggSound;
@@ -9,7 +11,8 @@ using namespace	OgreOggSound;
 AnimationTutorial::AnimationTutorial(void) :
 	m_pSceneNode(NULL), mDirection(Vector3::ZERO), 
 	m_CamMode(CAM_MANUAL), m_pCamNode(NULL),
-	m_ElapsedTime(TIME_INTERVAL)
+	m_ElapsedTime(TIME_INTERVAL),
+	m_Trajectory(NULL)		// trajetory of fighter
 {
 }
 
@@ -114,6 +117,10 @@ void AnimationTutorial::createScene()
 
 	// accurary is the count of points (and lines)
 	Ogre::Real const Accurary	= MAX_INDEX / 2;
+	//////////////////////////////////////////////////////////////////////////////
+	// create Trajectory
+	//////////////////////////////////////////////////////////////////////////////
+	m_Trajectory	= ::new (std::nothrow) DynamicLines(RenderOperation::OT_LINE_STRIP);
 
 	m_pCircle->begin("BaseWhiteNoLighting", RenderOperation::OT_LINE_STRIP );
 
@@ -142,13 +149,27 @@ void AnimationTutorial::createScene()
 			//// move fighter to destination
 			//m_paTrack[ nPointIndex ]->MoveTo( m_aCirclePos[ nPointIndex - 1 ], m_aCirclePos[ nPointIndex ]);
 		}
-
-		m_pCircle->position( vPos );
-		m_pCircle->index( nPointIndex++ );
+		nPointIndex++;
+		if( nPointIndex == 1 )
+		m_Trajectory->addPoint( vPos );
+//		m_pCircle->position( vPos );
+//		m_pCircle->index( nPointIndex++ );
 	}
 
 	m_pCircle->index( 0 );
 	m_pCircle->end();
+
+	if( m_Trajectory == NULL)
+	{
+		Ogre::LogManager::getSingleton().logMessage("Error: fail to create DynamicLines");
+	}
+	else
+	{
+		m_Trajectory->update();
+		SceneNode*	pLinesNode	= mSceneMgr->getRootSceneNode()->createChildSceneNode("lines");
+		pLinesNode->attachObject( static_cast<Ogre::MovableObject*>( m_Trajectory ));
+	}
+
 
 	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject( m_pCircle );
 
@@ -166,6 +187,7 @@ void AnimationTutorial::createScene()
 	// create debug overlay
 	//////////////////////////////////////////////////////////////////////////////
 	createDebugOverlay();
+
 }
 
 /**
@@ -191,6 +213,11 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 		// set direction and distance to move for character
 		if(nextLocation(waypointDistance))
 		{
+			if( m_Trajectory )
+			{
+				m_Trajectory->addPoint( mDestination );
+				m_Trajectory->update();
+			}
 		}
 
 		// In the future move this into nextLocation

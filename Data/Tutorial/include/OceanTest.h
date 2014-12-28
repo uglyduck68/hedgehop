@@ -13,17 +13,17 @@ using namespace	Ogre;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// WIDTH & HEIGHT, SEGMENT 값이 wave Fx 효과에 영향을 많이 미친다.
+// MAX_WIDTH & MAX_HEIGHT, SEGMENT 값이 wave Fx 효과에 영향을 많이 미친다.
 ///////////////////////////////////////////////////////////////////////////////
 
-#define	MAX_WIDTH		1000000
-#define	MAX_HEIGHT		1000000
+#define	MAX_WIDTH		1000000	// 1000
+#define	MAX_HEIGHT		1000000	// 1000
 
 // SEGMENT 값이 높을 수록 너울이 부드럽게 디스플레이된다
-#define	XSEGMENT		255		
-#define	YSEGMENT		255
+#define	XSEGMENT		1		// 255
+#define	YSEGMENT		1		// 255
 
-#define	MAX_MSL			20
+#define	MAX_MSL			0
 
 
 class OceanTest :

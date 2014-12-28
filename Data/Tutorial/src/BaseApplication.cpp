@@ -293,7 +293,7 @@ bool BaseApplication::setup(void)
 #ifdef	_DEBUG
 	Ogre::Entity* mAxesEntity = mSceneMgr->createEntity("Axes", "axes.mesh");
 	mSceneMgr->getRootSceneNode()->createChildSceneNode("AxesNode",Ogre::Vector3(0,0,0))->attachObject(mAxesEntity);
-	mSceneMgr->getSceneNode("AxesNode")->setScale(50, 50, 50);
+	mSceneMgr->getSceneNode("AxesNode")->setScale(5, 5, 5);
 #endif
     return true;
 };

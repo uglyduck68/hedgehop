@@ -46,3 +46,14 @@ Feature requests, bug reports, etc - use the project issue tracker.
 Alternatively, leave a note in the Ogre Forum: http://www.ogre3d.org/forums/index.php
 
 /////////////////////////////////////////////////////////////////////////////
+[20141225]
+	- VisualX.dll & VisualX.exe 테스트 버전 완료하여 보냄. EOTS에 사용하기에 
+		적당하지 않음.
+[20141226]
+	- OgreWizard가 생성하는 오류있던 BaseApplicaiton.cpp & .h 를 1.9 버전에 맞게
+		생성되도록 OgreWizard 수정
+	- Sound 연속 재생이 가능한지 테스트. 동일한 음원으로 사운드 핸들을 만들면
+		연속 재생이 가능함. SoundTuturial.cpp keyPressed 함수 참조.
+[20141228]
+	- Plane.d 값 정의. + 는 원점 아래로, -는 원점 위로.
+	- 1,000,000 * 1,000,000 크기의 plane 에서는 파도 특수 효과가 먹지 않음을 확인함.
