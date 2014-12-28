@@ -57,3 +57,6 @@ Alternatively, leave a note in the Ogre Forum: http://www.ogre3d.org/forums/inde
 [20141228]
 	- Plane.d 값 정의. + 는 원점 아래로, -는 원점 위로.
 	- 1,000,000 * 1,000,000 크기의 plane 에서는 파도 특수 효과가 먹지 않음을 확인함.
+	- bullet trajectory 테스트 중. 궤적이 점차 증가하는 순으로 구동이 되어야 하는 데
+		DynamicLines 클래스는 기존과 거의 동일함. http://code.google.com/p/ovise/source/browse/TrajectoryPlugin/Trajectory.h?name=v0-5 를 
+		참조하여 추가 확인이 필요함.

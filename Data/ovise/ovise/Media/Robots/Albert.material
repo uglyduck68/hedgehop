@@ -1,0 +1,136 @@
+
+material _missing_material_ 
+{
+    receive_shadows off
+    technique
+    {
+        pass
+        {
+            ambient 0.1 0.1 0.1 1.0
+            diffuse 0.8 0.0 0.0 1.0
+            specular 0.5 0.5 0.5 1.0 12.5
+            emissive 0.3 0.3 0.3 1.0
+        }
+    }
+}
+
+material Albert_MediumGrey 
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			ambient 0.699999988079071 0.6928830146789551 0.6930000185966492 1.0
+			diffuse 0.559999998807907 0.5543064200029733 0.5544000231385233 1.0
+			specular 0.5 0.5 0.5 1.0 12.5
+			emissive 0.0 0.0 0.0 1.0
+			scene_blend one zero
+		}
+	}
+}
+material Albert_White 
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			ambient 1.0 1.0 1.0 1.0
+			diffuse 0.8998544216156006 0.8998544216156006 0.8998544216156006 1.0
+			specular 0.8994177579879761 0.8994177579879761 0.8994177579879761 1.0 16.0
+			emissive 0.0 0.0 0.0 1.0
+			scene_blend one zero
+		}
+	}
+}
+material Albert_HalveBlue 
+{
+	receive_shadows on
+	technique
+	{
+		pass HalveBlue.001__HalveBlue.001
+		{
+			cull_hardware none
+			ambient 0.0 0.0 0.6600000262260437 1.0
+			diffuse 0.0 0.0 0.5280000288486484 1.0
+			specular 0.5 0.5 0.5 1.0 12.5
+			emissive 0.0 0.0 0.0 1.0
+			scene_blend one zero
+		}
+	}
+}
+material Albert_Yellow 
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			ambient 1.0 0.8600000143051147 0.0 1.0
+			diffuse 0.800000011920929 0.6880000216960909 0.0 1.0
+			specular 0.5 0.5 0.5 1.0 12.5
+			emissive 0.0 0.0 0.0 1.0
+			scene_blend one zero
+		}
+	}
+}
+material Albert_Black 
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			ambient 0.14000000059604645 0.14000000059604645 0.14000000059604645 1.0
+			diffuse 0.11200000214576722 0.11200000214576722 0.11200000214576722 1.0
+			specular 0.5 0.5 0.5 1.0 12.5
+			emissive 0.0 0.0 0.0 1.0
+			scene_blend one zero
+		}
+	}
+}
+material Albert_Body 
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			ambient 0.800000011920929 0.800000011920929 0.800000011920929 1.0
+			diffuse 0.6400000190734865 0.6400000190734865 0.6400000190734865 1.0
+			specular 0.5 0.5 0.5 1.0 12.5
+			emissive 0.0 0.0 0.0 1.0
+			scene_blend one zero
+			texture_unit
+			{
+				texture BodyTexture.jpg
+				tex_address_mode wrap
+				scale 1.0 1.0
+				tex_coord_set 0
+				colour_op_ex blend_manual src_current src_texture 0.0
+			}
+		}
+	}
+}
+material Albert_BlackMetal 
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			ambient 0.14000000059604645 0.14000000059604645 0.14000000059604645 1.0
+			diffuse 0.1259796195625391 0.1259796195625391 0.1259796195625391 1.0
+			specular 0.8994177579879761 0.8994177579879761 0.8994177579879761 1.0 16.0
+			emissive 0.0 0.0 0.0 1.0
+			scene_blend one zero
+		}
+	}
+}
