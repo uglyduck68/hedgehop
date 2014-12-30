@@ -14,6 +14,7 @@ AnimationTutorial::AnimationTutorial(void) :
 	m_ElapsedTime(TIME_INTERVAL),
 	m_Trajectory(NULL)		// trajetory of fighter
 {
+	mTrajectory.reset( new CTrajectory( GetSceneManager() ) );
 }
 
 
@@ -168,6 +169,8 @@ void AnimationTutorial::createScene()
 		m_Trajectory->update();
 		SceneNode*	pLinesNode	= mSceneMgr->getRootSceneNode()->createChildSceneNode("lines");
 		pLinesNode->attachObject( static_cast<Ogre::MovableObject*>( m_Trajectory ));
+
+		mTrajectoryNode			= mSceneMgr->getRootSceneNode()->createChildSceneNode("Trajectory");
 	}
 
 

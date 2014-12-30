@@ -32,6 +32,11 @@ public:
 
     virtual void go(void);
 
+	Ogre::SceneManager* GetSceneManager()
+	{
+		return mSceneMgr;
+	}
+
 protected:
     virtual bool setup();
     virtual bool configure(void);

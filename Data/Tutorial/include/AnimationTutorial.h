@@ -28,9 +28,11 @@
 #include "baseapplication.h"
 #include "Target.h"
 #include "DynamicLines.h"
+#include "Trajectory.h"
 
 #include <OgreManualObject.h>
 #include <string>
+#include <boost/scoped_ptr.hpp>
 
 using namespace	Ogre;
 using namespace	std;
@@ -74,10 +76,13 @@ protected:
 
 
 	//< object to display 3D circle that is orbit of fighter
-	ManualObject*	m_pCircle;
+	ManualObject*		m_pCircle;
 
-	//< object for trajetory of fighter
+	//< object for trajectory of fighter
 	DynamicLines*		m_Trajectory;
+
+	SceneNode*			mTrajectoryNode;
+	boost::scoped_ptr<CTrajectory> mTrajectory;
 
 	typedef enum { CAM_AUTOTRACKING, CAM_CHASING, CAM_MANUAL } CAM_MODE;
 

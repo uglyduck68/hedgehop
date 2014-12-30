@@ -135,6 +135,7 @@
     <ClInclude Include="include\Target.h" />
     <ClInclude Include="include\TestCamera.h" />
     <ClInclude Include="include\TestCameraControlSystem.h" />
+    <ClInclude Include="include\Trajectory.h" />
     <ClInclude Include="res\Resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,7 @@
     <ClCompile Include="src\Target.cpp" />
     <ClCompile Include="src\TestCamera.cpp" />
     <ClCompile Include="src\TestCameraControlSystem.cpp" />
+    <ClCompile Include="src\Trajectory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\ReadMe.txt" />
