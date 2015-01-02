@@ -290,11 +290,11 @@ bool BaseApplication::setup(void)
 
     createFrameListener();
 
-#ifdef	_DEBUG
-	Ogre::Entity* mAxesEntity = mSceneMgr->createEntity("Axes", "axes.mesh");
-	mSceneMgr->getRootSceneNode()->createChildSceneNode("AxesNode",Ogre::Vector3(0,0,0))->attachObject(mAxesEntity);
-	mSceneMgr->getSceneNode("AxesNode")->setScale(5, 5, 5);
-#endif
+//#ifdef	_DEBUG
+//	Ogre::Entity* mAxesEntity = mSceneMgr->createEntity("Axes", "axes.mesh");
+//	mSceneMgr->getRootSceneNode()->createChildSceneNode("AxesNode",Ogre::Vector3(0,0,0))->attachObject(mAxesEntity);
+//	mSceneMgr->getSceneNode("AxesNode")->setScale(5, 5, 5);
+//#endif
     return true;
 };
 //---------------------------------------------------------------------------
