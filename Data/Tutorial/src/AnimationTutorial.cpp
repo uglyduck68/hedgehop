@@ -14,7 +14,6 @@ AnimationTutorial::AnimationTutorial(void) :
 	m_ElapsedTime(TIME_INTERVAL),
 	m_Trajectory(NULL)		// trajetory of fighter
 {
-//	mTrajectory.reset( new CTrajectory( GetSceneManager() ) );
 }
 
 
@@ -29,12 +28,11 @@ AnimationTutorial::~AnimationTutorial(void)
 		}
 	}
 
-	//while( !m_lstTarget.empty() )
-	//{
-	//	CTarget*	pTarget	= m_lstTarget.front(); m_lstTarget.pop_front();
-
-	//	DEL(pTarget);
-	//}
+	//////
+	// FIXME
+	//	- following cause abort error at exit
+	//////
+//	DEL( m_Trajectory );
 }
 	
 void AnimationTutorial::createFrameListener(void)
@@ -121,7 +119,7 @@ void AnimationTutorial::createScene()
 	//////////////////////////////////////////////////////////////////////////////
 	// create Trajectory
 	//////////////////////////////////////////////////////////////////////////////
-	m_Trajectory	= ::new (std::nothrow) DynamicLines(RenderOperation::OT_LINE_STRIP);
+	m_Trajectory	= ::new (std::nothrow) Trajectory( mSceneMgr, RenderOperation::OT_LINE_STRIP);
 
 //	m_pCircle->begin("BaseWhiteNoLighting", RenderOperation::OT_LINE_STRIP );
 
@@ -151,8 +149,7 @@ void AnimationTutorial::createScene()
 			//m_paTrack[ nPointIndex ]->MoveTo( m_aCirclePos[ nPointIndex - 1 ], m_aCirclePos[ nPointIndex ]);
 		}
 		nPointIndex++;
-		if( nPointIndex == 1 )
-		m_Trajectory->addPoint( vPos );
+
 //		m_pCircle->position( vPos );
 //		m_pCircle->index( nPointIndex++ );
 	}
@@ -167,10 +164,6 @@ void AnimationTutorial::createScene()
 	else
 	{
 		m_Trajectory->update();
-		SceneNode*	pLinesNode	= mSceneMgr->getRootSceneNode()->createChildSceneNode("lines");
-		pLinesNode->attachObject( static_cast<Ogre::MovableObject*>( m_Trajectory ));
-
-//		mTrajectoryNode			= mSceneMgr->getRootSceneNode()->createChildSceneNode("Trajectory");
 	}
 
 
@@ -189,7 +182,7 @@ void AnimationTutorial::createScene()
 	//////////////////////////////////////////////////////////////////////////////
 	// create debug overlay
 	//////////////////////////////////////////////////////////////////////////////
-//	createDebugOverlay();
+	createDebugOverlay();
 
 }
 
@@ -250,11 +243,15 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 
 			if(nextLocation(waypointDistance))
 			{
-			if( m_Trajectory )
-			{
-				m_Trajectory->addPoint( mDestination );
-				m_Trajectory->update();
-			}
+				//////
+				// add trajectory
+				//////
+				if( m_Trajectory )
+				{
+					m_Trajectory->addPoint( mDestination );
+					m_Trajectory->update();
+				}
+
 				Vector3 src = GetSceneNode()->getOrientation() * Vector3::UNIT_Z;
 
 				// if angle of two vector is 180, then dot product is -1.

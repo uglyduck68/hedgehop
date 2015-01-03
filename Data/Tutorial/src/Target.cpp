@@ -44,11 +44,11 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 	///////////////////////////////////////////////////////////////////////////
 	// create my own sounds
 	///////////////////////////////////////////////////////////////////////////
-//	m_pSound	= OgreOggSoundManager::getSingletonPtr()->createSound(m_strName, "jet_exhaust.wav");
+	m_pSound	= OgreOggSoundManager::getSingletonPtr()->createSound(m_strName, "jet_exhaust.wav");
 
 	// start to play sound
-//	if( m_pSound )
-//		m_pSound->play();
+	if( m_pSound )
+		m_pSound->play();
 }
 
 

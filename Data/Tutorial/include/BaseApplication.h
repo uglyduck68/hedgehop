@@ -92,7 +92,7 @@ protected:
 
 	void printMsgToDebugOverlay( Ogre::String& strMsg )
 	{
-//		mTextArea->setCaption( strMsg );
+		mTextArea->setCaption( strMsg );
 	}
 
 	void showDebugOverlay(bool show)

@@ -146,9 +146,6 @@
     <ClCompile Include="src\DynamicRenderable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\Trajectory.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\ReadMe.txt" />

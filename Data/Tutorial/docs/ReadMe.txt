@@ -46,6 +46,18 @@ Feature requests, bug reports, etc - use the project issue tracker.
 Alternatively, leave a note in the Ogre Forum: http://www.ogre3d.org/forums/index.php
 
 /////////////////////////////////////////////////////////////////////////////
+// Things To Do
+/////////////////////////////////////////////////////////////////////////////
+- Terrain 에서 충돌 회의가 정상적이지 않음.
+- Big Terrain 렌더링 문제. 정확하게 col 지역을 올려 본 적이 없음.
+- DDS 수신 후 메시지와 렌더링 관련된(animation, message queue, etc) 구현.
+- Camera Control System에 대한 학습 및 적용
+- SkyX에 대한 학습 및 적용
+- 전반적인 architecture 수립
+
+/////////////////////////////////////////////////////////////////////////////
+// History
+/////////////////////////////////////////////////////////////////////////////
 [20141225]
 	- VisualX.dll & VisualX.exe 테스트 버전 완료하여 보냄. EOTS에 사용하기에 
 		적당하지 않음.
@@ -60,3 +72,8 @@ Alternatively, leave a note in the Ogre Forum: http://www.ogre3d.org/forums/inde
 	- bullet trajectory 테스트 중. 궤적이 점차 증가하는 순으로 구동이 되어야 하는 데
 		DynamicLines 클래스는 기존과 거의 동일함. http://code.google.com/p/ovise/source/browse/TrajectoryPlugin/Trajectory.h?name=v0-5 를 
 		참조하여 추가 확인이 필요함.
+[20150103]
+	- DynamicLines class를 활용하여 궤적이 계획대로 drawing 됨을 확인함.
+		추후에는 좀더 사용이 편리하게 개선하는 작업이 요구됨.
+	- 회사와 노트북 사이의 resource mismatching 현상 제거.
+		sound, font, axes.mesh 등에 대한 리소스를 메일로 전달 함.

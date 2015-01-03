@@ -16,7 +16,6 @@
  * @Fixme
  *	- 현재의 항공기 궤적은 사전에 만들어 지므로 포탄의 궤적으로 사용되지 못 함.
  *		따라서 동적으로 생성 가능한 궤적 테스트가 필요함.
- *		[20150102] complete trajectory test. need .waw and .font file.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -77,13 +76,11 @@ protected:
 
 
 	//< object to display 3D circle that is orbit of fighter
-	ManualObject*		m_pCircle;
+//	ManualObject*		m_pCircle;
 
 	//< object for trajectory of fighter
-	DynamicLines*		m_Trajectory;
+	Trajectory*		m_Trajectory;
 
-	//SceneNode*			mTrajectoryNode;
-	//boost::scoped_ptr<CTrajectory> mTrajectory;
 
 	typedef enum { CAM_AUTOTRACKING, CAM_CHASING, CAM_MANUAL } CAM_MODE;
 
@@ -97,14 +94,6 @@ protected:
 	int		createSceneNode(string MeshName)
 	{
 		// create target entity
-		//m_pSceneNode		= mSceneMgr->getRootSceneNode()->createChildSceneNode();
-		//Entity*	pEntity		= mSceneMgr->createEntity(MeshName);
-
-		//Any			any(pEntity);
-
-		//m_pSceneNode->setUserAny(any);
-
-		//m_pSceneNode->attachObject(pEntity);
 
 		CTarget*	pTemp	= new CTarget( mSceneMgr, m_vecTarget.size(), MeshName );
 
