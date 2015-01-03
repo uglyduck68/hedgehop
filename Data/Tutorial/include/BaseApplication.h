@@ -1,3 +1,11 @@
+/**
+ * @file		BaseApplication.h
+ * @remarks		This file is originally generated from OgreWizard
+ *				But is customized by my self.
+ * @history
+ *	[20150103] add KC_C handler to toggle mCameraMan->setStyle( OgreBites::CS_FREELOOK or OgreBites::CS_ORBIT);
+ */
+
 /*
 -----------------------------------------------------------------------------
 Filename:    BaseApplication.h

@@ -71,9 +71,9 @@ Alternatively, leave a note in the Ogre Forum: http://www.ogre3d.org/forums/inde
 	- 1,000,000 * 1,000,000 크기의 plane 에서는 파도 특수 효과가 먹지 않음을 확인함.
 	- bullet trajectory 테스트 중. 궤적이 점차 증가하는 순으로 구동이 되어야 하는 데
 		DynamicLines 클래스는 기존과 거의 동일함. http://code.google.com/p/ovise/source/browse/TrajectoryPlugin/Trajectory.h?name=v0-5 를 
-		참조하여 추가 확인이 필요함.
+		참조하여 추가 확인이 필요함. ovise 보다는 DynamicLines가 하드웨어 버퍼를 직접 사용하므로 좋아 보임.
 [20150103]
 	- DynamicLines class를 활용하여 궤적이 계획대로 drawing 됨을 확인함.
-		추후에는 좀더 사용이 편리하게 개선하는 작업이 요구됨.
+		추후에는 좀더 사용이 편리하게 개선하는 작업이 요구됨. 개선 작업 완료.
 	- 회사와 노트북 사이의 resource mismatching 현상 제거.
 		sound, font, axes.mesh 등에 대한 리소스를 메일로 전달 함.

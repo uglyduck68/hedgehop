@@ -420,6 +420,13 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
     {
         mShutDown = true;
     }
+	else if (arg.key == OIS::KC_C )
+	{
+		if( mCameraMan->getStyle() == OgreBites::CS_FREELOOK )
+			mCameraMan->setStyle(OgreBites::CS_ORBIT);
+		else if( mCameraMan->getStyle() == OgreBites::CS_ORBIT )
+			mCameraMan->setStyle(OgreBites::CS_FREELOOK);
+	}
 
     mCameraMan->injectKeyDown(arg);
     return true;

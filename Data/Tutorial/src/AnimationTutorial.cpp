@@ -37,9 +37,8 @@ AnimationTutorial::~AnimationTutorial(void)
 	
 void AnimationTutorial::createFrameListener(void)
 {
+	// create keyboard & mouse and Register this for handing key & mouse event
 	BaseApplication::createFrameListener();
-
-//	mRoot->addFrameListener(this);
 }
 
 bool AnimationTutorial::nextLocation(Real& distance)
