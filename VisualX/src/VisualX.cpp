@@ -209,7 +209,7 @@ void CVisualX::createScene(void)
 		// Let's start intro
 		SetNextIntroTarget();
 
-		return;
+//		return;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -244,24 +244,18 @@ void CVisualX::createScene(void)
 	///////////////////////////////////////////////////////////////////////////
 
 
-	/************ NOTE *********
-	* change followings
-	*/
 	////////////////////////////////////////////////
 	// create sky
 	////////////////////////////////////////////////
-	mRenderingCamera	= mCamera;
 
-	m_pSky		= new (nothrow) CSky(mSceneMgr);
+	m_pSky		= new (nothrow) CSky(mSceneMgr, mCamera);
 
 	if( m_pSky )
+	{
 		m_pSky->createScene();
+		m_pSky->setVisible( false );
+	}
 
-	// Register SkyX listeners
-	mRoot->addFrameListener(mSkyX);
-	mWindow->addListener(mSkyX);
-
-	setPreset(mPresets[mCurrentPreset]);
 
 	////////////////////////////////////////////////
 	// create terrain
@@ -281,7 +275,10 @@ void CVisualX::createScene(void)
 	m_pOcean	= new (nothrow) COcean(mSceneMgr);
 
 	if( m_pOcean )
+	{
 		m_pOcean->createScene();
+		m_pOcean->setVisible( false );
+	}
 
 
 #if	0
@@ -364,8 +361,9 @@ void CVisualX::createFrameListener(void)
 {
 	// add base frame listener
 	BaseApplication::createFrameListener();
-	// Add frame listener
-//	mRoot->addFrameListener(new SkyXDemoFrameListener(mWindow, mCamera, mSceneMgr));
+
+	if(m_pSky)
+		m_pSky->createFrameListener();
 
 	// create ray scene query for collision detection
 	mRaySceneQuery = mSceneMgr->createRayQuery(Ogre::Ray());

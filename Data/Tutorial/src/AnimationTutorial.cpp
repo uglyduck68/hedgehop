@@ -34,6 +34,12 @@ AnimationTutorial::~AnimationTutorial(void)
 	//////
 //	DEL( m_Trajectory );
 }
+
+void AnimationTutorial::destroyScene(void)
+{
+//	DEL( m_Trajectory );
+}
+
 	
 void AnimationTutorial::createFrameListener(void)
 {

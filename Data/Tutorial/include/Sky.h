@@ -91,11 +91,6 @@ public:
 	void createScene();
 	void createFrameListener(void);
 	void setPreset(int i);
-	void setVisible(bool v)
-	{
-		mSkyX->setVisible(v);
-	}
-
 protected:
 	bool	m_bSkyShow;
 	Ogre::uint32 mCurrentPreset;

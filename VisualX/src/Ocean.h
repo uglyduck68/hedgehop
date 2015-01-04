@@ -54,6 +54,10 @@ public:
 	*/
 	void createScene();
 
+	void setVisible(bool v)
+	{
+		m_pOcean->setVisible(v);
+	}
 	static const int	MAX_WIDTH	= 1000000;
 	static const int	MAX_HEIGHT	= 1000000;
 

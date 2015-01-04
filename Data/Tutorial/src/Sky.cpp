@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "Sky.h"
+#include "..\include\Sky.h"
 
 /** Demo presets
     @remarks The best way of determinate each parameter value is by using a real-time editor.

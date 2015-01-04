@@ -37,7 +37,6 @@
 using namespace	Ogre;
 using namespace	std;
 
-#define		DEL(p)	if(p) {delete p; p=NULL;}
 #define		TIME_INTERVAL		(1.0)		// 1 second
 
 class AnimationTutorial :
@@ -197,6 +196,7 @@ protected:
 		return BaseApplication::keyPressed(arg);
 	}
 
+    void destroyScene(void);
 
 	/**
 	*@function		initCameraAnimation

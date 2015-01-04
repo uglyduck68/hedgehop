@@ -120,6 +120,7 @@
     <ClInclude Include="include\BasicTutorial4.h" />
     <ClInclude Include="include\BasicTutorial5.h" />
     <ClInclude Include="include\BattlefiedlVisualization.h" />
+    <ClInclude Include="include\CollisionTools.h" />
     <ClInclude Include="include\Debug.h" />
     <ClInclude Include="include\DummyCameraMode.h" />
     <ClInclude Include="include\DynamicLines.h" />
@@ -130,13 +131,16 @@
     <ClInclude Include="include\MultiViewport.h" />
     <ClInclude Include="include\OceanTest.h" />
     <ClInclude Include="include\ParticleTutorial.h" />
+    <ClInclude Include="include\Sky.h" />
     <ClInclude Include="include\SkyTest.h" />
     <ClInclude Include="include\SoundTutorial.h" />
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="include\Target.h" />
+    <ClInclude Include="include\Terrain.h" />
     <ClInclude Include="include\TestCamera.h" />
     <ClInclude Include="include\TestCameraControlSystem.h" />
     <ClInclude Include="include\Trajectory.h" />
+    <ClInclude Include="include\Util.h" />
     <ClInclude Include="res\Resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +150,7 @@
     <ClCompile Include="src\BasicTutorial4.cpp" />
     <ClCompile Include="src\BasicTutorial5.cpp" />
     <ClCompile Include="src\BattlefiedlVisualization.cpp" />
+    <ClCompile Include="src\CollisionTools.cpp" />
     <ClCompile Include="src\Debug.cpp" />
     <ClCompile Include="src\DynamicLines.cpp" />
     <ClCompile Include="src\DynamicRenderable.cpp" />
@@ -155,12 +160,14 @@
     <ClCompile Include="src\MultiViewport.cpp" />
     <ClCompile Include="src\OceanTest.cpp" />
     <ClCompile Include="src\ParticleTutorial.cpp" />
+    <ClCompile Include="src\Sky.cpp" />
     <ClCompile Include="src\SkyTest.cpp" />
     <ClCompile Include="src\SoundTutorial.cpp" />
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Target.cpp" />
+    <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\TestCamera.cpp" />
     <ClCompile Include="src\TestCameraControlSystem.cpp" />
   </ItemGroup>

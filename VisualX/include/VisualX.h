@@ -269,11 +269,15 @@ protected:
 		// set flag to false
 		m_IsIntro	= false;
 
-		// keep creating other characters (ocean, sky, ans so on)
-		createScene();
+		// intro ends. make all targets visible
+		setAllVisible( true );
 	}
 
-
+	void setAllVisible( bool v )
+	{
+		m_pSky->setVisible( v );
+		m_pOcean->setVisible( v );
+	}
 };
 
 #endif // #ifndef __CVisualX_h_

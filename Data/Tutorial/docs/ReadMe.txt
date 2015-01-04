@@ -53,7 +53,9 @@ Alternatively, leave a note in the Ogre Forum: http://www.ogre3d.org/forums/inde
 - DDS 수신 후 메시지와 렌더링 관련된(animation, message queue, etc) 구현.
 - Camera Control System에 대한 학습 및 적용
 - SkyX에 대한 학습 및 적용
+	낮, 밤, 흐림, 맑음에 대한 설정 대충 완료.
 - 전반적인 architecture 수립
+- 인트로 기능 변경. createScene() 에서 모든 오브젝트 만든 후 인트로 들어 가도록 수정필요.
 
 /////////////////////////////////////////////////////////////////////////////
 // History

@@ -104,6 +104,11 @@ void BaseApplication::createCamera(void)
     mCamera->lookAt(Ogre::Vector3(0,0,-300));
     mCamera->setNearClipDistance(5);
 
+    if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_INFINITE_FAR_PLANE))
+    {
+        mCamera->setFarClipDistance(0);   // enable infinite far clip distance if we can
+    }
+
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);   // Create a default camera controller
 
 	// Sean, add, change the style of cameraman from default CS_FREELOOK to CS_ORBIT
