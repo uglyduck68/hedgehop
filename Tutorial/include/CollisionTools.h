@@ -63,7 +63,17 @@ public:
 
 	void calculateY(Ogre::SceneNode *n, const bool doTerrainCheck = true, const bool doGridCheck = true, const float gridWidth = 1.0f, const Ogre::uint32 queryMask = 0xFFFFFFFF);
 
-	float getTSMHeightAt(const float x, const float z);
+	/**
+	* @function		calculateY
+	* @remarks		for Camera parameter verion
+	*/
+	void calculateY(Ogre::Camera *n, const bool doTerrainCheck = true, const bool doGridCheck = true, const float gridWidth = 1.0f, const Ogre::uint32 queryMask = 0xFFFFFFFF);
+
+	/**
+	* @function		getTSMHeightAt
+	* @return		true if collision happens
+	*/
+	bool getTSMHeightAt(const float x, const float z, float& y);
 	
 	bool raycastFromPoint(const Ogre::Vector3 &point, const Ogre::Vector3 &normal, Ogre::Vector3 &result,Ogre::MovableObject* &target,float &closest_distance, const Ogre::uint32 queryMask = 0xFFFFFFFF);
 	// convenience wrapper with Ogre::Entity to it:

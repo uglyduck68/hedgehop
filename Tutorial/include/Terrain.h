@@ -7,6 +7,15 @@
 
 #include "CollisionTools.h"
 
+enum QueryFlags
+{
+   WATER_MASK = 1<<7,
+   ENTITY_MASK  = 1<<8,
+   TERRAIN_MASK   = 1<<9,
+   FOILAGE_MASK  = 1<<10,
+   MOBILE_MASK = 1<<11,
+};
+
 class CTerrain// : public Ogre::FrameListener
 {
 public:

@@ -111,8 +111,14 @@ bool CollisionTools::collidesWithEntity(const Ogre::Vector3& fromPoint, const Og
 	}
 }
 
-float CollisionTools::getTSMHeightAt(const float x, const float z) {
-	float y=0.0f;
+/**
+* @function		getTSMHeightAt
+* @return		true if collision happens
+*/
+bool CollisionTools::getTSMHeightAt(const float x, const float z, float& y) 
+{
+	bool	bCol	= false;
+//	float	y		= 0.0f;
 
     static Ogre::Ray updateRay;
 
@@ -126,8 +132,80 @@ float CollisionTools::getTSMHeightAt(const float x, const float z) {
     if (i != qryResult.end() && i->worldFragment)
     {
         y=i->worldFragment->singleIntersection.y;
+
+		bCol	= true;
     }
-	return y;
+
+	return bCol;
+}
+
+/**
+* @function		calculateY
+* @remarks		for Camera parameter verion
+* @auther		Sean.k <uglyduck68@gmail.com>
+*/
+void CollisionTools::calculateY(Ogre::Camera *n, const bool doTerrainCheck, const bool doGridCheck, const float gridWidth, const Ogre::uint32 queryMask)
+{
+	Ogre::Vector3 pos = n->getDerivedPosition();
+
+	float x = pos.x;
+	float z = pos.z;
+	float y = pos.y;
+	bool	bColl	= false;
+	Ogre::Vector3 myResult(0,0,0);
+	Ogre::MovableObject *myObject=NULL;
+	float distToColl = 0.0f;
+
+	float terrY = 0, colY = 0, colY2 = 0;
+
+	if( raycastFromPoint(Ogre::Vector3(x,y,z),Ogre::Vector3::NEGATIVE_UNIT_Y,myResult,myObject, distToColl, queryMask))
+	{
+		if (myObject != NULL) {
+			colY = myResult.y;
+		} else {
+			colY = -99999;
+		}
+	}
+
+	//if doGridCheck is on, repeat not to fall through small holes for example when crossing a hangbridge
+	if (doGridCheck) 
+	{
+		if( raycastFromPoint(Ogre::Vector3(x,y,z)+(n->getOrientation()*Ogre::Vector3(0,0,gridWidth)),Ogre::Vector3::NEGATIVE_UNIT_Y,myResult, myObject, distToColl, queryMask))
+		{
+			if (myObject != NULL) {
+				colY = myResult.y;
+			} else {
+				colY = -99999;
+			}
+		}
+		if (colY<colY2) colY = colY2;
+	}
+
+	// set the parameter to false if you are not using ETM or TSM
+	if (doTerrainCheck) {
+
+#ifdef ETM_TERRAIN
+		// ETM height value
+		terrY = mTerrainInfo->getHeightAt(x,z);
+#else
+		// TSM height value
+		bColl = getTSMHeightAt(x,z, terrY);
+#endif
+
+		if(bColl)
+		{
+			if( terrY < colY ) {
+				n->setPosition(x,colY+_heightAdjust,z);
+			} else {
+				n->setPosition(x,terrY+_heightAdjust,z);
+			}
+		}
+	} else {
+		if (!doTerrainCheck && colY == 0) 
+			colY = y;
+
+		n->setPosition(x,colY+_heightAdjust,z);
+	}
 }
 
 void CollisionTools::calculateY(Ogre::SceneNode *n, const bool doTerrainCheck, const bool doGridCheck, const float gridWidth, const Ogre::uint32 queryMask)
@@ -137,6 +215,7 @@ void CollisionTools::calculateY(Ogre::SceneNode *n, const bool doTerrainCheck, c
 	float x = pos.x;
 	float z = pos.z;
 	float y = pos.y;
+	bool	bColl	= false;
 
 	Ogre::Vector3 myResult(0,0,0);
 	Ogre::MovableObject *myObject=NULL;
@@ -172,7 +251,7 @@ void CollisionTools::calculateY(Ogre::SceneNode *n, const bool doTerrainCheck, c
 		terrY = mTerrainInfo->getHeightAt(x,z);
 #else
 		// TSM height value
-		terrY = getTSMHeightAt(x,z);
+		bColl = getTSMHeightAt(x,z, terrY);
 #endif
 
 		if(terrY < colY ) {

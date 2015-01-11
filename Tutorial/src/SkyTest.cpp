@@ -95,6 +95,12 @@ bool SkyTest::keyPressed(const OIS::KeyEvent &arg)
         break;
 	case OIS::KC_L:
 		m_bColl	= !m_bColl;
+
+		if( m_bColl == true )
+			printMsgToDebugOverlay( Ogre::String("terrain collision ON") );
+		else
+			printMsgToDebugOverlay( Ogre::String("terrain collision OFF") );
+
 		break;
     }
 
@@ -122,8 +128,10 @@ bool SkyTest::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
 	Ogre::Real	CollDist	= 0;
 
-	if( m_bColl && m_pTerrain && m_pTerrain->IsCollision(mCamera, &CollDist) )
+	if( m_bColl && m_pTerrain )
 	{
+		m_pTerrain->IsCollision(mCamera, &CollDist);
+
 		printMsgToDebugOverlay("terrain collision distance is " + StringConverter::toString(CollDist) );
 	}
 	else

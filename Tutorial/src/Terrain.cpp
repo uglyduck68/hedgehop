@@ -138,6 +138,14 @@ void CTerrain::configureTerrainDefaults(Ogre::Light* light)
 //-------------------------------------------------------------------------------------
 void CTerrain::createScene(void)
 {
+	// create collision tools
+	m_pCollisionTools	= new (std::nothrow) MOC::CollisionTools( mSceneMgr );
+
+	if( m_pCollisionTools == NULL )
+	{
+		Ogre::LogManager::getSingletonPtr()->logMessage("Error: fail to create Collision Tools");
+	}
+
 #if	1
 	// define initial position of terrain
 	float fx = -2000.0f;
@@ -153,39 +161,79 @@ void CTerrain::createScene(void)
 	TerrainNode->attachObject( TerrainEnty );
 	//colTerrainScene0->setPosition(-1700.0f,0.5f,-100.0f);
 	TerrainNode->setPosition(fx, fz, fy);
+	TerrainEnty->setQueryFlags(TERRAIN_MASK);
 
 	m_vecTerrainEnty.push_back( TerrainEnty );
 	m_vecTerrainNode.push_back( TerrainNode );
 
-	Ogre::Entity* ogreTerrain1 = mSceneMgr->createEntity("Terrain1", "out_x2y1.mesh");
-	Ogre::SceneNode* colTerrainScene1 = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain1");
-	colTerrainScene1->attachObject(ogreTerrain1);
-	colTerrainScene1->setPosition(fx, fz, fy);
+	TerrainEnty = mSceneMgr->createEntity("Terrain1", "out_x2y1.mesh");
+	TerrainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain1");
+	TerrainNode->attachObject( TerrainEnty );
+	//colTerrainScene0->setPosition(-1700.0f,0.5f,-100.0f);
+	TerrainNode->setPosition(fx, fz, fy);
+	TerrainEnty->setQueryFlags(TERRAIN_MASK);
+
+	m_vecTerrainEnty.push_back( TerrainEnty );
+	m_vecTerrainNode.push_back( TerrainNode );
 	
-	Ogre::Entity* ogreTerrain2 = mSceneMgr->createEntity("Terrain2", "out_x2y2.mesh");
-	Ogre::SceneNode* colTerrainScene2 = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain2");
-	colTerrainScene2->attachObject(ogreTerrain2);
-	colTerrainScene2->setPosition(fx, fz, fy);
+	TerrainEnty = mSceneMgr->createEntity("Terrain2", "out_x2y2.mesh");
+	TerrainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain2");
+	TerrainNode->attachObject( TerrainEnty );
+	//colTerrainScene0->setPosition(-1700.0f,0.5f,-100.0f);
+	TerrainNode->setPosition(fx, fz, fy);
+	TerrainEnty->setQueryFlags(TERRAIN_MASK);
 
-	Ogre::Entity* ogreTerrain3 = mSceneMgr->createEntity("Terrain3", "out_x2y3.mesh");
-	Ogre::SceneNode* colTerrainScene3 = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain3");
-	colTerrainScene3->attachObject(ogreTerrain3);
-	colTerrainScene3->setPosition(fx, fz, fy);
+	m_vecTerrainEnty.push_back( TerrainEnty );
+	m_vecTerrainNode.push_back( TerrainNode );
 
-	Ogre::Entity* ogreTerrain4 = mSceneMgr->createEntity("Terrain4", "out_x2y4.mesh");
-	Ogre::SceneNode* colTerrainScene4 = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain4");
-	colTerrainScene4->attachObject(ogreTerrain4);
-	colTerrainScene4->setPosition(fx, fz, fy);
+	TerrainEnty = mSceneMgr->createEntity("Terrain3", "out_x2y3.mesh");
+	TerrainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain3");
+	TerrainNode->attachObject( TerrainEnty );
+	//colTerrainScene0->setPosition(-1700.0f,0.5f,-100.0f);
+	TerrainNode->setPosition(fx, fz, fy);
+	TerrainEnty->setQueryFlags(TERRAIN_MASK);
 
-	Ogre::Entity* ogreTerrain5 = mSceneMgr->createEntity("Terrain5", "out_x3y4.mesh");
-	Ogre::SceneNode* colTerrainScene5 = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain5");
-	colTerrainScene5->attachObject(ogreTerrain5);
-	colTerrainScene5->setPosition(fx, fz, fy);
+	m_vecTerrainEnty.push_back( TerrainEnty );
+	m_vecTerrainNode.push_back( TerrainNode );
 
-	Ogre::Entity* ogreTerrain6 = mSceneMgr->createEntity("Terrain6", "out_x4y4.mesh");
-	Ogre::SceneNode* colTerrainScene6 = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain6");
-	colTerrainScene6->attachObject(ogreTerrain6);
-	colTerrainScene6->setPosition(fx, fz, fy);
+	TerrainEnty = mSceneMgr->createEntity("Terrain4", "out_x2y4.mesh");
+	TerrainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain4");
+	TerrainNode->attachObject( TerrainEnty );
+	//colTerrainScene0->setPosition(-1700.0f,0.5f,-100.0f);
+	TerrainNode->setPosition(fx, fz, fy);
+	TerrainEnty->setQueryFlags(TERRAIN_MASK);
+
+	m_vecTerrainEnty.push_back( TerrainEnty );
+	m_vecTerrainNode.push_back( TerrainNode );
+
+	TerrainEnty = mSceneMgr->createEntity("Terrain5", "out_x3y4.mesh");
+	TerrainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain5");
+	TerrainNode->attachObject( TerrainEnty );
+	//colTerrainScene0->setPosition(-1700.0f,0.5f,-100.0f);
+	TerrainNode->setPosition(fx, fz, fy);
+	TerrainEnty->setQueryFlags(TERRAIN_MASK);
+
+	m_vecTerrainEnty.push_back( TerrainEnty );
+	m_vecTerrainNode.push_back( TerrainNode );
+
+	TerrainEnty = mSceneMgr->createEntity("Terrain6", "out_x4y4.mesh");
+	TerrainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("ColombiaTerrain6");
+	TerrainNode->attachObject( TerrainEnty );
+	//colTerrainScene0->setPosition(-1700.0f,0.5f,-100.0f);
+	TerrainNode->setPosition(fx, fz, fy);
+	TerrainEnty->setQueryFlags(TERRAIN_MASK);
+
+	m_vecTerrainEnty.push_back( TerrainEnty );
+	m_vecTerrainNode.push_back( TerrainNode );
+
+	if( m_pCollisionTools )
+	{
+		// set how far we want the camera to be above ground
+		m_pCollisionTools->setHeightAdjust(50.5f);
+
+		// place the camera node on the ground
+//		m_pCollisionTools->calculateY(mCamera);
+	}
 	//////
 	// test big terrain data
 	//////
@@ -246,8 +294,6 @@ void CTerrain::createScene(void)
 	//////////////////////////////////////////////////////////////////////////////
 //	createDebugOverlay();
  
-	m_pCollisionTools	= new MOC::CollisionTools( mSceneMgr );
-
 }
 //-------------------------------------------------------------------------------------
 void CTerrain::createFrameListener(void)
@@ -286,27 +332,7 @@ bool CTerrain::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 bool CTerrain::IsCollision( Ogre::Camera* Cam, Ogre::Real* CollDist )
 {
+	m_pCollisionTools->calculateY( Cam, true, false, 2, TERRAIN_MASK );
 
-	/** 
-	* RAY_Y_ORG is bigger than camPos.y because check wether or not camera is under the ocean.
-	* distToColl is RAY_Y_ORG - m_pOcean->GetSurface() where camera is above ocean.
-	*/
-	const Ogre::Real RAY_Y_ORG			= 50000.0f;	
-	Ogre::Vector3	camPos		= Cam->getPosition();
-	Ogre::Ray		camRay(Ogre::Vector3(camPos.x, RAY_Y_ORG, camPos.z), Ogre::Vector3::NEGATIVE_UNIT_Y);
-	Ogre::Vector3	result		= Ogre::Vector3::ZERO;
-	float			ClosestDistance;
-
-	/**
-	* FIXME
-	*	- raycast is very time consuming that cause 1 FPS
-	*/
-	bool			bColl	= m_pCollisionTools->raycast(camRay, result, m_pTerrainEnt, ClosestDistance);
-
-	if( bColl == true )
-		*CollDist	= ClosestDistance;
-	else
-		*CollDist	= 0;
-
-	return bColl;
+	return false;
 }
