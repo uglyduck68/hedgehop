@@ -142,7 +142,6 @@ bool CollisionTools::getTSMHeightAt(const float x, const float z, float& y)
 /**
 * @function		calculateY
 * @remarks		for Camera parameter verion
-* @auther		Sean.k <uglyduck68@gmail.com>
 */
 void CollisionTools::calculateY(Ogre::Camera *n, const bool doTerrainCheck, const bool doGridCheck, const float gridWidth, const Ogre::uint32 queryMask)
 {
@@ -156,13 +155,33 @@ void CollisionTools::calculateY(Ogre::Camera *n, const bool doTerrainCheck, cons
 	Ogre::MovableObject *myObject=NULL;
 	float distToColl = 0.0f;
 
-	float terrY = 0, colY = 0, colY2 = 0;
+	float	terrY = 0, colY = 0, colY2 = 0;
 
-	if( raycastFromPoint(Ogre::Vector3(x,y,z),Ogre::Vector3::NEGATIVE_UNIT_Y,myResult,myObject, distToColl, queryMask))
+	if( raycastFromPoint(Ogre::Vector3(x,y,z),Ogre::Vector3::NEGATIVE_UNIT_Y, myResult, myObject, distToColl, queryMask))
 	{
-		if (myObject != NULL) {
+#ifdef	_DEBUG
+		Ogre::LogManager::getSingletonPtr()->logMessage(Ogre::String("Debug: raycastFromPoint ") + 
+			" Movable " + Ogre::StringConverter::toString(myObject) +
+			" Result: " + Ogre::StringConverter::toString(myResult) +
+			" distToColl " + Ogre::StringConverter::toString(distToColl));
+#endif
+		if (myObject != NULL) 
+		{
 			colY = myResult.y;
-		} else {
+		
+			bColl = getTSMHeightAt(x,z, terrY);
+
+#ifdef	_DEBUG
+			Ogre::LogManager::getSingletonPtr()->logMessage(Ogre::String("\t getTSMHeightAt: ") +
+				", " + Ogre::StringConverter::toString(bColl) + 
+				"," + Ogre::StringConverter::toString(terrY));
+#endif
+			n->setPosition(x,colY+_heightAdjust,z);
+
+			return;
+		} 
+		else 
+		{
 			colY = -99999;
 		}
 	}
