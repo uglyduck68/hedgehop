@@ -1,6 +1,0 @@
-VERSION: 1
-TSDThread.java,9,21,TSDThread
-FriendThread.java,7,34,FriendThread
-Person.java,7,130,Person
-EnemyThread.java,7,34,EnemyThread
-Test.java,45,129,Test

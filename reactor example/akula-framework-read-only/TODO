@@ -1,4 +1,0 @@
-
- - Timer events support
- - Epoll - based OS - level demultiplexer.
- - More unit tests coverage
