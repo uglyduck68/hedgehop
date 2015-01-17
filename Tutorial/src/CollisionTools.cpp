@@ -114,6 +114,7 @@ bool CollisionTools::collidesWithEntity(const Ogre::Vector3& fromPoint, const Og
 /**
 * @function		getTSMHeightAt
 * @return		true if collision happens
+* @remarks		This function does *NOT* work well.
 */
 bool CollisionTools::getTSMHeightAt(const float x, const float z, float& y) 
 {
@@ -129,7 +130,8 @@ bool CollisionTools::getTSMHeightAt(const float x, const float z, float& y)
     Ogre::RaySceneQueryResult& qryResult = mTSMRaySceneQuery->execute();
 
     Ogre::RaySceneQueryResult::iterator i = qryResult.begin();
-    if (i != qryResult.end() && i->worldFragment)
+    
+	if (i != qryResult.end() && i->worldFragment)
     {
         y=i->worldFragment->singleIntersection.y;
 
@@ -145,6 +147,7 @@ bool CollisionTools::getTSMHeightAt(const float x, const float z, float& y)
 */
 void CollisionTools::calculateY(Ogre::Camera *n, const bool doTerrainCheck, const bool doGridCheck, const float gridWidth, const Ogre::uint32 queryMask)
 {
+	// get world position of camera
 	Ogre::Vector3 pos = n->getDerivedPosition();
 
 	float x = pos.x;
@@ -169,14 +172,18 @@ void CollisionTools::calculateY(Ogre::Camera *n, const bool doTerrainCheck, cons
 		{
 			colY = myResult.y;
 		
+#ifdef	_DEBUG
+			// no collision in case of mesh-typed columbia terrain
 			bColl = getTSMHeightAt(x,z, terrY);
 
-#ifdef	_DEBUG
 			Ogre::LogManager::getSingletonPtr()->logMessage(Ogre::String("\t getTSMHeightAt: ") +
 				", " + Ogre::StringConverter::toString(bColl) + 
 				"," + Ogre::StringConverter::toString(terrY));
 #endif
-			n->setPosition(x,colY+_heightAdjust,z);
+			// If the collision point is less than the position of camera
+			// then move the camera up from collision point
+			if( colY + _heightAdjust >= y )
+				n->setPosition(x, colY+_heightAdjust, z);
 
 			return;
 		} 

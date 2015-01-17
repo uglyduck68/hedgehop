@@ -13,11 +13,13 @@ SceneNode* atheneNode;
 AnimationState* mAnimState;
 
 TestCameraControlSystem::TestCameraControlSystem(void) :
-		mKeyBuffer(-1), mAniso(1), mSceneDetailIndex(0)
+		mKeyBuffer(-1), mCamNode(NULL) /*, mAniso(1), mSceneDetailIndex(0)*/
 {
 }
 
 
 TestCameraControlSystem::~TestCameraControlSystem(void)
 {
+//	if( mCamNode )
+//		delete mCamNode;
 }

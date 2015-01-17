@@ -52,6 +52,9 @@ Alternatively, leave a note in the Ogre Forum: http://www.ogre3d.org/forums/inde
 	Ogre::TerrainGroip 등의 terrain 기능 사용이 용이치 않음. LoD 기능이 생각보다 좋지 않음.
 	Terrain을 몇 개의 .mesh 로 받을 예정이므로 Ogre::Terrain을 사용할 수 없음.
 	이 (몇 개의) .mesh 파일의 위치 설정 기능 테스트가 필요함.
+	[20150112] 
+	- 충돌 정상적으로 동작함. 단지 예전 20000 넘는 좌표에서 동작여부 추가 확인 필요.
+	- 또한 카메라가 Shift+W 키로 너무 고속으로 움직이는 경우 지형을 뚫고 내려가는 현상 있음.
 - Big Terrain 렌더링 문제. 정확하게 col 지역을 올려 본 적이 없음.
 - DDS 수신 후 메시지와 렌더링 관련된(animation, message queue, etc) 구현.
 - Camera Control System에 대한 학습 및 적용
@@ -60,7 +63,7 @@ Alternatively, leave a note in the Ogre Forum: http://www.ogre3d.org/forums/inde
 - 전반적인 architecture 수립
 - 인트로 기능 변경. createScene() 에서 모든 오브젝트 만든 후 인트로 들어 가도록 수정필요.
 - Ocean의 collision
-
+	적용 완료.
 /////////////////////////////////////////////////////////////////////////////
 // History
 /////////////////////////////////////////////////////////////////////////////

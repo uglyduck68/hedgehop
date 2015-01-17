@@ -1,6 +1,9 @@
 /**
 * @file			TestCameraControlSystem
 * @remarks		for testing CameraControlSystem plug-in
+*				이 샘플은 카메라 모드에 상관없이 target의 방향(시선)과
+*				상관이 없다.
+*				따라서 chasing mode의 카메라 테스트 로직 추가.
 */
 
 #pragma once
@@ -32,6 +35,56 @@ extern AnimationState* mAnimState;
 
 #define PLANE_SIZE 1000.0f
 
+class CamNodeListener : public Ogre::Node::Listener
+{
+public:
+	CamNodeListener(Ogre::Camera* Cam, Ogre::SceneNode* Target) : mCam(Cam), mCamNode(Target), mPrevPos(Ogre::Vector3::ZERO) 
+	{
+		mCam->setPosition( mCamNode->getPosition() );
+		mCam->setOrientation( mCamNode->getOrientation() );
+	};
+
+	~CamNodeListener(){};
+
+	SceneNode* GetSceneNode()
+	{
+		return mCamNode;
+	}
+
+	void nodeUpdated(const Ogre::Node *nod)
+	{ 
+		Ogre::Vector3		CurrPos		= nod->_getDerivedPosition();
+
+		CurrPos.y	+= 100;
+		CurrPos.z	-= 1000;
+
+		mCam->setPosition( CurrPos );
+		
+		if( mPrevPos != Ogre::Vector3::ZERO )
+		{
+			// calc orientation
+			Ogre::Vector3	Orient	= CurrPos - mPrevPos;// - CurrPos;
+			Orient.normalise();
+
+			Ogre::Quaternion quat = mPrevPos.getRotationTo(Orient);
+//			mCam->rotate(quat);
+//			mCam->setOrientation(quat);
+			mCam->lookAt( CurrPos );
+		}
+
+		mPrevPos	= CurrPos;
+	};
+protected:
+	Ogre::Real			mTimeSinceLastFrame;
+
+	// the previous position of target node that is used to
+	// calculate the orientation of target
+	// target orientation is directional vector from previous to current position
+	Ogre::Vector3		mPrevPos;
+	Ogre::SceneNode*	mCamNode;
+	Ogre::Camera*		mCam;
+};
+
 class TestCameraControlSystem : public BaseApplication
 {
 public:
@@ -41,20 +94,27 @@ public:
 
     Real mKeyBuffer;
     String mDebugText;
+
+	// Sean, mTimeUntilNextToggle is meaningless. comment out the related things
     // just to stop toggles flipping too fast
     Real mTimeUntilNextToggle ;
-	int mSceneDetailIndex ;
+//	int mSceneDetailIndex ;		///* comment out because of not used
     unsigned int mNumScreenShots;
-    int mAniso;
+//    int mAniso;		///* comment out because of not used
     bool mStatsOn;
     TextureFilterOptions mFiltering;
 //    Overlay* mDebugOverlay;
+	// [20150114] Sean, comment out because of not used
+	CamNodeListener*		mCamNode;
 
      Ogre::String getInfo()
     {
         Ogre::String text = "CameraControlSystem Demo\n\n";
         text += "Press \"SPACE\" to change the camera mode.\n\n";
-        text += "Current camera mode: " + mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode());
+        text += "Current camera mode: ";
+		
+		if( mCameraCS )
+			text	+= mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode());
 
         return text;
     }
@@ -76,7 +136,8 @@ public:
 
         if (mKeyboard->isKeyDown(OIS::KC_SPACE) && mKeyBuffer < 0)
         {
-            mCameraCS->setCurrentCameraMode(mCameraCS->getNextCameraMode());
+			if( mCameraCS )
+				mCameraCS->setCurrentCameraMode(mCameraCS->getNextCameraMode());
 
             mKeyBuffer = 0.25f;
         }
@@ -88,7 +149,8 @@ public:
 		/////////
         mAnimState->addTime(e.timeSinceLastFrame);
 
-		mCameraCS->update(e.timeSinceLastFrame);
+		if( mCameraCS )
+			mCameraCS->update(e.timeSinceLastFrame);
 
 		mKeyBuffer -= e.timeSinceLastFrame;
 
@@ -112,7 +174,7 @@ public:
 	*/
 	void processCameraKeyInput()
 	{
-		if(mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Free")
+		if(mCameraCS && mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Free")
         {
             CCS::FreeCameraMode* freeCameraMode = (CCS::FreeCameraMode*)mCameraCS->getCameraMode("Free");
 
@@ -148,8 +210,8 @@ public:
 				//mCamera->yaw(mRotScale);
 				freeCameraMode->yaw(1);
 		}
-		else if(mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Orbital"
-			|| mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Orbital (collidable)")
+		else if(mCameraCS && (mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Orbital"
+			|| mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Orbital (collidable)"))
 		{
 			CCS::OrbitalCameraMode* orbitalCameraMode;
 
@@ -189,7 +251,7 @@ public:
 		processCameraKeyInput();
 
 
-       	if( mKeyboard->isKeyDown(OIS::KC_F) && mTimeUntilNextToggle <= 0 )
+       	if( mKeyboard->isKeyDown(OIS::KC_F) /*&& mTimeUntilNextToggle <= 0*/ )
 		{
 			mStatsOn = !mStatsOn;
 
@@ -198,7 +260,7 @@ public:
 
 		static bool displayCameraDetails = false;
 
-		if(mKeyboard->isKeyDown(OIS::KC_P) && mTimeUntilNextToggle <= 0)
+		if(mKeyboard->isKeyDown(OIS::KC_P) /*&& mTimeUntilNextToggle <= 0*/)
 		{
 			displayCameraDetails = !displayCameraDetails;
 			mTimeUntilNextToggle = 0.5;
@@ -241,7 +303,7 @@ public:
 			//mRotX = Degree(-ms.X.rel * 0.13);
 			//mRotY = Degree(-ms.Y.rel * 0.13);
 
-            if(mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Free")
+            if(mCameraCS && mCameraCS->getCameraModeName(mCameraCS->getCurrentCameraMode()) == "Free")
             {
                 CCS::FreeCameraMode* freeCameraMode = (CCS::FreeCameraMode*)mCameraCS->getCameraMode("Free");
 
@@ -256,6 +318,13 @@ public:
     bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 	{
 		return BaseApplication::mouseReleased( arg, id );
+	}
+
+	void setupCameraPosition()
+	{
+		mCamera->setPosition(Ogre::Vector3(0,1000,1000));
+		// Look back along -Z
+		mCamera->lookAt(Ogre::Vector3(0,0,0));		
 	}
 
     // Just override the mandatory create scene method
@@ -277,16 +346,15 @@ public:
         mSceneMgr->setSkyDome(true, "Examples/CloudySky", 30, 5);
 
         // Put in a bit of fog for the hell of it
-        mSceneMgr->setFog(FOG_EXP, ColourValue::White, 0.0001, 0.5);
+//        mSceneMgr->setFog(FOG_EXP, ColourValue::White, 0.0001, 0.5);
 
 		///////////////////////////////////////////////////////////////////////
 		// Define a floor plane mesh
 		///////////////////////////////////////////////////////////////////////
-		// d value is 180 that is located at 180 unit above XZ-plane
+		// d value is 180 that is located at 180 unit below XZ-plane
 		// 아래 아데나는 XZ-plane 아래로 -100 단위에 위치한다.
-		// 하지만 실제 영상을 보면 이 평면이 원점 아래에 생성되는 것처럼 보인다.
-		// d value를 110 으로 바꿔 보면 아데나가 허리 정도가 평면의 아래로 내려가는 것을 
-		// 확인할 수 있다.
+		// 아데나의 height는 약 166 이고, 원점은 중간에 위치한다. 따라서
+		// 평면의 d value를 0 으로 하면 아데나는 허리 아래가 묻히게 된다.
         Plane p;
         p.normal = Vector3::UNIT_Y;
         p.d = 180;
@@ -307,6 +375,24 @@ public:
         ent->setCastShadows(true);
         headNode->attachObject(ent);
 
+		/////////
+		// testing movement of camera
+		/////////
+		//headNode->createChildSceneNode()->attachObject(mCamera);
+
+		//Vector3	headPos	= headNode->getPosition();
+
+		//headPos.y		+= 100;
+
+		//mCamera->setPosition( headPos );
+		//mCamera->setOrientation( headNode->getOrientation() );
+
+		///////////////////////////////////////////////////////////////////////
+		// Sean, register node listener
+		///////////////////////////////////////////////////////////////////////
+		mCamNode	= new CamNodeListener( mCamera, headNode );
+		headNode->setListener( mCamNode );
+
         atheneNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("atheneSceneNode");
         Entity *Athene = mSceneMgr->createEntity( "athene2", "athene.mesh" );
         Athene->setMaterialName("Examples/Athene/Basic");
@@ -315,13 +401,13 @@ public:
         atheneNode->setPosition(Ogre::Vector3(500,-100,500));
 
 		// Obstacle for collisions detection
-		/*SceneNode* barrelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("barrelSceneNode");
+		SceneNode* barrelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("barrelSceneNode");
         Entity *barrel = mSceneMgr->createEntity( "barrel", "barrel.mesh" );
         barrel->setCastShadows(true);
         barrelNode->attachObject( barrel );
         barrelNode->setPosition(Ogre::Vector3(1300,0,500));
 		barrelNode->scale(40,40,40);
-		mSceneMgr->showBoundingBoxes(true);*/
+		mSceneMgr->showBoundingBoxes(true);
 
 		// Create light node
         SceneNode* lightNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("lightSceneNode");
@@ -414,7 +500,9 @@ public:
 //		mRoot->addFrameListener(new CameraControlSystemDemoFrameListener(mWindow, mCamera, mSceneMgr));
 //		mRoot->addFrameListener( this );
 
-        setupCameraControlSystem();
+		// [20150114] Sean, comment out
+		// CCS is *NOT* what I want
+//        setupCameraControlSystem();
     }
 
     void setupCameraControlSystem()
@@ -625,6 +713,10 @@ public:
         mCameraCS->setCameraTarget(headNode);
 
         mCameraCS->setCurrentCameraMode(camMode1);
+
+		// [20150114] Sean, add for test
+		//	But Can *NOT* know what is different.
+		mCameraCS->setAutoTrackingTarget( true );
     }
 
 	///**
@@ -665,6 +757,7 @@ public:
 
 	void destroyScene()
 	{
+		if( mCameraCS )
 		mCameraCS->deleteAllCameraModes();
 	}
 

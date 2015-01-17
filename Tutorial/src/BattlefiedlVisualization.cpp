@@ -86,8 +86,8 @@ extern "C" {
 //		MultiViewport		app;
 //		OceanTest			app;
 //		TestCamera			app;		// test for chase camera
-//		TestCameraControlSystem	app;	// test for camera control system
-		SkyTest					app;	// tet for SkyX
+		TestCameraControlSystem	app;	// test for camera control system
+//		SkyTest					app;	// tet for SkyX
 
         try 
 		{
