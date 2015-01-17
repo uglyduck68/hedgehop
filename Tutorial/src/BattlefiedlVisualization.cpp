@@ -80,13 +80,13 @@ extern "C" {
 //		BasicTutorial3				app;
 //		ParticleTutorial			app;	// jetengine particle test
 //		SoundTutorial			app;		// ogreoggsound test
-//		AnimationTutorial		app;		// character moving animation test
+		AnimationTutorial		app;		// character moving animation test
 //		BasicTutorial4		app;		// 
 //		BasicTutorial05		app;		// 
 //		MultiViewport		app;
 //		OceanTest			app;
 //		TestCamera			app;		// test for chase camera
-		TestCameraControlSystem	app;	// test for camera control system
+//		TestCameraControlSystem	app;	// test for camera control system
 //		SkyTest					app;	// tet for SkyX
 
         try 

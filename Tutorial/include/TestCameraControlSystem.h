@@ -4,6 +4,20 @@
 *				이 샘플은 카메라 모드에 상관없이 target의 방향(시선)과
 *				상관이 없다.
 *				따라서 chasing mode의 카메라 테스트 로직 추가.
+* @fixme		nodeUpdated 함수내에서 mCam->lookAt() 함수가 동작하지 않음. 거의 항상 원점을 보고 있음.
+*				희안하게도 원점에서 타겟을 보는 경우엔 잘 동작함.
+*				원점에서는 (0, 1000, 1000)을 볼 때 잘 동작함.
+*				하지만 Curr에서 (0, 1000, 1000) 볼 때는 동작하지 않음.
+*				mCam->setPosition(0, 0, 0)일 대만 mCam->lookAt()이 정상동작하는 듯 보임.
+*				mCam->setPosition() 이 원점이 아니면 mCam->lookAt이 항상 원점을 보는 듯.
+*				*** result of tests ***
+*				mCam->setPosition(0, 0, 0)일 대만 mCam->lookAt(CurrPos): Ok
+*				mCam->setPosition(10, 10, 10)일 대만 mCam->lookAt(CurrPos): No
+*				mCam->setPosition(0, 0, 0)일 대만 mCam->lookAt(CurrPos* any scalar): scalar 곱 없는 경우와 같이 동작
+*				mCam->setPosition(CurrPos)일 대만 mCam->lookAt(0, 0, 0): Ok
+*				mCam->setPosition(CurrPos)일 대만 mCam->lookAt(10, 10, 10): lookAt(0,0,0)과 같이 동작
+*				mCam->setPosition(CurrPos)일 대만 mCam->lookAt(10, 10, 10): lookAt(0,0,0)과 같이 동작
+*				mCam->setPosition(CurrPos)일 대만 mCam->lookAt(-100, -100, -100): lookAt(0,0,0)과 같이 동작
 */
 
 #pragma once
@@ -40,8 +54,13 @@ class CamNodeListener : public Ogre::Node::Listener
 public:
 	CamNodeListener(Ogre::Camera* Cam, Ogre::SceneNode* Target) : mCam(Cam), mCamNode(Target), mPrevPos(Ogre::Vector3::ZERO) 
 	{
-		mCam->setPosition( mCamNode->getPosition() );
-		mCam->setOrientation( mCamNode->getOrientation() );
+//		mCamNode	= Target->createChildSceneNode();
+
+		// 이제 카메라는 노드의 위치 및 방향에 영향을 받는다
+//		mCamNode->attachObject( mCam );
+
+		// 카메라 위치 재초기화: 
+		mCam->setPosition( Target->_getDerivedPosition()/*Vector3::ZERO*/ );
 	};
 
 	~CamNodeListener(){};
@@ -51,28 +70,48 @@ public:
 		return mCamNode;
 	}
 
+	Vector3& locateCameraOnTarget(Vector3& pos)
+	{
+		pos.y	+= 100;
+		pos.z	-= 100;
+
+		return pos;
+	}
+	/**
+	* @function		nodeUpdated
+	* @remarks		
+	*	//* 원점에서 표적을 잘 바라본다.
+	*	mCam->setPosition( Ogre::Vector3::ZERO ); mCam->lookAt( nod->_getDerivedPosition() );
+	*	mCam->setPosition( mPrevPos ); mCam->lookAt( CurrPos ); 는 아래와 결과가 같다.
+	*	mCam->setPosition( mPrevPos ); mCam->lookAt( Ogre::Vector3::ZERO ); 
+	*/
 	void nodeUpdated(const Ogre::Node *nod)
 	{ 
 		Ogre::Vector3		CurrPos		= nod->_getDerivedPosition();
 
-		CurrPos.y	+= 100;
-		CurrPos.z	-= 1000;
+//		CurrPos	= Ogre::Vector3::ZERO;	//* lookAt 이 전혀 동작하지 않는다
 
-		mCam->setPosition( CurrPos );
-		
 		if( mPrevPos != Ogre::Vector3::ZERO )
 		{
+			// 카메라마를 타켓의 후방 상단에 위치 시킨다
+			mCam->setPosition( CurrPos );
+		
 			// calc orientation
-			Ogre::Vector3	Orient	= CurrPos - mPrevPos;// - CurrPos;
-			Orient.normalise();
+			Ogre::Vector3	OrientToCurrPos	= CurrPos - mPrevPos;
+			OrientToCurrPos.normalise();
 
-			Ogre::Quaternion quat = mPrevPos.getRotationTo(Orient);
+//			Ogre::Quaternion quat = mPrevPos.getRotationTo(OrientToCurrPos);
 //			mCam->rotate(quat);
-//			mCam->setOrientation(quat);
-			mCam->lookAt( CurrPos );
+			Ogre::Quaternion	q(0, 0, 0, 1);//	= Vector3(Vector3::UNIT_Z).getRotationTo( -Vector3::UNIT_Z );
+//			mCam->setOrientation(q /** mCam->getOrientation()*/);
+
+			// 카메라가 표적의 이동 방향을 향하도록 설정한다
+			mCam->lookAt( -100, -100, -100 );	//* This *NOT* works!!!
+
 		}
 
 		mPrevPos	= CurrPos;
+
 	};
 protected:
 	Ogre::Real			mTimeSinceLastFrame;
@@ -377,6 +416,13 @@ public:
 
 		/////////
 		// testing movement of camera
+		/////////
+
+		/////////
+		// child node를 만들고 여기에 카메라를 추가하는 방법은
+		// 프레임 단위의 움직임 시 타겟의 움직임에 따라 카메라를
+		// 조절할 수 없어 내가 원하는 chase camera를 만들 수 없다.
+		// ->frameStarted 함수에서 별도로 호출을 해주어야 함
 		/////////
 		//headNode->createChildSceneNode()->attachObject(mCamera);
 

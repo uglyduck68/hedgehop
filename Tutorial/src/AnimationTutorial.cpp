@@ -8,10 +8,36 @@
 using namespace	Ogre;
 using namespace	OgreOggSound;
 
+/**
+* @function		getCameraPosition
+* @param		target
+* @param		back that MBR과 노드의 방향을 고려한 상단 후방 중앙점
+* @param		front that MBR과 노드의 방향을 고려한 상단 전방 중앙점
+* @remarks		*NOT* yet implemented.
+*/
+int getCameraPosition(const Ogre::SceneNode* target, Vector3& back, Vector3& front)
+{
+	AxisAlignedBox	bb	= target->_getWorldAABB();
+
+	return 1;
+}
+
+
+void CamNodeListener2::nodeUpdated(const Ogre::Node *nod, const Ogre::FrameEvent& evt)
+{ 
+	Ogre::Vector3		CurrPos		= nod->_getDerivedPosition();
+
+	CurrPos.y	+= 100;
+	CurrPos.z	-= 100;
+
+	mCam->setPosition( CurrPos );
+};
+
 AnimationTutorial::AnimationTutorial(void) :
 	m_pSceneNode(NULL), mDirection(Vector3::ZERO), 
 	m_CamMode(CAM_MANUAL), m_pCamNode(NULL),
 	m_ElapsedTime(TIME_INTERVAL),
+	m_CamListener(NULL),
 	m_Trajectory(NULL)		// trajetory of fighter
 {
 }
@@ -96,16 +122,34 @@ void AnimationTutorial::createScene()
 	// from here create targets
 	//////////////////////////////////////////////////////////////////////////////
 	createSceneNode("B787.mesh");
-	GetSceneNode()->setPosition( Vector3(0, 0, 500) );
+	GetSceneNode()->setPosition( Vector3(0, 100, 500) );
 
 	//////
-	// add camera to scene node for chase camera
+	// add camera to scene node for chase camera. *NOT* used.
 	//////
 	m_pCamNode	= GetSceneNode()->createChildSceneNode();
 	//m_pCamNode->attachObject( mCamera );
 
 	if( mCamera->getParentSceneNode() )
 		mCamera->getParentSceneNode()->attachObject(mSoundManager->getListener());
+
+	///////////////////////////////////////////////////////////////////////
+	// Sean, register node listener to change the position of camera whenever node move
+	///////////////////////////////////////////////////////////////////////
+	m_CamListener	= new CamNodeListener2( mCamera, GetSceneNode() );
+
+	//* change to call nodeUpdated in frameStarted
+//	GetSceneNode()->setListener( m_CamListener );
+
+	/////////
+	// set auto tracking using cameraman
+	/////////
+	mCameraMan->setStyle(OgreBites::CS_MANUAL);					// we will be controlling the camera ourselves, so disable the camera man
+    mCamera->setAutoTracking(true, GetSceneNode());				// make the camera face the head
+	Vector3		p	= GetSceneNode()->_getDerivedPosition();	// get the world position of node
+				p.y	+= 100;
+				p.z	-= 100;
+	mCamera->setPosition( p );
 
 	//////////////////////////////////////////////////////////////////////////////
 	// create 3D circle
@@ -257,7 +301,10 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 					m_Trajectory->update();
 				}
 
-				Vector3 src = GetSceneNode()->getOrientation() * Vector3::UNIT_Z;
+				///////////////////////////////////////////////////////////////
+				// [20150116] Sean, B787 mesh가 현재 -Z 방향이다.
+				///////////////////////////////////////////////////////////////
+				Vector3 src = GetSceneNode()->getOrientation() * -Vector3::UNIT_Z;
 
 				// if angle of two vector is 180, then dot product is -1.
 				if(1.0f + src.dotProduct(mDirection) < 0.0001f)
@@ -282,6 +329,15 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 			GetSceneNode()->translate(mDirection * move);
 		}
 	}
+
+	Vector3		offset(0, 0, -100);
+
+	/////////
+	// call camera listener to move camera before node to move
+	// 즉, chase camera가 아니다.
+	/////////
+	if( m_CamListener )
+		m_CamListener->nodeUpdated( GetSceneNode(), evt );
 
 	m_ElapsedTime	-= evt.timeSinceLastFrame;
 

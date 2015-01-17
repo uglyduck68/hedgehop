@@ -39,6 +39,57 @@ using namespace	std;
 
 #define		TIME_INTERVAL		(1.0)		// 1 second
 
+class CamNodeListener2 : public Ogre::Node::Listener
+{
+public:
+	CamNodeListener2(Ogre::Camera* Cam, Ogre::SceneNode* Target) : mCam(Cam), mCamNode(Target), mPrevPos(Ogre::Vector3::ZERO) 
+	{
+//		mCamNode	= Target->createChildSceneNode();
+
+		// 이제 카메라는 노드의 위치 및 방향에 영향을 받는다
+//		mCamNode->attachObject( mCam );
+
+		// 카메라 위치 재초기화: 
+		mCam->setPosition( Target->_getDerivedPosition()/*Vector3::ZERO*/ );
+		mCam->setOrientation( Target->getOrientation() );
+	};
+
+	~CamNodeListener2(){};
+
+	SceneNode* GetSceneNode()
+	{
+		return mCamNode;
+	}
+
+	Vector3& locateCameraOnTarget(Vector3& pos)
+	{
+		pos.y	+= 100;
+		pos.z	-= 100;
+
+		return pos;
+	}
+	/**
+	* @function		nodeUpdated
+	* @remarks		
+	*	//* 원점에서 표적을 잘 바라본다.
+	*	mCam->setPosition( Ogre::Vector3::ZERO ); mCam->lookAt( nod->_getDerivedPosition() );
+	*	mCam->setPosition( mPrevPos ); mCam->lookAt( CurrPos ); 는 아래와 결과가 같다.
+	*	mCam->setPosition( mPrevPos ); mCam->lookAt( Ogre::Vector3::ZERO ); 
+	*/
+	void nodeUpdated(const Ogre::Node *nod, const Ogre::FrameEvent& evt);
+
+protected:
+	Ogre::Real			mTimeSinceLastFrame;
+
+	// the previous position of target node that is used to
+	// calculate the orientation of target
+	// target orientation is directional vector from previous to current position
+	Ogre::Vector3		mPrevPos;
+	Ogre::SceneNode*	mCamNode;
+	Ogre::Camera*		mCam;
+};
+
+
 class AnimationTutorial :
 	public BaseApplication
 {
@@ -87,7 +138,8 @@ protected:
 
 	// 두 지점 사이의 이동 시 m_ElapseTime 시간내에 이루어져야 한다.
 	Real					m_ElapsedTime;
-
+		
+	CamNodeListener2*		m_CamListener;
 protected:
 
 	int		createSceneNode(string MeshName)
