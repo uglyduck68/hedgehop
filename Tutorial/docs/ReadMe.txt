@@ -58,6 +58,8 @@ Alternatively, leave a note in the Ogre Forum: http://www.ogre3d.org/forums/inde
 - Big Terrain 렌더링 문제. 정확하게 col 지역을 올려 본 적이 없음.
 - DDS 수신 후 메시지와 렌더링 관련된(animation, message queue, etc) 구현.
 - Camera Control System에 대한 학습 및 적용
+	[20150118] cameraman(CS_MANUAL)을 이용해서 tracking camera 기능 확인.
+	실제 target 앞의 dummy target을 바라 보도록 dummy target을 생성해야 함.
 - SkyX에 대한 학습 및 적용
 	낮, 밤, 흐림, 맑음에 대한 설정 대충 완료.
 - 전반적인 architecture 수립

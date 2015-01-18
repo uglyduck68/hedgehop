@@ -74,7 +74,7 @@ public:
 	*	mCam->setPosition( mPrevPos ); mCam->lookAt( CurrPos ); 는 아래와 결과가 같다.
 	*	mCam->setPosition( mPrevPos ); mCam->lookAt( Ogre::Vector3::ZERO ); 
 	*/
-	void nodeUpdated(const Ogre::Node *nod, const Ogre::FrameEvent& evt);
+	void nodeUpdated(const Ogre::SceneNode *nod, const Ogre::FrameEvent& evt);
 
 protected:
 	Ogre::Real			mTimeSinceLastFrame;

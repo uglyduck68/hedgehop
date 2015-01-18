@@ -18,19 +18,49 @@ using namespace	OgreOggSound;
 int getCameraPosition(const Ogre::SceneNode* target, Vector3& back, Vector3& front)
 {
 	AxisAlignedBox	bb	= target->_getWorldAABB();
+	const Vector3			min	= bb.getMinimum();
+	const Vector3			max	= bb.getMaximum();
+	Vector3					a, b;
 
+	// B787.mesh는 -Z 방향임
+//	if( target->getOrientation() == Quaternion(Degree(180), Vector3::UNIT_Y) )
+	{
+		// -Z축을 보고 있는 경우, 후방 중앙에서 살짝 높고, 뒤에 위치하도록 조정
+		a.x	= min.x; a.y = max.y + 10; a.z = max.z + 10;
+		b.x = max.x; b.y = max.y; b.z = max.z;
+	}
+	//else if ( target->getOrientation() == Quaternion(Degree(0), Vector3::UNIT_Y))
+	//{
+	//	// +Z축을 보고 있는 경우
+	//	a.x	= min.x; a.y = max.y; a.z = min.z;
+	//	b.x = max.x; b.y = max.y; b.z = min.z;
+	//}
+
+	Vector3	c	= a	+ b;
+	c	*= 0.5;
+
+	back	= c;
+#if	0	
+	// check the coordinate of AABB is changed when scene node rotates. 
+	// the coordinate is changed.
+	Ogre::LogManager::getSingleton().logMessage( "min coord: " + StringConverter::toString(min));
+	Ogre::LogManager::getSingleton().logMessage( "max coord: " + StringConverter::toString(max));
+#endif
 	return 1;
 }
 
 
-void CamNodeListener2::nodeUpdated(const Ogre::Node *nod, const Ogre::FrameEvent& evt)
+void CamNodeListener2::nodeUpdated(const Ogre::SceneNode *nod, const Ogre::FrameEvent& evt)
 { 
 	Ogre::Vector3		CurrPos		= nod->_getDerivedPosition();
+	Ogre::Vector3		pos;
 
 	CurrPos.y	+= 100;
 	CurrPos.z	-= 100;
 
-	mCam->setPosition( CurrPos );
+	getCameraPosition( nod, pos, CurrPos);
+
+	mCam->setPosition( pos );
 };
 
 AnimationTutorial::AnimationTutorial(void) :
@@ -146,10 +176,10 @@ void AnimationTutorial::createScene()
 	/////////
 	mCameraMan->setStyle(OgreBites::CS_MANUAL);					// we will be controlling the camera ourselves, so disable the camera man
     mCamera->setAutoTracking(true, GetSceneNode());				// make the camera face the head
-	Vector3		p	= GetSceneNode()->_getDerivedPosition();	// get the world position of node
-				p.y	+= 100;
-				p.z	-= 100;
-	mCamera->setPosition( p );
+//	Vector3		p	= GetSceneNode()->_getDerivedPosition();	// get the world position of node
+//				p.y	+= 100;
+//				p.z	-= 100;
+//	mCamera->setPosition( p );
 
 	//////////////////////////////////////////////////////////////////////////////
 	// create 3D circle
