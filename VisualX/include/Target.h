@@ -1,7 +1,7 @@
 /**
- * @file    Target.h
+ * @file		Target.h
  *
- * This file is base class of ship, fighter, missile and so on.
+ * @remarks		모든 탈 것(군함, 전투기, 미사일 등등)의 base class
  */
 
 #pragma once
@@ -21,6 +21,7 @@ protected:
 	SceneNode*				m_pSceneNode;	// scene node
 
 public:
+	CTarget() {}	//* default ctor for class inheritance
 	CTarget(Ogre::SceneManager* pSceneMgr, int nID, string mesh);
 	~CTarget(void);
 

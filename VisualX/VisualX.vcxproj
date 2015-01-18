@@ -116,14 +116,28 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\AGM_84.h" />
+    <ClInclude Include="include\AirVessel.h" />
+    <ClInclude Include="include\B787_3.h" />
     <ClInclude Include="include\BaseApplication.h" />
+    <ClInclude Include="include\CH_53E.h" />
     <ClInclude Include="include\CollisionTools.h" />
+    <ClInclude Include="include\CombatBoat90.h" />
+    <ClInclude Include="include\Decoy.h" />
     <ClInclude Include="include\Fighter.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\InputController.h" />
+    <ClInclude Include="include\J_20.h" />
     <ClInclude Include="include\MaterialControls.h" />
+    <ClInclude Include="include\MegaYachtSeaKing.h" />
+    <ClInclude Include="include\MEKO200.h" />
+    <ClInclude Include="include\OffshorePatrolVessel.h" />
+    <ClInclude Include="include\OPV80.h" />
+    <ClInclude Include="include\SeaStar.h" />
+    <ClInclude Include="include\Ship.h" />
     <ClInclude Include="include\Target.h" />
     <ClInclude Include="include\Terrain.h" />
+    <ClInclude Include="include\TugBoat.h" />
     <ClInclude Include="include\VisualX.h" />
     <ClInclude Include="res\Resource.h" />
     <ClInclude Include="src\Debug.h" />
@@ -132,23 +146,36 @@
     <ClInclude Include="src\StdAfx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AGM_84.cpp" />
+    <ClCompile Include="src\AirVessel.cpp" />
+    <ClCompile Include="src\B787_3.cpp" />
     <ClCompile Include="src\BaseApplication.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\CH_53E.cpp" />
     <ClCompile Include="src\CollisionTools.cpp" />
+    <ClCompile Include="src\CombatBoat90.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Debug.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Decoy.cpp" />
     <ClCompile Include="src\Fighter.cpp" />
     <ClCompile Include="src\InputController.cpp" />
+    <ClCompile Include="src\J_20.cpp" />
     <ClCompile Include="src\MaterialControls.cpp" />
+    <ClCompile Include="src\MegaYachtSeaKing.cpp" />
+    <ClCompile Include="src\MEKO200.cpp" />
     <ClCompile Include="src\Ocean.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\OffshorePatrolVessel.cpp" />
+    <ClCompile Include="src\OPV80.cpp" />
+    <ClCompile Include="src\SeaStar.cpp" />
+    <ClCompile Include="src\Ship.cpp" />
     <ClCompile Include="src\Sky.cpp" />
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -156,6 +183,7 @@
     </ClCompile>
     <ClCompile Include="src\Target.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
+    <ClCompile Include="src\TugBoat.cpp" />
     <ClCompile Include="src\VisualX.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>

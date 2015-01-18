@@ -1,6 +1,8 @@
 /**
-* @file		Fighter.h
-* This file is interface for fighter aircraft.
+* @file			Fighter.h
+* @remarks		This file is interface for fighter aircraft.
+* @FIXME		fighter를 위한 클래스 였으나, 설계 개념상 CAirVessel 로
+*				옮겨져야 함.
 */
 #pragma once
 

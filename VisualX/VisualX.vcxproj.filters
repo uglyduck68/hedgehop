@@ -37,7 +37,51 @@
     <ClCompile Include="src\StdAfx.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\MaterialControls.cpp" />
+    <ClCompile Include="src\Ship.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MaterialControls.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AGM_84.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AirVessel.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\B787_3.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CH_53E.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CombatBoat90.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Decoy.cpp">
+      <Filter>Include</Filter>
+    </ClCompile>
+    <ClCompile Include="src\J_20.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MegaYachtSeaKing.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OffshorePatrolVessel.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MEKO200.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OPV80.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SeaStar.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TugBoat.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BaseApplication.h">
@@ -79,7 +123,51 @@
     <ClInclude Include="include\VisualX.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\MaterialControls.h" />
+    <ClInclude Include="include\Ship.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MaterialControls.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AGM_84.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AirVessel.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\B787_3.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CH_53E.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CombatBoat90.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Decoy.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SeaStar.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\J_20.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MegaYachtSeaKing.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MEKO200.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OffshorePatrolVessel.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OPV80.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TugBoat.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\ReadMe.txt" />
