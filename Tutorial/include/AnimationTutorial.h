@@ -13,9 +13,7 @@
  *	[20141207] try to add chasing camera test codes to check the
  *		functionality of mCameraMan->setTarget() API that is different with
  *		chasing camera. -> is replaced with CameraControlSystem.
- * @Fixme
- *	- 현재의 항공기 궤적은 사전에 만들어 지므로 포탄의 궤적으로 사용되지 못 함.
- *		따라서 동적으로 생성 가능한 궤적 테스트가 필요함.
+ *	[20150116] CameraMan 이용하여 tracking camera 샘플 완성.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
