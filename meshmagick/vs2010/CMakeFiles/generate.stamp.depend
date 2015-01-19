@@ -1,0 +1,45 @@
+# CMake generation dependency list for this directory.
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/CMakeLists.txt
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010/CMakeFiles/3.0.2/CMakeSystem.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010/CMakeFiles/3.0.2/CMakeCCompiler.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010/CMakeFiles/3.0.2/CMakeCXXCompiler.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeSystemSpecificInformation.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeGenericSystem.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/Platform/Windows.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/Platform/WindowsPaths.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/Platform/Windows-MSVC.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010/CMakeFiles/3.0.2/CMakeRCCompiler.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeRCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeCXXInformation.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/Platform/Windows-MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/Platform/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FeatureSummary.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeParseArguments.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FindPkgConfig.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeParseArguments.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/cmake/FindOGRE.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/cmake/FindPkgMacros.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/cmake/PreprocessorUtils.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FindPkgConfig.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeParseArguments.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/cmake/FindTootle.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/cmake/FindPkgMacros.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/cmake/FindDirectX.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/cmake/FindPkgMacros.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FindPkgConfig.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CMakeParseArguments.cmake
+D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/meshmagick.pc.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CPack.cmake
+C:/Program Files/CMake/share/cmake-3.0/Modules/CPackComponent.cmake
+C:/Program Files/CMake/share/cmake-3.0/Templates/CPackConfig.cmake.in
+C:/Program Files/CMake/share/cmake-3.0/Templates/CPackConfig.cmake.in
