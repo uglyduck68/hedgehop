@@ -49,6 +49,9 @@ namespace meshmagick
         void destroyTool(Tool*);
 
         void printToolList(std::ostream& out) const;
+
+		// [20150119] Sean, add
+       void printInfo(std::ostream& out, Ogre::String meshName) const;
         void printToolHelp(const Ogre::String& toolName, std::ostream& out) const;
 
         void registerToolFactory(ToolFactory* factory);

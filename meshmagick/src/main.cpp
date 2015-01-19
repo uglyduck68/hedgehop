@@ -191,6 +191,7 @@ int main(int argc, const char** argv)
     globalOptionDefs.insert(OptionDefinition("version"));
     globalOptionDefs.insert(OptionDefinition("quiet"));
     globalOptionDefs.insert(OptionDefinition("verbose"));
+    globalOptionDefs.insert(OptionDefinition("info"));	//* added by Sean
 
 	OptionList globalOptions;
 	try
@@ -257,6 +258,12 @@ int main(int argc, const char** argv)
             manager.printToolList(std::cout);
             return 0;
         }
+		// [20150119] Sean, add
+		//else if (it->first == "info")
+		//{
+		//	manager.printInfo(std::cout, cmdLine.toolName);
+		//	return 0;
+		//}
     }
 
     if (cmdLine.toolName.empty())

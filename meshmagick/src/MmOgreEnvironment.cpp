@@ -86,7 +86,9 @@ namespace meshmagick
 			mMath = new Math();
 			mMeshMgr = MeshManager::getSingletonPtr();
 			mMeshMgr->setBoundsPaddingFactor(0.0f);
-#if OGRE_VERSION_MAJOR > 1 || (OGRE_VERSION_MAJOR == 1 && OGRE_VERSION_MINOR >= 7)
+#if OGRE_VERSION_MAJOR > 1 || (OGRE_VERSION_MAJOR == 1 && OGRE_VERSION_MINOR >= 9)
+			mLodStrategyMgr = LodStrategyManager::getSingletonPtr();
+#elif OGRE_VERSION_MAJOR > 1 || (OGRE_VERSION_MAJOR == 1 && OGRE_VERSION_MINOR >= 7)
 			mLodStrategyMgr = new LodStrategyManager();
 #endif
 			mMaterialMgr = MaterialManager::getSingletonPtr();

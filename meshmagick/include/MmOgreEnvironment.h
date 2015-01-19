@@ -64,6 +64,7 @@ namespace meshmagick
         StatefulSkeletonSerializer* getSkeletonSerializer() const;
 		Ogre::Log* getLog() const;
 		bool isStandalone() const;
+		Ogre::Root* getRoot() const { return mRoot;}
 
     private:
 		Ogre::Root* mRoot;

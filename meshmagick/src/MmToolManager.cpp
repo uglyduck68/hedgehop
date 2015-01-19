@@ -23,8 +23,13 @@ THE SOFTWARE.
 
 #include "MmToolManager.h"
 #include "MmToolFactory.h"
+#include "MmOgreEnvironment.h"
 
 #include <stdexcept>
+#include <OgreLogManager.h>
+#include <OgreRoot.h>
+#include <OgreEntity.h>
+#include <OgreSceneManager.h>
 
 namespace meshmagick
 {
@@ -66,6 +71,33 @@ namespace meshmagick
         {
             out << (*it).first << " - "  << it->second->getToolDescription() << std::endl;
         }
+    }
+
+	// [20150119] Sean, add
+    void ToolManager::printInfo(std::ostream& out, Ogre::String meshName) const
+    {
+		Ogre::Root*                 mRoot		= NULL;
+		Ogre::SceneManager*         mSceneMgr	= NULL;
+		Ogre::Entity*				mEntity		= NULL;
+
+		try
+		{
+			mRoot = OgreEnvironment::getSingletonPtr()->getRoot();	// default ctor
+			mSceneMgr	= mRoot->createSceneManager(Ogre::ST_GENERIC);
+
+			mEntity		= mSceneMgr->createEntity(meshName);
+			mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(mEntity);
+		}
+		catch (std::exception& e)
+		{
+			std::cout << "creating Root fails:" << std::endl;
+			std::cout << e.what() << std::endl;
+		}
+		catch (...)
+		{
+			std::cout << "Exception: unknown" << std::endl;
+		}
+
     }
 
     void ToolManager::printToolHelp(const Ogre::String& toolName, std::ostream& out) const
