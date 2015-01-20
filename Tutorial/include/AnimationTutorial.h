@@ -97,6 +97,7 @@ public:
 protected:
 	SceneNode*				m_pSceneNode;	// scene node
 	SceneNode*				m_pCamNode;		// camera node for chase camera
+	CTarget*				m_pTarget;
 
 	std::vector<CTarget*>	m_vecTarget;
 
@@ -144,9 +145,9 @@ protected:
 	{
 		// create target entity
 
-		CTarget*	pTemp	= new CTarget( mSceneMgr, m_vecTarget.size(), MeshName );
+		m_pTarget	= new CTarget( mSceneMgr, m_vecTarget.size(), MeshName );
 
-		m_vecTarget.push_back( pTemp );
+		m_vecTarget.push_back( m_pTarget );
 
 		return 1;
 	}
@@ -192,61 +193,41 @@ protected:
 
 	bool keyPressed(const OIS::KeyEvent &arg)
 	{
-		/////////
-		// set auto tracking.
-		// In auto tracking mode mouse control is disabled.
-		/////////
-		if( arg.key	== OIS::KC_A )
-		{
-			if( m_CamMode != CAM_AUTOTRACKING )
-			{
-				//////
-				// auto tracking 기능은 mCamera 수준에서 이루어 지며,
-				// 일단 auto tracking 이 시작되면 CS_ORBIT인 경우는
-				// 마우스 제어가 눈으로 확인되나,
-				// CS_FREELOOK인 경우는 거의 제어가 안되는 것처럼 보인다.
-				//////
-				mCameraMan->setTarget( GetSceneNode() );
+		Ogre::Real	VAL	= 1;
 
-				m_CamMode	= CAM_AUTOTRACKING;
-			}
-			else
-			{
-			}
+		///////////////////////////////////////////////////////////////////////
+		// +,- 키를 이용하여 viewpoint node 위치를 조절함으로서 
+		// viewpoint node를 바라 보도록 설정된 tracking camera의 viewpoint length를
+		// 조절한다.
+		///////////////////////////////////////////////////////////////////////
+		if( arg.key	== OIS::KC_ADD )
+		{
+			// + key on number pad
+			m_pTarget->GetViewpointNode()->translate (0, 0, -VAL);
 		}
-		else if ( arg.key == OIS::KC_A )	// KC_C is used in BaseApplication
+		else if (arg.key == OIS::KC_SUBTRACT)
 		{
-			if( m_CamMode == CAM_AUTOTRACKING )
-			{
-				// cancel auto tracking
-				mCameraMan->setTarget( NULL );
-			}
-
-			m_CamMode	= CAM_CHASING;
-			
-			SceneNode*	pSN	= GetSceneNode();
-
-//			mCamera->setPosition( pSN->_getDerivedPosition() + Vector3(0, 50, -100) );
-//			mCamera->lookAt( pSN->_getDerivedPosition() + Vector3(0, 0, 100) );
-
-
-			// move camera befind the target
+			// - key on number pad
+			m_pTarget->GetViewpointNode()->translate (0, 0, VAL);
 		}
-		else if (arg.key == OIS::KC_M )
+		else if (arg.key == OIS::KC_UP)
 		{
-			if( m_CamMode == CAM_AUTOTRACKING )
-			{
-				// cancel auto tracking
-				mCameraMan->setTarget( NULL );
-			}
-
-			m_CamMode	= CAM_MANUAL;
+			m_pTarget->GetCamNode()->translate(0, VAL, 0);
+		}
+		else if (arg.key == OIS::KC_DOWN)
+		{
+			m_pTarget->GetCamNode()->translate(0, -VAL, 0);
 		}
 
 		return BaseApplication::keyPressed(arg);
 	}
 
-    void destroyScene(void);
+	bool keyReleased(const OIS::KeyEvent &arg)
+	{
+		return BaseApplication::keyPressed(arg);
+	}
+
+	void destroyScene(void);
 
 	/**
 	*@function		initCameraAnimation

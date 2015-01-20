@@ -52,15 +52,14 @@ int getCameraPosition(const Ogre::SceneNode* target, Vector3& back, Vector3& fro
 
 void CamNodeListener2::nodeUpdated(const Ogre::SceneNode *nod, const Ogre::FrameEvent& evt)
 { 
+
 	Ogre::Vector3		CurrPos		= nod->_getDerivedPosition();
 	Ogre::Vector3		pos;
 
 	CurrPos.y	+= 100;
 	CurrPos.z	-= 100;
 
-	getCameraPosition( nod, pos, CurrPos);
-
-	mCam->setPosition( pos );
+//	mCam->setPosition( m_pTarget->GetSceneNode()->getCameraPosition() );
 };
 
 AnimationTutorial::AnimationTutorial(void) :
@@ -175,11 +174,8 @@ void AnimationTutorial::createScene()
 	// set auto tracking using cameraman
 	/////////
 	mCameraMan->setStyle(OgreBites::CS_MANUAL);					// we will be controlling the camera ourselves, so disable the camera man
-    mCamera->setAutoTracking(true, GetSceneNode());				// make the camera face the head
-//	Vector3		p	= GetSceneNode()->_getDerivedPosition();	// get the world position of node
-//				p.y	+= 100;
-//				p.z	-= 100;
-//	mCamera->setPosition( p );
+    mCamera->setAutoTracking(true, m_pTarget->GetViewpointNode());				// make the camera face the head
+	m_pTarget->setTrackingCameraPosition (mCamera);
 
 	//////////////////////////////////////////////////////////////////////////////
 	// create 3D circle
@@ -263,6 +259,10 @@ void AnimationTutorial::createScene()
 	//////////////////////////////////////////////////////////////////////////////
 	createDebugOverlay();
 
+	// for debugging
+	mSceneMgr->showBoundingBoxes(true);
+
+	printMsgToDebugOverlay( Ogre::String("press + or -/up or down key to control viewpoint of tracking camera/camera itself"));
 }
 
 /**
@@ -347,9 +347,6 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 					GetSceneNode()->rotate(quat);
 				}
 			}
-
-			// print amount time taken to move between two way points
-			printMsgToDebugOverlay( "waypoint distance: " + StringConverter::toString(mDistance) + ", elapsed time is " + StringConverter::toString(TIME_INTERVAL - m_ElapsedTime));
 	
 			// In the future move this into nextLocation
 			m_ElapsedTime	= TIME_INTERVAL;
@@ -366,12 +363,18 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 	// call camera listener to move camera before node to move
 	// 즉, chase camera가 아니다.
 	/////////
-	if( m_CamListener )
-		m_CamListener->nodeUpdated( GetSceneNode(), evt );
+//	if( m_CamListener )
+//		m_CamListener->nodeUpdated( GetSceneNode(), evt );
+	
+	m_pTarget->setTrackingCameraPosition(mCamera);
 
 	m_ElapsedTime	-= evt.timeSinceLastFrame;
 
-
+#if	0
+	// print amount time taken to move between two way points
+	Ogre::LogManager::getSingleton().logMessage( "scenode pos: " + StringConverter::toString(m_pTarget->GetSceneNode()->_getDerivedPosition()) + 
+		" viewnode: " + StringConverter::toString(m_pTarget->GetViewpointNode()->_getDerivedPosition()));
+#endif
 	return true;
 }
 

@@ -4,7 +4,12 @@
 const char*	TARGET_NAME_PREFIX	= "Target_";
 
 CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
-	mSceneMgr(pSceneMgr)
+	mSceneMgr(pSceneMgr),
+	m_pViewpointNode(NULL),
+	//* viewpoint of tracking camera
+	//* B787은 -z 방향을 바라 복 있기 때문에 viewpoint로 -z 값을 적용한다.
+	//* viewpoint 동작 유무를 확인하기 위하여 -z 값으로 -50 적용한다.
+	VP_DEFAULT_POSITION(0, 0, -50)	
 {
 	char	temp[20];
 
@@ -36,7 +41,7 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
     ps->fastForward(5);   // fast-forward the rain so it looks more natural
 
 	// change -y-axis direction to -z-axis like fighter's jet engine flare
-	ps->getEmitter(0)->setDirection( Vector3(0, 0, -1) );
+	ps->getEmitter(0)->setDirection( Vector3(0, 0, +1) );
 
 	// attache particle to scene node
 	GetSceneNode()->attachObject(ps);
@@ -49,6 +54,25 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 	// start to play sound
 	if( m_pSound )
 		m_pSound->play();
+
+	///////////////////////////////////////////////////////////////////////////
+	// create viewpoint node for tracking camera
+	///////////////////////////////////////////////////////////////////////////
+	if (m_pSceneNode)
+	{
+		m_pViewpointNode	= m_pSceneNode->createChildSceneNode(m_strName + "_viewpoint", VP_DEFAULT_POSITION);
+
+		// Method 2 to handle viewpoint of camera
+		// 카메라를 좀 더 편하게 핸들링하기 위하여 카메라를 담을 노드를 생성한다.
+		// @FIXME
+		// - 이 시점에서 getCameraPosition 함수를 통하여 카메라의 위치를 구할 수 없음.
+		// 아마도 실제 scene node 생성이 안되서 그 크기가 정해지지 않음.
+		// 따라서 MBR을 이용하지 않고, 강제로 100 높이에 카메라를 위치시킬 수 있도록한다.
+		Vector3	pos(0, 100, 0);
+
+		m_pCamHolder		= m_pSceneNode->createChildSceneNode(m_strName + "_camHolder", pos);
+	}
+
 }
 
 
