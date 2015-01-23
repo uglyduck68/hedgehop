@@ -9,7 +9,8 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 	//* viewpoint of tracking camera
 	//* B787은 -z 방향을 바라 복 있기 때문에 viewpoint로 -z 값을 적용한다.
 	//* viewpoint 동작 유무를 확인하기 위하여 -z 값으로 -50 적용한다.
-	VP_DEFAULT_POSITION(0, 0, -50)	
+	VP_DEFAULT_POSITION(0, 0, -50),
+	m_eftJetEngine(NULL), m_eftSmoke(NULL)
 {
 	char	temp[20];
 
@@ -35,16 +36,10 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 	///////////////////////////////////////////////////////////////////////////
 	// create my own resources for particle system
 	///////////////////////////////////////////////////////////////////////////
-	ParticleSystem* ps;
-
-	ps = mSceneMgr->createParticleSystem("JenEngine1", "Examples/JetEngine1");  // create a rainstorm
-    ps->fastForward(5);   // fast-forward the rain so it looks more natural
-
-	// change -y-axis direction to -z-axis like fighter's jet engine flare
-	ps->getEmitter(0)->setDirection( Vector3(0, 0, +1) );
+	createEffects();
 
 	// attache particle to scene node
-	GetSceneNode()->attachObject(ps);
+	SetEffect(EFT_JETENGINE);
 
 	///////////////////////////////////////////////////////////////////////////
 	// create my own sounds

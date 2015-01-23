@@ -170,12 +170,12 @@ void AnimationTutorial::createScene()
 	//* change to call nodeUpdated in frameStarted
 //	GetSceneNode()->setListener( m_CamListener );
 
-	/////////
+	///////////////////////////////////////////////////////////////////////////
 	// set auto tracking using cameraman
-	/////////
-	mCameraMan->setStyle(OgreBites::CS_MANUAL);					// we will be controlling the camera ourselves, so disable the camera man
-    mCamera->setAutoTracking(true, m_pTarget->GetViewpointNode());				// make the camera face the head
-	m_pTarget->setTrackingCameraPosition (mCamera);
+	///////////////////////////////////////////////////////////////////////////
+	SetChasingMode(false);
+
+	m_pTarget->SetEffect (CTarget::EFT_ALL);
 
 	//////////////////////////////////////////////////////////////////////////////
 	// create 3D circle
@@ -262,7 +262,7 @@ void AnimationTutorial::createScene()
 	// for debugging
 	mSceneMgr->showBoundingBoxes(true);
 
-	printMsgToDebugOverlay( Ogre::String("press + or -/up or down key to control viewpoint of tracking camera/camera itself"));
+	printMsgToDebugOverlay( Ogre::String("press + or -/up or down key to control viewpoint of tracking camera/camera itself\npress M to change camera mode"));
 }
 
 /**
@@ -366,7 +366,8 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 //	if( m_CamListener )
 //		m_CamListener->nodeUpdated( GetSceneNode(), evt );
 	
-	m_pTarget->setTrackingCameraPosition(mCamera);
+	if ( m_CamMode == CAM_CHASING)
+		m_pTarget->setTrackingCameraPosition(mCamera);
 
 	m_ElapsedTime	-= evt.timeSinceLastFrame;
 

@@ -131,7 +131,11 @@ protected:
 	Trajectory*		m_Trajectory;
 
 
-	typedef enum { CAM_AUTOTRACKING, CAM_CHASING, CAM_MANUAL } CAM_MODE;
+	typedef enum { 
+		CAM_AUTOTRACKING,	// *NOT* used
+		CAM_CHASING,		// target tracking camera mode
+		CAM_MANUAL			// free run mode (방향키와 마우스로 viewpoint 제어
+	} CAM_MODE;
 
 	CAM_MODE				m_CamMode;
 
@@ -140,6 +144,25 @@ protected:
 		
 	CamNodeListener2*		m_CamListener;
 protected:
+
+	void	SetChasingMode(bool bChaseMode)
+	{
+		if (bChaseMode == true)
+		{
+			mCameraMan->setStyle(OgreBites::CS_MANUAL);					// we will be controlling the camera ourselves, so disable the camera man
+			mCamera->setAutoTracking(true, m_pTarget->GetViewpointNode());				// make the camera face the head
+			m_pTarget->setTrackingCameraPosition (mCamera);
+		
+			m_CamMode	= CAM_CHASING;
+		}
+		else
+		{
+			mCameraMan->setStyle(OgreBites::CS_FREELOOK);					// we will be controlling the camera ourselves, so disable the camera man
+			mCamera->setAutoTracking(false, NULL);				// make the camera face the head
+
+			m_CamMode	= CAM_MANUAL;
+		}
+	}
 
 	int		createSceneNode(string MeshName)
 	{
@@ -217,6 +240,21 @@ protected:
 		else if (arg.key == OIS::KC_DOWN)
 		{
 			m_pTarget->GetCamNode()->translate(0, -VAL, 0);
+		}
+		else if (arg.key == OIS::KC_M)
+		{
+			// toggle camera mode
+			if (m_CamMode == CAM_CHASING)
+			{
+				SetChasingMode(false);
+
+				setupCameraPosition();
+			}
+			else if (m_CamMode == CAM_MANUAL)
+			{
+				SetChasingMode(true);
+			}
+
 		}
 
 		return BaseApplication::keyPressed(arg);

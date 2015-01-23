@@ -32,6 +32,17 @@ protected:
 	OgreOggISound*			m_pSound;
 
 public:
+	enum EFFECT {
+		EFT_JETENGINE	= 1,
+		EFT_SMOKE		= 2,
+		EFT_ALL			= 3
+	};
+protected:
+	EFFECT					m_eft;
+	ParticleSystem*			m_eftJetEngine;
+	ParticleSystem*			m_eftSmoke;
+
+public:
 	CTarget(Ogre::SceneManager* pSceneMgr, int nID, string mesh);
 	~CTarget(void);
 
@@ -53,6 +64,69 @@ public:
 	operator SceneNode*()
 	{
 		return m_pSceneNode;
+	}
+
+	void	createEffects()
+	{
+		m_eftJetEngine = mSceneMgr->createParticleSystem("JetEngine1", "Examples/JetEngine1");  // create a rainstorm
+		m_eftJetEngine->fastForward(5);   // fast-forward the rain so it looks more natural
+
+		// change -y-axis direction to -z-axis like fighter's jet engine flare
+		m_eftJetEngine->getEmitter(0)->setDirection( Vector3(0, 0, +1) );
+
+		m_eftSmoke = mSceneMgr->createParticleSystem("Smoke", "Examples/Smoke");
+	}
+
+	void detachObject(SceneNode* pNode, const char* name)
+	{
+		MovableObject*	obj;
+
+		for (int i = 0; i < pNode->numAttachedObjects(); i++)
+		{
+			obj		= pNode->getAttachedObject (i);
+			if (obj->getName() == name)
+			{
+				GetSceneNode()->detachObject (obj);
+				break;
+			}
+		}	
+	}
+
+	/**
+	*
+	*/
+	void	SetEffect (EFFECT eft)
+	{
+		if (eft == EFT_JETENGINE)
+		{
+			detachObject (GetSceneNode(), "Smoke");
+			GetSceneNode()->attachObject(m_eftJetEngine);
+
+			m_eft	= EFT_JETENGINE;
+		}
+		else if (eft == EFT_SMOKE)
+		{
+			detachObject (GetSceneNode(), "JetEngine1");
+			GetSceneNode()->attachObject(m_eftSmoke);
+
+			m_eft	= EFT_SMOKE;
+		}
+		else if (eft == EFT_ALL)
+		{
+			detachObject (GetSceneNode(), "Smoke");
+			detachObject (GetSceneNode(), "JetEngine1");
+
+			GetSceneNode()->attachObject(m_eftJetEngine);
+			GetSceneNode()->attachObject(m_eftSmoke);
+
+			m_eft	= EFT_ALL;
+		}
+		else
+		{
+			Ogre::LogManager::getSingleton().logMessage( Ogre::String("Error: effect is invalid"));
+		}
+
+
 	}
 
 	/**
