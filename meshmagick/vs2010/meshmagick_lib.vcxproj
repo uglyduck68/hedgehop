@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{3D4AB3D7-247E-48EF-A4E1-EED5750903EB}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>meshmagick_lib</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">meshmagick_lib.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">meshmagick_lib_d</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">meshmagick_lib.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">meshmagick_lib</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">meshmagick_lib.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">meshmagick_lib</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">meshmagick_lib.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">meshmagick_lib</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;MESHMAGICK_STATIC;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;MESHMAGICK_STATIC;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MESHMAGICK_STATIC;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MESHMAGICK_STATIC;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MESHMAGICK_STATIC;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MESHMAGICK_STATIC;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MESHMAGICK_STATIC;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MESHMAGICK_STATIC;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\include;D:\Lib\OgreSDK_vc10_v1-9-0\include\OGRE;D:\Lib\OgreSDK_vc10_v1-9-0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick -BD:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010 --check-stamp-file D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/CMakeLists.txt;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\CMakeLists.txt;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeSystem.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeCCompiler.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FeatureSummary.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindOGRE.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\PreprocessorUtils.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindTootle.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindDirectX.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\meshmagick.pc.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CPack.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CPackComponent.cmake;C:\Program Files\CMake\share\cmake-3.0\Templates\CPackConfig.cmake.in;C:\Program Files\CMake\share\cmake-3.0\Templates\CPackConfig.cmake.in;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick -BD:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010 --check-stamp-file D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/CMakeLists.txt;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\CMakeLists.txt;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeSystem.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeCCompiler.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FeatureSummary.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindOGRE.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\PreprocessorUtils.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindTootle.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindDirectX.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\meshmagick.pc.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CPack.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CPackComponent.cmake;C:\Program Files\CMake\share\cmake-3.0\Templates\CPackConfig.cmake.in;C:\Program Files\CMake\share\cmake-3.0\Templates\CPackConfig.cmake.in;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick -BD:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010 --check-stamp-file D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/CMakeLists.txt;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\CMakeLists.txt;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeSystem.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeCCompiler.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FeatureSummary.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindOGRE.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\PreprocessorUtils.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindTootle.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindDirectX.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\meshmagick.pc.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CPack.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CPackComponent.cmake;C:\Program Files\CMake\share\cmake-3.0\Templates\CPackConfig.cmake.in;C:\Program Files\CMake\share\cmake-3.0\Templates\CPackConfig.cmake.in;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick -BD:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010 --check-stamp-file D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/CMakeLists.txt;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\CMakeLists.txt;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeSystem.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeCCompiler.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FeatureSummary.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindOGRE.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\PreprocessorUtils.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindTootle.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindDirectX.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\cmake\FindPkgMacros.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CMakeParseArguments.cmake;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\meshmagick.pc.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CPack.cmake;C:\Program Files\CMake\share\cmake-3.0\Modules\CPackComponent.cmake;C:\Program Files\CMake\share\cmake-3.0\Templates\CPackConfig.cmake.in;C:\Program Files\CMake\share\cmake-3.0\Templates\CPackConfig.cmake.in;D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\Lib\OgreSDK_vc10_v1-9-0\addon\meshmagick\vs2010\CMakeFiles\generate.stamp</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\MeshMagick.h" />
+    <ClInclude Include="..\include\MeshMagickPrerequisites.h" />
+    <ClInclude Include="..\include\MmEditableBone.h" />
+    <ClInclude Include="..\include\MmEditableMesh.h" />
+    <ClInclude Include="..\include\MmEditableSkeleton.h" />
+    <ClInclude Include="..\include\MmInfoTool.h" />
+    <ClInclude Include="..\include\MmInfoToolFactory.h" />
+    <ClInclude Include="..\include\MmMeshMergeTool.h" />
+    <ClInclude Include="..\include\MmMeshMergeToolFactory.h" />
+    <ClInclude Include="..\include\MmMeshUtils.h" />
+    <ClInclude Include="..\include\MmOgreEnvironment.h" />
+    <ClInclude Include="..\include\MmOptimiseTool.h" />
+    <ClInclude Include="..\include\MmOptimiseToolFactory.h" />
+    <ClInclude Include="..\include\MmOptionsParser.h" />
+    <ClInclude Include="..\include\MmRenameTool.h" />
+    <ClInclude Include="..\include\MmRenameToolFactory.h" />
+    <ClInclude Include="..\include\MmStatefulMeshSerializer.h" />
+    <ClInclude Include="..\include\MmStatefulSkeletonSerializer.h" />
+    <ClInclude Include="..\include\MmTool.h" />
+    <ClInclude Include="..\include\MmToolFactory.h" />
+    <ClInclude Include="..\include\MmToolManager.h" />
+    <ClInclude Include="..\include\MmToolUtils.h" />
+    <ClInclude Include="..\include\MmTransformTool.h" />
+    <ClInclude Include="..\include\MmTransformToolFactory.h" />
+    <ClCompile Include="..\src\MeshMagick.cpp" />
+    <ClCompile Include="..\src\MmEditableBone.cpp" />
+    <ClCompile Include="..\src\MmEditableMesh.cpp" />
+    <ClCompile Include="..\src\MmEditableSkeleton.cpp" />
+    <ClCompile Include="..\src\MmInfoTool.cpp" />
+    <ClCompile Include="..\src\MmInfoToolFactory.cpp" />
+    <ClCompile Include="..\src\MmMeshMergeTool.cpp" />
+    <ClCompile Include="..\src\MmMeshMergeToolFactory.cpp" />
+    <ClCompile Include="..\src\MmMeshUtils.cpp" />
+    <ClCompile Include="..\src\MmOgreEnvironment.cpp" />
+    <ClCompile Include="..\src\MmOptimiseTool.cpp" />
+    <ClCompile Include="..\src\MmOptimiseToolFactory.cpp" />
+    <ClCompile Include="..\src\MmOptionsParser.cpp" />
+    <ClCompile Include="..\src\MmRenameTool.cpp" />
+    <ClCompile Include="..\src\MmRenameToolFactory.cpp" />
+    <ClCompile Include="..\src\MmStatefulMeshSerializer.cpp" />
+    <ClCompile Include="..\src\MmStatefulSkeletonSerializer.cpp" />
+    <ClCompile Include="..\src\MmTool.cpp" />
+    <ClCompile Include="..\src\MmToolManager.cpp" />
+    <ClCompile Include="..\src\MmToolsUtils.cpp" />
+    <ClCompile Include="..\src\MmTransformTool.cpp" />
+    <ClCompile Include="..\src\MmTransformToolFactory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010/ZERO_CHECK.vcxproj">
+      <Project>C641E771-EAAC-4AEB-91D9-7435B2B90EA8</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
