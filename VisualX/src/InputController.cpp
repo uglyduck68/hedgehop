@@ -2,7 +2,7 @@
 #include "..\include\InputController.h"
 
 
-CInputController::CInputController(Root* root, OIS::Keyboard *keyboard, OIS::Mouse *mouse) : 
+CInputController::CInputController(Ogre::Root* root, OIS::Keyboard *keyboard, OIS::Mouse *mouse) : 
 	mRoot(root), mKeyboard(keyboard), mMouse(mouse), mContinue(true),
 	mCameraYaw(NULL), mCameraPitch(NULL), mCameraHolder(NULL),
 	m_bCameraHolderMode(false)
@@ -10,12 +10,12 @@ CInputController::CInputController(Root* root, OIS::Keyboard *keyboard, OIS::Mou
 	/**
 	* Note the technique of making the camera of world coordinate transform
 	*/
-	SceneNode* professorRoot = mSceneMgr->getRootSceneNode()->createChildSceneNode("ProfessorRoot");
+	Ogre::SceneNode* professorRoot = mSceneMgr->getRootSceneNode()->createChildSceneNode("ProfessorRoot");
 
 
-	mCameraYaw = professorRoot->createChildSceneNode("CameraYaw", Vector3(0.0f, 120.0f, 0.0f));
+	mCameraYaw = professorRoot->createChildSceneNode("CameraYaw", Ogre::Vector3(0.0f, 120.0f, 0.0f));
 	mCameraPitch = mCameraYaw->createChildSceneNode("CameraPitch");
-	mCameraHolder = mCameraPitch->createChildSceneNode("CameraHolder", Vector3(0.0f, 80.0f, 500.0f));
+	mCameraHolder = mCameraPitch->createChildSceneNode("CameraHolder", Ogre::Vector3(0.0f, 80.0f, 500.0f));
 
 }
 
@@ -24,7 +24,7 @@ CInputController::~CInputController(void)
 {
 }
 
-bool CInputController::frameStarted(const FrameEvent &evt)
+bool CInputController::frameStarted(const Ogre::FrameEvent &evt)
 {
 	mKeyboard->capture();
 	mMouse->capture();
@@ -78,8 +78,8 @@ bool CInputController::mouseMoved( const OIS::MouseEvent &evt )
 	if( !m_bCameraHolderMode )
 		return true;
 
-	mCameraYaw->yaw(Degree(-evt.state.X.rel));
-	mCameraPitch->pitch(Degree(-evt.state.Y.rel));
+	mCameraYaw->yaw(Ogre::Degree(-evt.state.X.rel));
+	mCameraPitch->pitch(Ogre::Degree(-evt.state.Y.rel));
 
 	mCameraHolder->translate(Ogre::Vector3(0, 0, -evt.state.Z.rel * 0.1f));
 

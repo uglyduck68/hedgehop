@@ -5,7 +5,7 @@
 /** surface elevation that is defined for preventing z-fighting with terrain */
 #define	MAX_MSL		20;
 
-using namespace Ogre;
+//using namespace Ogre;
 using namespace OgreBites;
 
 #define		WAVEFX_INC		0
@@ -30,20 +30,20 @@ protected:
 	Ogre::GpuProgramPtr	  mActiveVertexProgram;
 	Ogre::GpuProgramParametersSharedPtr mActiveFragmentParameters;
 	Ogre::GpuProgramParametersSharedPtr mActiveVertexParameters;
-	Real				  mRotateSpeed;
+	Ogre::Real				  mRotateSpeed;
 	
 	ShaderControlsContainer    mShaderControlContainer;
     MaterialControlsContainer mMaterialControlsContainer;
 
 	size_t					mCurrentMaterial;
 
-	Real					m_fWaveFreq;	// 0 ~ 0.05
-	Real					m_fWaveAmp;		// 0 ~ 25
+	Ogre::Real					m_fWaveFreq;	// 0 ~ 0.05
+	Ogre::Real					m_fWaveAmp;		// 0 ~ 25
 
 public:
-	int ChangeFragmentVertexValue(int nIndex, Real& TargetValue, Real Value);
-	int ControlWaveFreq( int nInc, Real MultiConst );
-	int ControlWaveAmp( int nInc, Real MultiConst );
+	int ChangeFragmentVertexValue(int nIndex, Ogre::Real& TargetValue, Ogre::Real Value);
+	int ControlWaveFreq( int nInc, Ogre::Real MultiConst );
+	int ControlWaveAmp( int nInc, Ogre::Real MultiConst );
 
 public:
 	COcean(Ogre::SceneManager*);

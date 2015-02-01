@@ -80,7 +80,7 @@ void COcean::createScene()
 
 }
 
-int COcean::ChangeFragmentVertexValue(int nIndex, Real& TargetValue, Real Value)
+int COcean::ChangeFragmentVertexValue(int nIndex, Ogre::Real& TargetValue, Ogre::Real Value)
 {
 	//////////////////////////////////////////////////////////////////////////////
 	// HERE control wave Fx
@@ -135,7 +135,7 @@ int COcean::ChangeFragmentVertexValue(int nIndex, Real& TargetValue, Real Value)
 			case GPU_VERTEX:
 			case GPU_FRAGMENT:
 				{
-					GpuProgramParametersSharedPtr activeParameters =
+					Ogre::GpuProgramParametersSharedPtr activeParameters =
 						(ActiveShaderDef.ValType == GPU_VERTEX) ?
 							mActiveVertexParameters : mActiveFragmentParameters;
 
@@ -154,12 +154,12 @@ int COcean::ChangeFragmentVertexValue(int nIndex, Real& TargetValue, Real Value)
 	return VX_SUCCESS;
 }
 
-int COcean::ControlWaveFreq( int nInc, Real MultiConst )
+int COcean::ControlWaveFreq( int nInc, Ogre::Real MultiConst )
 {
 	return ChangeFragmentVertexValue( 5, m_fWaveFreq, MultiConst );
 }
 
-int COcean::ControlWaveAmp( int nInc, Real MultiConst )
+int COcean::ControlWaveAmp( int nInc, Ogre::Real MultiConst )
 {
 	return ChangeFragmentVertexValue( 6, m_fWaveAmp, MultiConst );
 }

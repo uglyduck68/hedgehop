@@ -65,9 +65,11 @@ void CamNodeListener2::nodeUpdated(const Ogre::SceneNode *nod, const Ogre::Frame
 AnimationTutorial::AnimationTutorial(void) :
 	m_pSceneNode(NULL), mDirection(Vector3::ZERO), 
 	m_CamMode(CAM_MANUAL), m_pCamNode(NULL),
-	m_ElapsedTime(TIME_INTERVAL),
+	m_ElapsedTime(TIME_INTERVAL_1_SEC),
 	m_CamListener(NULL),
-	m_Trajectory(NULL)		// trajetory of fighter
+	m_Trajectory(NULL),		// trajetory of fighter
+	mRotating(false),
+	mRotatingTime(0.0f)
 {
 }
 
@@ -122,6 +124,17 @@ bool AnimationTutorial::nextLocation(Real& distance)
 	mDistance	= mDirection.normalise();
 
 	distance	= mDirection.length();
+
+	/*
+	* for 부드러운 회전
+	*/
+	mSrcQuat	= GetSceneNode()->getOrientation();
+
+	// @FIXME
+	// 현재 B787.mesh가 -Z 방향이므로, 추후 Z 방향으로 수정 시 소스 수정
+	mDestQuat		= Vector3(Vector3::UNIT_Z).getRotationTo (mDirection);
+	mRotating		= false;
+	mRotatingTime	= 0.0f;
 
 	return true;
 }
@@ -262,7 +275,7 @@ void AnimationTutorial::createScene()
 	// for debugging
 	mSceneMgr->showBoundingBoxes(true);
 
-	printMsgToDebugOverlay( Ogre::String("press + or -/up or down key to control viewpoint of tracking camera/camera itself\npress M to change camera mode"));
+	printMsgToDebugOverlay( Ogre::String("press + or -/up or down key to control viewpoint of tracking camera/camera itself\npress M to change camera mode\npress E to change effects"));
 }
 
 /**
@@ -296,7 +309,33 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 		}
 
 		// In the future move this into nextLocation
-		m_ElapsedTime	= TIME_INTERVAL;
+		m_ElapsedTime	= TIME_INTERVAL_1_SEC;
+	}
+	else if (mRotating)
+	{
+		/*
+		* for 부드러운 회전
+		*/
+
+		/*
+		* @FIXME
+		* 가상전장환경에서 target 위치 정보는 0.5초 단위로 날라 온다.
+		* 단지 이 예제에서 원을 이루는 각 구간 사이의 시간이 0.5초 미만으로
+		*/
+		static const Real	ROTATION_TIME	= TIME_INTERVAL_1_SEC;
+
+		mRotatingTime		+= evt.timeSinceLastFrame;
+		mRotatingTime		= (mRotatingTime > ROTATION_TIME) ? ROTATION_TIME: mRotatingTime;
+
+		Quaternion	delta	= Quaternion::Slerp(mRotatingTime / ROTATION_TIME, mSrcQuat, mDestQuat, true);
+
+		GetSceneNode()->setOrientation (delta);
+
+		if (mRotatingTime >= ROTATION_TIME)
+		{
+			mRotatingTime	= 0.0f;
+			mRotating		= false;
+		}
 	}
 	else
 	{
@@ -311,7 +350,7 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 		// calculate the remaining distance
 		mDistance	-= move;
 
-		if(mDistance <= 0.0f)
+		if(mDistance <= 0.0f/*m_ElapsedTime <= 0*/)
 		{
 			// if character reaches the waypoint
 			// the remaining distance is less then zero
@@ -334,7 +373,7 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 				///////////////////////////////////////////////////////////////
 				// [20150116] Sean, B787 mesh가 현재 -Z 방향이다.
 				///////////////////////////////////////////////////////////////
-				Vector3 src = GetSceneNode()->getOrientation() * -Vector3::UNIT_Z;
+				Vector3 src = GetSceneNode()->getOrientation() * Vector3::UNIT_Z;
 
 				// if angle of two vector is 180, then dot product is -1.
 				if(1.0f + src.dotProduct(mDirection) < 0.0001f)
@@ -347,17 +386,15 @@ bool  AnimationTutorial::frameStarted(const Ogre::FrameEvent& evt)
 					GetSceneNode()->rotate(quat);
 				}
 			}
-	
+
 			// In the future move this into nextLocation
-			m_ElapsedTime	= TIME_INTERVAL;
+			m_ElapsedTime	= TIME_INTERVAL_1_SEC;
 		}
 		else
 		{
 			GetSceneNode()->translate(mDirection * move);
 		}
 	}
-
-	Vector3		offset(0, 0, -100);
 
 	/////////
 	// call camera listener to move camera before node to move

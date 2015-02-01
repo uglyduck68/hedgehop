@@ -35,7 +35,7 @@
 using namespace	Ogre;
 using namespace	std;
 
-#define		TIME_INTERVAL		(1.0)		// 1 second
+#define		TIME_INTERVAL_1_SEC		(0.1)		// 1 second
 
 class CamNodeListener2 : public Ogre::Node::Listener
 {
@@ -101,6 +101,14 @@ protected:
 
 	std::vector<CTarget*>	m_vecTarget;
 
+	/**
+	* 부드러운 회전을 위한 변수 선언
+	*/
+	bool					mRotating;		// 현재 구면보간을 이용하여 회전 중인가?
+	Quaternion				mSrcQuat;
+	Quaternion				mDestQuat;
+	Real					mRotatingTime;	// 회전 경과 시간
+
 	SceneNode*	GetSceneNode(int nIndex = 0)
 	{
 		if( m_vecTarget.size() > 0 )
@@ -114,14 +122,20 @@ protected:
 //		return m_pSceneNode;
 	}
 
-	static const int	MAX_INDEX	= 100;	// # of points that make up circle
-
 	//< coordinate of 3D circle
 	std::deque<Vector3> m_WalkList;		// set of waypoint
 	Real				mDistance;		// 다음 지점까지 남은 거리
 	Vector3				mDirection;		// 객체가 움직이고 있는 방향
 	Vector3				mDestination;	// 객체가 가고 있는 목표점
-	static const int	m_WalkSpeed		= 100;	// character speed
+
+	/*
+	* for 부드러운 회전
+	* 원래는 100 이였으나 속도가 너무 빨라 TIME_INTERVAL_1_SEC 시간 동안
+	* 회전해야할 부분을 넘어서게 된다. 따라서 속도롤 줄인다.
+	*/
+	static const int	m_WalkSpeed		= 100;	// character speed. change speed to 10 from 100.
+	static const int	MAX_INDEX		= 100;	// # of points that make up circle. change speed to 50 from 100.
+
 
 
 	//< object to display 3D circle that is orbit of fighter
@@ -158,7 +172,6 @@ protected:
 		else
 		{
 			mCameraMan->setStyle(OgreBites::CS_FREELOOK);					// we will be controlling the camera ourselves, so disable the camera man
-			mCamera->setAutoTracking(false, NULL);				// make the camera face the head
 
 			m_CamMode	= CAM_MANUAL;
 		}
@@ -222,6 +235,8 @@ protected:
 		// +,- 키를 이용하여 viewpoint node 위치를 조절함으로서 
 		// viewpoint node를 바라 보도록 설정된 tracking camera의 viewpoint length를
 		// 조절한다.
+		// 일부 키가 이미 BaseApplication::keyPressed() 에서 처리되고 있기 때문에
+		// else 문으로 처리한다.
 		///////////////////////////////////////////////////////////////////////
 		if( arg.key	== OIS::KC_ADD )
 		{
@@ -254,15 +269,43 @@ protected:
 			{
 				SetChasingMode(true);
 			}
-
+		}
+		else if (arg.key == OIS::KC_E)
+		{
+			// change the effects
+			switch(m_pTarget->GetEffect())
+			{
+			case CTarget::EFT_ALL:
+				m_pTarget->SetEffect(CTarget::EFT_JETENGINE);
+				break;
+			case CTarget::EFT_JETENGINE:
+				m_pTarget->SetEffect(CTarget::EFT_SMOKE);
+				break;
+			case CTarget::EFT_SMOKE:
+				m_pTarget->SetEffect(CTarget::EFT_EXPLOSION);
+				break;
+			case CTarget::EFT_EXPLOSION:
+				m_pTarget->SetEffect(CTarget::EFT_WATER_EXPLOSION);
+				break;
+			case CTarget::EFT_WATER_EXPLOSION:
+				m_pTarget->SetEffect(CTarget::EFT_ALL);
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			// process other keys
+			return BaseApplication::keyPressed(arg);
 		}
 
-		return BaseApplication::keyPressed(arg);
+		return true;
 	}
 
 	bool keyReleased(const OIS::KeyEvent &arg)
 	{
-		return BaseApplication::keyPressed(arg);
+		return BaseApplication::keyReleased(arg);
 	}
 
 	void destroyScene(void);

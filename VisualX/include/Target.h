@@ -7,7 +7,7 @@
 #pragma once
 
 using namespace	std;
-using namespace	Ogre;
+//using namespace	Ogre;
 
 class CTarget  : public Ogre::FrameListener
 {
@@ -18,19 +18,19 @@ protected:
 
 	string					m_strName;		// character name
 	string					m_strMeshName;	// meshfile name
-	SceneNode*				m_pSceneNode;	// scene node
+	Ogre::SceneNode*				m_pSceneNode;	// scene node
 
 public:
 	CTarget() {}	//* default ctor for class inheritance
 	CTarget(Ogre::SceneManager* pSceneMgr, int nID, string mesh);
 	~CTarget(void);
 
-	SceneNode*	GetSceneNode()
+	Ogre::SceneNode*	GetSceneNode()
 	{
 		return m_pSceneNode;
 	}
 
-	operator SceneNode*()
+	operator Ogre::SceneNode*()
 	{
 		return m_pSceneNode;
 	}
@@ -61,7 +61,7 @@ public:
 	//	m_pSceneNode->setPosition(x, y, z);
 	//}
 
-	virtual bool frameRenderingQueued( const FrameEvent &evt );
+	virtual bool frameRenderingQueued( const Ogre::FrameEvent &evt );
     virtual void createFrameListener(void);
 
 };

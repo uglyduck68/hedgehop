@@ -7,17 +7,17 @@
 
 #pragma once
 
-using namespace Ogre;
+//using namespace Ogre;
 
-class CInputController : public FrameListener, 
+class CInputController : public Ogre::FrameListener, 
 	public OIS::KeyListener, 
 	public OIS::MouseListener
 {
 public:
-	CInputController(Root* root, OIS::Keyboard *keyboard, OIS::Mouse *mouse);
+	CInputController(Ogre::Root* root, OIS::Keyboard *keyboard, OIS::Mouse *mouse);
 	~CInputController(void);
 
-	virtual bool frameStarted( const FrameEvent &evt );
+	virtual bool frameStarted( const Ogre::FrameEvent &evt );
     virtual void createFrameListener(void);
 
 	bool keyPressed( const OIS::KeyEvent &evt );
@@ -42,9 +42,9 @@ private:
 	OIS::Mouse*			mMouse;
 
 	/** nodes for camera holder technique */
-	SceneNode*			mCameraHolder;
-	SceneNode*			mCameraYaw;
-	SceneNode*			mCameraPitch;
+	Ogre::SceneNode*			mCameraHolder;
+	Ogre::SceneNode*			mCameraYaw;
+	Ogre::SceneNode*			mCameraPitch;
 
 	bool mContinue;
 	bool				m_bCameraHolderMode;

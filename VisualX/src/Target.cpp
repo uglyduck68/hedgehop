@@ -19,9 +19,9 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int nID, string mesh) :
 
 	// create target entity
 	m_pSceneNode		= mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	Entity*	pEntity		= mSceneMgr->createEntity(m_strMeshName);
+	Ogre::Entity*	pEntity		= mSceneMgr->createEntity(m_strMeshName);
 
-	Any			any(pEntity);
+	Ogre::Any			any(pEntity);
 
 	m_pSceneNode->setUserAny(any);
 
@@ -33,7 +33,7 @@ CTarget::~CTarget(void)
 {
 }
 
-bool CTarget::frameRenderingQueued( const FrameEvent &evt )
+bool CTarget::frameRenderingQueued( const Ogre::FrameEvent &evt )
 {
 	/** to test interference of ocean wave simulation and vehicle */
 	m_pSceneNode->yaw(Ogre::Radian(evt.timeSinceLastFrame));
@@ -61,14 +61,14 @@ void CTarget::createFrameListener(void)
 int		CTarget::MoveTo( Ogre::Vector3 Src, Ogre::Vector3 Dest )
 {
 	// get the direction vector from source to destination
-	Vector3			Dir				= Dest - Src;
+	Ogre::Vector3			Dir				= Dest - Src;
 
 	// normalize the direction vector
 	Ogre::Real		Dist			= Dir.normalise();
 
 	// get the orientation quaternion based on Z-axis
 	// because the orientation of all models are Z-axis on XZ plane.
-	Quaternion		quat			= Vector3(Vector3::UNIT_Z).getRotationTo( Dir );
+	Ogre::Quaternion		quat			= Ogre::Vector3(Ogre::Vector3::UNIT_Z).getRotationTo( Dir );
 
 	// set target's orientation to destination
 	GetSceneNode()->setOrientation( quat );

@@ -168,6 +168,12 @@
     <ClInclude Include="include\TugBoat.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="include\endcs\OPVEnum.h">
+      <Filter>Msg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\endcs\Msg\rmOPV_Protocol.hpp">
+      <Filter>Msg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\ReadMe.txt" />
@@ -184,6 +190,9 @@
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{7ad0020b-60b0-4b71-8092-37daa7c1f868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Msg">
+      <UniqueIdentifier>{1da0e6e0-c4b1-46c9-b8c0-e33d47bba4c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

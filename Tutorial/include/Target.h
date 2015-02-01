@@ -34,14 +34,17 @@ protected:
 public:
 	enum EFFECT {
 		EFT_JETENGINE	= 1,
-		EFT_SMOKE		= 2,
-		EFT_ALL			= 3
+		EFT_SMOKE,
+		EFT_EXPLOSION,
+		EFT_WATER_EXPLOSION,
+		EFT_ALL
 	};
 protected:
 	EFFECT					m_eft;
-	ParticleSystem*			m_eftJetEngine;
-	ParticleSystem*			m_eftSmoke;
-
+	ParticleSystem*			m_eftJetEngine;		// 제트 엔진 화염 특수효과
+	ParticleSystem*			m_eftSmoke;			// 상당한 데미지를 나타내는 검정 연기 특수효과
+	ParticleSystem*			m_eftExplosion;		// 폭파 특수효과
+	ParticleSystem*			m_eftWaterExplosion;	// 포탄이 바다 표면에 떨어 졌을 때 나타나는 특수효과
 public:
 	CTarget(Ogre::SceneManager* pSceneMgr, int nID, string mesh);
 	~CTarget(void);
@@ -75,6 +78,15 @@ public:
 		m_eftJetEngine->getEmitter(0)->setDirection( Vector3(0, 0, +1) );
 
 		m_eftSmoke = mSceneMgr->createParticleSystem("Smoke", "Examples/Smoke");
+
+		m_eftExplosion	= mSceneMgr->createParticleSystem("Explosion", "explosionTemplate");
+
+		// fast forward 1 second  to the point where the particle has been emitted
+		m_eftExplosion->fastForward(1.0);
+
+
+		m_eftWaterExplosion	= mSceneMgr->createParticleSystem("WaterExplosion", "waterExplosionTemplate");
+		m_eftWaterExplosion->fastForward(1.0);
 	}
 
 	void detachObject(SceneNode* pNode, const char* name)
@@ -97,36 +109,63 @@ public:
 	*/
 	void	SetEffect (EFFECT eft)
 	{
-		if (eft == EFT_JETENGINE)
+
+		if (m_eft == EFT_JETENGINE && eft != EFT_JETENGINE)
+		{
+			detachObject (GetSceneNode(), "JetEngine1");
+		}
+		else if (m_eft == EFT_SMOKE && eft != EFT_SMOKE)
 		{
 			detachObject (GetSceneNode(), "Smoke");
-			GetSceneNode()->attachObject(m_eftJetEngine);
+		}
+		else if (m_eft == EFT_EXPLOSION && eft != EFT_EXPLOSION)
+		{
+			detachObject (GetSceneNode(), "Explosion");
+		}
+		else if (m_eft == EFT_WATER_EXPLOSION && eft != EFT_WATER_EXPLOSION)
+		{
+			detachObject (GetSceneNode(), "WaterExplosion");
+		}
+		else if (m_eft == EFT_ALL && eft != EFT_ALL)
+		{
+			detachObject (GetSceneNode(), "Smoke");
+			detachObject (GetSceneNode(), "JetEngine1");
+			detachObject (GetSceneNode(), "Explosion");
+		}
 
-			m_eft	= EFT_JETENGINE;
+		if (eft == EFT_JETENGINE)
+		{
+			GetSceneNode()->attachObject(m_eftJetEngine);
 		}
 		else if (eft == EFT_SMOKE)
 		{
-			detachObject (GetSceneNode(), "JetEngine1");
 			GetSceneNode()->attachObject(m_eftSmoke);
-
-			m_eft	= EFT_SMOKE;
+		}
+		else if (eft == EFT_EXPLOSION)
+		{
+			GetSceneNode()->attachObject(m_eftExplosion);
+		}
+		else if (eft == EFT_WATER_EXPLOSION)
+		{
+			GetSceneNode()->attachObject(m_eftWaterExplosion);
 		}
 		else if (eft == EFT_ALL)
 		{
-			detachObject (GetSceneNode(), "Smoke");
-			detachObject (GetSceneNode(), "JetEngine1");
-
 			GetSceneNode()->attachObject(m_eftJetEngine);
 			GetSceneNode()->attachObject(m_eftSmoke);
-
-			m_eft	= EFT_ALL;
+			GetSceneNode()->attachObject(m_eftExplosion);
 		}
 		else
 		{
 			Ogre::LogManager::getSingleton().logMessage( Ogre::String("Error: effect is invalid"));
 		}
 
+		m_eft	= eft;
+	}
 
+	EFFECT GetEffect()
+	{
+		return m_eft;
 	}
 
 	/**

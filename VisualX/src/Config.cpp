@@ -39,7 +39,7 @@ int CConfig::LoadModels(Ogre::ConfigFile::SettingsMultiMap *settings)
 	return true;
 }
 
-int CConfig::LoadIntroview(ConfigFile::SettingsMultiMap *settings)
+int CConfig::LoadIntroview(Ogre::ConfigFile::SettingsMultiMap *settings)
 {
     Ogre::String typeName, archName;
        
@@ -68,7 +68,7 @@ int CConfig::LoadIntroview(ConfigFile::SettingsMultiMap *settings)
 *Zip=../../Media/packs/SdkTrays.zip
 */
 
-int CConfig::Load( const String& filename )
+int CConfig::Load( const Ogre::String& filename )
 {
 	Ogre::ConfigFile		cf;
 
