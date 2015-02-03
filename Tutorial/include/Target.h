@@ -47,6 +47,7 @@ protected:
 	ParticleSystem*			m_eftWaterExplosion;	// 포탄이 바다 표면에 떨어 졌을 때 나타나는 특수효과
 public:
 	CTarget(Ogre::SceneManager* pSceneMgr, int nID, string mesh);
+	CTarget() {}
 	~CTarget(void);
 
 	SceneNode*	GetSceneNode()
@@ -68,6 +69,12 @@ public:
 	{
 		return m_pSceneNode;
 	}
+
+	/**
+	* @function		createScene
+	* @brief		create entity and scene node
+	*/
+	void	createScene();
 
 	void	createEffects()
 	{

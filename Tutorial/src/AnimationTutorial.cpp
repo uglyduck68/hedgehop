@@ -163,7 +163,15 @@ void AnimationTutorial::createScene()
 	//////////////////////////////////////////////////////////////////////////////
 	// from here create targets
 	//////////////////////////////////////////////////////////////////////////////
-	createSceneNode("B787.mesh");
+	m_pTarget	= new (std::nothrow) CTarget( mSceneMgr, m_vecTarget.size(), "B787.mesh" );
+
+	if (m_pTarget)
+	{
+		m_pTarget->createScene();
+		m_vecTarget.push_back( m_pTarget );
+	}
+
+
 	GetSceneNode()->setPosition( Vector3(0, 100, 500) );
 
 	//////
