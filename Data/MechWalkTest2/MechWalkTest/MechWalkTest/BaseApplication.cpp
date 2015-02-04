@@ -1,0 +1,529 @@
+/*
+-----------------------------------------------------------------------------
+Filename:    BaseApplication.cpp
+-----------------------------------------------------------------------------
+
+This source file is part of the
+   ___                 __    __ _ _    _
+  /___\__ _ _ __ ___  / / /\ \ (_) | _(_)
+ //  // _` | '__/ _ \ \ \/  \/ / | |/ / |
+/ \_// (_| | | |  __/  \  /\  /| |   <| |
+\___/ \__, |_|  \___|   \/  \/ |_|_|\_\_|
+      |___/
+Tutorial Framework (for Ogre 1.9)
+http://www.ogre3d.org/wiki/
+-----------------------------------------------------------------------------
+*/
+
+#include "BaseApplication.h"
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+#include <macUtils.h>
+#endif
+
+//---------------------------------------------------------------------------
+BaseApplication::BaseApplication(void)
+    : mRoot(0),
+    mCamera(0),
+    mSceneMgr(0),
+    mWindow(0),
+    mResourcesCfg(Ogre::StringUtil::BLANK),
+    mPluginsCfg(Ogre::StringUtil::BLANK),
+    mTrayMgr(0),
+    mCameraMan(0),
+    mDetailsPanel(0),
+    mCursorWasVisible(false),
+    mShutDown(false),
+    mInputManager(0),
+    mMouse(0),
+    mKeyboard(0),
+    mOverlaySystem(0),
+	mTextArea(NULL), mDebugOverlay(NULL)
+{
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+    m_ResourcePath = Ogre::macBundlePath() + "/Contents/Resources/";
+#else
+    m_ResourcePath = "";
+#endif
+}
+
+//---------------------------------------------------------------------------
+BaseApplication::~BaseApplication(void)
+{
+    if (mTrayMgr) delete mTrayMgr;
+    if (mCameraMan) delete mCameraMan;
+    if (mOverlaySystem) delete mOverlaySystem;
+
+    // Remove ourself as a Window listener
+    Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
+    windowClosed(mWindow);
+    delete mRoot;
+}
+
+//---------------------------------------------------------------------------
+bool BaseApplication::configure(void)
+{
+    // Show the configuration dialog and initialise the system.
+    // You can skip this and use root.restoreConfig() to load configuration
+    // settings if you were sure there are valid ones saved in ogre.cfg.
+    if(mRoot->showConfigDialog())
+    {
+        // If returned true, user clicked OK so initialise.
+        // Here we choose to let the system create a default rendering window by passing 'true'.
+        mWindow = mRoot->initialise(true, "TutorialApplication Render Window");
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+//---------------------------------------------------------------------------
+void BaseApplication::chooseSceneManager(void)
+{
+    // Get the SceneManager, in this case a generic one
+    mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
+
+    // Initialize the OverlaySystem (changed for Ogre 1.9)
+    mOverlaySystem = new Ogre::OverlaySystem();
+    mSceneMgr->addRenderQueueListener(mOverlaySystem);
+}
+//---------------------------------------------------------------------------
+void BaseApplication::createCamera(void)
+{
+    // Create the camera
+    mCamera = mSceneMgr->createCamera("PlayerCam");
+
+    // Position it at 500 in Z direction
+	// Sean, in CS_ORBIT camera position is meaningless.
+	// because camera is always near target in SdkCamerMan class internally
+    mCamera->setPosition(Ogre::Vector3(0,0,800));
+    // Look back along -Z
+    mCamera->lookAt(Ogre::Vector3(0,0,-300));
+    mCamera->setNearClipDistance(5);
+
+    if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_INFINITE_FAR_PLANE))
+    {
+        mCamera->setFarClipDistance(0);   // enable infinite far clip distance if we can
+    }
+
+    mCameraMan = new OgreBites::SdkCameraMan(mCamera);   // Create a default camera controller
+
+	// Sean, add, change the style of cameraman from default CS_FREELOOK to CS_ORBIT
+	// In case of CS_ORBIT, There is some wrong movement according to Y-axis
+	if( mCameraMan )
+		mCameraMan->setStyle(/*OgreBites::CS_FREELOOK*/OgreBites::CS_ORBIT);
+
+	// give the chance the derived class to control the initial position of camera
+	setupCameraPosition();
+}
+//---------------------------------------------------------------------------
+void BaseApplication::createFrameListener(void)
+{
+    Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
+    OIS::ParamList pl;
+    size_t windowHnd = 0;
+    std::ostringstream windowHndStr;
+
+    mWindow->getCustomAttribute("WINDOW", &windowHnd);
+    windowHndStr << windowHnd;
+    pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
+
+    mInputManager = OIS::InputManager::createInputSystem(pl);
+
+    mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject(OIS::OISKeyboard, true));
+    mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject(OIS::OISMouse, true));
+
+    mMouse->setEventCallback(this);
+    mKeyboard->setEventCallback(this);
+
+    // Set initial mouse clipping size
+    windowResized(mWindow);
+
+    // Register as a Window listener
+    Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this);
+
+    mInputContext.mKeyboard	= mKeyboard;
+    mInputContext.mMouse	= mMouse;
+    mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName", mWindow, mInputContext, this);
+    mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+
+	// sean, add, I don't need anythings
+//	mTrayMgr->hideAll();
+
+	// comment out Ogre logo
+//    mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
+//    mTrayMgr->hideCursor();
+
+    // Create a params panel for displaying sample details
+    Ogre::StringVector items;
+    items.push_back("cam.pX");
+    items.push_back("cam.pY");
+    items.push_back("cam.pZ");
+    items.push_back("");
+    items.push_back("cam.oW");
+    items.push_back("cam.oX");
+    items.push_back("cam.oY");
+    items.push_back("cam.oZ");
+    items.push_back("");
+    items.push_back("Filtering");
+    items.push_back("Poly Mode");
+
+    mDetailsPanel = mTrayMgr->createParamsPanel(OgreBites::TL_NONE, "DetailsPanel", 200, items);
+    mDetailsPanel->setParamValue(9, "Bilinear");
+    mDetailsPanel->setParamValue(10, "Solid");
+    mDetailsPanel->hide();
+
+    mRoot->addFrameListener(this);
+}
+//---------------------------------------------------------------------------
+void BaseApplication::destroyScene(void)
+{
+}
+//---------------------------------------------------------------------------
+void BaseApplication::createViewports(void)
+{
+    // Create one viewport, entire window
+	// sean, change the size and position of viewport
+//    Ogre::Viewport* vp = mWindow->addViewport(mCamera);
+
+	// make left-lower viewport on main windows 
+    Ogre::Viewport* vp = mWindow->addViewport(mCamera/*, 0, 0, 0.7, 0.2, 0.2*/);
+    vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
+
+    // Alter the camera aspect ratio to match the viewport
+    mCamera->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
+}
+//---------------------------------------------------------------------------
+void BaseApplication::setupResources(void)
+{
+    // Load resource paths from config file
+    Ogre::ConfigFile cf;
+    cf.load(mResourcesCfg);
+
+    // Go through all sections & settings in the file
+    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
+
+    Ogre::String secName, typeName, archName;
+    while (seci.hasMoreElements())
+    {
+        secName = seci.peekNextKey();
+        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
+        Ogre::ConfigFile::SettingsMultiMap::iterator i;
+        for (i = settings->begin(); i != settings->end(); ++i)
+        {
+            typeName = i->first;
+            archName = i->second;
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+            // OS X does not set the working directory relative to the app.
+            // In order to make things portable on OS X we need to provide
+            // the loading with it's own bundle path location.
+            if (!Ogre::StringUtil::startsWith(archName, "/", false)) // only adjust relative directories
+                archName = Ogre::String(Ogre::macBundlePath() + "/" + archName);
+#endif
+
+            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+                archName, typeName, secName);
+        }
+    }
+}
+//---------------------------------------------------------------------------
+void BaseApplication::createResourceListener(void)
+{
+}
+//---------------------------------------------------------------------------
+void BaseApplication::loadResources(void)
+{
+    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+}
+//---------------------------------------------------------------------------
+void BaseApplication::go(void)
+{
+#ifdef _DEBUG
+#ifndef OGRE_STATIC_LIB
+    mResourcesCfg = m_ResourcePath + "resources_d.cfg";
+    mPluginsCfg = m_ResourcePath + "plugins_d.cfg";
+#else
+    mResourcesCfg = "resources_d.cfg";
+    mPluginsCfg = "plugins_d.cfg";
+#endif
+#else
+#ifndef OGRE_STATIC_LIB
+    mResourcesCfg = m_ResourcePath + "resources.cfg";
+    mPluginsCfg = m_ResourcePath + "plugins.cfg";
+#else
+    mResourcesCfg = "resources.cfg";
+    mPluginsCfg = "plugins.cfg";
+#endif
+#endif
+
+    if (!setup())
+        return;
+
+    mRoot->startRendering();
+
+    // Clean up
+    destroyScene();
+}
+//---------------------------------------------------------------------------
+bool BaseApplication::setup(void)
+{
+    mRoot = new Ogre::Root(mPluginsCfg);
+
+    setupResources();
+
+    bool carryOn = configure();
+    if (!carryOn) return false;
+
+    chooseSceneManager();
+    createCamera();
+    createViewports();
+
+    // Set default mipmap level (NB some APIs ignore this)
+    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
+
+    // Create any resource listeners (for loading screens)
+    createResourceListener();
+    // Load resources
+    loadResources();
+
+    // Create the scene
+    createScene();
+
+    createFrameListener();
+
+#ifdef	_DEBUG
+	Ogre::Entity* mAxesEntity = mSceneMgr->createEntity("Axes", "axes.mesh");
+	mSceneMgr->getRootSceneNode()->createChildSceneNode("AxesNode",Ogre::Vector3(0,0,0))->attachObject(mAxesEntity);
+	mSceneMgr->getSceneNode("AxesNode")->setScale(5, 5, 5);
+#endif
+    return true;
+};
+//---------------------------------------------------------------------------
+bool BaseApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
+{
+    if(mWindow->isClosed())
+        return false;
+
+    if(mShutDown)
+        return false;
+
+    // Need to capture/update each device
+    mKeyboard->capture();
+    mMouse->capture();
+
+    mTrayMgr->frameRenderingQueued(evt);
+
+    if (!mTrayMgr->isDialogVisible())
+    {
+        mCameraMan->frameRenderingQueued(evt);   // If dialog isn't up, then update the camera
+
+        if (mDetailsPanel->isVisible())          // If details panel is visible, then update its contents
+        {
+            mDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(mCamera->getDerivedPosition().x));
+            mDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(mCamera->getDerivedPosition().y));
+            mDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(mCamera->getDerivedPosition().z));
+            mDetailsPanel->setParamValue(4, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().w));
+            mDetailsPanel->setParamValue(5, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().x));
+            mDetailsPanel->setParamValue(6, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().y));
+            mDetailsPanel->setParamValue(7, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().z));
+        }
+    }
+
+    return true;
+}
+//---------------------------------------------------------------------------
+bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
+{
+    if (mTrayMgr->isDialogVisible()) return true;   // don't process any more keys if dialog is up
+
+    if (arg.key == OIS::KC_F)   // toggle visibility of advanced frame stats
+    {
+        mTrayMgr->toggleAdvancedFrameStats();
+    }
+    else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
+    {
+        if (mDetailsPanel->getTrayLocation() == OgreBites::TL_NONE)
+        {
+            mTrayMgr->moveWidgetToTray(mDetailsPanel, OgreBites::TL_TOPRIGHT, 0);
+            mDetailsPanel->show();
+        }
+        else
+        {
+            mTrayMgr->removeWidgetFromTray(mDetailsPanel);
+            mDetailsPanel->hide();
+        }
+    }
+    else if (arg.key == OIS::KC_T)   // cycle polygon rendering mode
+    {
+        Ogre::String newVal;
+        Ogre::TextureFilterOptions tfo;
+        unsigned int aniso;
+
+        switch (mDetailsPanel->getParamValue(9).asUTF8()[0])
+        {
+        case 'B':
+            newVal = "Trilinear";
+            tfo = Ogre::TFO_TRILINEAR;
+            aniso = 1;
+            break;
+        case 'T':
+            newVal = "Anisotropic";
+            tfo = Ogre::TFO_ANISOTROPIC;
+            aniso = 8;
+            break;
+        case 'A':
+            newVal = "None";
+            tfo = Ogre::TFO_NONE;
+            aniso = 1;
+            break;
+        default:
+            newVal = "Bilinear";
+            tfo = Ogre::TFO_BILINEAR;
+            aniso = 1;
+        }
+
+        Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(tfo);
+        Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(aniso);
+        mDetailsPanel->setParamValue(9, newVal);
+    }
+    else if (arg.key == OIS::KC_R)   // cycle polygon rendering mode
+    {
+        Ogre::String newVal;
+        Ogre::PolygonMode pm;
+
+        switch (mCamera->getPolygonMode())
+        {
+        case Ogre::PM_SOLID:
+            newVal = "Wireframe";
+            pm = Ogre::PM_WIREFRAME;
+            break;
+        case Ogre::PM_WIREFRAME:
+            newVal = "Points";
+            pm = Ogre::PM_POINTS;
+            break;
+        default:
+            newVal = "Solid";
+            pm = Ogre::PM_SOLID;
+        }
+
+        mCamera->setPolygonMode(pm);
+        mDetailsPanel->setParamValue(10, newVal);
+    }
+    else if(arg.key == OIS::KC_F5)   // refresh all textures
+    {
+        Ogre::TextureManager::getSingleton().reloadAll();
+    }
+    else if (arg.key == OIS::KC_SYSRQ)   // take a screenshot
+    {
+        mWindow->writeContentsToTimestampedFile("screenshot", ".jpg");
+    }
+    else if (arg.key == OIS::KC_ESCAPE)
+    {
+        mShutDown = true;
+    }
+	else if (arg.key == OIS::KC_C )
+	{
+		if( mCameraMan->getStyle() == OgreBites::CS_FREELOOK )
+			mCameraMan->setStyle(OgreBites::CS_ORBIT);
+		else if( mCameraMan->getStyle() == OgreBites::CS_ORBIT )
+			mCameraMan->setStyle(OgreBites::CS_FREELOOK);
+	}
+
+    mCameraMan->injectKeyDown(arg);
+    return true;
+}
+//---------------------------------------------------------------------------
+bool BaseApplication::keyReleased(const OIS::KeyEvent &arg)
+{
+    mCameraMan->injectKeyUp(arg);
+    return true;
+}
+//---------------------------------------------------------------------------
+bool BaseApplication::mouseMoved(const OIS::MouseEvent &arg)
+{
+    if (mTrayMgr->injectMouseMove(arg)) return true;
+    mCameraMan->injectMouseMove(arg);
+    return true;
+}
+//---------------------------------------------------------------------------
+bool BaseApplication::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
+{
+    if (mTrayMgr->injectMouseDown(arg, id)) return true;
+    mCameraMan->injectMouseDown(arg, id);
+    return true;
+}
+//---------------------------------------------------------------------------
+bool BaseApplication::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
+{
+    if (mTrayMgr->injectMouseUp(arg, id)) return true;
+    mCameraMan->injectMouseUp(arg, id);
+    return true;
+}
+//---------------------------------------------------------------------------
+// Adjust mouse clipping area
+void BaseApplication::windowResized(Ogre::RenderWindow* rw)
+{
+    unsigned int width, height, depth;
+    int left, top;
+    rw->getMetrics(width, height, depth, left, top);
+
+    const OIS::MouseState &ms = mMouse->getMouseState();
+    ms.width = width;
+    ms.height = height;
+}
+//---------------------------------------------------------------------------
+// Unattach OIS before window shutdown (very important under Linux)
+void BaseApplication::windowClosed(Ogre::RenderWindow* rw)
+{
+    // Only close for window that created OIS (the main window in these demos)
+    if(rw == mWindow)
+    {
+        if(mInputManager)
+        {
+            mInputManager->destroyInputObject(mMouse);
+            mInputManager->destroyInputObject(mKeyboard);
+
+            OIS::InputManager::destroyInputSystem(mInputManager);
+            mInputManager = 0;
+        }
+    }
+}
+//---------------------------------------------------------------------------
+/**
+* @function		createTextArea
+* @remarks		create text area for displaying debug message or helps
+*/
+void BaseApplication::createDebugOverlay()
+{
+	// Create a panel
+	Ogre::OverlayContainer* panel = static_cast<Ogre::OverlayContainer*>(
+		OverlayManager::getSingleton().createOverlayElement("Panel", "CameraControlSystemParametersPanel"));
+	panel->setMetricsMode(Ogre::GMM_PIXELS);
+	panel->setPosition(10, 10);
+	panel->setDimensions(400, 400);
+
+	// Create a text area
+	mTextArea = static_cast<Ogre::TextAreaOverlayElement*>(
+		OverlayManager::getSingleton().createOverlayElement("TextArea", "CameraControlSystemParametersTextArea"));
+	mTextArea->setMetricsMode(Ogre::GMM_PIXELS);
+	mTextArea->setPosition(0, 0);
+	mTextArea->setDimensions(100, 100);
+	mTextArea->setCaption("CameraControlSystem demo");
+	mTextArea->setCharHeight(20);
+	mTextArea->setFontName("BlueHighway");
+	mTextArea->setColourBottom(ColourValue(0.3, 0.5, 0.3));
+	mTextArea->setColourTop(ColourValue(0.5, 0.7, 0.5));
+
+	// Create an overlay, and add the panel
+	mDebugOverlay = OverlayManager::getSingleton().create("OverlayName");
+	mDebugOverlay->add2D(panel);
+
+	// Add the text area to the panel
+	panel->addChild(mTextArea);
+
+	// Show the overlay
+	mDebugOverlay->show();
+}

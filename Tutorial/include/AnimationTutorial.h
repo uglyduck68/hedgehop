@@ -25,6 +25,7 @@
 
 #include "baseapplication.h"
 #include "Target.h"
+#include "CH_53E.h"	// for hellicopter
 #include "DynamicLines.h"
 #include "Trajectory.h"
 
@@ -177,16 +178,20 @@ protected:
 		}
 	}
 
-	int		createSceneNode(string MeshName)
-	{
-		// create target entity
+	//int		createSceneNode(string MeshName)
+	//{
+	//	// create target entity
 
-		m_pTarget	= new CTarget( mSceneMgr, m_vecTarget.size(), MeshName );
+	//	m_pTarget	= new (std::nothrow) CTarget( mSceneMgr, m_vecTarget.size(), MeshName );
 
-		m_vecTarget.push_back( m_pTarget );
+	//	if (m_pTarget)
+	//	{
+	//		m_pTarget->createScene();
+	//		m_vecTarget.push_back( m_pTarget );
+	//	}
 
-		return 1;
-	}
+	//	return 1;
+	//}
 
 	void setupCameraPosition(void)
 	{

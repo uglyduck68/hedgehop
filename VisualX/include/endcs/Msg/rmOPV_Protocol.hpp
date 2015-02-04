@@ -9,41 +9,6 @@
 #define STRUCT_ALIGNED_(x) struct
 #endif
 
-typedef STRUCT_ALIGNED_(1) ST_IFF {
-	int16_t nMode_1;
-	int16_t n_Mode_2;
-	int16_t nMode3A;
-	int16_t nMode_4;
-} ST_IFF;
-
-class ST_IFFTypeSupport
-{
-public:
-	FooTypeSupport	*fooTS;
-public:
-	void register_topic_type(DomainParticipant *p_Participant)
-	{
-		if(p_Participant == NULL) return;
-		{
-			fooTS = get_new_foo_type_support();
-			insert_topic_parameters(fooTS);
-			fooTS->i_size = sizeof(struct ST_IFF);
-			fooTS->register_type(fooTS, p_Participant, "ST_IFF");
-		}
-	}
-	void insert_topic_parameters(FooTypeSupport *fooTS)
-	{
-		{dds_parameter_t *p_para = get_new_parameter("nMode_1", DDS_Int16, sizeof(int16_t));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("n_Mode_2", DDS_Int16, sizeof(int16_t));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("nMode3A", DDS_Int16, sizeof(int16_t));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("nMode_4", DDS_Int16, sizeof(int16_t));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-	}
-};
-
 typedef STRUCT_ALIGNED_(1) ST_POSITION {
 	double dLon;
 	double dLat;
@@ -78,11 +43,15 @@ public:
 
 typedef STRUCT_ALIGNED_(1) ST_ENTITY_STATE {
 	ST_POSITION stPosition;
+	double dSpeed;
+	double dCourse;
 	double dHeading;
 	double dRoll;
 	double dPitch;
-	double dCourse;
-	double dSpeed;
+	double dHealthPoint;
+	int16_t bDestroyed;
+	int16_t Reserved_1;
+	int16_t Reserved_2;
 } ST_ENTITY_STATE;
 
 class ST_ENTITY_STATETypeSupport
@@ -104,25 +73,128 @@ public:
 	{
 		{dds_parameter_t *p_para = get_new_parameter("stPosition", DDS_Struct, sizeof(ST_POSITION));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dSpeed", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dCourse", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("dHeading", DDS_Float64, sizeof(double));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("dRoll", DDS_Float64, sizeof(double));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("dPitch", DDS_Float64, sizeof(double));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("dCourse", DDS_Float64, sizeof(double));
+		{dds_parameter_t *p_para = get_new_parameter("dHealthPoint", DDS_Float64, sizeof(double));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("dSpeed", DDS_Float64, sizeof(double));
+		{dds_parameter_t *p_para = get_new_parameter("bDestroyed", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("Reserved_1", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("Reserved_2", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+	}
+};
+
+typedef STRUCT_ALIGNED_(1) ST_ENTITY_INFO {
+	int32_t ulType;
+	char chESM_Name[5];
+	int32_t ulPlatformClass;
+	int32_t ulPlatformKind;
+	int32_t ulPlatformMission;
+	int32_t ulIdentity;
+	int16_t nMode1;
+	int16_t nMode2;
+	int16_t nMode3A;
+	int16_t nMode4;
+	int16_t nWeaponClass;
+	char chWeaponRadarInfo[5];
+	double dWeaponRange;
+	double dWeaponSpeed;
+	int16_t nWeaponOperationType;
+	int16_t nSensorClass;
+	int16_t nSensorThreatLevel;
+	char chSensorInfo[5];
+	double dSensorFreqency;
+	double dSensorScanRate;
+	double dSensorScanType;
+	double dSensorAmplitude;
+} ST_ENTITY_INFO;
+
+class ST_ENTITY_INFOTypeSupport
+{
+public:
+	FooTypeSupport	*fooTS;
+public:
+	void register_topic_type(DomainParticipant *p_Participant)
+	{
+		if(p_Participant == NULL) return;
+		{
+			fooTS = get_new_foo_type_support();
+			insert_topic_parameters(fooTS);
+			fooTS->i_size = sizeof(struct ST_ENTITY_INFO);
+			fooTS->register_type(fooTS, p_Participant, "ST_ENTITY_INFO");
+		}
+	}
+	void insert_topic_parameters(FooTypeSupport *fooTS)
+	{
+		{dds_parameter_t *p_para = get_new_parameter("ulType", DDS_Int32, sizeof(int32_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("chESM_Name", DDS_Array_Char8, sizeof(char)*((5)));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("ulPlatformClass", DDS_Int32, sizeof(int32_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("ulPlatformKind", DDS_Int32, sizeof(int32_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("ulPlatformMission", DDS_Int32, sizeof(int32_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("ulIdentity", DDS_Int32, sizeof(int32_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("nMode1", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("nMode2", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("nMode3A", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("nMode4", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("nWeaponClass", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("chWeaponRadarInfo", DDS_Array_Char8, sizeof(char)*((5)));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dWeaponRange", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dWeaponSpeed", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("nWeaponOperationType", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("nSensorClass", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("nSensorThreatLevel", DDS_Int16, sizeof(int16_t));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("chSensorInfo", DDS_Array_Char8, sizeof(char)*((5)));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dSensorFreqency", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dSensorScanRate", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dSensorScanType", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dSensorAmplitude", DDS_Float64, sizeof(double));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 	}
 };
 
 typedef STRUCT_ALIGNED_(1) ST_ENTITY_ATTRIBUTE {
+	double dTurnRate;
+	double dRiseRate;
+	double dMaxAltitude;
+	double dMaxSpeed;
+	double dMaxAcceleration;
+	double dMaxHealthPoint;
 	double dLength;
 	double dWidth;
 	double dHeight;
-	double dDraft;
 	double dWeight;
+	int16_t Reserved;
 } ST_ENTITY_ATTRIBUTE;
 
 class ST_ENTITY_ATTRIBUTETypeSupport
@@ -142,15 +214,27 @@ public:
 	}
 	void insert_topic_parameters(FooTypeSupport *fooTS)
 	{
+		{dds_parameter_t *p_para = get_new_parameter("dTurnRate", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dRiseRate", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dMaxAltitude", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dMaxSpeed", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dMaxAcceleration", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("dMaxHealthPoint", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("dLength", DDS_Float64, sizeof(double));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("dWidth", DDS_Float64, sizeof(double));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("dHeight", DDS_Float64, sizeof(double));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("dDraft", DDS_Float64, sizeof(double));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("dWeight", DDS_Float64, sizeof(double));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("Reserved", DDS_Int16, sizeof(int16_t));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 	}
 };
@@ -564,10 +648,7 @@ public:
 
 typedef STRUCT_ALIGNED_(1) SC_SIM_ENTITY {
 	uint16_t unEntityID;
-	char chName[20];
-	int16_t nEntityType;
-	int16_t nEntityClass;
-	ST_IFF stIFF;
+	ST_ENTITY_INFO stEntityInfo;
 	ST_ENTITY_ATTRIBUTE stEntityAttribute;
 	ST_ENTITY_STATE stEntityState;
 } SC_SIM_ENTITY;
@@ -591,13 +672,7 @@ public:
 	{
 		{dds_parameter_t *p_para = get_new_parameter("unEntityID", DDS_UInt16, sizeof(uint16_t));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("chName", DDS_Array_Char8, sizeof(char)*((20)));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("nEntityType", DDS_Int16, sizeof(int16_t));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("nEntityClass", DDS_Int16, sizeof(int16_t));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("stIFF", DDS_Struct, sizeof(ST_IFF));
+		{dds_parameter_t *p_para = get_new_parameter("stEntityInfo", DDS_Struct, sizeof(ST_ENTITY_INFO));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("stEntityAttribute", DDS_Struct, sizeof(ST_ENTITY_ATTRIBUTE));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
@@ -606,12 +681,12 @@ public:
 	}
 };
 
-typedef STRUCT_ALIGNED_(1) SIM_SC_ENTITY_STATE {
+typedef STRUCT_ALIGNED_(1) SC_SIM_ENTITY_STATE {
 	uint16_t unEntityID;
 	ST_ENTITY_STATE stEntityState;
-} SIM_SC_ENTITY_STATE;
+} SC_SIM_ENTITY_STATE;
 
-class SIM_SC_ENTITY_STATETypeSupport
+class SC_SIM_ENTITY_STATETypeSupport
 {
 public:
 	FooTypeSupport	*fooTS;
@@ -622,8 +697,8 @@ public:
 		{
 			fooTS = get_new_foo_type_support();
 			insert_topic_parameters(fooTS);
-			fooTS->i_size = sizeof(struct SIM_SC_ENTITY_STATE);
-			fooTS->register_type(fooTS, p_Participant, "SIM_SC_ENTITY_STATE");
+			fooTS->i_size = sizeof(struct SC_SIM_ENTITY_STATE);
+			fooTS->register_type(fooTS, p_Participant, "SC_SIM_ENTITY_STATE");
 		}
 	}
 	void insert_topic_parameters(FooTypeSupport *fooTS)
@@ -637,10 +712,7 @@ public:
 
 typedef STRUCT_ALIGNED_(1) SC_SIM_OWNSHIP {
 	uint16_t unEntityID;
-	char chName[20];
-	int16_t nEntityType;
-	int16_t nEntityClass;
-	ST_IFF stIFF;
+	ST_ENTITY_INFO stEntityInfo;
 	ST_ENTITY_ATTRIBUTE stEntityAttribute;
 	ST_ENTITY_STATE stEntityState;
 } SC_SIM_OWNSHIP;
@@ -664,15 +736,38 @@ public:
 	{
 		{dds_parameter_t *p_para = get_new_parameter("unEntityID", DDS_UInt16, sizeof(uint16_t));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("chName", DDS_Array_Char8, sizeof(char)*((20)));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("nEntityType", DDS_Int16, sizeof(int16_t));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("nEntityClass", DDS_Int16, sizeof(int16_t));
-		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
-		{dds_parameter_t *p_para = get_new_parameter("stIFF", DDS_Struct, sizeof(ST_IFF));
+		{dds_parameter_t *p_para = get_new_parameter("stEntityInfo", DDS_Struct, sizeof(ST_ENTITY_INFO));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("stEntityAttribute", DDS_Struct, sizeof(ST_ENTITY_ATTRIBUTE));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+		{dds_parameter_t *p_para = get_new_parameter("stEntityState", DDS_Struct, sizeof(ST_ENTITY_STATE));
+		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
+	}
+};
+
+typedef STRUCT_ALIGNED_(1) SC_SIM_OWNSHIP_STATE {
+	uint16_t unEntityID;
+	ST_ENTITY_STATE stEntityState;
+} SC_SIM_OWNSHIP_STATE;
+
+class SC_SIM_OWNSHIP_STATETypeSupport
+{
+public:
+	FooTypeSupport	*fooTS;
+public:
+	void register_topic_type(DomainParticipant *p_Participant)
+	{
+		if(p_Participant == NULL) return;
+		{
+			fooTS = get_new_foo_type_support();
+			insert_topic_parameters(fooTS);
+			fooTS->i_size = sizeof(struct SC_SIM_OWNSHIP_STATE);
+			fooTS->register_type(fooTS, p_Participant, "SC_SIM_OWNSHIP_STATE");
+		}
+	}
+	void insert_topic_parameters(FooTypeSupport *fooTS)
+	{
+		{dds_parameter_t *p_para = get_new_parameter("unEntityID", DDS_UInt16, sizeof(uint16_t));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}
 		{dds_parameter_t *p_para = get_new_parameter("stEntityState", DDS_Struct, sizeof(ST_ENTITY_STATE));
 		INSERT_PARAM(fooTS->pp_parameters, fooTS->i_parameters, fooTS->i_parameters, p_para, dds_parameter_t**);}

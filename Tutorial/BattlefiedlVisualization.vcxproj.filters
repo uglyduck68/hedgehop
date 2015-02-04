@@ -99,6 +99,12 @@
     <ClInclude Include="include\Util.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="include\AirVessel.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CH_53E.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BattlefiedlVisualization.cpp">
@@ -171,6 +177,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\CollisionTools.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AirVessel.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CH_53E.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

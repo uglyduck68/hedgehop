@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "..\include\AnimationTutorial.h"
+#include "CH_53E.h"
 #include "OgreOggSound.h"
 
 #include <new>
@@ -163,9 +164,26 @@ void AnimationTutorial::createScene()
 	//////////////////////////////////////////////////////////////////////////////
 	// from here create targets
 	//////////////////////////////////////////////////////////////////////////////
-	createSceneNode("B787.mesh");
+	m_pTarget	= new (std::nothrow) CTarget( mSceneMgr, m_vecTarget.size(), "B787.mesh" );
+
+	if (m_pTarget)
+	{
+		m_pTarget->createScene();
+		m_vecTarget.push_back( m_pTarget );
+	}
+
+
 	GetSceneNode()->setPosition( Vector3(0, 100, 500) );
 
+	///////////////////////////////////////////////////////////////////////////
+	// add additional target to test collision
+	///////////////////////////////////////////////////////////////////////////
+	CTarget*	pTemp	= new (std::nothrow) CCH_53E (mSceneMgr, m_vecTarget.size(), "CH-53E.mesh");
+	if (pTemp)
+	{
+		m_pTarget->createScene();
+		m_vecTarget.push_back( pTemp );
+	}
 	//////
 	// add camera to scene node for chase camera. *NOT* used.
 	//////

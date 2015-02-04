@@ -3,6 +3,12 @@
 
 const char*	TARGET_NAME_PREFIX	= "Target_";
 
+/**
+ *@function		CTarget
+ *@brief		base class of all target characters
+ *@FIXME		급해서 생성자에 모델 생성 부분을 만들었지만
+ *				추후 createScene 함수에서 만들도록 수정하는 것이 좋음
+ */
 CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 	mSceneMgr(pSceneMgr),
 	m_pViewpointNode(NULL),
@@ -22,7 +28,7 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 
 	// set target mesh name
 	m_strMeshName	= mesh;
-
+/*
 	// create target entity
 	m_pSceneNode		= mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	Entity*	pEntity		= mSceneMgr->createEntity(m_strMeshName);
@@ -71,12 +77,64 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 
 		m_pCamHolder		= m_pSceneNode->createChildSceneNode(m_strName + "_camHolder", pos);
 	}
-
+*/
 }
 
 
 CTarget::~CTarget(void)
 {
+}
+
+/**
+* @function		createScene
+* @brief		create entity and scene node
+*/
+void	CTarget::createScene()
+{
+	// create target entity
+	m_pSceneNode		= mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	Entity*	pEntity		= mSceneMgr->createEntity(m_strMeshName);
+
+	Any			any(pEntity);
+
+	GetSceneNode()->setUserAny(any);
+
+	GetSceneNode()->attachObject(pEntity);
+
+	///////////////////////////////////////////////////////////////////////////
+	// create my own resources for particle system
+	///////////////////////////////////////////////////////////////////////////
+	createEffects();
+
+	// attache particle to scene node
+	SetEffect(EFT_JETENGINE);
+
+	///////////////////////////////////////////////////////////////////////////
+	// create my own sounds
+	///////////////////////////////////////////////////////////////////////////
+	m_pSound	= OgreOggSoundManager::getSingletonPtr()->createSound(m_strName, "jet_exhaust.wav");
+
+	// start to play sound
+	if( m_pSound )
+		m_pSound->play();
+
+	///////////////////////////////////////////////////////////////////////////
+	// create viewpoint node for tracking camera
+	///////////////////////////////////////////////////////////////////////////
+	if (m_pSceneNode)
+	{
+		m_pViewpointNode	= m_pSceneNode->createChildSceneNode(m_strName + "_viewpoint", VP_DEFAULT_POSITION);
+
+		// Method 2 to handle viewpoint of camera
+		// 카메라를 좀 더 편하게 핸들링하기 위하여 카메라를 담을 노드를 생성한다.
+		// @FIXME
+		// - 이 시점에서 getCameraPosition 함수를 통하여 카메라의 위치를 구할 수 없음.
+		// 아마도 실제 scene node 생성이 안되서 그 크기가 정해지지 않음.
+		// 따라서 MBR을 이용하지 않고, 강제로 100 높이에 카메라를 위치시킬 수 있도록한다.
+		Vector3	pos(0, 100, 0);
+
+		m_pCamHolder		= m_pSceneNode->createChildSceneNode(m_strName + "_camHolder", pos);
+	}
 }
 
 bool CTarget::frameRenderingQueued( const FrameEvent &evt )
