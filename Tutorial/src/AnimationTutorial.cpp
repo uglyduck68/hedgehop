@@ -178,11 +178,13 @@ void AnimationTutorial::createScene()
 	///////////////////////////////////////////////////////////////////////////
 	// add additional target to test collision
 	///////////////////////////////////////////////////////////////////////////
-	CTarget*	pTemp	= new (std::nothrow) CCH_53E (mSceneMgr, m_vecTarget.size(), "CH-53E.mesh");
+	CCH_53E*	pTemp	= new (std::nothrow) CCH_53E (mSceneMgr, m_vecTarget.size(), "CH-53E.mesh");
 	if (pTemp)
 	{
-		m_pTarget->createScene();
+		pTemp->createScene();
 		m_vecTarget.push_back( pTemp );
+
+		mRoot->addFrameListener (pTemp);
 	}
 	//////
 	// add camera to scene node for chase camera. *NOT* used.

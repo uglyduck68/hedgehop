@@ -30,6 +30,8 @@ void	CCH_53E::createScene()
 
 	assert(m_pSceneNode != NULL && pEntity != NULL);
 
+	GetSceneNode()->attachObject(pEntity);
+
 	///////////////////////////////////////////////////////////////////////////
 	// create viewpoint node for tracking camera
 	///////////////////////////////////////////////////////////////////////////
@@ -62,7 +64,7 @@ void	CCH_53E::createScene()
     
 	Vector3		aniPos(600, 100, 0);	// start position
 
-	// Setup keyframes
+	//// Setup keyframes
     TransformKeyFrame* key = track->createNodeKeyFrame(0); // startposition (1)
     key->setTranslate(aniPos + Vector3(0, 0, 0));
     key->setRotation(Ogre::Quaternion::IDENTITY);
@@ -75,10 +77,76 @@ void	CCH_53E::createScene()
 	// 다시 원래 출발지를 바라보도록 target 회전
     key->setRotation(Quaternion(Degree(-180), Vector3::UNIT_Y));
 
-
+#if	0
     // Create a new animation state to track this
     mAnimState = mSceneMgr->createAnimationState(m_strName + "_Track");
     mAnimState->setEnabled(true);
 
+
+        // Create a track to animate the camera's node
+        NodeAnimationTrack* track = anim->createNodeTrack(0, GetSceneNode());
+        
+		// Setup keyframes
+        TransformKeyFrame* key = track->createNodeKeyFrame(0); // startposition (1)
+        key->setTranslate(Vector3(0,0,0));
+        key->setRotation(Ogre::Quaternion::IDENTITY);
+
+        key = track->createNodeKeyFrame(2.5);	// (2)
+        key->setTranslate(Vector3(0,0,1000));
+        key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(1000,0,1000)));
+
+        key = track->createNodeKeyFrame(5);	// (3)
+        key->setTranslate(Vector3(1000,0,1000));
+        key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(1000,0,0)));
+
+        key = track->createNodeKeyFrame(7.5);	// (4)
+        key->setTranslate(Vector3(1000,0,0));
+        key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3::NEGATIVE_UNIT_X));
+
+        key = track->createNodeKeyFrame(10);	// (5)
+        key->setTranslate(Vector3(0,0,0));
+
+        // Second round
+        key = track->createNodeKeyFrame(11);	// (6)
+        key->setTranslate(Vector3(0,0,400));
+        key->setRotation(Quaternion(Radian(3.14/4.0),Vector3::UNIT_Z));
+        key = track->createNodeKeyFrame(11.5);	// (7)
+        key->setTranslate(Vector3(0,0,600));
+        key->setRotation(Quaternion(Radian(-3.14/4.0),Vector3::UNIT_Z));
+        key = track->createNodeKeyFrame(12.5);	// (8)
+        key->setTranslate(Vector3(0,0,1000));
+        key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(500,500,1000)));
+        key = track->createNodeKeyFrame(13.25);	// (9)
+        key->setTranslate(Vector3(500,500,1000));
+        key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(1000,-500,1000)));
+        key = track->createNodeKeyFrame(15);	// (10)
+        key->setTranslate(Vector3(1000,0,1000));
+        key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(1000,0,-500)));
+        key = track->createNodeKeyFrame(16);	// (11)
+        key->setTranslate(Vector3(1000,0,500));
+        key = track->createNodeKeyFrame(16.5);
+        key->setTranslate(Vector3(1000,0,600));
+        key = track->createNodeKeyFrame(17.5);
+        key->setTranslate(Vector3(1000,0,0));
+        key->setRotation(Vector3::UNIT_Z.getRotationTo(Vector3(-500,500,0)));
+        key = track->createNodeKeyFrame(18.25);	// (12) 118.25? 왜 얘만 값이 20 보다 크지? 오타?
+												// 118.25를 18.25로 바꿔도 뭐가 달라지는지는 잘 모르겠음.
+        key->setTranslate(Vector3(500,500,0));
+        key->setRotation(Quaternion(Radian(3.14),Vector3::UNIT_X) * Vector3::UNIT_Z.getRotationTo(Vector3(-500,-500,0)));
+        key = track->createNodeKeyFrame(20);	// (13)
+        key->setTranslate(Vector3(0,0,0));
+#endif
+        // Create a new animation state to track this
+        mAnimState = mSceneMgr->createAnimationState(m_strName + "_Track");
+        mAnimState->setEnabled(true);
+
 }
+
+bool CCH_53E::frameStarted(const FrameEvent &e)
+{
+	mAnimState->addTime(e.timeSinceLastFrame);
+
+	return true;
+}
+
 

@@ -19,5 +19,8 @@ public:
 	* @brief		create entity and scene node
 	*/
 	void	createScene();
+
+	bool frameStarted(const FrameEvent &e);
+
 };
 
