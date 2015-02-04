@@ -33,10 +33,14 @@ CTarget::CTarget(Ogre::SceneManager* pSceneMgr, int name, string mesh) :
 
 	GetSceneNode()->attachObject(pEntity);
 
+	AxisAlignedBox	bb	= GetSceneNode()->_getWorldAABB();
+
 	///////////////////////////////////////////////////////////////////////////
 	// create my own resources for particle system
 	///////////////////////////////////////////////////////////////////////////
 	createEffects();
+
+//	GetSceneNode()->_getWorldAABB()->setExtents (bb.getMinimum(), bb.getMaximum());
 
 	// attache particle to scene node
 	SetEffect(EFT_JETENGINE);

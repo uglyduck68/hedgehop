@@ -72,14 +72,17 @@ public:
 	void	createEffects()
 	{
 		m_eftJetEngine = mSceneMgr->createParticleSystem("JetEngine1", "Examples/JetEngine1");  // create a rainstorm
+		m_eftJetEngine->setBoundsAutoUpdated(false);
 		m_eftJetEngine->fastForward(5);   // fast-forward the rain so it looks more natural
 
 		// change -y-axis direction to -z-axis like fighter's jet engine flare
-		m_eftJetEngine->getEmitter(0)->setDirection( Vector3(0, 0, +1) );
+		m_eftJetEngine->getEmitter(0)->setDirection( Vector3(0, 0, -1) );
 
 		m_eftSmoke = mSceneMgr->createParticleSystem("Smoke", "Examples/Smoke");
+		m_eftSmoke->setBoundsAutoUpdated(false);
 
 		m_eftExplosion	= mSceneMgr->createParticleSystem("Explosion", "explosionTemplate");
+		m_eftExplosion->setBoundsAutoUpdated(false);
 
 		// fast forward 1 second  to the point where the particle has been emitted
 		m_eftExplosion->fastForward(1.0);
@@ -87,6 +90,7 @@ public:
 
 		m_eftWaterExplosion	= mSceneMgr->createParticleSystem("WaterExplosion", "waterExplosionTemplate");
 		m_eftWaterExplosion->fastForward(1.0);
+		m_eftWaterExplosion->setBoundsAutoUpdated(false);
 	}
 
 	void detachObject(SceneNode* pNode, const char* name)
@@ -133,7 +137,7 @@ public:
 			detachObject (GetSceneNode(), "Explosion");
 		}
 
-		if (eft == EFT_JETENGINE)
+		if (eft == EFT_JETENGINE && m_eftJetEngine != NULL)
 		{
 			GetSceneNode()->attachObject(m_eftJetEngine);
 		}
@@ -149,7 +153,7 @@ public:
 		{
 			GetSceneNode()->attachObject(m_eftWaterExplosion);
 		}
-		else if (eft == EFT_ALL)
+		else if (eft == EFT_ALL && (m_eftJetEngine != NULL && m_eftSmoke != NULL && m_eftExplosion != NULL))
 		{
 			GetSceneNode()->attachObject(m_eftJetEngine);
 			GetSceneNode()->attachObject(m_eftSmoke);
