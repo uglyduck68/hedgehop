@@ -1,0 +1,170 @@
+struct ST_POSITION
+{
+	double dLon;
+	double dLat;
+	double dAlt;
+};
+struct ST_ENTITY_STATE
+{
+	ST_POSITION stPosition;
+	double dSpeed;
+	double dCourse;
+	double dHeading;
+	double dRoll;
+	double dPitch;
+	double dHealthPoint;
+	short bDestroyed;
+	short Reserved_1;
+	short Reserved_2;
+};
+struct ST_ENTITY_INFO
+{
+	long ulType;
+	char chESM_Name[5];
+	long ulPlatformClass;
+	long ulPlatformKind;
+	long ulPlatformMission;
+	long ulIdentity;
+	short nMode1;
+	short nMode2;
+	short nMode3A;
+	short nMode4;
+	short nWeaponClass;
+	char chWeaponRadarInfo[5];
+	double dWeaponRange;
+	double dWeaponSpeed;
+	short nWeaponOperationType;
+	short nSensorClass;
+	short nSensorThreatLevel;
+	char chSensorInfo[5];
+	double dSensorFreqency;
+	double dSensorScanRate;
+	double dSensorScanType;
+	double dSensorAmplitude;
+};
+struct ST_ENTITY_ATTRIBUTE
+{
+	double dTurnRate;
+	double dRiseRate;
+	double dMaxAltitude;
+	double dMaxSpeed;
+	double dMaxAcceleration;
+	double dMaxHealthPoint;
+	double dLength;
+	double dWidth;
+	double dHeight;
+	double dWeight;
+	short Reserved;
+};
+struct ST_MISSILE_DATA
+{
+	double nMissileType;
+	double nMissileCategory;
+	double dWeight;
+	double dDamage;
+	double dSpeed;
+	double dTurnRate;
+	double dSeekerAngle;
+	double dSeekerRange;
+};
+struct ST_AMMUNITION_DATA
+{
+	short nAmmunitionType;
+	short nAmmunitionCategory;
+	double dWeight;
+	double dMuzzleVelocity;
+	short nSimulatorManagementCommand;
+};
+struct SER_SC_SIMULATOR_MANAGEMENT_COMMAND_ACK
+{
+	short nSimulatorID;
+	short nSimulatorManagementCommand;
+};
+struct SIM_SC_SIMULATOR_STATUS_REPORT
+{
+	short nSimulatorID;
+	short nSimulatorStatus;
+};
+struct SC_SER_LINK_CONNECTION_COMMAND
+{
+	short nLinkConnectionCommand;
+};
+struct SER_SC_LINK_CONNECTION_COMMAND_ACK
+{
+	short nLinkConnectionCommand;
+};
+struct SC_SIM_SIMULATION_MANAGEMENT_COMMAND
+{
+	short nSimulationManagementCommand;
+};
+struct SIM_SC_SIMULATION_MANAGEMENT_COMMAND_ACK
+{
+	short nSimulatorID;
+	short nSimulationManagementCommand;
+};
+struct SC_SIM_PARAMETER_DISTRIBUTION_COMMAND
+{
+	short eParameterDistributionCommand;
+};
+struct SC_SIM_PARAMETER_DISTRIBUTION_COMMAND_ACK
+{
+	short eParameterDistributionCommand;
+};
+struct SC_SIM_SIMULATOR_PARAMETER
+{
+	char chParameterXML[2048];
+};
+struct SIM_SC_SIMULATOR_PARAMETER_ACK
+{
+	short nSimulatorID;
+	short nSimulatorParameterAckState;
+};
+struct SC_SIM_ENVIRONMENT
+{
+	short nWeather;
+	double dTemparature;
+	double dAirPressure;
+	double dHumidity;
+	double dVisibility;
+	double dWindDirection;
+	double dWindSpeed;
+	double dWaterDirection;
+	double dWaterSpeed;
+};
+struct SC_SIM_ENTITY
+{
+	unsigned short unEntityID;
+	ST_ENTITY_INFO stEntityInfo;
+	ST_ENTITY_ATTRIBUTE stEntityAttribute;
+	ST_ENTITY_STATE stEntityState;
+};
+struct SC_SIM_ENTITY_STATE
+{
+	unsigned short unEntityID;
+	ST_ENTITY_STATE stEntityState;
+};
+struct SC_SIM_OWNSHIP
+{
+	unsigned short unEntityID;
+	ST_ENTITY_INFO stEntityInfo;
+	ST_ENTITY_ATTRIBUTE stEntityAttribute;
+	ST_ENTITY_STATE stEntityState;
+};
+struct SC_SIM_OWNSHIP_STATE
+{
+	unsigned short unEntityID;
+	ST_ENTITY_STATE stEntityState;
+};
+struct SIM_SC_MISSILE_CREATION
+{
+	long lTimeToFire;
+	ST_MISSILE_DATA stMissileData;
+	ST_POSITION stWaypointCoordinate[8];
+};
+struct SIM_SC_SHELL_CREATION
+{
+	long lTimeToFire;
+	ST_AMMUNITION_DATA stAmmunitionData;
+	double dBearing;
+	double dElevation;
+};

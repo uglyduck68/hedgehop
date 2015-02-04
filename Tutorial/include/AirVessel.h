@@ -11,6 +11,7 @@ class CAirVessel :
 {
 public:
 	CAirVessel(void);
+	CAirVessel(Ogre::SceneManager* pSceneMgr, int name, string mesh);
 	~CAirVessel(void);
 };
 

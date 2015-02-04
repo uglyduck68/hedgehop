@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+Description
+An RTI Data Distribution Service QoS Profile that provides high throughput
+for streaming reliable data.
+
+This profile depends primarily on:
+
+Data writer:
+  - batch:    combining multiple samples into a single network packet to
+              increase throughput
+  - protocol: send heartbeats to readers more frequently to cache levels low
+
+Data reader:
+  - protocol: respond more aggressively to heartbeats with positive or
+              negative acknowledgements to speed up repairs of lost packets
+
+Domain participant:
+  - Increased transport buffer sizes to efficiently send and receive many
+    large packets
+
+-->
+
+<!-- ================================================================= -->
+<!-- Throughput QoS Profile                                            -->
+<!-- ================================================================= -->
+
+<!--
+Your XML editor may be able to provide validation and auto-completion services
+as you type. To enable these services, replace the opening tag of this
+document with the following, and update the absolute path as appropriate for
+your installation:
+  
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="C:/RTI/ndds.4.5e/resource/qos_profiles_4.5e/schema/rti_dds_qos_profiles.xsd">
+-->
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="C:/RTI/ndds.4.5e/resource/qos_profiles_4.5e/schema/rti_dds_qos_profiles.xsd">
+  <qos_library name="DefaultLibrary">
+    <qos_profile name="PeriodicReliable"> <!--is_default_qos="true"-->
+      <datawriter_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+        <lifespan>
+          <duration>
+            <sec>1</sec>
+            <nanosec>0</nanosec>
+          </duration>
+        </lifespan>
+        <resource_limits>
+          <initial_instances>1</initial_instances>
+          <initial_samples>2</initial_samples>
+          <max_instances>1</max_instances>
+          <max_samples>3</max_samples>
+          <max_samples_per_instance>3</max_samples_per_instance>
+        </resource_limits>
+        <protocol>
+          <rtps_reliable_writer>
+            <heartbeat_period>
+              <sec>1</sec>
+              <nanosec>0</nanosec>
+            </heartbeat_period>
+            <fast_heartbeat_period>
+              <!-- 100 milliseconds: -->
+              <sec>0</sec>
+              <nanosec>100000000</nanosec>
+            </fast_heartbeat_period>
+            <late_joiner_heartbeat_period>
+              <!-- 10 milliseconds: -->
+              <sec>0</sec>
+              <nanosec>10000000</nanosec>
+            </late_joiner_heartbeat_period>
+            <max_heartbeat_retries>10</max_heartbeat_retries>
+            <heartbeats_per_max_samples>3</heartbeats_per_max_samples>
+            <low_watermark>0</low_watermark>
+            <high_watermark>1</high_watermark>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+        <resource_limits>
+          <initial_instances>1</initial_instances>
+          <initial_samples>2</initial_samples>
+          <max_instances>1</max_instances>
+          <max_samples>3</max_samples>
+          <max_samples_per_instance>3</max_samples_per_instance>
+        </resource_limits>
+      </datareader_qos>
+      
+      <participant_qos>
+        <participant_name>
+          <name>SWSS (Low Reliable)</name>
+        </participant_name>
+        <transport_builtin>
+          <mask>UDPv4</mask>
+        </transport_builtin>
+        <discovery_config>
+          <participant_liveliness_assert_period>
+            <sec>5</sec>
+            <nanosec>0</nanosec>
+          </participant_liveliness_assert_period>
+          <participant_liveliness_lease_duration>
+            <sec>30</sec>
+            <nanosec>0</nanosec>
+          </participant_liveliness_lease_duration>
+        </discovery_config>
+        <receiver_pool>
+          <thread>
+            <stack_size>262144</stack_size>
+            <!-- 256 KB -->
+          </thread>
+          <buffer_size>65536</buffer_size>
+          <!-- 64 KB -->
+        </receiver_pool>
+        <property>
+          <value>
+            <element>
+              <name> dds.clock.internal_clock </name>
+              <value> monotonic </value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.message_size_max</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.send_socket_buffer_size</name>
+              <value>524288</value>
+              <!-- 512 KB : 524288 -->
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.recv_socket_buffer_size</name>
+              <value>524288</value>
+              <!-- 512 kb : 524288-->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.parent.message_size_max</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.receive_buffer_size</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.received_message_count_max</name>
+              <value>65536</value>
+            </element>
+            <element>
+              <name>dds.builtin_type.string.max_size</name>
+              <value>2048</value>
+            </element>      
+          </value>
+        </property>
+      </participant_qos>
+    </qos_profile>
+
+    
+    
+    
+    
+    <qos_profile name="EventReliable">
+      <datawriter_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+        <resource_limits>
+          <initial_instances>1</initial_instances>
+          <initial_samples>2</initial_samples>
+          <max_instances>1</max_instances>
+          <max_samples>2</max_samples>
+          <max_samples_per_instance>2</max_samples_per_instance>
+        </resource_limits>
+        <protocol>
+          <rtps_reliable_writer>
+            <heartbeats_per_max_samples>2</heartbeats_per_max_samples>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+      </datareader_qos>
+      <participant_qos>
+        <participant_name>
+          <name>SWSS (Event Reliable)</name>
+        </participant_name>
+        <transport_builtin>
+          <mask>UDPv4</mask>
+        </transport_builtin>
+        <discovery_config>
+          <participant_liveliness_assert_period>
+            <sec>5</sec>
+            <nanosec>0</nanosec>
+          </participant_liveliness_assert_period>
+          <participant_liveliness_lease_duration>
+            <sec>30</sec>
+            <nanosec>0</nanosec>
+          </participant_liveliness_lease_duration>
+        </discovery_config>
+        <receiver_pool>
+          <thread>
+            <stack_size>262144</stack_size>
+            <!-- 256 KB -->
+          </thread>
+          <buffer_size>65536</buffer_size>
+          <!-- 64 KB -->
+        </receiver_pool>
+        <property>
+          <value>
+            <element>
+              <name> dds.clock.internal_clock </name>
+              <value> monotonic </value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.message_size_max</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.send_socket_buffer_size</name>
+              <value>524288</value>
+              <!-- 512 KB : 524288 -->
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.recv_socket_buffer_size</name>
+              <value>524288</value>
+              <!-- 512 kb : 524288-->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.parent.message_size_max</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.receive_buffer_size</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.received_message_count_max</name>
+              <value>65536</value>
+            </element>
+            <element>
+              <name>dds.builtin_type.string.max_size</name>
+              <value>2048</value>
+            </element>
+          </value>
+        </property>
+      </participant_qos>
+    </qos_profile>
+    
+    
+    
+    
+    
+    
+    <qos_profile name="BatchReliable"><!--Using key-->
+      <datawriter_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+        <publish_mode>
+          <kind>ASYNCHRONOUS_PUBLISH_MODE_QOS</kind>
+        </publish_mode>
+        <resource_limits>
+          <initial_instances>3000</initial_instances>
+          <initial_samples>3000</initial_samples>
+          <max_instances>3000</max_instances>
+          <max_samples>3000</max_samples>
+          <max_samples_per_instance>1</max_samples_per_instance>
+        </resource_limits>
+        <batch>
+          <enable>true</enable>
+          <max_data_bytes>65536</max_data_bytes>
+          <!-- 64 KB : 65536 -->
+          <max_samples>1000</max_samples>
+          <max_flush_delay>
+            <sec>0</sec>
+            <nanosec>10000000</nanosec>
+          </max_flush_delay>
+        </batch>
+        <writer_resource_limits>
+          <max_batches>32</max_batches>
+          <initial_batches>32</initial_batches>
+        </writer_resource_limits>
+        <protocol>
+          <rtps_reliable_writer>
+            <min_send_window_size>32</min_send_window_size>
+            <max_send_window_size>32</max_send_window_size>
+          </rtps_reliable_writer>
+        </protocol>
+      </datawriter_qos>
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_LAST_HISTORY_QOS</kind>
+          <depth>1</depth>
+        </history>
+        <resource_limits>
+          <initial_instances>3000</initial_instances>
+          <initial_samples>3000</initial_samples>
+          <max_instances>3000</max_instances>
+          <max_samples>3000</max_samples>
+          <max_samples_per_instance>1</max_samples_per_instance>
+        </resource_limits>
+        <reader_resource_limits>
+          <max_samples_per_remote_writer>3000</max_samples_per_remote_writer>
+        </reader_resource_limits>
+        <protocol>
+          <rtps_reliable_reader>
+            <max_heartbeat_response_delay>
+              <sec>0</sec>
+              <nanosec>0</nanosec>
+            </max_heartbeat_response_delay>
+            <min_heartbeat_response_delay>
+              <sec>0</sec>
+              <nanosec>0</nanosec>
+            </min_heartbeat_response_delay>
+          </rtps_reliable_reader>
+        </protocol>
+        <multicast>
+          <value>
+            <element>
+              <receive_address>239.255.1.2</receive_address>
+            </element>
+          </value>
+        </multicast>
+      </datareader_qos>
+      <participant_qos>
+        <participant_name>
+          <name>SWSS (Batch Reliable)</name>
+        </participant_name>
+        <transport_builtin>
+          <mask>UDPv4</mask>
+        </transport_builtin>
+        <discovery_config>
+          <participant_liveliness_assert_period>
+            <sec>5</sec>
+            <nanosec>0</nanosec>
+          </participant_liveliness_assert_period>
+          <participant_liveliness_lease_duration>
+            <sec>30</sec>
+            <nanosec>0</nanosec>
+          </participant_liveliness_lease_duration>
+        </discovery_config>
+        <receiver_pool>
+          <thread>
+            <stack_size>262144</stack_size>
+            <!-- 256 KB : 262144 -->
+          </thread>
+          <buffer_size>65536</buffer_size>
+          <!-- 64 KB : 65536 -->
+        </receiver_pool>
+        <property>
+          <value>
+            <element>
+              <name> dds.clock.internal_clock </name>
+              <value> monotonic </value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.message_size_max</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.send_socket_buffer_size</name>
+              <value>1048576</value>
+              <!-- 1 MB : 1048576 -->
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.recv_socket_buffer_size</name>
+              <value>3145728</value>
+              <!-- 3 MB : 3145728-->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.parent.message_size_max</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.receive_buffer_size</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.received_message_count_max</name>
+              <value>65536</value>
+            </element>
+            <element>
+              <name>dds.builtin_type.string.max_size</name>
+              <value>2048</value>
+            </element>
+          </value>
+        </property>
+      </participant_qos>
+    </qos_profile>
+
+
+    <qos_profile name="LargeReliable">
+      <datawriter_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+        <publish_mode>
+          <kind>ASYNCHRONOUS_PUBLISH_MODE_QOS</kind>
+        </publish_mode>
+      </datawriter_qos>
+      <datareader_qos>
+        <reliability>
+          <kind>RELIABLE_RELIABILITY_QOS</kind>
+        </reliability>
+        <history>
+          <kind>KEEP_ALL_HISTORY_QOS</kind>
+        </history>
+      </datareader_qos>
+      <participant_qos>
+        <participant_name>
+          <name>SWSS (Batch Reliable)</name>
+        </participant_name>
+        <transport_builtin>
+          <mask>UDPv4</mask>
+        </transport_builtin>
+        <discovery_config>
+          <participant_liveliness_assert_period>
+            <sec>5</sec>
+            <nanosec>0</nanosec>
+          </participant_liveliness_assert_period>
+          <participant_liveliness_lease_duration>
+            <sec>30</sec>
+            <nanosec>0</nanosec>
+          </participant_liveliness_lease_duration>
+        </discovery_config>
+        <receiver_pool>
+          <thread>
+            <stack_size>262144</stack_size>
+            <!-- 256 KB -->
+          </thread>
+          <buffer_size>65536</buffer_size>
+          <!-- 64 KB -->
+        </receiver_pool>
+        <property>
+          <value>
+            <element>
+              <name> dds.clock.internal_clock </name>
+              <value> monotonic </value>
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.parent.message_size_max</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.send_socket_buffer_size</name>
+              <value>524288</value>
+              <!-- 512 KB : 524288 -->
+            </element>
+            <element>
+              <name>dds.transport.UDPv4.builtin.recv_socket_buffer_size</name>
+              <value>524288</value>
+              <!-- 512 kb : 524288-->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.parent.message_size_max</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.receive_buffer_size</name>
+              <value>65536</value>
+              <!-- 64 KB -->
+            </element>
+            <element>
+              <name>dds.transport.shmem.builtin.received_message_count_max</name>
+              <value>65536</value>
+            </element>
+            <element>
+              <name>dds.builtin_type.string.max_size</name>
+              <value>2048</value>
+            </element>
+          </value>
+        </property>
+      </participant_qos>
+    </qos_profile>
+    
+    
+  </qos_library>
+</dds>
