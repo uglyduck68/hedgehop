@@ -54,7 +54,7 @@ void	CCH_53E::createScene()
 	// To animate mesh to test collision
 	///////////
 	///< getAnimation or hasAnimation API
-    Animation* anim = mSceneMgr->createAnimation(m_strName + "_Track", 20);
+    Animation* anim = mSceneMgr->createAnimation(m_strName + "_Track", 2);
         
 	// Spline it for nice curves
     anim->setInterpolationMode(Animation::IM_SPLINE);
@@ -62,7 +62,7 @@ void	CCH_53E::createScene()
     // Create a track to animate the camera's node
     NodeAnimationTrack* track = anim->createNodeTrack(0, GetSceneNode());
     
-	Vector3		aniPos(600, 100, 0);	// start position
+	Vector3		aniPos(500, 100, 0);	// start position
 
 	//// Setup keyframes
     TransformKeyFrame* key = track->createNodeKeyFrame(0); // startposition (1)
@@ -70,12 +70,12 @@ void	CCH_53E::createScene()
     key->setRotation(Ogre::Quaternion::IDENTITY);
 
 	// west를 바라보도록 target 회전
-    key->setRotation(Quaternion(Degree(-90), Vector3::UNIT_Y));
+//    key->setRotation(Quaternion(Degree(-90), Vector3::UNIT_Y));
 
-    key = track->createNodeKeyFrame(2.5);	// (2)
-    key->setTranslate(aniPos + Vector3(-1200, 0, 0));
+    key = track->createNodeKeyFrame(1);	// (2)
+    key->setTranslate(aniPos + Vector3(-1000, 0, 500));
 	// 다시 원래 출발지를 바라보도록 target 회전
-    key->setRotation(Quaternion(Degree(-180), Vector3::UNIT_Y));
+//    key->setRotation(Quaternion(Degree(-180), Vector3::UNIT_Y));
 
 #if	0
     // Create a new animation state to track this
