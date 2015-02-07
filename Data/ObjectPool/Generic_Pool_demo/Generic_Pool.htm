@@ -1,0 +1,316 @@
+<!-- HTML for article "Template based Generic Pool using C++" by Rohit Joshi,Rohit Joshi
+     URL: http://www.codeproject.com/library/Generic_Pool.asp
+
+     Article content copyright Rohit Joshi,Rohit Joshi
+     All formatting, additions and alterations Copyright © CodeProject, 1999-2004
+-->
+<!----------------------------- Ignore ----------------------------->
+<link rel="stylesheet" type=text/css href="http://www.codeproject.com/styles/global.css">
+<H2>Introduction</H2>
+<P>Many applications use connection/object pool. A program may require a IMAP connection pool&nbsp;and LDAP connection pool. One could easily implement a IMAP connection pool, then take the existing code and implement a LDAP connection pool. The program grows, and now there is a need for a pool of threads. So just take the IMAP connection pool and convert that to a pool of threads (Copy, paste, find, replace????). Need to make some changes to the pool implementation? Not a very easy task, since the code has been duplicated in many places. Re-inventing source code is not an intelligent approach in an object oriented environment which encourages re-usability. It seems to make more sense to implement a pool that can contain any arbitrary type rather than duplicating code. How does one do that? The answer is to use type parameterization, more commonly referred to as templates.</P>
+<P>C++ templates allow one to implement a generic <CODE>Pool&lt;T&gt;</CODE> template that has a type parameter <CODE>T</CODE>. <CODE>T</CODE> can be replaced with actual types, for example, class <CODE>ImapConn</CODE>, and C++ will generate the class <CODE>Pool&lt;ImapConn&gt;</CODE>. Changing the implementation of the Pool becomes relatively simple. Once the changes are implemented in the template <CODE>Pool&lt;T&gt;</CODE>, they are immediately reflected in the classes <CODE>Pool&lt;ImapConn&gt;</CODE>, <CODE>Pool&lt;LdapConn&gt;</CODE>, and <CODE>Pool&lt;Threads&gt;</CODE>.</P>
+<P>Attached demo project contains:</P>
+<OL>
+<LI>Docs: Source code documentation. 
+<LI>Source code and project files. </LI></OL>
+<P>This article demonstrates how to implement generic pool using templates. Code is been compiled on Windows as well as Linux. Please feel free to modify and use.</P>
+<P>Below are the requirements to implement generic pool:</P>
+<UL>
+<LI>Generic: It should be generic enough to work with any type of resources. E.g., Database Connection pool, Thread pool, other resource pool etc... 
+<LI>Pool Size: Size of the pool should be configurable and if required change at runtime. 
+<LI>Pool Type: If Pool is fixed size, or temporary connection allowed in case of pool is full. 
+<LI>Object's lifetime: If user doesn't check-in the resource back, what should be the duration at which the object will be considered as expired and return back to free resources. 
+<LI>Timeout functionality: If Pool is full and temporary connections are not&nbsp;allowed, how long caller function can wait to&nbsp;get object. </LI></UL>
+<P>The source code contains:</P>
+<OL>
+<LI><I>PoolMgr.h</I> which implements the singleton Pool class. It has following functions: <PRE>template&lt;class T&gt; 
+class PoolMgr
+{
+    typedef ObjectHolder&lt;T&gt; ObjHolder;  
+    typedef list&lt;ObjHolder&gt; ObjList;  
+&nbsp;   <font SIZE="2" COLOR="#0000ff">static</font><font SIZE="2"> Mutex m_mPool; </font><font SIZE="2" COLOR="#008000">// Mutex for Pool static instance
+   </font><font SIZE="2">Mutex m_mData; </font><font SIZE="2" COLOR="#008000">// Mutex for Pool data
+</font>
+public:
+    // Get the Instance of pool manager
+    static PoolMgr&lt;T&gt;* GetInstance()
+    {
+        <font SIZE="2" COLOR="#0000ff">if</font><font SIZE="2">(!m_pPoolMgr) {
+           Lock&lt;Mutex&gt; gaurd(m_mPool);
+           </font><font SIZE="2" COLOR="#0000ff">if</font><font SIZE="2">(!m_pPoolMgr)
+               m_pPoolMgr = </font><font SIZE="2" COLOR="#0000ff">new</font><font SIZE="2"> PoolMgr&lt;T&gt;()
+       }
+       </font>return m_pPoolMgr;
+&nbsp;
+    }
+&nbsp;  <font SIZE="2" COLOR="#008000">// delete the pool
+</font>   <font SIZE="2" COLOR="#0000ff">static</font><font SIZE="2"> </font><font SIZE="2" COLOR="#0000ff">void</font><font SIZE="2"> DeletePool()
+   {
+</font>   <font SIZE="2" COLOR="#0000ff">    if</font><font SIZE="2">(m_pPoolMgr) {
+           Lock&lt;Mutex&gt; gaurd(m_mPool);
+</font>            <font SIZE="2" COLOR="#0000ff">if</font><font SIZE="2">(m_pPoolMgr){
+</font>                <font SIZE="2" COLOR="#0000ff">delete</font><font SIZE="2"> m_pPoolMgr;
+          m_pPoolMgr = NULL;
+      }
+   }
+</font>
+    // Initliaze pool
+    void Init(unsigned nPoolSize, long nExpirationTime, 
+              bool bTempObjAllowed, unsigned nWaitTime = 3)
+    {
+       …
+    }
+     // Reset the pool
+    void ResetPool()
+    {
+        .....
+    }
+     // Initliaze pool
+    void Init(unsigned nPoolSize, long nExpirationTime, 
+              bool bTempObjAllowed, unsigned nWaitTime = 3)
+    {
+       ...
+    }
+    
+     // Checkout the Object from pool  
+    T* Checkout()
+    {
+     ...        
+    }
+    // checkin the Object into pool                          
+    void Checkin(T *pObj)
+    {
+     ...
+    }
+private:
+    
+    static PoolMgr&lt;T&gt; *m_pPoolMgr; // static instance of PoolMgr
+&nbsp;
+    //private constructor
+     PoolMgr()
+    {
+        m_nPoolSize = 0;
+        m_nExpirationTime = 600; // in sec
+        m_bTempObjAllowed = true;
+        m_nWaitTime = 3;
+    }
+    // distructor   
+    ~PoolMgr()
+    {
+       
+    }
+    // pool size : default 0
+    unsigned m_nPoolSize;
+    // wait time: How long calling function can wait to find object
+    unsigned m_nWaitTime;
+    // Object expiration time: default 600
+    long m_nExpirationTime;
+    // if pool is full, is tempobject allowed
+    bool m_bTempObjAllowed;
+    // reserved objects
+    ObjList m_oReserved;
+    // free objects
+    ObjList m_oFree;
+           
+};
+template&lt;class T&gt; PoolMgr&lt;T&gt;* PoolMgr&lt;T&gt;::m_pPoolMgr = NULL;
+//initialize static instance
+<font SIZE="2" COLOR="#0000ff">template</font><font SIZE="2">&lt;</font><font SIZE="2" COLOR="#0000ff">class</font><font SIZE="2"> T&gt; Mutex PoolMgr&lt;T&gt;::m_mPool;</PRE>
+</font> <PRE>&nbsp;</PRE>
+<UL>
+<LI><CODE>static PoolMgr&lt;T&gt;* GetInstance()</CODE>: which returns the instance of <CODE>PoolMgr</CODE>. 
+<LI>static&nbsp; void DeletePool(): deletes the pool and free resources<LI><CODE>void Init(unsigned nPoolSize, long nExpirationTime, bool bTempObjAllowed, unsigned nWaitTime)</CODE>: User must initialize the Pool with following parameters: 
+<UL>
+<LI><CODE>PoolSize</CODE>: Size of the Pool. 
+<LI><CODE>ExpirationTime</CODE>: Duration in seconds. If object is not used for this duration,&nbsp; object would be considered as expired and would be moved to&nbsp;available&nbsp;object pool. 
+<LI><CODE>TempConnAllowd</CODE>: If Pool is full, should&nbsp;Pool be allowed to create temporary connections. 
+<LI><CODE>WaitTime</CODE>: If temporary connection is not allowed&nbsp;and Pool is full, how long caller function can wait to get the connection from&nbsp;the expired connections. </LI></UL>
+<LI><CODE>void ResetPool()</CODE>: Release all the resources and reset the pool. 
+<LI><CODE>T* Checkout()</CODE>: Check out the resource. 
+<LI><CODE>void Checkin(T* pObj)</CODE>: Check in the resource. 
+<LI><CODE>template&lt;class T&gt;</CODE>: Class <CODE>PoolMgr</CODE> class contains two list of pools. One is for reserved objects and the other for free objects. In a multithreaded environment, it would avoid locking all the objects instead of specific type. E.g., only all free objects or reserved. </LI></UL>
+<LI><I>ObjectHolder.h</I>: which contains the object pointer and timestamp. It is a template class of type <CODE>T</CODE> which allows storing any generic object class. <PRE>template&lt;class T&gt;
+class ObjectHolder
+{
+    public:
+          // constructor
+        ObjectHolder()
+        {
+           m_nTimeStamp = -1;
+            m_pObj = NULL;
+        }
+&nbsp;
+       // distructor
+        ~ObjectHolder()
+        {
+            if(m_pObj) {
+                m_pObj-&gt;Release();
+              m_pObj = NULL;
+            }
+            
+        }
+&nbsp;
+       //Initliaze object
+        void InitObject()
+        {
+          if(!m_pObj) {
+               m_pObj = new T();
+               m_pObj-&gt;Init();
+          }
+        }
+                        
+                    
+    private:
+        T *m_pObj;  // object pointer
+        long  m_nTimeStamp;  // timestamp
+        
+};</PRE>
+<LI><I>GenericObject.h</I>: This is a sample generic class which is used for testing this pool. User of this pool needs to either implement following methods in their connection/object class or inherit from <CODE>GenericObject</CODE> class. <PRE>class GenericObject
+{
+    public:
+          //constructor
+          GenericObject() {}
+          //destrctor
+          ~GenericObject() {}
+          
+          //Initliaze object
+        &nbsp;&nbsp;virtual void Init() {}
+          
+           
+          //Release the resource related to object
+        &nbsp;&nbsp;virtual void Release() {}
+        &nbsp;&nbsp;
+          // Check if object is still usable
+        &nbsp;&nbsp;virtual bool IsUsable()
+        &nbsp;&nbsp;{
+            return true;
+        &nbsp;&nbsp;}
+            
+          // If object is not usable, make it usable
+        &nbsp;&nbsp;virtual bool MakeUsable()
+        &nbsp;&nbsp;{
+          &nbsp;&nbsp;&nbsp;&nbsp;if(!IsUsable()) {
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Init();
+              return true;
+          }
+           
+};</PRE>
+<P>Here:</P>
+<OL type=a>
+<LI><CODE>void Init()</CODE>: Initialize the object. If object needs to make connection, do it in this function. 
+<LI><CODE>void Release()</CODE>: Release the resources. 
+<LI><CODE>bool IsUsabled()</CODE>: Is this object still usable? 
+<LI><CODE>bool MakeUsable()</CODE>: If it is not usable, try to make it usable and if successful, return true.&nbsp;This will avoid construction of new object if successfully made reusable. </LI></OL>
+<li>MutexWin.h (Windows) and Mutex.h (Linux):<br>
+<font SIZE="2" COLOR="#008000">// Lock class<br>
+</font><font SIZE="2" COLOR="#0000ff">template</font><font SIZE="2"> &lt;</font><font SIZE="2" COLOR="#0000ff">class</font><font SIZE="2"> 
+T &gt; </font><font SIZE="2" COLOR="#0000ff">class</font><font SIZE="2"> Lock <br>
+{<br>
+&nbsp;&nbsp;&nbsp; T&amp; obj_; </font><font SIZE="2" COLOR="#008000">// type object<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#0000ff"><br>
+&nbsp;&nbsp;&nbsp; public</font><font SIZE="2">:<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#008000">// Lock<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2">Lock(T&amp; obj):obj_(obj)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; obj_.Lock();<br>
+&nbsp;&nbsp;&nbsp; }<p></font><font SIZE="2" COLOR="#008000">&nbsp;&nbsp; // 
+Unlock<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2">~Lock()<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; obj_.Unlock();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+};<br>
+// Mutex class </font></p>
+<font SIZE="2" COLOR="#0000ff">
+<p>class</font><font SIZE="2"> Mutex<br>
+{<br>
+</font><font SIZE="2" COLOR="#0000ff">public</font><font SIZE="2">:<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#008000">// constructor<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2">Mutex()<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; InitializeCriticalSection(&amp;m_mMutex);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#008000">// destructor<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#0000ff">virtual</font><font SIZE="2"> 
+~Mutex()<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteCriticalSection(&amp;m_mMutex);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#008000">// lock<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#0000ff">bool</font><font SIZE="2"> 
+Lock()<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EnterCriticalSection(&amp;m_mMutex);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font>
+<font SIZE="2" COLOR="#0000ff">return</font><font SIZE="2"> </font>
+<font SIZE="2" COLOR="#0000ff">true</font><font SIZE="2">;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#008000">// unlock<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#0000ff">bool</font><font SIZE="2"> 
+Unlock()<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LeaveCriticalSection(&amp;m_mMutex);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font>
+<font SIZE="2" COLOR="#0000ff">return</font><font SIZE="2"> </font>
+<font SIZE="2" COLOR="#0000ff">true</font><font SIZE="2">;<br>
+&nbsp;&nbsp;&nbsp; }</p>
+</font><font SIZE="2" COLOR="#0000ff">
+<p>private</font><font SIZE="2">:<br>
+&nbsp;&nbsp;&nbsp; CRITICAL_SECTION m_mMutex; </font>
+<font SIZE="2" COLOR="#008000">// critical section as mutex<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2" COLOR="#0000ff">void</font><font SIZE="2">
+</font><font SIZE="2" COLOR="#0000ff">operator</font><font SIZE="2">=(Mutex &amp;m_mMutex) 
+{} </font><font SIZE="2" COLOR="#008000">// private = operator<br>
+&nbsp;&nbsp;&nbsp; </font><font SIZE="2">Mutex( </font>
+<font SIZE="2" COLOR="#0000ff">const</font><font SIZE="2"> Mutex &amp;m_mMutex ) {}
+</font><font SIZE="2" COLOR="#008000">// private copy constructor<br>
+&nbsp;&nbsp;&nbsp; <br>
+</font><font SIZE="2">};</p>
+</font>
+<p>&nbsp;</li>
+<LI><I>main.c</I>: This is a sample <CODE>main</CODE> function which gets the instance of <CODE>PoolMgr</CODE> and checks out and checks in the <CODE>GenericObject</CODE>. <PRE>PoolMgr&lt;GenericObject&gt; *pMgr = PoolMgr&lt;GenericObject&gt;::GetInstance();
+if(pMgr)
+{  
+    // Pool size 10, object expiration time 600 sec
+    // and temporary connection not allowed
+    pMgr-&gt;Init(10,600, false);
+    GenericObject *pObj = NULL;
+    pObj = pMgr-&gt;Checkout();
+    pMgr-&gt;Checkin(pObj);
+    pMgr-&gt;ResetPool();
+    
+   // ExpirationTime test: Pool size is 1, expiration time
+   // is 10 secs, and temporary connections not allowed.
+   // Here when you checkout 2nd object, it would wait for 10 seconds
+   // and the 1st object would be garbage collected
+   // and moved to free resource.
+    pMgr-&gt;Init(1,10, false);
+    GenericObject *pObj = NULL;
+    pObj = pMgr-&gt;Checkout();
+    std::cout &lt;&lt; "1st Object checked out " &lt;&lt; std::endl;
+    pObj = pMgr-&gt;Checkout();
+    std::cout &lt;&lt; "2st Object checked out after 10 secs&nbsp;" &lt;&lt; std::endl;
+
+    pMgr-&gt;ResetPool();
+}
+PoolMgr&lt;GenericObject&gt;::DeletePool(); // delete and free all resources</PRE></LI></OL>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Please see my other article about 
+pool design:&nbsp;&nbsp;
+<a href="http://www.codeproject.com/library/Generic_Pool_Design.asp">Generic 
+Pool : Policy based design</a><br>
+&nbsp;</P>
+
+
+
+<P><font color="#FF9900"><b><span style="font-size: 13pt">History:</span></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 09/16/2004: Added support for thread 
+synchronization<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </P>
+
+
+
+<P>Please let me know how this article would have been improved and made more useful.</P>
+
+
+
+<!----------------------------- Article Ends ----------------------------->

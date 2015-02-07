@@ -9,27 +9,24 @@
 
 
 CObjectPool*	CObjectPool::m_pInstance	= NULL;
+Mutex CObjectPool::m_MutexPool	= PTHREAD_MUTEX_INITIALIZER;
 
-CObjectPool::CObjectPool(int nPoolSize/* = 10*/) : m_nPoolSize(nPoolSize), m_nFreeObj(0), m_Sync(PTHREAD_MUTEX_INITIALIZER)
+CObjectPool::CObjectPool(int nPoolSize/* = 10*/) : m_nPoolSize(nPoolSize), 
+	m_nFreeObj(0), 
+	m_Cond(PTHREAD_COND_INITIALIZER)
 {
-	if (nPoolSize >= 1)
-		m_lstPool.resize(nPoolSize);
-
-	pthread_mutex_init (&m_Mutex, NULL);
-
-	pthread_mutex_init (&m_Sync, NULL);
-	pthread_cond_init (&m_SyncCond, NULL);
 }
 
 
 CObjectPool::~CObjectPool(void)
 {
-	if (m_pInstance)
-		delete m_pInstance;
+	ScopedLock<Mutex> gaurd(m_MutexPool);
 
-	pthread_mutex_destroy(&m_Mutex);
-	pthread_mutex_destroy(&m_Sync);
-	pthread_cond_destroy(&m_SyncCond);
+	if (m_pInstance)
+	{
+		delete m_pInstance;
+		m_pInstance	= NULL;
+	}
 }
 
 /**
@@ -38,11 +35,12 @@ CObjectPool::~CObjectPool(void)
 */
 CObjectPool*	CObjectPool::GetInstance(int nPoolSize/* = 10*/)
 {
-	///< FIXME
-	///< following is very simple singleton
 	if (m_pInstance == NULL)
 	{
-		m_pInstance	= new CObjectPool (nPoolSize);
+		ScopedLock<Mutex> gaurd(m_MutexPool);
+	
+		if(!m_pInstance)
+			m_pInstance	= new CObjectPool (nPoolSize);
 	}
 
 	return m_pInstance;
@@ -53,22 +51,12 @@ CObjectPool*	CObjectPool::GetInstance(int nPoolSize/* = 10*/)
 * @function		InsertFreeObject
 * @brief		insert object to container for pooling
 */
-void			CObjectPool::InsertFreeObject(void* pObject)
+void			CObjectPool::InsertFreeObject(OBJ_TYPE& Obj)
 {
-	Item		a;
-
-	pthread_mutex_lock (&m_Mutex);
-
-	a.pObj		= pObject;
-	a.nUse		= FREE_OBJ;
+	ScopedLock<Mutex>	guard(m_MutexPool);
 
 	// insert free object
-	m_lstPool.push_back(a);
-
-	// increase # of free object
-	m_nFreeObj++;
-
-	pthread_mutex_unlock (&m_Mutex);
+	m_lstFree.push_back(Obj);
 }
 
 
@@ -77,41 +65,33 @@ void			CObjectPool::InsertFreeObject(void* pObject)
 * @return		return free object
 * @brief		call this to get the free object
 */
-void			CObjectPool::GetFreeObject(OBJ_TYPE& Obj)
+void			CObjectPool::GetFreeObject(OBJ_TYPE& Obj, bool bWait /*= true*/)
 {
-	pthread_mutex_lock (&m_Sync);
-
-	while(!m_nFreeObj)
+	if (bWait)
 	{
-		printf("Debug: enter waiting: %d\n", m_nFreeObj);
-		pthread_cond_wait(&m_SyncCond, &m_Sync);
+		// I wait for free object
+		ScopedLock<Mutex>	guard(m_MutexCond);
+
+		while(m_lstFree.empty())
+			// I am waiting for free object
+			pthread_cond_wait(&m_Cond, m_MutexCond);
 	}
-	pthread_mutex_unlock (&m_Sync);
 
-
-	pthread_mutex_lock (&m_Mutex);
-
-	for (list<Item>::iterator	itr = m_lstPool.begin(); itr != m_lstPool.end(); itr++)
 	{
-		if (itr->nUse == FREE_OBJ)
+		ScopedLock<Mutex>	guard(m_MutexData);
+
+		if (!m_lstFree.empty())
 		{
-			Obj		= itr->pObj;
+			Obj		= m_lstFree.front();
 
-			itr->nUse	= USED_OBJ;	// from now this is used
-			itr->pObj	= NULL;
+			m_lstFree.pop_front();
 
-			m_nFreeObj--;
-
-			pthread_mutex_unlock (&m_Mutex);
-
-			return;
+#ifdef	USED_OBJ
+			m_lstUsing.push_back(Obj);
+#endif
 		}
 	}
-
-	pthread_mutex_unlock (&m_Mutex);
-
-	// no free object
-	Obj		= NULL;
+	
 
 	return;
 }
@@ -123,29 +103,30 @@ void			CObjectPool::GetFreeObject(OBJ_TYPE& Obj)
 * @brief		if you finish to use the object,
 *				then call this to return the free object
 */
-void			CObjectPool::ReturnFreeObject(void* pObject)
+void			CObjectPool::ReturnFreeObject(OBJ_TYPE& Obj)
 {
-	pthread_mutex_lock (&m_Mutex);
-
-	for (list<Item>::iterator	itr = m_lstPool.begin(); itr != m_lstPool.end(); itr++)
 	{
-		if (itr->nUse == USED_OBJ)
-		{
-			itr->pObj	= pObject;
-			itr->nUse	= FREE_OBJ;	// from now this is used
+		ScopedLock<Mutex>	guard(m_MutexData);
 
-			break;
+		m_lstFree.push_back (Obj);
+
+#ifdef	USED_OBJ
+		for (ObjList::iterator itr = m_lstUsing.begin(); itr != m_lstUsing.end(); itr++)
+		{
+			if (*itr == Obj)
+			{
+				m_lstUsing.erase(itr);
+				break;
+			}
 		}
+#endif
+
 	}
 
-	m_nFreeObj++;
-	pthread_mutex_unlock (&m_Mutex);
+	{
+		ScopedLock<Mutex>	guard(m_MutexCond);
 
-
-	pthread_mutex_lock (&m_Sync);
-
-	// wakeup the waiting thread
-	pthread_cond_signal(&m_SyncCond);
-
-	pthread_mutex_unlock (&m_Sync);
+		// wakeup the waiting thread
+		pthread_cond_signal(&m_Cond);
+	}
 }

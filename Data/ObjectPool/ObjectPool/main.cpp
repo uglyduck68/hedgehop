@@ -1,3 +1,11 @@
+/**
+ * @file		main.cpp
+ * @author		sean kim <uglyduck68@gmail.com>
+ * @brief		ObjectPool test program
+ * @date		2015/02/05
+ * @version		1.0
+ */
+
 // ObjectPool.cpp : 콘솔 응용 프로그램에 대한 진입점을 정의합니다.
 //
 
@@ -10,12 +18,15 @@
 void* Consumer(void* pArg)
 {
 	CObjectPool*	pInstance	= CObjectPool::GetInstance();
-	OBJ_TYPE		pFreeObj;
+	OBJ_TYPE		pFreeObj	/*= NULL*/;
 
 	while(1)
 	{
 		printf("Debug: %s_%d: try to get free object\n", __FUNCTION__, (int)pArg);
 
+		/**
+		* Step 3: get the free object
+		*/
 		pInstance->GetFreeObject(pFreeObj);
 
 		if (pFreeObj == NULL)
@@ -29,6 +40,9 @@ void* Consumer(void* pArg)
 			Sleep(1000);
 
 			printf("Debug: %s_%d: returned free object: %0x\n", __FUNCTION__, (int)pArg, pFreeObj);
+			/**
+			* Step 4: return the used object
+			*/
 			pInstance->ReturnFreeObject(pFreeObj);
 		}
 	}
@@ -38,8 +52,11 @@ void* Consumer(void* pArg)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	/**
+	* Step 1: get singleton
+	*/
 	CObjectPool*	pInstance	= CObjectPool::GetInstance();
-	void*	p[10];
+	OBJ_TYPE	p[10];
 	const int	MAX_THREAD	= 3;
 	pthread_t	cons[MAX_THREAD];
 
@@ -48,10 +65,12 @@ int _tmain(int argc, _TCHAR* argv[])
 		p[i]	= reinterpret_cast<void*>(i + 1);
 
 		/**
-		* Step 1: register the free object
+		* Step 2: register the free object
 		*/
 		pInstance->InsertFreeObject(p[i]);
 	}
+
+	printf("make and insert %d free object into pool\n", pInstance->GetPoolSize());
 
 	for (int i = 0; i < MAX_THREAD; i++)
 	{
