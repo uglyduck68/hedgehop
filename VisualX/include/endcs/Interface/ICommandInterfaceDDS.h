@@ -9,7 +9,7 @@
 #ifdef NEO
 #include "DDS/NEO/hpp/CDDSLibrary.hpp"
 #else
-#include "DDS/RTI/CDDSLibrary.hpp"
+#include "E:\uglyduck\Projects\X1\Ogre_Project\VisualX\include\endcs/DDS/RTI/CDDSLibrary.hpp"
 #endif
 
 /// DDS е╦ют
