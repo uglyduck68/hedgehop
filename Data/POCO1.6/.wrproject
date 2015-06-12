@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wrxml>
+    <properties platform="VxWorks" platform_name="vxworks-6.8" root="1" type="SharedLibraryProject"/>
+    <attributes>
+        <mapAttribute>
+            <listAttribute key="BLD::Info|GlobalMacros">
+                <stringAttribute value="PROJECT_TYPE"/>
+                <stringAttribute value="DEFINES"/>
+                <stringAttribute value="DO_STRIP"/>
+                <stringAttribute value="SHAREDLIB_VERSION"/>
+                <stringAttribute value="EXPAND_DBG"/>
+            </listAttribute>
+            <stringAttribute key="BLD::Info|GlobalMacro|DEFINES" value="-DPOCO_VXWORKS -DVXWORKS_VERSION_MAJOR=6 -DVXWORKS_VERSION_MINOR=8"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|DO_STRIP" value="0"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|EXPAND_DBG" value="0"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|PROJECT_TYPE" value="SL"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|SHAREDLIB_VERSION" value=""/>
+            <listAttribute key="BLD::Info|Incl|PENTIUM4gnu_RTP">
+                <stringAttribute value="-I$(WIND_BASE)/target/usr/h"/>
+                <stringAttribute value="-I$(WIND_BASE)/target/h/sys"/>
+                <stringAttribute value="-I$(WIND_BASE)/target/usr/h/wrn"/>
+                <stringAttribute value="-I$(WIND_BASE)/target/usr/h/wrn/coreip"/>
+                <stringAttribute value="-I$(WIND_BASE)/target/usr/h/wrn/coreip/sys"/>
+                <stringAttribute value="-I$(WIND_HOME)/components/ip_net2-6.8/vxcompat/include"/>
+                <stringAttribute value="-I$(WIND_HOME)/workspace/POCO1.6/Foundation/include"/>
+                <stringAttribute value="-I$(WIND_HOME)/workspace/POCO1.6/JSON/include"/>
+                <stringAttribute value="-I$(WIND_HOME)/workspace/POCO1.6/Net/include"/>
+                <stringAttribute value="-I$(WIND_HOME)/workspace/POCO1.6/Util/include"/>
+                <stringAttribute value="-I$(WIND_HOME)/workspace/POCO1.6/XML/include"/>
+            </listAttribute>
+            <listAttribute key="BLD::Info|Macros">
+                <stringAttribute value="VX_CPU_FAMILY"/>
+                <stringAttribute value="CPU"/>
+                <stringAttribute value="TOOL_FAMILY"/>
+                <stringAttribute value="TOOL"/>
+                <stringAttribute value="TOOL_PATH"/>
+                <stringAttribute value="CC_ARCH_SPEC"/>
+                <stringAttribute value="LIBPATH"/>
+                <stringAttribute value="LIBS"/>
+                <stringAttribute value="VSB_DIR"/>
+            </listAttribute>
+            <stringAttribute key="BLD::Info|Macro|CC_ARCH_SPEC|value|PENTIUM4gnu_RTP" value="-mtune=pentium4 -march=pentium4"/>
+            <stringAttribute key="BLD::Info|Macro|CPU|value|PENTIUM4gnu_RTP" value="PENTIUM4"/>
+            <stringAttribute key="BLD::Info|Macro|LIBPATH|value|PENTIUM4gnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Macro|LIBS|value|PENTIUM4gnu_RTP" value="-lstdc++"/>
+            <stringAttribute key="BLD::Info|Macro|TOOL_FAMILY|value|PENTIUM4gnu_RTP" value="gnu"/>
+            <stringAttribute key="BLD::Info|Macro|TOOL_PATH|value|PENTIUM4gnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Macro|TOOL|value|PENTIUM4gnu_RTP" value="gnu"/>
+            <stringAttribute key="BLD::Info|Macro|VSB_DIR|value|PENTIUM4gnu_RTP" value="$(WIND_BASE)/target/lib"/>
+            <stringAttribute key="BLD::Info|Macro|VX_CPU_FAMILY|value|PENTIUM4gnu_RTP" value="pentium"/>
+            <listAttribute key="BLD::Info|Tools">
+                <stringAttribute value="C-Compiler"/>
+                <stringAttribute value="C++-Compiler"/>
+                <stringAttribute value="Shared Library Linker"/>
+                <stringAttribute value="Static Librarian"/>
+                <stringAttribute value="Assembler"/>
+            </listAttribute>
+            <stringAttribute key="BLD::Info|Tool|Assembler|cmd|PENTIUM4gnu_RTP" value="echo &quot;building $@&quot;;%assemblerprefix% $(TOOL_PATH)ccpentium %DebugModeFlags% %ToolFlags% $(ADDED_CFLAGS) %Includes% $(ADDED_INCLUDES) -D_VX_CPU=_VX_$(CPU) -D_VX_TOOL_FAMILY=$(TOOL_FAMILY) -D_VX_TOOL=$(TOOL)   $(DEFINES) -o %OutFile% -c %InFile%"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|dbgFlags|PENTIUM4gnu_RTP" value="-g"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|derivedSigs|PENTIUM4gnu_RTP" value="*.sho"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|flags|PENTIUM4gnu_RTP" value="$(CC_ARCH_SPEC) -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -P -xassembler-with-cpp  -MD -MP -fpic -D__SO_PICABIRTP__"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|nonDbgFlags|PENTIUM4gnu_RTP" value="-O2   "/>
+            <booleanAttribute key="BLD::Info|Tool|Assembler|object" value="true"/>
+            <booleanAttribute key="BLD::Info|Tool|Assembler|passAble" value="false"/>
+            <stringAttribute key="BLD::Info|Tool|Assembler|sigs" value="*.s"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|cmd|PENTIUM4gnu_RTP" value="echo &quot;building $@&quot;;%cppcompilerprefix% $(TOOL_PATH)c++pentium %DebugModeFlags% %ToolFlags% $(ADDED_C++FLAGS) %Includes% $(ADDED_INCLUDES) -D_VX_CPU=_VX_$(CPU) -D_VX_TOOL_FAMILY=$(TOOL_FAMILY) -D_VX_TOOL=$(TOOL)   $(DEFINES) -o %OutFile% -c %InFile%"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|dbgFlags|PENTIUM4gnu_RTP" value="-g"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|derivedSigs|PENTIUM4gnu_RTP" value="*.sho"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|flags|PENTIUM4gnu_RTP" value="$(CC_ARCH_SPEC) -ansi -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -Wall   -MD -MP -fpic -D__SO_PICABIRTP__"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|nonDbgFlags|PENTIUM4gnu_RTP" value="-O2   "/>
+            <booleanAttribute key="BLD::Info|Tool|C++-Compiler|object" value="true"/>
+            <booleanAttribute key="BLD::Info|Tool|C++-Compiler|passAble" value="false"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|sigs" value="*.cpp;*.C;*.cxx;*.cc"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|cmd|PENTIUM4gnu_RTP" value="echo &quot;building $@&quot;;%ccompilerprefix% $(TOOL_PATH)ccpentium %DebugModeFlags% %ToolFlags% $(ADDED_CFLAGS) %Includes% $(ADDED_INCLUDES) -D_VX_CPU=_VX_$(CPU) -D_VX_TOOL_FAMILY=$(TOOL_FAMILY) -D_VX_TOOL=$(TOOL)   $(DEFINES) -o %OutFile% -c %InFile%"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|dbgFlags|PENTIUM4gnu_RTP" value="-g"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|derivedSigs|PENTIUM4gnu_RTP" value="*.sho"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|flags|PENTIUM4gnu_RTP" value="$(CC_ARCH_SPEC) -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -Wall   -MD -MP -fpic -D__SO_PICABIRTP__"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|nonDbgFlags|PENTIUM4gnu_RTP" value="-O2   "/>
+            <booleanAttribute key="BLD::Info|Tool|C-Compiler|object" value="true"/>
+            <booleanAttribute key="BLD::Info|Tool|C-Compiler|passAble" value="false"/>
+            <stringAttribute key="BLD::Info|Tool|C-Compiler|sigs" value="*.c"/>
+            <stringAttribute key="BLD::Info|Tool|Shared Library Linker|cmd|PENTIUM4gnu_RTP" value="echo &quot;building $@&quot;;SONAME=`basename &quot;%OutFile%&quot;`;if [ &quot;$(SHAREDLIB_VERSION)&quot; != &quot;&quot; ]; then SONAME=$$SONAME.$(SHAREDLIB_VERSION);fi;%cpplinkerprefix% $(TOOL_PATH)c++pentium %DebugModeFlags% %ToolFlags% -Wl,-soname,&quot;$$SONAME&quot; -o %OutFile% %Objects% $(ADDED_OBJECTS) %Libraries% $(LIBPATH) $(LIBS) -L$(VSB_DIR)/usr/lib/pentium/PENTIUM4/common/PIC $(ADDED_LIBPATH) $(ADDED_LIBS) &amp;&amp; if [ &quot;$(DO_STRIP)&quot; = &quot;1&quot; ]; then mv -f &quot;$@&quot; &quot;$@.unstripped&quot; &amp;&amp; strippentium -g -o &quot;$@&quot; &quot;$@.unstripped&quot;;fi &amp;&amp; if [ &quot;$(EXPAND_DBG)&quot; = &quot;1&quot; ]; then plink &quot;$@&quot;;fi &amp;&amp; if [ &quot;$(SHAREDLIB_VERSION)&quot; != &quot;&quot; ]; then cp -f &quot;$@&quot; &quot;$@.$(SHAREDLIB_VERSION)&quot;;fi"/>
+            <stringAttribute key="BLD::Info|Tool|Shared Library Linker|dbgFlags|PENTIUM4gnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Shared Library Linker|derivedSigs|PENTIUM4gnu_RTP" value="*.so"/>
+            <stringAttribute key="BLD::Info|Tool|Shared Library Linker|flags|PENTIUM4gnu_RTP" value="$(CC_ARCH_SPEC) -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X -Wall   -MD -MP -fpic -D__SO_PICABIRTP__ -shared"/>
+            <stringAttribute key="BLD::Info|Tool|Shared Library Linker|nonDbgFlags|PENTIUM4gnu_RTP" value=""/>
+            <booleanAttribute key="BLD::Info|Tool|Shared Library Linker|object" value="false"/>
+            <booleanAttribute key="BLD::Info|Tool|Shared Library Linker|passAble" value="true"/>
+            <stringAttribute key="BLD::Info|Tool|Shared Library Linker|sigs" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Static Librarian|cmd|PENTIUM4gnu_RTP" value="echo &quot;building $@&quot;;%archiverprefix% $(TOOL_PATH)arpentium %ToolFlags% %OutFile% %Objects% $(ADDED_OBJECTS)"/>
+            <stringAttribute key="BLD::Info|Tool|Static Librarian|dbgFlags|PENTIUM4gnu_RTP" value=""/>
+            <stringAttribute key="BLD::Info|Tool|Static Librarian|derivedSigs|PENTIUM4gnu_RTP" value="*.a"/>
+            <stringAttribute key="BLD::Info|Tool|Static Librarian|flags|PENTIUM4gnu_RTP" value="crus"/>
+            <stringAttribute key="BLD::Info|Tool|Static Librarian|nonDbgFlags|PENTIUM4gnu_RTP" value=""/>
+            <booleanAttribute key="BLD::Info|Tool|Static Librarian|object" value="false"/>
+            <booleanAttribute key="BLD::Info|Tool|Static Librarian|passAble" value="true"/>
+            <stringAttribute key="BLD::Info|Tool|Static Librarian|sigs" value=""/>
+            <stringAttribute key="BLD::Info|cmd" value="%makeprefix% make --no-print-directory"/>
+            <stringAttribute key="BLD::Info|defaultSpec" value="PENTIUM4gnu_RTP"/>
+            <stringAttribute key="BLD::Info|redirDir|PENTIUM4gnu_RTP" value="PENTIUM4gnu_RTP"/>
+            <stringAttribute key="BLD::Info|redirRoot" value=""/>
+            <listAttribute key="BLD::Info|specs">
+                <stringAttribute value="PENTIUM4gnu_RTP"/>
+            </listAttribute>
+            <intAttribute key="BuildSupportEnabled" value="1"/>
+            <booleanAttribute key="BuildTargetCentric" value="true"/>
+        </mapAttribute>
+    </attributes>
+    <buildtargets>
+        <buildtarget buildtool="Shared Library Linker" name="POCO1.6" passed="false" targetname="POCO1.6">
+            <contents>
+                <folder name="/POCO1.6" recursive="true"/>
+            </contents>
+        </buildtarget>
+    </buildtargets>
+</wrxml>
