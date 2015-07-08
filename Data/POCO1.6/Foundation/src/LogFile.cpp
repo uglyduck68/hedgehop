@@ -24,7 +24,8 @@
 #elif defined(POCO_OS_FAMILY_VMS)
 #include "LogFile_VMS.cpp"
 #else
-#include "LogFile_STD.cpp"
+//#include "LogFile_STD.cpp"	hy.lee lignex1
+#include "Poco/LogFile_STD.h"
 #endif
 
 

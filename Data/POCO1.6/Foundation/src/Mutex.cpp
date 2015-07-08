@@ -23,10 +23,10 @@
 #else
 #include "Mutex_WIN32.cpp"
 #endif
-#elif defined(POCO_VXWORKS)
-#include "Mutex_VX.cpp"
+#elif defined(POCO_VXWORKS)	//hy.lee lignex1
+#include "Poco/Mutex_VX.h"
 #else
-#include "Mutex_POSIX.cpp"
+#include "Poco/Mutex_POSIX.h"
 #endif
 
 

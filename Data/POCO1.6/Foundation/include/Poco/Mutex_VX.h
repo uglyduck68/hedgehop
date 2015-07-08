@@ -15,7 +15,7 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
-
+#if 0
 #ifndef Foundation_Mutex_VX_INCLUDED
 #define Foundation_Mutex_VX_INCLUDED
 
@@ -39,7 +39,8 @@ protected:
 	bool tryLockImpl();
 	bool tryLockImpl(long milliseconds);
 	void unlockImpl();
-	
+
+
 private:
 	SEM_ID _sem;
 };
@@ -56,27 +57,14 @@ protected:
 //
 // inlines
 //
-inline void MutexImpl::lockImpl()
-{
-	if (semTake(_sem, WAIT_FOREVER) != OK)
-		throw SystemException("cannot lock mutex");
-}
 
 
-inline bool MutexImpl::tryLockImpl()
-{
-	return semTake(_sem, NO_WAIT) == OK;
-}
 
 
-inline void MutexImpl::unlockImpl()
-{
-	if (semGive(_sem) != OK)
-		throw SystemException("cannot unlock mutex");
-}
 
 
 } // namespace Poco
 
 
 #endif // Foundation_Mutex_VX_INCLUDED
+#endif

@@ -20,6 +20,18 @@
 // +++ double conversion +++
 #define UNREACHABLE poco_bugcheck
 #define UNIMPLEMENTED poco_bugcheck
+
+#if defined(POCO_VXWORKS)	//hy.lee lignex1
+#include "diy-fp.h"
+#include "cached-powers.h"
+#include "bignum-dtoa.h"
+#include "bignum.h"
+#include "fast-dtoa.h"
+#include "fixed-dtoa.h"
+#include "ieee.h"
+#include "strtod.h"
+#include "double-conversion.h"
+#else
 #include "diy-fp.cc"
 #include "cached-powers.cc"
 #include "bignum-dtoa.cc"
@@ -28,6 +40,7 @@
 #include "fixed-dtoa.cc"
 #include "strtod.cc"
 #include "double-conversion.cc"
+#endif
 // --- double conversion ---
 
 #include "Poco/NumericString.h"

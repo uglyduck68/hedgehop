@@ -76,5 +76,10 @@ std::string Timezone::dstName()
 	return name();
 }
 
+//hy.lee lignex1 from timezone.cpp
+int Timezone::tzd()
+{
+	return utcOffset() + dst();
+}
 
 } // namespace Poco

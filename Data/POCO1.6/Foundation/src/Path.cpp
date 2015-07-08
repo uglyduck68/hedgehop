@@ -28,7 +28,13 @@
 #if defined(POCO_OS_FAMILY_VMS)
 #include "Path_VMS.cpp"
 #elif defined(POCO_OS_FAMILY_UNIX)
-#include "Path_UNIX.cpp"
+
+	#if defined(POCO_VXWORKS)
+	#include "Poco/Path_UNIX.h"
+	#else
+	#include "Path_UNIX.cpp"
+	#endif
+
 #elif defined(POCO_OS_FAMILY_WINDOWS) && defined(POCO_WIN32_UTF8)
 #if defined(_WIN32_WCE)
 #include "Path_WINCE.cpp"

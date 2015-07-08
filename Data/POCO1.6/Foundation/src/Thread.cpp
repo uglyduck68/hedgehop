@@ -28,9 +28,10 @@
 #else
 #include "Thread_WIN32.cpp"
 #endif
-#elif defined(POCO_VXWORKS)
-#include "Thread_VX.cpp"
-#else
+//hy.lee lignex1
+//#elif defined(POCO_VXWORKS)
+//#include "Thread_VX.cpp"
+//#else
 #include "Thread_POSIX.cpp"
 #endif
 
@@ -127,20 +128,20 @@ Thread::Priority Thread::getPriority() const
 
 void Thread::start(Runnable& target)
 {
-#if defined(POCO_VXWORKS)		//@
-	startImpl(target);
-#else
+#if 1	//@ 
 	startImpl(new RunnableHolder(target));
+#else
+	startImpl(target);
 #endif
 }
 
 
 void Thread::start(Callable target, void* pData)
 {
-#if defined(POCO_VXWORKS)		//@
-	startImpl(target, pData);
-#else
+#if 1 
 	startImpl(new CallableHolder(target, pData));
+#else
+	startImpl(target, pData);
 #endif
 }
 

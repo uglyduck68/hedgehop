@@ -142,6 +142,7 @@ void EnvironmentImpl::nodeIdImpl(NodeId& id)
 
 	int ifIndex = 1;
 	char ifName[32];
+#if 0 // hy.lee lignex1	to do...
 	for (;;)
 	{
 		if (ifIndexToIfName(ifIndex, ifName) == OK)
@@ -160,6 +161,7 @@ void EnvironmentImpl::nodeIdImpl(NodeId& id)
 		else break;	
 		++ifIndex;
 	}
+#endif	
 	throw SystemException("cannot get Ethernet hardware address");
 }
 

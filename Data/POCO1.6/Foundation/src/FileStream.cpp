@@ -19,7 +19,8 @@
 #if defined(POCO_OS_FAMILY_WINDOWS)
 #include "FileStream_WIN32.cpp"
 #else
-#include "FileStream_POSIX.cpp"
+//#include "FileStream_POSIX.cpp"	//hy.lee lignex1
+#include "Poco/FileStream_POSIX.h"	
 #endif
 
 

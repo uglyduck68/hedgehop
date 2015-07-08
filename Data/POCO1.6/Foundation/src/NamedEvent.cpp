@@ -24,7 +24,13 @@
 #elif defined(POCO_ANDROID)
 #include "NamedEvent_Android.cpp"
 #elif defined(POCO_OS_FAMILY_UNIX)
-#include "NamedEvent_UNIX.cpp"
+
+	#if defined(POCO_VXWORKS)
+	#include "Poco/NamedEvent_UNIX.h"
+	#else
+	#include "NamedEvent_UNIX.cpp"	//hy.lee lignex1
+	#endif
+	
 #else
 #include "NamedEvent_VMS.cpp"
 #endif

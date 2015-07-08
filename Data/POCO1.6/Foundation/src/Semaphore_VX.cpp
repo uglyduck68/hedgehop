@@ -12,7 +12,7 @@
 //
 // SPDX-License-Identifier:	BSL-1.0
 //
-
+#if 0
 
 #include "Poco/Semaphore_VX.h"
 #include <sysLib.h>
@@ -52,3 +52,4 @@ bool SemaphoreImpl::waitImpl(long milliseconds)
 
 
 } // namespace Poco
+#endif

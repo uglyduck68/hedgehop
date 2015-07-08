@@ -24,7 +24,11 @@
 #include "PipeImpl_WIN32.cpp"
 #endif
 #elif defined(POCO_OS_FAMILY_UNIX)
+#if defined(POCO_VXWORKS)
+#include "Poco/PipeImpl_POSIX.h"
+#else
 #include "PipeImpl_POSIX.cpp"
+#endif
 #else
 #include "PipeImpl_DUMMY.cpp"
 #endif

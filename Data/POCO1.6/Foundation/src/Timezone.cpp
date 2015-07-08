@@ -14,6 +14,8 @@
 //
 
 
+#if !defined(POCO_VXWORKS)
+
 #include "Poco/Timezone.h"
 #include <ctime>
 
@@ -41,3 +43,4 @@ int Timezone::tzd()
 
 
 } // namespace Poco
+#endif

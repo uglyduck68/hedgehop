@@ -470,6 +470,8 @@ std::string IPv6AddressImpl::toString() const
 			NumberFormatter::append(result, _scope);
 #else
 			char buffer[IFNAMSIZ];
+
+			#if 0	//hy.lee lignex1		to do...
 			if (if_indextoname(_scope, buffer))
 			{
 				result.append(buffer);
@@ -478,6 +480,7 @@ std::string IPv6AddressImpl::toString() const
 			{
 				NumberFormatter::append(result, _scope);
 			}
+			#endif
 #endif
 		}
 		return toLower(result);
@@ -664,12 +667,15 @@ IPv6AddressImpl IPv6AddressImpl::parse(const std::string& addr)
 		std::string unscopedAddr(addr, start, pos - start);
 		std::string scope(addr, pos + 1, addr.size() - start - pos);
 		Poco::UInt32 scopeId(0);
+#if 0	//hy.lee lignex1		to do...
 		if (!(scopeId = if_nametoindex(scope.c_str())))
 			return IPv6AddressImpl();
 		if (inet_pton(AF_INET6, unscopedAddr.c_str(), &ia) == 1)
 			return IPv6AddressImpl(&ia, scopeId);
 		else
+#endif
 			return IPv6AddressImpl();
+
 	}
 	else
 	{

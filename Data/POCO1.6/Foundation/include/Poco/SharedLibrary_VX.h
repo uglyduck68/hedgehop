@@ -22,8 +22,9 @@
 
 #include "Poco/Foundation.h"
 #include "Poco/Mutex.h"
+#if 0 //hy.lee lignex1
 #include <moduleLib.h>
-
+#endif
 
 namespace Poco {
 
@@ -42,7 +43,11 @@ protected:
 
 private:
 	std::string _path;
+#if 0 //hy.lee lignex1
 	MODULE_ID _moduleId;
+#else
+	int _moduleId;
+#endif
 	static FastMutex _mutex;
 };
 

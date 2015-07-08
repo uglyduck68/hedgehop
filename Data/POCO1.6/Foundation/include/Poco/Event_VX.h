@@ -15,6 +15,7 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
+#if 0
 
 #ifndef Foundation_Event_VX_INCLUDED
 #define Foundation_Event_VX_INCLUDED
@@ -49,3 +50,5 @@ private:
 
 
 #endif // Foundation_Event_VX_INCLUDED
+#endif
+

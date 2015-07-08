@@ -22,14 +22,14 @@
 #elif defined(POCO_OS_FAMILY_WINDOWS)
 #include "DirectoryIterator_WIN32.cpp"
 #elif defined(POCO_OS_FAMILY_UNIX)
-#include "DirectoryIterator_UNIX.cpp"
+//#include "DirectoryIterator_UNIX.cpp"
+#include "POCO/DirectoryIterator_UNIX.h"		//hy.lee	 lignex1 compile error fix
 #else
 #include "DirectoryIterator_VMS.cpp"
 #endif
 
 
 namespace Poco {
-
 
 DirectoryIterator::DirectoryIterator(): _pImpl(0)
 {

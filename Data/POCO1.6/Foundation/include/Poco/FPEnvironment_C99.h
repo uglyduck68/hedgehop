@@ -55,100 +55,102 @@ protected:
 	static bool isFlagImpl(FlagImpl flag);	
 	static void setRoundingModeImpl(RoundingModeImpl mode);
 	static RoundingModeImpl getRoundingModeImpl();
-	static bool isInfiniteImpl(float value);		
-	static bool isInfiniteImpl(double value);
-	static bool isInfiniteImpl(long double value);
-	static bool isNaNImpl(float value);		
-	static bool isNaNImpl(double value);
-	static bool isNaNImpl(long double value);
-	static float copySignImpl(float target, float source);		
-	static double copySignImpl(double target, double source);
 	static long double copySignImpl(long double target, long double source);
+
+	//hy.lee	lignex1 
+	//	static bool isInfiniteImpl(float value);		
+	//	static bool isInfiniteImpl(double value);
+	//	static bool isInfiniteImpl(long double value);
+//	static bool isNaNImpl(float value);		
+//	static bool isNaNImpl(double value);
+//	static bool isNaNImpl(long double value);
+//	static float copySignImpl(float target, float source);		
+//	static double copySignImpl(double target, double source);
+
+	//
+	// inlines
+	//
+	static inline bool isInfiniteImpl(float value)
+	{
+		//@ vxworks-6.8 compiler version is 4.1
+#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
+		return std::isinf(value) != 0;
+#else
+		return isinf(value) != 0;
+#endif
+	}
+
+
+	static inline bool isInfiniteImpl(double value)
+	{
+		//@ vxworks-6.8 compiler version is 4.1
+#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
+		return std::isinf(value) != 0;
+#else
+		return isinf(value) != 0;
+#endif
+	}
+
+
+	static inline bool isInfiniteImpl(long double value)
+	{
+		//@ vxworks-6.8 compiler version is 4.1
+#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
+		return std::isinf((double) value) != 0;
+#else
+		return isinf((double) value) != 0;
+#endif
+	}
+
+
+	static inline bool isNaNImpl(float value)
+	{
+		//@ vxworks-6.8 compiler version is 4.1
+#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
+		return std::isnan(value) != 0;
+#else
+		return isnan(value) != 0;
+#endif
+	}
+
+
+	static inline bool isNaNImpl(double value)
+	{
+		//@ vxworks-6.8 compiler version is 4.1
+#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
+		return std::isnan(value) != 0;
+#else
+		return isnan(value) != 0;
+#endif
+	}
+
+
+	static inline bool isNaNImpl(long double value)
+	{
+		//@ vxworks-6.8 compiler version is 4.1
+#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
+		return std::isnan((double) value) != 0;
+#else
+		return isnan((double) value) != 0;
+#endif
+	}
+
+
+	static inline float copySignImpl(float target, float source)
+	{
+		return copysignf(target, source);
+	}
+
+
+	static inline double copySignImpl(double target, double source)
+	{
+		return copysign(target, source);
+	}
 
 private:
 	fenv_t _env;
 };
 
-
-//
-// inlines
-//
-inline bool FPEnvironmentImpl::isInfiniteImpl(float value)
-{
-	//@ vxworks-6.8 compiler version is 4.1
-#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
-	return std::isinf(value) != 0;
-#else
-	return isinf(value) != 0;
-#endif
-}
-
-
-inline bool FPEnvironmentImpl::isInfiniteImpl(double value)
-{
-	//@ vxworks-6.8 compiler version is 4.1
-#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
-	return std::isinf(value) != 0;
-#else
-	return isinf(value) != 0;
-#endif
-}
-
-
-inline bool FPEnvironmentImpl::isInfiniteImpl(long double value)
-{
-	//@ vxworks-6.8 compiler version is 4.1
-#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
-	return std::isinf((double) value) != 0;
-#else
-	return isinf((double) value) != 0;
-#endif
-}
-
-
-inline bool FPEnvironmentImpl::isNaNImpl(float value)
-{
-	//@ vxworks-6.8 compiler version is 4.1
-#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
-	return std::isnan(value) != 0;
-#else
-	return isnan(value) != 0;
-#endif
-}
-
-
-inline bool FPEnvironmentImpl::isNaNImpl(double value)
-{
-	//@ vxworks-6.8 compiler version is 4.1
-#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
-	return std::isnan(value) != 0;
-#else
-	return isnan(value) != 0;
-#endif
-}
-
-
-inline bool FPEnvironmentImpl::isNaNImpl(long double value)
-{
-	//@ vxworks-6.8 compiler version is 4.1
-#if defined(POCO_COMPILER_GCC) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
-	return std::isnan((double) value) != 0;
-#else
-	return isnan((double) value) != 0;
-#endif
-}
-
-
-inline float FPEnvironmentImpl::copySignImpl(float target, float source)
-{
-	return copysignf(target, source);
-}
-
-
-inline double FPEnvironmentImpl::copySignImpl(double target, double source)
-{
-	return copysign(target, source);
-}
 
 
 } // namespace Poco

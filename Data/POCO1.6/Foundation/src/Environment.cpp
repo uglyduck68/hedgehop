@@ -23,7 +23,8 @@
 #if defined(POCO_OS_FAMILY_VMS)
 #include "Environment_VMS.cpp"
 #elif defined(POCO_VXWORKS)
-#include "Environment_VX.cpp"
+//#include "Environment_VX.cpp"
+#include "POCO/Environment_VX.h"		//hy.lee lignex1
 #elif defined(POCO_OS_FAMILY_UNIX)
 #include "Environment_UNIX.cpp"
 #elif defined(POCO_OS_FAMILY_WINDOWS) && defined(POCO_WIN32_UTF8)

@@ -15,7 +15,6 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
-
 #ifndef Foundation_Mutex_POSIX_INCLUDED
 #define Foundation_Mutex_POSIX_INCLUDED
 

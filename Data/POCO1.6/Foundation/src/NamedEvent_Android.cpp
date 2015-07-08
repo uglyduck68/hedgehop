@@ -13,7 +13,7 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
-
+#if !defined(POCO_VXWORKS)
 #include "Poco/NamedEvent_Android.h"
 #include "Poco/Exception.h"
 
@@ -44,3 +44,4 @@ void NamedEventImpl::waitImpl()
 
 
 } // namespace Poco
+#endif

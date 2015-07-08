@@ -16,12 +16,11 @@
 
 #include "Poco/DirectoryIterator_UNIX.h"
 #if defined(POCO_VXWORKS)
-#include "Poco/File_VX.h"
+#include "Poco/File.h"
 #else
 #include "Poco/File_UNIX.h"
 #endif
 #include "Poco/Path.h"
-#include "Poco/File.h"	//@
 
 namespace Poco {
 
@@ -47,7 +46,6 @@ DirectoryIteratorImpl::~DirectoryIteratorImpl()
 	if (_pDir) closedir(_pDir);
 }
 
-
 const std::string& DirectoryIteratorImpl::next()
 {
 	do
@@ -62,5 +60,10 @@ const std::string& DirectoryIteratorImpl::next()
 	return _current;
 }
 
+
+const std::string& DirectoryIteratorImpl::get() const
+{
+	return _current;
+}
 
 } // namespace Poco

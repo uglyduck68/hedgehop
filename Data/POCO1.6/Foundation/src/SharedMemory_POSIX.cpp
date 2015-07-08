@@ -14,6 +14,7 @@
 //
 
 
+#if !defined(POCO_VXWORKS)
 #include "Poco/SharedMemory_POSIX.h"
 #include "Poco/Exception.h"
 #include "Poco/File.h"
@@ -134,3 +135,4 @@ void SharedMemoryImpl::close()
 
 
 } // namespace Poco
+#endif

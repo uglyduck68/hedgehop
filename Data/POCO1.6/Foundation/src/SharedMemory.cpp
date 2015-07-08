@@ -17,7 +17,11 @@
 #include "Poco/SharedMemory.h"
 #include "Poco/Exception.h"
 #if defined(POCO_NO_SHAREDMEMORY)
-#include "SharedMemory_DUMMY.cpp"
+	#if defined(POCO_VXWORKS)
+	#include "Poco/SharedMemory_DUMMY.h"
+	#else
+	#include "SharedMemory_DUMMY.cpp"
+	#endif
 #elif defined(POCO_OS_FAMILY_WINDOWS)
 #include "SharedMemory_WIN32.cpp"
 #elif defined(POCO_OS_FAMILY_UNIX)

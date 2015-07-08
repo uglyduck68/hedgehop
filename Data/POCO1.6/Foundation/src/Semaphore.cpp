@@ -20,7 +20,7 @@
 #if defined(POCO_OS_FAMILY_WINDOWS)
 #include "Semaphore_WIN32.cpp"
 #elif defined(POCO_VXWORKS)
-#include "Semaphore_VX.cpp"
+#include "Poco/Semaphore_POSIX.h"
 #else
 #include "Semaphore_POSIX.cpp"
 #endif

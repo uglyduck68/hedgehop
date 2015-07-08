@@ -13,7 +13,6 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
-
 #include "Poco/Mutex_POSIX.h"
 #include "Poco/Timestamp.h"
 #if !defined(POCO_NO_SYS_SELECT_H)
@@ -96,7 +95,8 @@ MutexImpl::~MutexImpl()
 
 bool MutexImpl::tryLockImpl(long milliseconds)
 {
-#if defined(POCO_HAVE_MUTEX_TIMEOUT)
+
+#if defined(POCO_HAVE_MUTEX_TIMEOUT) && !defined(POCO_VXWORKS)	//hy.lee lignex1
 	struct timespec abstime;
 	struct timeval tv;
 	gettimeofday(&tv, NULL);

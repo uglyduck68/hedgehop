@@ -15,7 +15,7 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
-
+#if 0 
 #ifndef Foundation_Semaphore_VX_INCLUDED
 #define Foundation_Semaphore_VX_INCLUDED
 
@@ -56,3 +56,4 @@ inline void SemaphoreImpl::setImpl()
 
 
 #endif // Foundation_Semaphore_VX_INCLUDED
+#endif

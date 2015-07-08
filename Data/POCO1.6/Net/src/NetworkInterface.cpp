@@ -1428,7 +1428,9 @@ NetworkInterface::Map NetworkInterface::map(bool ipOnly, bool upOnly)
 			}
 #endif
 			case AF_INET:
+#if 0	//hy.lee lignex1		to do...
 				ifIndex = if_nametoindex(currIface->ifa_name);
+#endif
 				ifIt = result.find(ifIndex);
 				intf = NetworkInterface(ifIndex);
 				setInterfaceParams(currIface, intf.impl());
@@ -1449,7 +1451,9 @@ NetworkInterface::Map NetworkInterface::map(bool ipOnly, bool upOnly)
 				break;
 #if defined(POCO_HAVE_IPv6)
 			case AF_INET6:
+#if 0	//hy.lee lignex1		to do...
 				ifIndex = if_nametoindex(currIface->ifa_name);
+#endif
 				ifIt = result.find(ifIndex);
 				intf = NetworkInterface(ifIndex);
 				setInterfaceParams(currIface, intf.impl());
@@ -1600,7 +1604,9 @@ NetworkInterface::Map NetworkInterface::map(bool ipOnly, bool upOnly)
 				break;
 			}
 			case AF_INET:
+#if 0	//hy.lee lignex1		to do...
 				ifIndex = if_nametoindex(iface->ifa_name);
+#endif
 				ifIt = result.find(ifIndex);
 				intf = NetworkInterface(ifIndex);
 				setInterfaceParams(iface, intf.impl());
@@ -1621,7 +1627,9 @@ NetworkInterface::Map NetworkInterface::map(bool ipOnly, bool upOnly)
 				break;
 #if defined(POCO_HAVE_IPv6)
 			case AF_INET6:
+#if 0	//hy.lee lignex1		to do...
 				ifIndex = if_nametoindex(iface->ifa_name);
+#endif
 				ifIt = result.find(ifIndex);
 				intf = NetworkInterface(ifIndex);
 				setInterfaceParams(iface, intf.impl());

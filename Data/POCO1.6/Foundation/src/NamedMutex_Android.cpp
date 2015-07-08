@@ -13,7 +13,7 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
-
+#if !defined(POCO_VXWORKS)
 #include "Poco/NamedMutex_Android.h"
 #include "Poco/Exception.h"
 
@@ -50,3 +50,4 @@ void NamedMutexImpl::unlockImpl()
 
 
 } // namespace Poco
+#endif

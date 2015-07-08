@@ -32,12 +32,23 @@ class Foundation_API DirectoryIteratorImpl
 public:
 	DirectoryIteratorImpl(const std::string& path);
 	~DirectoryIteratorImpl();
-	
-	void duplicate();
-	void release();
-	
 	const std::string& get() const;
 	const std::string& next();
+
+	//
+	// inlines
+	//
+	inline void duplicate()
+	{
+		++_rc;
+	}
+
+	inline void release()
+	{
+		if (--_rc == 0)
+			delete this;
+	}
+
 	
 private:
 	DIR*        _pDir;
@@ -45,27 +56,6 @@ private:
 	int _rc;
 };
 
-
-//
-// inlines
-//
-const std::string& DirectoryIteratorImpl::get() const
-{
-	return _current;
-}
-
-
-inline void DirectoryIteratorImpl::duplicate()
-{
-	++_rc;
-}
-
-
-inline void DirectoryIteratorImpl::release()
-{
-	if (--_rc == 0)
-		delete this;
-}
 
 
 } // namespace Poco

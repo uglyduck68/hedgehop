@@ -13,6 +13,7 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
+#if !defined(POCO_VXWORKS)
 
 #include "Poco/PipeImpl_DUMMY.h"
 
@@ -65,3 +66,4 @@ void PipeImpl::closeWrite()
 
 
 } // namespace Poco
+#endif

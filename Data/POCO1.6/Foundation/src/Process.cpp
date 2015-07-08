@@ -66,7 +66,9 @@ namespace
 #elif defined(POCO_OS_FAMILY_WINDOWS)
 #include "Process_WIN32.cpp"
 #elif defined(POCO_VXWORKS)
-#include "Process_VX.cpp"
+//#include "Process_VX.cpp"
+#include "Poco/Process_VX.h"	//hy.lee lignex1
+
 #elif defined(POCO_OS_FAMILY_UNIX)
 #include "Process_UNIX.cpp"
 #else

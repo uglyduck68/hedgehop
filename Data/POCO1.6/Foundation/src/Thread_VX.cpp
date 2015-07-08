@@ -13,6 +13,8 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
+//hy.lee lignex1
+#if 0
 
 #include "Poco/Thread_VX.h"
 #include "Poco/ErrorHandler.h"
@@ -276,3 +278,5 @@ int ThreadImpl::reverseMapPrio(int prio)
 
 
 } // namespace Poco
+
+#endif

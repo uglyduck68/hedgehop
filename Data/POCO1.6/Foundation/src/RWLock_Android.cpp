@@ -12,7 +12,7 @@
 //
 // SPDX-License-Identifier:	BSL-1.0
 //
-
+#if !defined(POCO_VXWORKS)
 
 #include "Poco/RWLock_Android.h"
 
@@ -39,3 +39,4 @@ RWLockImpl::~RWLockImpl()
 
 
 } // namespace Poco
+#endif

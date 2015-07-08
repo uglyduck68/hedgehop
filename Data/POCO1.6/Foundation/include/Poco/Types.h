@@ -76,7 +76,7 @@ namespace Poco {
 			typedef unsigned long long UInt64;
 		#endif
 	#endif
-	#define POCO_HAVE_INT64 1
+	#define POCO_HAVE_INT64 1		//hy.lee lignex1
 #elif defined(__DECCXX)
 	//
 	// Compaq C++

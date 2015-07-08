@@ -12,6 +12,7 @@
 //
 // SPDX-License-Identifier:	BSL-1.0
 //
+#if !defined(POCO_VXWORKS)
 
 
 #include "Poco/Timezone.h"
@@ -110,3 +111,5 @@ std::string Timezone::dstName()
 
 
 } // namespace Poco
+
+#endif

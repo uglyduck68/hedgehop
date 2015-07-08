@@ -26,7 +26,8 @@
 #elif defined(POCO_ANDROID)
 #include "RWLock_Android.cpp"
 #elif defined(POCO_VXWORKS)
-#include "RWLock_VX.cpp"
+//#include "RWLock_VX.cpp"	//hy.lee lignex1
+#include "Poco/RWLock_VX.h"
 #else
 #include "RWLock_POSIX.cpp"
 #endif

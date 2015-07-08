@@ -12,7 +12,7 @@
 //
 // SPDX-License-Identifier:	BSL-1.0
 //
-
+#if 0
 
 #include "Poco/Event_VX.h"
 #include <sysLib.h>
@@ -79,3 +79,5 @@ bool EventImpl::waitImpl(long milliseconds)
 
 
 } // namespace Poco
+
+#endif

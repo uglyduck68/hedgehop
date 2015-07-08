@@ -13,6 +13,7 @@
 // SPDX-License-Identifier:	BSL-1.0
 //
 
+#if 0
 
 #include "Poco/Mutex_VX.h"
 #include <sysLib.h>
@@ -57,6 +58,24 @@ bool MutexImpl::tryLockImpl(long milliseconds)
 }
 
 
+void MutexImpl::lockImpl()
+{
+	if (semTake(_sem, WAIT_FOREVER) != OK)
+		throw SystemException("cannot lock mutex");
+}
+
+ bool MutexImpl::tryLockImpl()
+{
+	return semTake(_sem, NO_WAIT) == OK;
+}
+
+
+void MutexImpl::unlockImpl()
+{
+	if (semGive(_sem) != OK)
+			throw SystemException("cannot unlock mutex");
+}
+
 FastMutexImpl::FastMutexImpl(): MutexImpl(true)
 {
 }
@@ -68,3 +87,5 @@ FastMutexImpl::~FastMutexImpl()
 
 
 } // namespace Poco
+
+#endif
