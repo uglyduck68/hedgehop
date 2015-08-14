@@ -1,0 +1,22 @@
+#Righteous Ninja AKA P.S. Ching codediaries.blogspot.com
+
+MYSQL_HOME="D:\Program Files\MySQL\Connector C++ 1.1.3"
+MYSQL_INCS=$(MYSQL_HOME)\include
+BOOST_INCS=$(BOOST_HOME)
+MYSQL_LIBS=$(MYSQL_HOME)\lib\opt
+
+build: mysqlpool.obj examplemysql.obj crosshelper.obj
+  cl /o mysqlx.exe mysqlpool.obj examplemysql.obj crosshelper.obj /link /LIBPATH:$(MYSQL_LIBS) mysqlcppconn.lib
+
+
+examplemysql.obj: ExampleMySQL.cpp
+	cl /c ExampleMySQL.cpp /D WINDOWSXX -I $(MYSQL_INCS) -I $(BOOST_INCS) /EHsc /MT
+
+mysqlpool.obj: ..\mysql\MySQLPool.cpp 
+    cl /c  ..\mysql\MySQLPool.cpp /D WINDOWSXX  -I $(MYSQL_INCS) -I $(BOOST_INCS) /EHsc /MT
+
+crosshelper.obj: ..\CrossHelper.cpp
+    cl /c ..\CrossHelper.cpp /D WINDOWSXX 
+
+clean:
+  del *.exe *.obj
