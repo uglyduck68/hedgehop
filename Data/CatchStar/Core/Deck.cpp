@@ -1,3 +1,11 @@
+/**
+ * @file		Deck.cpp
+ * @brief		implementation file for Deck class
+ *				I implements simple playing for testing the odds change
+ *				according to the position of the indicator card
+ * @date		2015/08/14
+ * @author		sean kim<uglyduck68@gmail.com>
+ */
 #include "StdAfx.h"
 
 #include <assert.h>
@@ -55,7 +63,8 @@ int Deck::Shuffle()
 
 	return 0;
 }
-	
+
+
 int Deck::SetIndicateCard(int nControl)
 {
 	if (nControl == 0)
@@ -73,6 +82,9 @@ int Deck::SetIndicateCard(int nControl)
 
 	double		dPosition	= -1.0;
 
+	///////////////////////////////////////////////////////////////////////////
+	// calculate the indicator position
+	///////////////////////////////////////////////////////////////////////////
 	std::srand(unsigned(std::time(0)));	// use current time as seed for random generator
 	int		nRandom	= std::rand();
 
@@ -81,6 +93,9 @@ int Deck::SetIndicateCard(int nControl)
 
 	dPosition	*= (m_nDeckOfCards * DFT_NOCARD);
 
+	///////////////////////////////////////////////////////////////////////////
+	// copy the rest of the card depending on the indicator position
+	///////////////////////////////////////////////////////////////////////////
 	if(dPosition >= (m_nDeckOfCards * DFT_NOCARD)-1)
 	{
 		// if indicator is over the range of vector, 
@@ -97,14 +112,14 @@ int Deck::SetIndicateCard(int nControl)
 
 		m_vecTemp1.resize(m_vecDeck.size());
 
-		// 인디케이터 이후 카드를 앞 부분으로 복사
+		// copy cards located behind the indicator to the front position
 		for(size_t i = (int)dPosition, j = 0; i < m_vecDeck.size(); i++, j++)
 		{
 			m_vecTemp1[j]	= m_vecDeck[i];
 		}
 //		std::copy(itr, m_vecDeck.end(), m_vecTemp1.begin());
 
-		for(size_t i = 0; i < (int)dPosition; i++)
+		for(size_t i = 0; i < (size_t)dPosition; i++)
 		{
 			int	ii	= m_vecDeck.size() - (int)dPosition;
 
@@ -114,7 +129,7 @@ int Deck::SetIndicateCard(int nControl)
 
 //		itr2	= m_vecTemp1.begin() + (int)dPosition+1;
 
-		// 인디케이터 이전 카드를 뒷부분으로 복사
+		// copy cards located before the indicator
 //		std::copy(m_vecDeck.begin(), itr, itr2);
 
 		std::copy(m_vecTemp1.begin(), m_vecTemp1.end(), m_vecDeck.begin());
@@ -187,12 +202,6 @@ int Deck::GetNextCard(Card& card, int& bEnd)
 	return RET_OK;
 }
 
-int	Deck::DealCards(OneRule* pRule)
-{
-	
-	return RET_OK;
-}
-
 	
 int Deck::GetFirstTwoCard(Card& p1, Card& p2, Card& b1, Card& b2)
 {
@@ -229,6 +238,8 @@ int Deck::GetFirstTwoCard(Card& p1, Card& p2, Card& b1, Card& b2)
 	return bEnd;
 }
 
+#define		LOG_VERBOSE	1
+
 void Deck::Play(const char* pcLogFile)
 {
 	std::ofstream	Out;
@@ -248,9 +259,9 @@ void Deck::Play(const char* pcLogFile)
 	Card	p1, p2, p3;
 	Card	b1, b2, b3;
 	ScoreBoard	score;
-	int		bEnd	= false;
-	int		nSumPlayer, nSumBanker;	// sum of the first two cards
-	bool	bNatural	= false;	// true if any one of player or banker is natural
+	int		nSumPlayer, nSumBanker;		// sum of the first two cards of player and banker
+	int		bEnd			= false;	// true if this game is the last
+	bool	bNatural		= false;	// true if any one of player or banker is natural
 	bool	bPlayerStand	= false;	// true if player is stand
 
 	// clear static variables
@@ -277,21 +288,21 @@ void Deck::Play(const char* pcLogFile)
 		b1.Get(nSumBanker);
 		b2.Get(nSumBanker);
 
-		if (nSumPlayer >= 8 || nSumBanker >= 8)
+		if (IS_NATURAL(nSumPlayer) || IS_NATURAL(nSumBanker))
 			bNatural	= true;
 
-#if	1
+#if	LOG_VERBOSE
 			Out << "(" << p1.Get() << "," << p2.Get();
 #endif
 		///////////////////////////////////////////////////////////////////////
 		// Third Card of Player
 		///////////////////////////////////////////////////////////////////////
-		if (6 == nSumPlayer || nSumPlayer == 7)
+		if (IS_PLAYER_STAND(nSumPlayer))
 		{
 			// player stand
 			bPlayerStand	= true;
 		}
-		else if(nSumPlayer >= 8)
+		else if(IS_NATURAL(nSumPlayer))
 		{
 			// player natural
 		}
@@ -306,19 +317,20 @@ void Deck::Play(const char* pcLogFile)
 
 				p3.Get(nSumPlayer);
 
-#if	1
+#if	LOG_VERBOSE
 				Out << "," << p3.Get();
 #endif
 			}
 		}
 
-#if	1
+#if	LOG_VERBOSE
 	Out << "), (" << b1.Get() << "," << b2.Get();
 #endif
 		///////////////////////////////////////////////////////////////////////
 		// Third Card of Banker
 		///////////////////////////////////////////////////////////////////////
-		// get the third card of banker if player is *NOT* natural
+		// get the third card of banker if player or banker is *NOT* natural 
+		// and banker is *NOT* stand(7).
 		if(!bNatural)
 		{
 			if ((nSumBanker <= 2))
@@ -327,8 +339,8 @@ void Deck::Play(const char* pcLogFile)
 				GetNextCard(b3, bEnd);
 
 				b3.Get(nSumBanker);
-#if	1
-			Out << "," << b3.Get() << ") ->";
+#if	LOG_VERBOSE
+			Out << "," << b3.Get();
 #endif
 			}
 			else if	((nSumBanker == 3) && (bPlayerStand || !bPlayerStand && p3.Get() != 8))
@@ -338,8 +350,8 @@ void Deck::Play(const char* pcLogFile)
 
 				b3.Get(nSumBanker);
 				
-#if	1
-			Out << "," << b3.Get() << ") ->";
+#if	LOG_VERBOSE
+			Out << "," << b3.Get();
 #endif
 			}
 			else if	((nSumBanker == 4) && (bPlayerStand || !bPlayerStand && (2 <= p3.Get() && p3.Get() <= 7)))
@@ -348,8 +360,8 @@ void Deck::Play(const char* pcLogFile)
 				GetNextCard(b3, bEnd);
 
 				b3.Get(nSumBanker);
-#if	1
-			Out << "," << b3.Get() << ") ->";
+#if	LOG_VERBOSE
+			Out << "," << b3.Get();
 #endif
 			}
 			else if	((nSumBanker == 5) && (bPlayerStand || !bPlayerStand && (4 <= p3.Get() && p3.Get() <= 7)))
@@ -358,8 +370,8 @@ void Deck::Play(const char* pcLogFile)
 				GetNextCard(b3, bEnd);
 
 				b3.Get(nSumBanker);
-#if	1
-			Out << "," << b3.Get() << ") ->";
+#if	LOG_VERBOSE
+			Out << "," << b3.Get();
 #endif
 			}
 			else if ((nSumBanker == 6) && (bPlayerStand || !bPlayerStand && (6 <= p3.Get() && p3.Get() <= 7)))
@@ -368,16 +380,14 @@ void Deck::Play(const char* pcLogFile)
 				GetNextCard(b3, bEnd);
 
 				b3.Get(nSumBanker);
-#if	1
-			Out << "," << b3.Get() << ") ->";
+#if	LOG_VERBOSE
+			Out << "," << b3.Get();
 #endif
 			}
 		}
 
-#if	1
-				Out << ") ->";
-#endif
-		
+#if	LOG_VERBOSE
+		Out << ") ->";
 
 		if (nSumPlayer == nSumBanker)
 		{
@@ -394,14 +404,18 @@ void Deck::Play(const char* pcLogFile)
 			// player win
 			Out << "PLAYER WIN: " << nSumPlayer << ", " << nSumBanker << std::endl;
 		}
+#endif
 
+		// set score and insert it into the vector
 		score.SetScore(p1, p2, b1, b2, nSumPlayer, nSumBanker);
 
 		m_vecScoreBoard.push_back(score);
 
 	}	// end of while
 
+#if	LOG_VERBOSE
 	Out << "Current indicator is " << m_nCurrCard << "/" << m_vecDeck.size() << std::endl;
+#endif
 
 	// print the statistics of game
 	score.Log(Out);

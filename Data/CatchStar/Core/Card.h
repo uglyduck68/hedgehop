@@ -1,3 +1,9 @@
+/**
+ * @file		Card.h
+ * @brief		header file for Card class
+ * @date		2015/08/14
+ * @author		sean kim<uglyduck68@gmail.com>
+ */
 #include <assert.h>
 
 #pragma once
@@ -7,6 +13,7 @@ enum ESHAPE { NO_SHAPE = -1, SPADES = 0, DIAMONDS, HEARTS, CLUBS };
 const int DFT_NOCARD		= 52;
 const int DEF_NOCARD_SHAPE	= 4;
 const int DFT_NOCARD_NUMBER	= 13;
+const int NO_NUM			= -1;
 
 /**
 * @class		Card

@@ -76,24 +76,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Card.h" />
-    <ClInclude Include="CardTable.h" />
     <ClInclude Include="Deck.h" />
     <ClInclude Include="Defines.h" />
-    <ClInclude Include="OneGame.h" />
-    <ClInclude Include="OneRule.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Card.cpp" />
-    <ClCompile Include="CardTable.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Deck.cpp" />
-    <ClCompile Include="OneGame.cpp" />
-    <ClCompile Include="OneRule.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

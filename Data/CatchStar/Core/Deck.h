@@ -1,3 +1,10 @@
+/**
+ * @file		Deck.h
+ * @brief		header file for Deck class
+ *				Deck means the holder has some bunchs of cards.
+ * @date		2015/08/14
+ * @author		sean kim<uglyduck68@gmail.com>
+ */
 #pragma once
 
 #include <algorithm>	// for random shuffle
@@ -9,12 +16,10 @@
 #include "Card.h"
 #include "ScoreBoard.h"
 
-//#include "OneRule.h"	// cross reference
 
-class OneRule;
 
-const int DFT_NODECK	= 8;
-const double	MIN_INDICATOR	= 0.7;	// indicator is always above 70%
+const int		DFT_NODECK		= 8;	/// default bunchs of cards
+const double	MIN_INDICATOR	= 0.7;	/// indicator is always above 70%
 
 class Deck
 {
@@ -35,6 +40,7 @@ public:
 	 * @param		nControl that control the position of indicator
 	 *				0 : the last card is indicator
 	 *				1 : make random indicator
+	 *				other value means the position of indicator
 	 * @return		location of indicator card in deck
 	 */
 	int SetIndicateCard(int nControl);
@@ -49,20 +55,18 @@ public:
 	/**
 	 * @function		GetNextCard
 	 * @brief			return next card
+	 * @param			card that is returned next card
+	 * @param			bEnd that is set to 1 if this card is final card(indicator)
 	 */
 	int GetNextCard(Card& card, int& bEnd);
 
 	/**
 	 * @function		GetFirstTwoCard
 	 * @brief			get the first two card of player and banker
-	 * @return			RET_ERROR if any card is indicator
+	 * @return			RET_ERROR if any card of 4 is indicator
 	 */
 	int GetFirstTwoCard(Card& p1, Card& p2, Card& b1, Card& b2);
 
-	/**
-	 *
-	 */
-	int	DealCards(OneRule* pRule);
 
 	void Print(const char* pcFileName = NULL)
 	{
