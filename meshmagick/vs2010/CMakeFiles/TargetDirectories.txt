@@ -1,4 +1,0 @@
-D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010/CMakeFiles/ALL_BUILD.dir
-D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010/CMakeFiles/ZERO_CHECK.dir
-D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010/CMakeFiles/meshmagick_bin.dir
-D:/Lib/OgreSDK_vc10_v1-9-0/addon/meshmagick/vs2010/CMakeFiles/meshmagick_lib.dir
